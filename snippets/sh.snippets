@@ -1,0 +1,61 @@
+# #!/bin/bash
+snippet #!
+	#!/bin/bash
+	
+snippet if
+	if [[ ${1:condition} ]]; then
+		${2:#statements}
+	fi
+snippet elif
+	elif [[ ${1:condition} ]]; then
+		${2:#statements}
+#tradition / C style for loop
+snippet fort
+	for (( ${2:i} = 0; $2 < ${1:count}; $2++ )); do
+		${3:#statements}
+	done
+snippet wh
+	while [[ ${1:condition} ]]; do
+		${2:#statements}
+	done
+snippet until
+	[[ ${1:condition} ]]; do
+		${2:#statements}
+	done
+# generic iterative for loop
+snippet for
+	for ${1:needle} in ${2:haystack}
+	do
+		${3:# code...}
+	done
+# iterate over the results of a command
+snippet forc
+	for ${1:needle} in $(${2:command})
+	do
+		${3:# code...}
+	done
+# iterate over a generated sequence
+snippet fors
+	for ${1:i} in $(seq ${2:0} ${3:N})
+	do
+		${4:# code...}
+	done
+snippet seq
+	seq ${1:0} ${2:n}
+# New Function with trailing comment
+snippet fun 
+	function ${1:fname}() 
+	{
+		${2}
+	} #$1()
+snippet else
+	else
+		${1}
+# Easy echo
+snippet echo 
+	echo "${1}";
+snippet case
+	case ${1:word} in
+		${2:pattern})
+			${3};;
+	esac
