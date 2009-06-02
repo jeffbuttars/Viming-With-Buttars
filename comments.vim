@@ -65,18 +65,18 @@ endif
 let loaded_comments_plugin="v2.5"
 
 " key-mappings for comment line in normal mode
-"noremap  <silent> <C-C> :call CommentLine()<CR>
-noremap  <silent> c :call CommentLine()<CR>
+noremap  <silent> <C-C> :call CommentLine()<CR>
+"noremap  <silent> c :call CommentLine()<CR>
 " key-mappings for range comment lines in visual <Shift-V> mode
-"vnoremap <silent> <C-C> :call RangeCommentLine()<CR>
-vnoremap <silent> c :call RangeCommentLine()<CR>
+vnoremap <silent> <C-C> :call RangeCommentLine()<CR>
+"vnoremap <silent> c :call RangeCommentLine()<CR>
 
 " key-mappings for un-comment line in normal mode
-"noremap  <silent> <C-X> :call UnCommentLine()<CR>
-noremap  <silent> C :call UnCommentLine()<CR>
+noremap  <silent> <C-X> :call UnCommentLine()<CR>
+"noremap  <silent> C :call UnCommentLine()<CR>
 " key-mappings for range un-comment lines in visual <Shift-V> mode
-"vnoremap <silent> <C-X> :call RangeUnCommentLine()<CR>
-vnoremap <silent> C :call RangeUnCommentLine()<CR>
+vnoremap <silent> <C-X> :call RangeUnCommentLine()<CR>
+"vnoremap <silent> C :call RangeUnCommentLine()<CR>
 
 " function to comment line in normal mode
 function! CommentLine()

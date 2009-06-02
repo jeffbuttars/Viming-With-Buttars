@@ -141,6 +141,8 @@ nnoremap ` '
 " smart indent
 set si
 
+" We want 256 colors.
+set t_Co=256
 "colorscheme elflord
 " use the baycomb scheme for a dark background
 "colo baycomb 
@@ -215,8 +217,8 @@ set comments+=n::
 " Funky auto bracing/parens
 "au FileType c,h,javascript,html,xhtml,bash,python,php imap  (( ()<esc>i
 " Use php syntax check when doing :make
-" au FileType php set makeprg=php\ -l\ %
-autocmd BufRead *.php,*.inc set makeprg=php\ -l\ %
+au FileType php set makeprg=php\ -l\ %
+autocmd BufEnter *.php,*.inc set makeprg=php\ -l\ %
 
 " Use errorformat for parsing PHP error output
 au FileType php set errorformat=%m\ in\ %f\ on\ line\ %l
@@ -464,8 +466,8 @@ endfunction
 "cabbr js Shell js ~/bin/runjslint.js "`cat %`" \| ~/bin/format_lint_output.py
 cabbr jslint Shell jslint %
 " Type make to run JSLINT and jump to error
-" au FileType js,javascript set makeprg=jslint\ %
-au BufRead *.js set makeprg=jslint\ %
+au FileType js,javascript set makeprg=jslint\ %
+au BufEnter *.js set makeprg=jslint\ %
 
 " Use errorformat for parsing JSLINT error output
 "Problem at line 13 character 26: ['length'] is better written in dot notation.    var num_rows = spec[ 'length' ];
@@ -483,8 +485,8 @@ cabbr mmake !make
 cabbr pyck Shell pychecker %
 
 " Easy cycle through buffers using Alt+Left/Right
-nmap <A-Right> :bnext<CR>
-nmap <A-Left> :bprevious<CR>
+nmap <C-PageDown> :bnext<CR>
+nmap <C-PageUp> :bprevious<CR>
 
 
 "Highlight current row/col
@@ -495,3 +497,10 @@ nmap <A-Left> :bprevious<CR>
 "au WinEnter * set cursorline
 "set cursorline
 
+
+" Bufexplorer options
+ "let g:bufExplorerSortBy='extension'  " Sort by file extension.
+ "let g:bufExplorerSortBy='fullpath'   " Sort by full file path name.
+ "let g:bufExplorerSortBy='mru'        " Sort by most recently used.
+ "let g:bufExplorerSortBy='name'       " Sort by the buffer's name.
+ "let g:bufExplorerSortBy='number'     " Sort by the buffer's number.

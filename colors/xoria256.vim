@@ -71,7 +71,8 @@ hi Error        ctermfg=15  guifg=#ffffff ctermbg=1   guibg=#800000
 hi ErrorMsg     ctermfg=15  guifg=#ffffff ctermbg=1   guibg=#800000
 hi Identifier   ctermfg=182 guifg=#dfafdf                           cterm=none
 hi Ignore       ctermfg=238 guifg=#444444
-hi LineNr       ctermfg=248 guifg=#a8a8a8
+"hi LineNr       ctermfg=248 guifg=#a8a8a8
+hi LineNr       ctermfg=255 guifg=#a8a8a8 ctermbg=0   guibg=#000000
 hi MatchParen   ctermfg=188 guifg=#dfdfdf ctermbg=68  guibg=#5f87df cterm=bold gui=bold
 hi Number       ctermfg=180 guifg=#dfaf87
 hi PreProc      ctermfg=150 guifg=#afdf87
