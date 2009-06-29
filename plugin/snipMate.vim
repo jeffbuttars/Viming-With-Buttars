@@ -1,6 +1,7 @@
 " File:          snipMate.vim
 " Author:        Michael Sanders
-" Version:       0.8
+" Version:       0.82
+" Last Updated:  June 10 2009
 " Description:   snipMate.vim implements some of TextMate's snippets features in
 "                Vim. A snippet is a piece of often-typed text that you can
 "                insert into your document using a trigger word followed by a "<tab>".
@@ -69,7 +70,7 @@ fun! ExtractSnipsFile(file, ft)
 	let text = readfile(a:file)
 	let inSnip = 0
 	for line in text + ["\n"]
-		if inSnip && (line == '' || strpart(line, 0, 1) == "\t")
+		if inSnip && (line[0] == "\t" || line == '')
 			let content .= strpart(line, 1)."\n"
 			continue
 		elseif inSnip
@@ -77,7 +78,7 @@ fun! ExtractSnipsFile(file, ft)
 			let inSnip = 0
 		endif
 
-		if stridx(line, 'snippet') == 0
+		if line[:6] == 'snippet'
 			let inSnip = 1
 			let trigger = strpart(line, 8)
 			let name = ''
@@ -143,7 +144,7 @@ fun! TriggerSnippet()
 	let word = matchstr(getline('.'), '\S\+\%'.col('.').'c')
 	for scope in [bufnr('%')] + split(&ft, '\.') + ['_']
 		let [trigger, snippet] = s:GetSnippet(word, scope)
-		" If word is a trigger for a snippet, delete the trigger & expand 
+		" If word is a trigger for a snippet, delete the trigger & expand
 		" the snippet.
 		if snippet != ''
 			let col = col('.') - len(trigger)
@@ -168,6 +169,7 @@ fun s:GetSnippet(word, scope)
 			let snippet = s:snippets[a:scope][word]
 		elseif exists('s:multi_snips["'.a:scope.'"]["'.escape(word, '\"').'"]')
 			let snippet = s:ChooseSnippet(a:scope, word)
+			if snippet == '' | break | endif
 		else
 			if match(word, '\W') == -1 | break | endif
 			let word = substitute(word, '.\{-}\W', '', '')
@@ -188,17 +190,19 @@ fun s:ChooseSnippet(scope, trigger)
 	return num == -1 ? '' : s:multi_snips[a:scope][a:trigger][num][1]
 endf
 
-fun ShowAvailableSnips()
-	let word = matchstr(getline('.'), '\S\+\%'.col('.').'c')
+fun! ShowAvailableSnips()
+	let line  = getline('.')
+	let col   = col('.')
+	let word  = matchstr(getline('.'), '\S\+\%'.col.'c')
 	let words = [word]
 	if stridx(word, '.')
 		let words += split(word, '\.', 1)
 	endif
-	let matchpos = 0
+	let matchlen = 0
 	let matches = []
 	for scope in [bufnr('%')] + split(&ft, '\.') + ['_']
-		let triggers = exists('s:snippets["'.scope.'"]') ? keys(s:snippets[scope]) : []
-		if exists('s:multi_snips["'.scope.'"]')
+		let triggers = has_key(s:snippets, scope) ? keys(s:snippets[scope]) : []
+		if has_key(s:multi_snips, scope)
 			let triggers += keys(s:multi_snips[scope])
 		endif
 		for trigger in triggers
@@ -208,12 +212,16 @@ fun ShowAvailableSnips()
 				elseif trigger =~ '^'.word
 					let matches += [trigger]
 					let len = len(word)
-					if len > matchpos | let matchpos = len | endif
+					if len > matchlen | let matchlen = len | endif
 				endif
 			endfor
 		endfor
 	endfor
-	call complete(col('.') - matchpos, matches)
+
+	" This is to avoid a bug with Vim when using complete(col - matchlen, matches)
+	" (Issue#46 on the Google Code snipMate issue tracker).
+	call setline(line('.'), substitute(line, repeat('.', matchlen).'\%'.col.'c', '', ''))
+	call complete(col, matches)
 	return ''
 endf
 " vim:noet:sw=4:ts=4:ft=vim
