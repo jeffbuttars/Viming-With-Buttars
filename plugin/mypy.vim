@@ -194,10 +194,12 @@ EOF
 "autocmd FileType c,h,javascript,html,xhtml,shtml,bash,python,php imap  [[ []
 
 
-autocmd FileType c,h,javascript,html,xhtml,shtml,bash,php,css nmap ;; <INSERT><END>;<ESC>:w<CR>
-autocmd FileType c,h,javascript,html,xhtml,shtml,bash,php,css imap ;; <END>;<ESC>:w<CR>
-autocmd FileType c,h,javascript,html,xhtml,shtml,bash,php,css nmap ;; <INSERT><END>;<ESC>:w<CR>
-autocmd FileType c,h,javascript,html,xhtml,shtml,bash,php,css imap ;; <END>;<ESC>:w<CR>
+"autocmd FileType c,h,javascript,html,xhtml,shtml,bash,php,css nmap ;; <INSERT><END>;<ESC>:w<CR>
+"autocmd FileType c,h,javascript,html,xhtml,shtml,bash,php,css imap ;; <END>;<ESC>:w<CR>
+"autocmd FileType c,h,javascript,html,xhtml,shtml,bash,php,css nmap ;; <INSERT><END>;<ESC>:w<CR>
+"autocmd FileType c,h,javascript,html,xhtml,shtml,bash,php,css imap ;; <END>;<ESC>:w<CR>
+map ;; <END>;<ESC>:w<CR>
+imap ;; <END>;<ESC>:w<CR>
 
 " Run current file with python
 autocmd FileType python map <F5> <ESC>:w<CR>:!python %<CR>
