@@ -531,10 +531,10 @@ imap ;; <END>;<ESC>:w<CR>
 "Highlight current row/col
 "au WinLeave * set nocursorline nocursorcolumn
 "au WinEnter * set cursorline cursorcolumn
-"set cursorline cursorcolumn
+set cursorline cursorcolumn
 "au WinLeave * set nocursorline
 "au WinEnter * set cursorline
-"set cursorline
+set cursorline
 
 
 " Bufexplorer options

@@ -93,4 +93,11 @@ hi diffDelete   ctermfg=bg  guifg=bg      ctermbg=246 guibg=#949494 cterm=none g
 hi diffChange   ctermfg=bg  guifg=bg      ctermbg=181 guibg=#dfafaf
 hi diffText     ctermfg=bg  guifg=bg      ctermbg=174 guibg=#df8787 cterm=none gui=none
 
+hi clear CursorLine 
+ 
+"hi CursorLine       ctermfg=255 guifg=#a8a8a8 ctermbg=0   guibg=#000000
+hi CursorLine       ctermbg=0   guibg=#000000
+hi CursorColumn       ctermbg=0   guibg=#000000
+
+
 " vim: set expandtab tabstop=2 shiftwidth=2 smarttab softtabstop=2:
