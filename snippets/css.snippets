@@ -2,7 +2,7 @@
 snippet :
 	${1}:${2};
 snippet #
-	${1}#${2} {
+	${1:div}#${2:id} {
 		${3}
 	}
 
@@ -13,14 +13,20 @@ snippet .
 snippet border 
 	border: ${1:1px} ${2:solid} ${3:#000};
 snippet col 
-	color: ${1:#fff};
+	color: ${1};
 snippet bcol 
 	background-color: ${1:#fff};
 snippet bg
 	background: ${1};
+snippet bgu
+	background:url(${1});
 snippet marg 
 	margin: ${1:1em} ${2:1em} ${3:1em} ${4:1em};
 snippet pad 
 	padding: ${1:1em} ${2:1em} ${3:1em} ${4:1em};
 snippet pos
 	position: ${1};
+snippet fs 
+	font-size: ${1:1em};
+snippet dis
+	display: ${1:block};

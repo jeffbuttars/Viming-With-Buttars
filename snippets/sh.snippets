@@ -9,8 +9,7 @@ snippet if
 snippet elif
 	elif [[ ${1:condition} ]]; then
 		${2:#statements}
-#tradition / C style for loop
-snippet fort
+snippet for
 	for (( ${2:i} = 0; $2 < ${1:count}; $2++ )); do
 		${3:#statements}
 	done
@@ -19,7 +18,7 @@ snippet wh
 		${2:#statements}
 	done
 snippet until
-	[[ ${1:condition} ]]; do
+	until [[ ${1:condition} ]]; do
 		${2:#statements}
 	done
 # generic iterative for loop

@@ -1,6 +1,15 @@
 snippet #!
 	#!/usr/bin/python
-	
+
+snippet imp
+	import ${1:module}
+# Module Docstring
+snippet docs
+	'''
+	File: ${1:`Filename('$1.py', 'foo.py')`}
+	Author: ${2:`g:snips_author`}
+	Description: ${3}
+	'''
 snippet wh
 	while ${1:condition}:
 		${2:# code...}
@@ -21,9 +30,13 @@ snippet def
 		"""${3:docstring for $1}"""
 		${4:pass}
 	#$1
+snippet deff
+	def ${1:fname}(${2:`indent('.') ? 'self' : ''`}):
+		${3}
+	#$1
 # New Method
 snippet defs
-	def ${1:mname}(self, ${2:arg})):
+	def ${1:mname}(self, ${2:arg}):
 		${3:pass}
 	#$1
 # New Property
@@ -31,9 +44,12 @@ snippet property
 	def ${1:foo}():
 		doc = "${2:The $1 property.}"
 		def fget(self):
-				${3:return self._$1}
+			${3:return self._$1}
 		def fset(self, value):
-			
+			${4:self._$1 = value}
+# Lambda
+snippet ld
+	${1:var} = lambda ${2:vars} : ${3:action}
 # Self
 snippet .
 	self.
