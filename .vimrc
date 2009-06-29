@@ -133,7 +133,7 @@ source /usr/share/vim/vim72/macros/shellmenu.vim
 "source /usr/share/vim/vim72/macros/matchit.vim
 let loaded_matchit = 1
 
-set history=1000
+set history=10000
 set hidden
 nnoremap ' `
 nnoremap ` '
@@ -180,11 +180,24 @@ syntax on
 " drupal rules
 if has("autocmd")
     augroup module
-        autocmd BufRead *.module set filetype=php
+        autocmd BufRead *.module,*.inc set filetype=php
     augroup END
 endif
 
+
+
 " Set taglist plugin options
+" Display function name in status bar:
+let g:ctags_statusline=1
+" Automatically start script
+let generate_tags=1
+" Displays taglist results in a vertical window:
+let Tlist_Use_Horiz_Window=0
+" Shorter commands to toggle Taglist display
+"nnoremap TT :TlistToggle<CR>
+nnoremap TT :TlistOpen<CR>
+map <F4> :TlistToggle<CR>
+
 let Tlist_Use_Right_Window = 1
 let Tlist_Exit_OnlyWindow = 1
 let Tlist_Enable_Fold_Column = 0
@@ -192,6 +205,8 @@ let Tlist_Compact_Format = 1
 let Tlist_File_Fold_Auto_Close = 1
 let Tlist_Winwidth = 40
 let Tlist_Inc_Winwidth = 1
+" Close Tlist when jumping to tag
+let Tlist_Close_On_Select = 1
 
 " Set bracket matching and comment formats
 set matchpairs+=<:>
@@ -213,16 +228,6 @@ set comments+=n::
 
 
 
-" block like structures.
-" Funky auto bracing/parens
-"au FileType c,h,javascript,html,xhtml,bash,python,php imap  (( ()<esc>i
-" Use php syntax check when doing :make
-au FileType php set makeprg=php\ -l\ %
-autocmd BufEnter *.php,*.inc set makeprg=php\ -l\ %
-
-" Use errorformat for parsing PHP error output
-au FileType php set errorformat=%m\ in\ %f\ on\ line\ %l
-
 au FileType htmlcheetah,cheetah set syntax=cheetah 
 
 " Use errorformat for parsing sql error output
@@ -237,8 +242,8 @@ source ~/.vim/plugin/mypy.vim
 "au FileType java map <F5> :make %<CR>
 "au FileType sh,php,perl,python,ruby map <F5> :!./%<CR>
 "au FileType java map <F6> :java %:r
-au FileType php map <F5> :!php -l %<CR>
-au FileType python,py map <F6> :w<CR>:!python %<CR>
+"au FileType php map <F5> :!php -l %<CR>
+"au FileType python,py map <F6> :w<CR>:!python %<CR>
 "au FileType perl map <F6> :!perl %<CR>
 "au FileType ruby map <F6> :!ruby %<CR>
 au FileType html,xhtml map <F5> :!firefox %<CR>
@@ -310,7 +315,9 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 "nmap <silent> <leader><leader> [{V%zf
 
 " display fold info on the side
-"set foldcolumn=1
+set foldcolumn=2
+" Don't display fold info on the side
+"set foldcolumn=0
 set foldenable
 
 " Automaticly save and load views
@@ -326,6 +333,8 @@ set mouse=a
 
 " Enable english spell checking
 ":setlocal spell spelllang=en
+"autocmd FileType txt setlocal spell spelllang=en
+autocmd BufEnter *.txt,*.text setlocal spell spelllang=en
 
 " Enable some omnicompletion types
 autocmd FileType python runtime! autoload/pythoncomplete.vim
@@ -334,23 +343,23 @@ autocmd FileType python runtime! autoload/pythoncomplete.vim
 "python import pysmell
 "autocmd FileType python setlocal omnifunc=pysmell#Complete
 
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-autocmd FileType cpp set omnifunc=cppcomplete#Complete
-autocmd FileType c set omnifunc=ccomplete#Complete
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
+autocmd FileType cpp setlocal omnifunc=cppcomplete#Complete
+autocmd FileType c setlocal omnifunc=ccomplete#Complete
 
-" Map omnicomplete to Control-r
-imap <c-a> <C-X><C-O>
-"imap <C-Tab> <C-x><C-o>
+" Map omnicomplete to Control-o
+imap <c-o> <C-X><C-O>
 
-set completeopt=menu,preview
+set completeopt=menuone,preview
 "set completeopt=menuone
-"let OmniCpp_SelectFirstItem = 1
+let OmniCpp_SelectFirstItem = 2
 let OmniCpp_MayCompleteDot = 1
 let OmniCpp_MayCompleteArrow = 1
+let OmniCpp_MayCompleteScope = 1
 let OmniCpp_ShowPrototypeInAbbr = 1
 
 " movment keys while in insert mode?
@@ -397,7 +406,6 @@ endfunction
 "Basically you press * or # to search for the current selection !! Really useful
 vnoremap <silent> * :call VisualSearch('f')<CR>
 vnoremap <silent> # :call VisualSearch('b')<CR>
-
 
 try
     set switchbuf=usetab
@@ -466,27 +474,58 @@ endfunction
 "cabbr js Shell js ~/bin/runjslint.js "`cat %`" \| ~/bin/format_lint_output.py
 cabbr jslint Shell jslint %
 " Type make to run JSLINT and jump to error
-au FileType js,javascript set makeprg=jslint\ %
-au BufEnter *.js set makeprg=jslint\ %
-
+au FileType js,javascript setlocal makeprg=jslint\ %
+"au BufEnter *.js setlocal makeprg=jslint\ %
 " Use errorformat for parsing JSLINT error output
 "Problem at line 13 character 26: ['length'] is better written in dot notation.    var num_rows = spec[ 'length' ];
-au FileType js,javascript set errorformat=Problem\ at\ line\ %l\ character\ %c:\ %m 
+au FileType js,javascript setlocal errorformat=Problem\ at\ line\ %l\ character\ %c:\ %m 
 
 
-"Enable autotag.vim
-source ~/.vim/autotag.vim
+" Run pychecker on current file
+cabbr pyck Shell pychecker %
+au FileType *.py setlocal makeprg=pychecker\ %
+"au BufEnter *.py setlocal makeprg=pychecker\ %
+"the last line: \%-G%.%# is meant to suppress some
+"late error messages that I found could occur e.g.
+"with wxPython and that prevent one from using :clast
+"to go to the relevant file and line of the traceback.
+au FileType python setlocal errorformat=
+	\%A\ \ File\ \"%f\"\\\,\ line\ %l\\\,%m,
+	\%C\ \ \ \ %.%#,
+	\%+Z%.%#Error\:\ %.%#,
+	\%A\ \ File\ \"%f\"\\\,\ line\ %l,
+	\%+C\ \ %.%#,
+	\%-C%p^,
+	\%Z%m,
+	\%-G%.%#
+
+" Use php syntax check when doing :make
+au FileType php setlocal makeprg=php\ -l\ %
+autocmd BufEnter *.php,*.inc,*.module setlocal makeprg=php\ -l\ %
+" Use errorformat for parsing PHP error output
+au FileType php setlocal errorformat=%m\ in\ %f\ on\ line\ %l
 
 " Allow a quick way back to traditional make when
 " makeprg is set to something non-makeish
 cabbr mmake !make
 
-" Run pychecker on current file
-cabbr pyck Shell pychecker %
+
+
+"Enable autotag.vim
+source ~/.vim/autotag.vim
+
 
 " Easy cycle through buffers using Alt+Left/Right
 nmap <C-PageDown> :bnext<CR>
 nmap <C-PageUp> :bprevious<CR>
+" Use Ctrl-p to cut to the buf browser
+nmap <C-p> <ESC>\be
+imap <C-p> <ESC>\be
+
+" My own litter helper
+map ;; <END>;<ESC>:w<CR>
+imap ;; <END>;<ESC>:w<CR>
+
 
 
 "Highlight current row/col
@@ -504,3 +543,18 @@ nmap <C-PageUp> :bprevious<CR>
  "let g:bufExplorerSortBy='mru'        " Sort by most recently used.
  "let g:bufExplorerSortBy='name'       " Sort by the buffer's name.
  "let g:bufExplorerSortBy='number'     " Sort by the buffer's number.
+
+" This fucks up ctags
+"set isk=@,48-57,192-255
+"set isk-=_
+
+" Disable binary search on tags.
+"set notagbsearch
+
+" Make the CWD directory follow the current buffer, may brake plugins
+"set autochdir
+
+"People and places that I get stuff from
+"http://dancingpenguinsoflight.com/2009/02/code-navigation-completion-snippets-in-vim/
+"http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/
+
