@@ -133,7 +133,7 @@ source /usr/share/vim/vim72/macros/shellmenu.vim
 "source /usr/share/vim/vim72/macros/matchit.vim
 let loaded_matchit = 1
 
-set history=10000
+set history=1000
 set hidden
 nnoremap ' `
 nnoremap ` '
@@ -147,7 +147,8 @@ set t_Co=256
 " use the baycomb scheme for a dark background
 "colo baycomb 
 "colo evening 
-colo xoria256 
+"colo xoria256 
+colo jellybeans 
 "colo ir_black 
 "colo mySlate 
 "colo vividchalk 
@@ -531,7 +532,8 @@ imap ;; <END>;<ESC>:w<CR>
 "Highlight current row/col
 "au WinLeave * set nocursorline nocursorcolumn
 "au WinEnter * set cursorline cursorcolumn
-set cursorline cursorcolumn
+" Using the cursorcolumn is pretty slow.
+"set cursorline cursorcolumn
 "au WinLeave * set nocursorline
 "au WinEnter * set cursorline
 set cursorline
