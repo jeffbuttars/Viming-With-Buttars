@@ -13,24 +13,24 @@ snippet fun
 snippet f
 	function(${1}) {${2}};
 # if
-snippet if
+snippet if If with braces #1
 	if ( ${1:true} ) {
 		${2}
 	}
-snippet if
+snippet if If on one line #2
 	if (${1:true}) {${2}};
 snippet el 
 	else {
 		${1}
 	}
 # if ... else
-snippet ife
+snippet ife If else with braces #1
 	if ( ${1:true} ) {
 		${2}
 	} else{
 		${3}
 	}
-snippet ife
+snippet ife If else on one line #2
 	if (${1:true}) {${2}}
 	else{${3}};
 # tertiary conditional

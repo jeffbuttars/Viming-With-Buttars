@@ -9,10 +9,6 @@ snippet if
 snippet elif
 	elif [[ ${1:condition} ]]; then
 		${2:#statements}
-snippet for
-	for (( ${2:i} = 0; $2 < ${1:count}; $2++ )); do
-		${3:#statements}
-	done
 snippet wh
 	while [[ ${1:condition} ]]; do
 		${2:#statements}
@@ -21,8 +17,12 @@ snippet until
 	until [[ ${1:condition} ]]; do
 		${2:#statements}
 	done
+snippet for #1
+	for (( ${2:i} = 0; $2 < ${1:count}; $2++ )); do
+		${3:#statements}
+	done
 # generic iterative for loop
-snippet for
+snippet for #2
 	for ${1:needle} in ${2:haystack}
 	do
 		${3:# code...}
