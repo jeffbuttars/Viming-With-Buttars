@@ -141,17 +141,34 @@ nnoremap ` '
 " smart indent
 set si
 
+"Highlight current row/col
+"au WinLeave * set nocursorline nocursorcolumn
+"au WinEnter * set cursorline cursorcolumn
+" Using the cursorcolumn is pretty slow.
+"set cursorline cursorcolumn
+"au WinLeave * set nocursorline
+"au WinEnter * set cursorline
+set cursorline
+" I hate it when the cursorline is an underline
+hi clear CursorLine 
+"hi CursorLine       ctermfg=255 guifg=#a8a8a8 ctermbg=0   guibg=#000000
+"hi CursorLine       ctermbg=LightGray   guibg=#2c2c2c
+
 " We want 256 colors.
 set t_Co=256
+
 "colorscheme elflord
-" use the baycomb scheme for a dark background
+" Dark background schemes
 "colo baycomb 
 "colo evening 
 "colo xoria256 
-colo jellybeans 
 "colo ir_black 
 "colo mySlate 
 "colo vividchalk 
+colo jellybeans 
+
+" White/Light themes
+"colo nedit2 
 "colo TAqua 
 hi Normal guibg=black
 
@@ -285,10 +302,6 @@ autocmd FileType c,h,bash,python,php,js TlistUpdate
  "execute ":!python " . src . " > " . dst
  "execute ":pedit! " . dst
 "endfunction
-"au FileType python vmap <F5> :call Python_Eval_VSplit()<cr>
-"au FileType python map <F5> <ESC>:!python %<cr>
-
-
 
 
 
@@ -362,6 +375,7 @@ let OmniCpp_MayCompleteDot = 1
 let OmniCpp_MayCompleteArrow = 1
 let OmniCpp_MayCompleteScope = 1
 let OmniCpp_ShowPrototypeInAbbr = 1
+imap <c-y> <c-y><esc>
 
 " movment keys while in insert mode?
 imap <c-j> <Down>
@@ -446,11 +460,6 @@ let g:netrw_altv = 1
 
 "inoremap <Tab> <C-R>=MyTabOrComplete()<CR>
 
-imap <C-k> <Up>
-imap <C-l> <Right>
-imap <C-j> <Down>
-imap <C-h> <Left>
-
 command! -complete=shellcmd -nargs=+ Shell call s:RunShellCommand(<q-args>)
 function! s:RunShellCommand(cmdline)
 	echo a:cmdline
@@ -519,9 +528,10 @@ source ~/.vim/autotag.vim
 " Easy cycle through buffers using Alt+Left/Right
 nmap <C-PageDown> :bnext<CR>
 nmap <C-PageUp> :bprevious<CR>
-" Use Ctrl-p to cut to the buf browser
-nmap <C-p> <ESC>\be
-imap <C-p> <ESC>\be
+" Use Ctrl-l to cut to the buf browser
+" Think l as in 'list the buffers'
+nmap <C-l> <ESC>\be
+imap <C-l> <ESC>\be
 
 " My own litter helper
 map ;; <END>;<ESC>:w<CR>
@@ -529,14 +539,6 @@ imap ;; <END>;<ESC>:w<CR>
 
 
 
-"Highlight current row/col
-"au WinLeave * set nocursorline nocursorcolumn
-"au WinEnter * set cursorline cursorcolumn
-" Using the cursorcolumn is pretty slow.
-"set cursorline cursorcolumn
-"au WinLeave * set nocursorline
-"au WinEnter * set cursorline
-set cursorline
 
 
 " Bufexplorer options
@@ -556,7 +558,26 @@ set cursorline
 " Make the CWD directory follow the current buffer, may brake plugins
 "set autochdir
 
+
+"http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
+" The above URL also has good stuff for autoclosing matching pairs, like (). 
+"One of the nicer minor features of TextMate is its treatment of highlighted text. 
+"If you have something highlighted and type a, it replaces the text, like other editors. 
+"If you type (, however, it wraps the selected text in parentheses. 
+"This is enormously useful. Luckily, it's very easy to recreate in Vim:
+vnoremap (  <ESC>`>a)<ESC>`<i(<ESC>
+vnoremap )  <ESC>`>a)<ESC>`<i(<ESC>
+vnoremap {  <ESC>`>a}<ESC>`<i{<ESC>
+vnoremap }  <ESC>`>a}<ESC>`<i{<ESC>
+vnoremap "  <ESC>`>a"<ESC>`<i"<ESC>
+vnoremap '  <ESC>`>a'<ESC>`<i'<ESC>
+vnoremap `  <ESC>`>a`<ESC>`<i`<ESC>
+vnoremap [  <ESC>`>a]<ESC>`<i[<ESC>
+vnoremap ]  <ESC>`>a]<ESC>`<i[<ESC>
+
+
 "People and places that I get stuff from
 "http://dancingpenguinsoflight.com/2009/02/code-navigation-completion-snippets-in-vim/
 "http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/
+
 
