@@ -288,7 +288,8 @@ endfun
 " }}}
 
 if version >= 700
-  call s:X("CursorLine","","1c1c1c","","","")
+  "call s:X("CursorLine","","1c1c1c","","","")
+  call s:X("CursorLine","","2c2c2c","","","")
   call s:X("CursorColumn","","1c1c1c","","","")
   call s:X("MatchParen","ffffff","80a090","bold","","")
 
@@ -339,7 +340,8 @@ call s:X("NonText","808080","151515","","","")
 
 call s:X("SpecialKey","808080","343434","","","")
 
-call s:X("Search","f0a0c0","302028","underline","Magenta","")
+"call s:X("Search","f0a0c0","302028","underline","Magenta","")
+call s:X("Search","fF0000","302028","underline","Red","")
 
 call s:X("Directory","dad085","","","","")
 call s:X("ErrorMsg","","902020","","","")
