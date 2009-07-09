@@ -53,3 +53,6 @@ command! PyLint call PythonGrep('pylint')
 "autocmd BufWrite *.{py} :Pyflakes
 autocmd BufWrite *.{py} :Pychecker
 "autocmd BufWrite *.{py} :Pylint
+
+map <F5> <ESC>:w<CR>:PyFlakes<CR>
+
