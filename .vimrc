@@ -245,8 +245,8 @@ set comments+=n::
 "au BufNewFile,BufRead *.blog set filetype=blog
 
 
-
-au FileType htmlcheetah,cheetah set syntax=cheetah 
+"au FileType htmlcheetah setlocal syntax=cheetah 
+"au BufNewFile,BufRead *.tmpl setlocal filetype=cheetah
 
 " Use errorformat for parsing sql error output
 "au FileType sql set errorformat=on\ line\ %l:%m
@@ -569,7 +569,8 @@ vnoremap (  <ESC>`>a)<ESC>`<i(<ESC>
 vnoremap )  <ESC>`>a)<ESC>`<i(<ESC>
 vnoremap {  <ESC>`>a}<ESC>`<i{<ESC>
 vnoremap }  <ESC>`>a}<ESC>`<i{<ESC>
-vnoremap "  <ESC>`>a"<ESC>`<i"<ESC>
+" If allow " here, it messes up register selection
+"vnoremap "  <ESC>`>a"<ESC>`<i"<ESC>
 vnoremap '  <ESC>`>a'<ESC>`<i'<ESC>
 vnoremap `  <ESC>`>a`<ESC>`<i`<ESC>
 vnoremap [  <ESC>`>a]<ESC>`<i[<ESC>
