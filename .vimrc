@@ -69,7 +69,8 @@ map <C-V>127 <C-H>
 "set autowrite
 set autowriteall
 set	autoread
-set ruler
+" We use a custom statusline instead of ruler
+"set ruler
 " Change buffer without saving
 "set hid
 
@@ -117,15 +118,11 @@ set wildmode=list:longest
 set timeoutlen=300
 
 " Set up the status line
-"fun! <SID>SetStatusLine()
-    "let l:s1="%-3.3n\\ %f\\ %h%m%r%w"
-    "let
-    "l:s2="[%{strlen(&filetype)?&filetype:'?'},%{&encoding},%{&fileformat}]"
-    "let l:s3="%=\\ 0x%-8B\\ \\ %-14.(%l,%c%V%)\\ %<%P"
-    "execute "set statusline=" . l:s1 . l:s2 . l:s3
-"endfun
-"set laststatus=2
-"call <SID>SetStatusLine()
+"set statusline=%r%m%y\ %t\ b:%n\ %P\ %l,%v
+" Like setting ruler, but we add the buffer number and filetype
+"set statusline=%<%y\ %f\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+set laststatus=2
 
 
 source /usr/share/vim/vim72/macros/shellmenu.vim
@@ -329,10 +326,10 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 "nmap <silent> <leader><leader> [{V%zf
 
 " display fold info on the side
-set foldcolumn=2
+"set foldcolumn=2
+"set foldenable
 " Don't display fold info on the side
 "set foldcolumn=0
-set foldenable
 
 " Automaticly save and load views
 autocmd BufWinLeave * if expand("%") != "" | mkview | endif
@@ -485,7 +482,6 @@ endfunction
 cabbr jslint Shell jslint %
 " Type make to run JSLINT and jump to error
 au FileType js,javascript setlocal makeprg=jslint\ %
-"au BufEnter *.js setlocal makeprg=jslint\ %
 " Use errorformat for parsing JSLINT error output
 "Problem at line 13 character 26: ['length'] is better written in dot notation.    var num_rows = spec[ 'length' ];
 au FileType js,javascript setlocal errorformat=Problem\ at\ line\ %l\ character\ %c:\ %m 
