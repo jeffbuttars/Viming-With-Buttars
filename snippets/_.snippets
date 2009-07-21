@@ -1,8 +1,24 @@
 # Global snippets
 
 # (c) holds no legal value ;)
-snippet c)
-	`&enc[:2] == "utf" ? "©" : "(c)"` Copyright `strftime("%Y")` ${1:CradlePoint Inc.}. All Rights Reserved.${2}
+snippet c) Standard copyright with defualt
+	`expand("%:t")`	
+	`&enc[:2] == "utf" ? "©" : "(c)"` Copyright `strftime("%Y")` ${1:Jeff Buttars}. All Rights Reserved.${2}
+snippet cpc) CP copyright
+	`expand("%:t")`	
+
+	`&enc[:2] == "utf" ? "©" : "(c)"` Copyright  2007-`strftime("%Y")` Cradlepoint, Inc. <www.cradlepoint.com>.  All rights reserved.
+
+	This file contains confidential information of Cradlepoint, Inc. and your use of
+	this file is subject to the Cradlepoint Software License Agreement distributed with
+	this file. Unauthorized reproduction or distribution of this file is subject to civil and
+	criminal penalties.
+snippet cc) CP copyright change
+	Changes Copyright `&enc[:2] == "utf" ? "©" : "(c)"` `strftime("%Y")` CradlePoint, Inc. <www.cradlepoint.com>.
+		- ${1:List of changes}
+snippet vc) Velcoache copyright with defualt
+	`expand("%:t")`	
+	`&enc[:2] == "utf" ? "©" : "(c)"` Copyright `strftime("%Y")` ${1:Velocache}, Inc. <www.velcoache.net>. All Rights Reserved.${2}
 snippet date
 	`strftime("%Y-%m-%d")`
 snippet (
