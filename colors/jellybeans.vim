@@ -341,7 +341,11 @@ call s:X("NonText","808080","151515","","","")
 call s:X("SpecialKey","808080","343434","","","")
 
 "call s:X("Search","f0a0c0","302028","underline","Magenta","")
-call s:X("Search","fF0000","302028","underline","Red","")
+"call s:X("Search","fF0000","302028","underline","Red","")
+"No underline
+"call s:X("Search","fF0000","302028","","Red","")
+"No underline, grey bg, same bg as cursorline
+call s:X("Search","fF0000","2c2c2c","","Red","")
 
 call s:X("Directory","dad085","","","","")
 call s:X("ErrorMsg","","902020","","","")
