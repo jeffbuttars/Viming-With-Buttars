@@ -17,12 +17,6 @@ set backup		" keep a backup file
 set viminfo='20,\"500	" read/write a .viminfo file, don't store more
 			" than 50 lines of registers
 
-" Don't use Ex mode, use Q for formatting
-"map Q gq
-"map [ :bp<CR>
-"map ] :bn<CR>
-
-
 " wrap long lines
 set wrap
                                
@@ -30,20 +24,15 @@ set wrap
 set report=1 
 set hidden
 
-" Enclose a line in '//' comments using c, uncomment with C
-" Still need to smarten this up so will only comment uncommented lines
-" and uncomment commented lines.
-"map c		I//A
-"map C 		^xx$
-" 
 " comments default: sr:/*,mb:*,el:*/,://,b:#,:%,:XCOMM,n:>,fb:-
 set comments=b:#,:%,:\",fb:-,n:>,n:),n:\"
-"
+
 "A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
 " This will detect file types and use oneline comments accordingle. Cool
 " because you visually select regions and comment/uncomment the whole region.
 " works with marked regions to.
-source ~/.vim/comments.vim
+"source ~/.vim/comments.vim
+" don't need to source this, just put it in your plugin directory.
 
 " Format a paragraph (72 characters) without breaking words
 " map f		!}fmt 
@@ -57,8 +46,6 @@ map     ,L mz1G/Last update: */e+1<CR>D:r!date<CR>kJ
 " works only in non-gui mode for now
 map #sp :w<CR>:!ispell %<CR>:e %<CR> 
 
-"     dictionary: english words first
-set   dictionary=/usr/dict/words,/usr/dict/extra.words
 "
 
 " Define "del" char to be the same as backspace (saves a LOT of trouble!)
@@ -86,9 +73,31 @@ set	autoread
 "set expandtab
 "set softtabstop=4
 "set softtabstop=0
-set tabstop=4
-set shiftwidth=4
-set smarttab
+
+"Use real tabs, 4 spaces
+"set tabstop=4
+"set shiftwidth=4
+"set smarttab
+
+" Emacs like tabs? this guy says for.
+"http://smalltalk.gnu.org/blog/bonzinip/emacs-ifying-vims-autoindent
+set cinkeys=0{,0},0),0#,!<Tab>,;,:,o,O,e
+set indentkeys=!<Tab>,o,O
+map <Tab> i<Tab><Esc>^
+filetype indent on
+" C opts
+" Kernel style
+set cinoptions=:0,(0,u0,W1s
+" GNU style
+"set cinoptions={1s,>2s,e-1s,^-1s,n-1s,:1s,p5,i4,(0,u0,W1s shiftwidth=2
+
+"Not sure if this is needed:
+"Unfortunately, this is still not enough because some ill-behaved vim files reset indentkeys instead of adding to it. 
+"For this I used the following shell snippet:
+"for i in tcl gitconfig ruby html xml php rst css make dtd xinetd yacc; do
+"  echo 'setlocal indentkeys+=!<Tab>' > .vim/after/indent/$i
+"done
+
 
 " Fisher: More addons for myself and Buttars
 set cindent
@@ -124,11 +133,6 @@ set timeoutlen=300
 set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set laststatus=2
 
-
-source /usr/share/vim/vim72/macros/shellmenu.vim
-"let loaded_shellmenu = 1
-"source /usr/share/vim/vim72/macros/matchit.vim
-let loaded_matchit = 1
 
 set history=1000
 set hidden
@@ -314,12 +318,7 @@ set noerrorbells
 autocmd! bufwritepost .vimrc source ~/.vimrc
 
 " Enable auto html/xml tag closing with C^-(provided by closetag.vim) for certain file type.
-"let g:closetag_html_style=1
-"au Filetype html,xml,xsl,xhtml,htm,php,inc,js source ~/.vim/closetag.vim 
-"au Filetype html,xml,xsl,xhtml,htm so ~/.vim/plugin/XMLFolding.vim
-"Some auto tag filling stuff
-"au FileType html,xhtml, source ~/.vim/ftplugin/xml.vim
-"au FileType html,xhtml, source ~/.vim/ftplugin/html.vim
+au Filetype html,xml,xsl,xhtml,htm,php,inc,js source ~/.vim/scripts/closetag.vim 
 
 " Map the '\' to automically create a fold region within
 " the containing braced [ or curly braced { block.
@@ -335,14 +334,24 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 autocmd BufWinLeave * if expand("%") != "" | mkview | endif
 autocmd BufWinEnter * if expand("%") != "" | silent loadview | endif
 
+"I usually don't want this
+" Set this if you want to split views to scroll together
+" by default.
 "set scrollbind
 
+" For the large file plugin
 let g:LargeFile= 30	" in megabytes
 
 " Enable use of the mouse in a terminal
 set mouse=a
 
-" Enable english spell checking
+"     dictionary: english words first
+" add any text based dictionaries to the list.
+" Also, you can use C-X,C-K to autocomplete a word
+" using the dictionary.
+set dictionary=/usr/share/dict/words,/usr/dict/words,/usr/dict/extra.words
+
+" Enable english spell checking on text files.
 ":setlocal spell spelllang=en
 "autocmd FileType txt setlocal spell spelllang=en
 autocmd BufEnter *.txt,*.text setlocal spell spelllang=en
@@ -375,10 +384,12 @@ let OmniCpp_ShowPrototypeInAbbr = 1
 imap <c-y> <c-y><esc>
 
 " movment keys while in insert mode?
-imap <c-j> <Down>
-imap <c-h> <Left>
-imap <c-k> <Up>
-imap <c-l> <Right>
+" interferes with some stuff, be careful, this
+" may be bad for you
+"imap <c-j> <Down>
+"imap <c-h> <Left>
+"imap <c-k> <Up>
+"imap <c-l> <Right>
 
 
 
@@ -392,7 +403,9 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 "autocmd InsertLeave * if pumvisible() ==  pclose|endif
      
 " set background black when using gui.
-hi Normal guibg=black
+"hi Normal guibg=black
+
+" make a diff split vertical by default
 set diffopt=vertical
 
 " Keep this many lines above/below the cursor while scrolling.
@@ -415,10 +428,12 @@ function! VisualSearch(direction) range
   let @/ = l:pattern
   let @" = l:saved_reg
 endfunction
-"Basically you press * or # to search for the current selection !! Really useful
+
+"You press * or # to search for the current visual selection !! Really useful
 vnoremap <silent> * :call VisualSearch('f')<CR>
 vnoremap <silent> # :call VisualSearch('b')<CR>
 
+" Can't say I fully understand this setting.
 try
     set switchbuf=usetab
     set stal=2
@@ -431,14 +446,21 @@ endtry
 """"""""""""""""""""""""""""""
 " SVN section
 """""""""""""""""""""""""""""""
-map <F8> :new<CR>:read !svn diff<CR>:set syntax=diff buftype=nofile<CR>gg
+" Open an svn diff of the current file in a split
+"map <F8> :new<CR>:read !svn diff<CR>:set syntax=diff buftype=nofile<CR>gg
+" use the VCS plugin to view a vimdiff of the current file
+map <F8> :VCSVimDiff<CR>
 
+" Some kind of experiment?
 "autocmd InsertEnter * call setline( ".", "ha" ) 
 "autocmd InsertChange * call setline( ".", "ha" ) 
 
-au FileType c,cpp map <F5> <ESC>:make<cr>
+" map F5 to the make command
+"au FileType c,cpp map <F5> <ESC>:make<cr>
+map <F5> <ESC>:make<cr>
 
 set title
+
 "Vertical Explore open file
 let g:netrw_altv = 1
 
@@ -482,7 +504,7 @@ endfunction
 cabbr jslint Shell jslint %
 " Type make to run JSLINT and jump to error
 au FileType js,javascript setlocal makeprg=jslint\ %
-" Use errorformat for parsing JSLINT error output
+" Use errorformat for parsing JSLINT error output, example outoupt:
 "Problem at line 13 character 26: ['length'] is better written in dot notation.    var num_rows = spec[ 'length' ];
 au FileType js,javascript setlocal errorformat=Problem\ at\ line\ %l\ character\ %c:\ %m 
 
@@ -512,31 +534,23 @@ autocmd BufEnter *.php,*.inc,*.module setlocal makeprg=php\ -l\ %
 au FileType php setlocal errorformat=%m\ in\ %f\ on\ line\ %l
 
 " Allow a quick way back to traditional make when
-" makeprg is set to something non-makeish
+" makeprg is set to something non-makeish.
+" bad hack.
 cabbr mmake !make
-
-
 
 "Enable autotag.vim
 source ~/.vim/autotag.vim
 
 
-" Easy cycle through buffers using Alt+Left/Right
+" Easy cycle through buffers using Ctrl-PgUp/PgDown 
+" similar to FireFox
 nmap <C-PageDown> :bnext<CR>
 nmap <C-PageUp> :bprevious<CR>
-" Use Ctrl-l to cut to the buf browser
+
+" Use Ctrl-l to cut to the buf browser from bufexplorer plugin
 " Think l as in 'list the buffers'
 nmap <C-l> <ESC>\be
 imap <C-l> <ESC>\be
-
-" My own litter helper
-map ;; <END>;<ESC>:w<CR>
-imap ;; <END>;<ESC>:w<CR>
-
-
-
-
-
 " Bufexplorer options
  "let g:bufExplorerSortBy='extension'  " Sort by file extension.
  "let g:bufExplorerSortBy='fullpath'   " Sort by full file path name.
@@ -544,7 +558,19 @@ imap ;; <END>;<ESC>:w<CR>
  "let g:bufExplorerSortBy='name'       " Sort by the buffer's name.
  "let g:bufExplorerSortBy='number'     " Sort by the buffer's number.
 
+
+" My own little helpers
+map ;; <END>;<ESC>:w<CR>
+imap ;; <END>;<ESC>:w<CR>
+imap (( ()<Left>
+imap [[ []<Left>
+imap "" ""<Left>
+imap '' ''<Left>
+
+
 " This fucks up ctags
+" You can use isk 'is keyword' to change
+" how searching works.
 "set isk=@,48-57,192-255
 "set isk-=_
 
@@ -552,8 +578,8 @@ imap ;; <END>;<ESC>:w<CR>
 "set notagbsearch
 
 " Make the CWD directory follow the current buffer, may brake plugins
+" Not a big fan of this.
 "set autochdir
-
 
 "http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
 " The above URL also has good stuff for autoclosing matching pairs, like (). 
@@ -566,15 +592,17 @@ vnoremap )  <ESC>`>a)<ESC>`<i(<ESC>
 vnoremap {  <ESC>`>a}<ESC>`<i{<ESC>
 vnoremap }  <ESC>`>a}<ESC>`<i{<ESC>
 " If allow " here, it messes up register selection
+" So we use "" instead, and it works.
 "vnoremap "  <ESC>`>a"<ESC>`<i"<ESC>
+vnoremap ""  <ESC>`>a"<ESC>`<i"<ESC>
 vnoremap '  <ESC>`>a'<ESC>`<i'<ESC>
 vnoremap `  <ESC>`>a`<ESC>`<i`<ESC>
 vnoremap [  <ESC>`>a]<ESC>`<i[<ESC>
 vnoremap ]  <ESC>`>a]<ESC>`<i[<ESC>
 
 
-"People and places that I get stuff from
-"http://dancingpenguinsoflight.com/2009/02/code-navigation-completion-snippets-in-vim/
+"People and places that I've gotten stuff from
+"http://dancingpenguinsoflight".com"/2009/02/code-navigation-completion-snippets-in-vim/
 "http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/
 
 
