@@ -79,9 +79,9 @@ snippet do
 	} while (${1:/* condition */});
 # Object Method
 snippet :f
-	${1:method_name}: function(${2:attribute}) {
+	${1:method_name}: function(${2:args}) {
 		${4}
-	}${3:,}
+	}${3}
 # Var function 
 snippet vf
 	var ${1:func_name} = function(${2:args}) {
@@ -107,4 +107,6 @@ snippet v
 	var ${1} = ${2};
 snippet ({ 
 	({${1}})
+snippet cl 
+	console.log( ${1} );
 
