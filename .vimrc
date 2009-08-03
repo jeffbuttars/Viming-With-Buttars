@@ -383,6 +383,7 @@ let OmniCpp_MayCompleteScope = 1
 let OmniCpp_ShowPrototypeInAbbr = 1
 imap <c-y> <c-y><esc>
 
+
 " movment keys while in insert mode?
 " interferes with some stuff, be careful, this
 " may be bad for you
@@ -390,8 +391,6 @@ imap <c-y> <c-y><esc>
 "imap <c-h> <Left>
 "imap <c-k> <Up>
 "imap <c-l> <Right>
-
-
 
 " Auto close the preview window
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
@@ -560,8 +559,8 @@ imap <C-l> <ESC>\be
 
 
 " My own little helpers
-map ;; <END>;<ESC>:w<CR>
 imap ;; <END>;<ESC>:w<CR>
+map ;; <Insert><END>;<ESC>:w<CR>
 imap (( ()<Left>
 imap [[ []<Left>
 imap "" ""<Left>
