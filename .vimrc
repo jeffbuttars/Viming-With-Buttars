@@ -61,11 +61,6 @@ set	autoread
 " Change buffer without saving
 "set hid
 
-
-"
-
-
-
 "
 "-------------------------------------------------------------------------------
 "Have vim fake your tabs, or not
@@ -75,9 +70,9 @@ set	autoread
 "set softtabstop=0
 
 "Use real tabs, 4 spaces
-"set tabstop=4
-"set shiftwidth=4
-"set smarttab
+set tabstop=4
+set shiftwidth=4
+set smarttab
 
 " Emacs like tabs? this guy says for.
 "http://smalltalk.gnu.org/blog/bonzinip/emacs-ifying-vims-autoindent
@@ -102,10 +97,7 @@ set cinoptions=:0,(0,u0,W1s
 " Fisher: More addons for myself and Buttars
 set cindent
 set cino=>4
-
-
 set mousehide
-
 set showmode
 "     backup:  backups are for wimps  ;-)
 set nobackup
@@ -180,7 +172,6 @@ hi Normal guibg=black
 "hi PmenuSel guibg=#0000ff guifg=#ffffff
 "hi PmenuSel ctermbg=red ctermfg=white
 
-
 set nocp
 filetype plugin on
 filetype indent on
@@ -205,6 +196,7 @@ endif
 
 
 
+" TagList Plugin
 " Set taglist plugin options
 " Display function name in status bar:
 let g:ctags_statusline=1
@@ -227,16 +219,43 @@ let Tlist_Inc_Winwidth = 1
 " Close Tlist when jumping to tag
 let Tlist_Close_On_Select = 1
 
-" Set bracket matching and comment formats
-set matchpairs+=<:>
-set comments-=s1:/*,mb:*,ex:*/
-set comments+=s:/*,mb:**,ex:*/
-set comments+=fb:*
-set comments+=b:\"
-set comments+=n::
+"MRU Plugin
+" Display the Most recently used file list
+map <F1> :MRU<CR>
+imap <F1> <ESC>:MRU<CR>
 
-"iab DATE <C-R>=strftime("%B %d, %Y (%A, %H:%M)")<CR>
- 
+"let MRU_Max_Entries = 25 
+"let MRU_Exclude_Files = '^/tmp/.*\|^/var/tmp/.*'  " For Unix
+"let MRU_Window_Height = 30 
+
+"by default, when the :MRU command is invoked, the MRU list will be displayed
+"in a new window. Instead, if you want the MRU plugin to reuse the current
+"window, then you can set the 'MRU_Use_Current_Window' variable to one.
+"let MRU_Use_Current_Window = 1
+
+"The MRU plugin will reuse the current window. When a file name is selected,
+"the file is also opened in the current window.
+"When you select a file from the MRU window, the MRU window will be
+"automatically closed and the selected file will be opened in the previous
+"window. You can set the 'MRU_Auto_Close' variable to zero to keep the MRU
+"window open.
+"let MRU_Auto_Close = 0
+
+"If you don't use the 'File->Recent Files' menu and want to disable it,
+"then you can set the 'MRU_Add_Menu' variable to zero. By default, the
+"menu is enabled.
+"let MRU_Add_Menu = 0 
+
+noremap <c-u> <ESC>:TRecentlyUsedFiles<cr>
+
+" Set bracket matching and comment formats
+"set matchpairs+=<:>
+"set comments-=s1:/*,mb:*,ex:*/
+"set comments+=s:/*,mb:**,ex:*/
+"set comments+=fb:*
+"set comments+=b:\"
+"set comments+=n::
+
 " Fix filetype detection
 "au BufNewFile,BufRead .torsmorc* set filetype=rc
 "au BufNewFile,BufRead *.inc set filetype=php
@@ -252,9 +271,8 @@ set comments+=n::
 " Use errorformat for parsing sql error output
 "au FileType sql set errorformat=on\ line\ %l:%m
 
+" Experimental stuff, I don't think I use this anymore.
 source ~/.vim/plugin/mypy.vim
-
-
 
 " Compile and run keymappings
 "au FileType c,cpp map <F5> :!./%:r<CR>
@@ -538,7 +556,7 @@ au FileType php setlocal errorformat=%m\ in\ %f\ on\ line\ %l
 cabbr mmake !make
 
 "Enable autotag.vim
-source ~/.vim/autotag.vim
+source ~/.vim/scripts/autotag.vim
 
 
 " Easy cycle through buffers using Ctrl-PgUp/PgDown 

@@ -129,7 +129,7 @@ function! CommentLine()
     execute ":silent! normal ^i#\<ESC>\<down>^"
     " LUA
   elseif file_name =~ '\.lua$'
-    execute ":silent! normal ^i--\<ESC>\<down>^"
+    execute ":silent! normal ^i--\<SPACE>\<ESC>\<down>^"
   " for all other files use # 
   else
     execute ":silent! normal ^i#\<ESC>\<down>^"
@@ -160,7 +160,7 @@ function! UnCommentLine()
     execute ":silent! normal :nohlsearch\<CR>:s/\\#//\<CR>:nohlsearch\<CR>"
     " LUA
   elseif file_name =~ '\.lua$'
-    execute ":silent! normal :nohlsearch\<CR>:s/\\--//\<CR>:nohlsearch\<CR>"
+    execute ":silent! normal :nohlsearch\<CR>:s/\\--\<SPACE>//\<CR>:nohlsearch\<CR>"
   " for .xml .html .xhtml .htm use <!-- -->
   elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
     execute ":silent! normal :nohlsearch\<CR>:s/<!--//\<CR>=="
@@ -207,7 +207,7 @@ function! RangeCommentLine()
     endif
 
   " for .tmpl files use ##
-  elseif file_name =~ '\.tmpl$' || file_name =~ '\.vimrc$'
+  elseif file_name =~ '\.tmpl$'
     execute ":silent! normal :s/\\S/\\\#\#\\0/\<CR>:nohlsearch<CR>"
   " for .vim files use "
   elseif file_name =~ '\.vim$' || file_name =~ '\.vimrc$'
@@ -219,7 +219,7 @@ function! RangeCommentLine()
   elseif file_name =~ '\.[kc]\?sh$' || file_name =~ '\.pl$' || file_name =~ '\.pm$'
     execute ":silent! normal :s/\\S/\\#\\0/\<CR>:nohlsearch<CR>"
   elseif file_name =~ '\.lua$'
-    execute ":silent! normal :s/\\S/\\--\\0/\<CR>:nohlsearch<CR>"
+    execute ":silent! normal :s/\\S/\\--\<SPACE>\\0/\<CR>:nohlsearch<CR>"
   " for all other files use #  
   else
     execute ":silent! normal :s/\\S/\\#\\0/\<CR>:nohlsearch<CR>"
@@ -250,7 +250,7 @@ function! RangeUnCommentLine()
     execute ":silent! normal :s/\\#//\<CR>:nohlsearch\<CR>"
     " LUA files
   elseif file_name =~ '\.lua$'
-    execute ":silent! normal :s/\\--//\<CR>:nohlsearch\<CR>"
+    execute ":silent! normal :s/\\--\<SPACE>//\<CR>:nohlsearch\<CR>"
     " Cheetah files
   elseif file_name =~ '\.tmpl$'
     execute ":silent! normal :s/\\##//\<CR>:nohlsearch\<CR>"
