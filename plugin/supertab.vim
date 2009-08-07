@@ -2,7 +2,7 @@
 "   Original: Gergely Kontra <kgergely@mcl.hu>
 "   Current:  Eric Van Dewoestine <ervandew@gmail.com> (as of version 0.4)
 "   Please direct all correspondence to Eric.
-" Version: 0.49
+" Version: 0.51
 "
 " Description: {{{
 "   Use your tab key to do all your completion in insert mode!
@@ -54,6 +54,10 @@
 "     $ vim -u NONE -U NONE -c "set nocp | runtime plugin/supertab.vim"
 " }}}
 
+if v:version < 700
+  finish
+endif
+
 if exists('complType') " Integration with other completion functions.
   finish
 endif
@@ -79,18 +83,14 @@ endif
   " When using context completion, super tab will fall back to a secondary
   " default completion type set by g:SuperTabContextDefaultCompletionType.
   if !exists("g:SuperTabDefaultCompletionType")
-    "let g:SuperTabDefaultCompletionType = "<c-p>"
-    let g:SuperTabDefaultCompletionType = "<c-n>"
-    "let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+    let g:SuperTabDefaultCompletionType = "<c-p>"
   endif
 
   " Sets the default completion type used when g:SuperTabDefaultCompletionType
   " is set to 'context' and the text preceding the cursor does not match any
   " patterns mapped to other specific completion types.
   if !exists("g:SuperTabContextDefaultCompletionType")
-    "let g:SuperTabContextDefaultCompletionType = "<c-p>"
-    let g:SuperTabContextDefaultCompletionType = "<c-n>"
-    "let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+    let g:SuperTabContextDefaultCompletionType = "<c-p>"
   endif
 
   " When 'context' completion is enabled, this setting can be used to fallback
@@ -168,8 +168,9 @@ endif
   " the console.  So if you are using a console vim and want this
   " functionality, you'll have to change it to something that is supported.
   if !exists("g:SuperTabMappingTabLiteral")
-    let g:SuperTabMappingTabLiteral = '<c-tab>'
-  endif
+    "let g:SuperTabMappingTabLiteral = '<c-tab>'
+    let g:SuperTabMappingTabLiteral = '<s-tab>'
+endif
 
   " Sets whether or not to pre-highlight first match when completeopt has
   " the popup menu enabled and the 'longest' option as well.
@@ -198,22 +199,16 @@ endif
     \ "|<c-x><c-]>| - Tags.\n" .
     \ "|<c-x><c-f>| - File names.\n" .
     \ "|<c-x><c-d>| - Definitions or macros.\n" .
-    \ "|<c-x><c-v>| - Vim command-line."
-  if v:version >= 700
-    let s:tabHelp = s:tabHelp . "\n" .
-      \ "|<c-x><c-u>| - User defined completion.\n" .
-      \ "|<c-x><c-o>| - Omni completion.\n" .
-      \ "|<c-x>s|     - Spelling suggestions."
-  endif
+    \ "|<c-x><c-v>| - Vim command-line.\n" .
+    \ "|<c-x><c-u>| - User defined completion.\n" .
+    \ "|<c-x><c-o>| - Omni completion.\n" .
+    \ "|<c-x>s|     - Spelling suggestions."
 
   " set the available completion types and modes.
   let s:types =
-    \ "\<c-e>\<c-y>\<c-l>\<c-n>\<c-k>\<c-t>\<c-i>\<c-]>\<c-f>\<c-d>\<c-v>\<c-n>\<c-p>"
-  let s:modes = '/^E/^Y/^L/^N/^K/^T/^I/^]/^F/^D/^V/^P'
-  if v:version >= 700
-    let s:types = s:types . "\<c-u>\<c-o>\<c-n>\<c-p>s"
-    let s:modes = s:modes . '/^U/^O/s'
-  endif
+    \ "\<c-e>\<c-y>\<c-l>\<c-n>\<c-k>\<c-t>\<c-i>\<c-]>" .
+    \ "\<c-f>\<c-d>\<c-v>\<c-n>\<c-p>\<c-u>\<c-o>\<c-n>\<c-p>s"
+  let s:modes = '/^E/^Y/^L/^N/^K/^T/^I/^]/^F/^D/^V/^P/^U/^O/s'
   let s:types = s:types . "np"
   let s:modes = s:modes . '/n/p'
 
@@ -221,7 +216,7 @@ endif
 
 " CtrlXPP() {{{
 " Handles entrance into completion mode.
-function! CtrlXPP ()
+function! CtrlXPP()
   if &smd
     echo '' | echo '-- ^X++ mode (' . s:modes . ')'
   endif
@@ -259,13 +254,13 @@ endfunction " }}}
 " of that type or use SuperTabHelp.
 " Example mapping to restore SuperTab default:
 "   nmap <F6> :call SetSuperTabCompletionType("<c-p>")<cr>
-function! SuperTabSetCompletionType (type)
+function! SuperTabSetCompletionType(type)
   exec "let b:complType = \"" . escape(a:type, '<') . "\""
 endfunction " }}}
 
 " s:Init {{{
 " Global initilization when supertab is loaded.
-function! s:Init ()
+function! s:Init()
   augroup supertab_init
     autocmd!
     autocmd BufEnter * call <SID>InitBuffer()
@@ -281,23 +276,16 @@ function! s:Init ()
   " Setup mechanism to restore orignial completion type upon leaving insert
   " mode if g:SuperTabRetainCompletionType == 2
   if g:SuperTabRetainCompletionType == 2
-    " pre vim 7, must map <esc>
-    if v:version < 700
-      imap <silent> <ESC> <ESC>:call s:SetDefaultCompletionType()<cr>
-
-    " since vim 7, we can use InsertLeave autocmd.
-    else
-      augroup supertab_retain
-        autocmd!
-        autocmd InsertLeave * call s:SetDefaultCompletionType()
-      augroup END
-    endif
+    augroup supertab_retain
+      autocmd!
+      autocmd InsertLeave * call s:SetDefaultCompletionType()
+    augroup END
   endif
 endfunction " }}}
 
 " s:InitBuffer {{{
 " Per buffer initilization.
-function! s:InitBuffer ()
+function! s:InitBuffer()
   if exists("b:complType")
     return
   endif
@@ -335,72 +323,10 @@ function! s:InitBuffer ()
   call SuperTabSetCompletionType(b:SuperTabDefaultCompletionType)
 endfunction " }}}
 
-" s:IsWordChar(char) {{{
-" Determines if the supplied character is a word character or matches value
-" defined by 'iskeyword'.
-function! s:IsWordChar (char)
-  if a:char =~ '\w'
-    return 1
-  endif
-
-  " check against 'iskeyword'
-  let values = &iskeyword
-  let index = stridx(values, ',')
-  while index > 0 || values != ''
-    if index > 0
-      let value = strpart(values, 0, index)
-      let values = strpart(values, index + 1)
-    else
-      let value = values
-      let values = ''
-    endif
-
-    " exception case for '^,'
-    if value == '^'
-      let value = '^,'
-
-    " execption case for ','
-    elseif value =~ '^,,'
-      let values .= strpart(value, 2)
-      let value = ','
-
-    " execption case after a ^,
-    elseif value =~ '^,'
-      let value = strpart(value, 1)
-    endif
-
-    " keyword values in an ascii number range
-    if value =~ '[0-9]\+-[0-9]\+'
-      let charnum = char2nr(a:char)
-      exec 'let start = ' . substitute(value, '\([0-9]\+\)-.*', '\1', '')
-      exec 'let end = ' . substitute(value, '.*-\([0-9]\+\)', '\1', '')
-
-      if charnum >= start && charnum <= end
-        return 1
-      endif
-
-    " keyword value is a set of include or exclude characters
-    else
-      let include = 1
-      if value =~ '^\^'
-        let value = strpart(value, 1)
-        let include = 0
-      endif
-
-      if a:char =~ '[' . escape(value, '[]') . ']'
-        return include
-      endif
-    endif
-    let index = stridx(values, ',')
-  endwhile
-
-  return 0
-endfunction " }}}
-
 " s:SetCompletionType() {{{
 " Sets the completion type based on what the user has chosen from the help
 " buffer.
-function! s:SetCompletionType ()
+function! s:SetCompletionType()
   let chosen = substitute(getline('.'), '.*|\(.*\)|.*', '\1', '')
   if chosen != getline('.')
     let winnr = b:winnr
@@ -411,7 +337,7 @@ function! s:SetCompletionType ()
 endfunction " }}}
 
 " s:SetDefaultCompletionType() {{{
-function! s:SetDefaultCompletionType ()
+function! s:SetDefaultCompletionType()
   if exists('b:SuperTabDefaultCompletionType') && !b:complCommandLine
     call SuperTabSetCompletionType(b:SuperTabDefaultCompletionType)
   endif
@@ -421,7 +347,7 @@ endfunction " }}}
 " Used to perform proper cycle navigation as the user requests the next or
 " previous entry in a completion list, and determines whether or not to simply
 " retain the normal usage of <tab> based on the cursor position.
-function! s:SuperTab (command)
+function! s:SuperTab(command)
   if s:WillComplete()
     " rare case where no autocmds have fired for this buffer to initialize the
     " supertab vars.
@@ -476,7 +402,7 @@ endfunction " }}}
 
 " s:SuperTabHelp() {{{
 " Opens a help window where the user can choose a completion type to enter.
-function! s:SuperTabHelp ()
+function! s:SuperTabHelp()
   let winnr = winnr()
   if bufwinnr("SuperTabHelp") == -1
     botright split SuperTabHelp
@@ -509,7 +435,7 @@ endfunction " }}}
 
 " s:WillComplete() {{{
 " Determines if completion should be kicked off at the current location.
-function! s:WillComplete ()
+function! s:WillComplete()
   let line = getline('.')
   let cnum = col('.')
 
@@ -521,12 +447,12 @@ function! s:WillComplete ()
 
   " Within a word, but user does not have mid word completion enabled.
   let next_char = strpart(line, cnum - 1, 1)
-  if !g:SuperTabMidWordCompletion && s:IsWordChar(next_char)
+  if !g:SuperTabMidWordCompletion && next_char =~ '\k'
     return 0
   endif
 
   " In keyword completion mode and no preceding word characters.
-  "if (b:complType == "\<c-n>" || b:complType == "\<c-p>") && !s:IsWordChar(prev_char)
+  "if (b:complType == "\<c-n>" || b:complType == "\<c-p>") && prev_char !~ '\k'
   "  return 0
   "endif
 

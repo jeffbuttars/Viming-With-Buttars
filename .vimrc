@@ -584,6 +584,16 @@ imap [[ []<Left>
 imap "" ""<Left>
 imap '' ''<Left>
 
+"Supertabe settings.
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabDefaultCompletionTypeDiscovery = [
+	 \ "&omnifunc:<c-x><c-o>",
+	 \ "&completefunc:<c-x><c-u>",
+	 \ "&omnifunc:<c-x><c-k>",
+	\ ]
+let g:SuperTabMappingTabLiteral = '<s-tab>'
+
+
 
 " This fucks up ctags
 " You can use isk 'is keyword' to change
