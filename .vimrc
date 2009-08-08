@@ -568,6 +568,10 @@ nmap <C-PageUp> :bprevious<CR>
 " Think l as in 'list the buffers'
 nmap <C-l> <ESC>\be
 imap <C-l> <ESC>\be
+" Use Ctrl-d to open/close the NERDTree.
+nmap <C-d> <ESC>:NERDTreeToggle<CR>
+imap <C-d> <ESC>:NERDTreeToggle<CR>
+
 " Bufexplorer options
  "let g:bufExplorerSortBy='extension'  " Sort by file extension.
  "let g:bufExplorerSortBy='fullpath'   " Sort by full file path name.
