@@ -3,12 +3,12 @@ snippet proto
 	${1:class_name}.prototype.${2:method_name} =
 	function(${3:first_argument}) {
 		${4:// body...}
-	};
+	};//$1()
 # Function
 snippet fun
 	function ${1:function_name} (${2:argument}) {
 		${3:// body...}
-	}
+	}//$1()
 # Anonymous Function
 snippet f
 	function(${1}) {${2}};
@@ -86,7 +86,7 @@ snippet :f
 snippet vf
 	var ${1:func_name} = function(${2:args}) {
 		${3}
-	};
+	};//$1()
 # Anonymouse function 
 snippet afun
 	function(${1:args}) {${2}}
@@ -113,7 +113,7 @@ snippet cl
 snippet $
 	$(${1})${2}
 snippet attr
-	.attr( ${1}, ${2} )${3}
+	.attr( ${1}${2:, } )${3}
 snippet rattr
 	.removeAttr( ${1} )${2}
 snippet val 
