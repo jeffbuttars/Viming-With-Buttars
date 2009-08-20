@@ -103,6 +103,7 @@ set showmode
 set nobackup
 " Show matching braces
 set showmatch 
+set mat=5
 set showcmd
 set modeline
 "set splitbelow
@@ -214,10 +215,25 @@ let Tlist_Exit_OnlyWindow = 1
 let Tlist_Enable_Fold_Column = 0
 let Tlist_Compact_Format = 1
 let Tlist_File_Fold_Auto_Close = 1
-let Tlist_Winwidth = 40
-let Tlist_Inc_Winwidth = 1
+
+"If you are running a terminal/console version of Vim and the terminal
+"doesn't support changing the window width then set the
+"'Tlist_Inc_Winwidth' variable to 0 in the .vimrc file.
+"let Tlist_Inc_Winwidth = 0
+
+"Tlist_WinWidth~
+"The default width of the vertically split taglist window is 30. This can be
+"changed by modifying the 'Tlist_WinWidth' variable:
+let Tlist_WinWidth = 60
+
 " Close Tlist when jumping to tag
 let Tlist_Close_On_Select = 1
+"Tlist_Display_Prototype~
+"By default, only the tag name will be displayed in the taglist window. If you
+"like to see tag prototypes instead of names, set the 'Tlist_Display_Prototype'
+"variable to 1. By default, this variable is set to zero and only tag names
+"will be displayed.
+let Tlist_Display_Prototype = 1
 
 "MRU Plugin
 " Display the Most recently used file list
@@ -242,19 +258,11 @@ imap <F1> <ESC>:MRU<CR>
 "let MRU_Auto_Close = 0
 
 "If you don't use the 'File->Recent Files' menu and want to disable it,
-"then you can set the 'MRU_Add_Menu' variable to zero. By default, the
+"then you can set the 'MRU_Add_Menu' variable to zero. By default, the;
 "menu is enabled.
 "let MRU_Add_Menu = 0 
 
 noremap <c-u> <ESC>:TRecentlyUsedFiles<cr>
-
-" Set bracket matching and comment formats
-"set matchpairs+=<:>
-"set comments-=s1:/*,mb:*,ex:*/
-"set comments+=s:/*,mb:**,ex:*/
-"set comments+=fb:*
-"set comments+=b:\"
-"set comments+=n::
 
 " Fix filetype detection
 "au BufNewFile,BufRead .torsmorc* set filetype=rc
@@ -401,6 +409,17 @@ let OmniCpp_MayCompleteScope = 1
 let OmniCpp_ShowPrototypeInAbbr = 1
 imap <c-y> <c-y><esc>
 
+"Supertab settings.
+"let g:SuperTabDefaultCompletionType = "context"
+"let g:SuperTabDefaultCompletionTypeDiscovery = [
+	 "\ "&omnifunc:<c-x><c-o>",
+	 "\ "&completefunc:<c-x><c-u>",
+	 "\ "&omnifunc:<c-x><c-k>",
+	"\ ]
+"let g:SuperTabMappingTabLiteral = '<s-tab>'
+"let g:SuperTabMappingForward = '<c-o>'
+
+
 
 " movment keys while in insert mode?
 " interferes with some stuff, be careful, this
@@ -496,34 +515,39 @@ let g:netrw_altv = 1
 
 "inoremap <Tab> <C-R>=MyTabOrComplete()<CR>
 
-command! -complete=shellcmd -nargs=+ Shell call s:RunShellCommand(<q-args>)
-function! s:RunShellCommand(cmdline)
-	echo a:cmdline
-	let expanded_cmdline = a:cmdline
-	for part in split(a:cmdline, ' ')
-		if part[0] =~ '\v[%#<]'
-			let expanded_part = fnameescape(expand(part))
-			let expanded_cmdline = substitute(expanded_cmdline, part, expanded_part, '')
-		endif
-	endfor
-	botright new
-	setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap
-	call setline(1, 'You entered:    ' . a:cmdline)
-	call setline(2, 'Expanded Form:  ' .expanded_cmdline)
-	call setline(3,substitute(getline(2),'.','=','g'))
-	execute '$read !'. expanded_cmdline
-	setlocal nomodifiable
-	1
-endfunction
+"command! -complete=shellcmd -nargs=+ Shell call s:RunShellCommand(<q-args>)
+"function! s:RunShellCommand(cmdline)
+	"echo a:cmdline
+	"let expanded_cmdline = a:cmdline
+	"for part in split(a:cmdline, ' ')
+		"if part[0] =~ '\v[%#<]'
+			"let expanded_part = fnameescape(expand(part))
+			"let expanded_cmdline = substitute(expanded_cmdline, part, expanded_part, '')
+		"endif
+	"endfor
+	"botright new
+	"setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap
+	"call setline(1, 'You entered:    ' . a:cmdline)
+	"call setline(2, 'Expanded Form:  ' .expanded_cmdline)
+	"call setline(3,substitute(getline(2),'.','=','g'))
+	"execute '$read !'. expanded_cmdline
+	"setlocal nomodifiable
+	"1
+"endfunction
 " Enable running a file through JSLint and putting output in a scratch buffer
 "cabbr js read !js ~/bin/runjslint.js "`cat %`" \| ~/bin/format_lint_output.py
 "cabbr js Shell js ~/bin/runjslint.js "`cat %`" \| ~/bin/format_lint_output.py
-cabbr jslint Shell jslint %
+
+"cabbr jslint Shell jslint %
 " Type make to run JSLINT and jump to error
-au FileType js,javascript setlocal makeprg=jslint\ %
+"au FileType js,javascript setlocal makeprg=jslint\ %
 " Use errorformat for parsing JSLINT error output, example outoupt:
 "Problem at line 13 character 26: ['length'] is better written in dot notation.    var num_rows = spec[ 'length' ];
-au FileType js,javascript setlocal errorformat=Problem\ at\ line\ %l\ character\ %c:\ %m 
+"au FileType js,javascript setlocal errorformat=Problem\ at\ line\ %l\ character\ %c:\ %m 
+" Now use the JSLint.vim plugin
+let g:JSLintHighlightErrorLine = 0
+au FileType javascript map <F5> <ESC>:JSLint<CR>
+au FileType javascript imap <F5> <ESC>:JSLint<CR>
 
 
 " Run pychecker on current file
@@ -553,7 +577,7 @@ au FileType php setlocal errorformat=%m\ in\ %f\ on\ line\ %l
 " Allow a quick way back to traditional make when
 " makeprg is set to something non-makeish.
 " bad hack.
-cabbr mmake !make
+cabbr Make !make
 
 "Enable autotag.vim
 source ~/.vim/scripts/autotag.vim
@@ -564,13 +588,11 @@ source ~/.vim/scripts/autotag.vim
 nmap <C-PageDown> :bnext<CR>
 nmap <C-PageUp> :bprevious<CR>
 
-" Use Ctrl-l to cut to the buf browser from bufexplorer plugin
-" Think l as in 'list the buffers'
-nmap <C-l> <ESC>\be
-imap <C-l> <ESC>\be
 " Use Ctrl-d to open/close the NERDTree.
 nmap <C-d> <ESC>:NERDTreeToggle<CR>
 imap <C-d> <ESC>:NERDTreeToggle<CR>
+let NERDChristmasTree=1
+let NERDTreeQuitOnOpen=1
 
 " Bufexplorer options
  "let g:bufExplorerSortBy='extension'  " Sort by file extension.
@@ -578,24 +600,22 @@ imap <C-d> <ESC>:NERDTreeToggle<CR>
  "let g:bufExplorerSortBy='mru'        " Sort by most recently used.
  "let g:bufExplorerSortBy='name'       " Sort by the buffer's name.
  "let g:bufExplorerSortBy='number'     " Sort by the buffer's number.
+" Use Ctrl-l to cut to the buf browser from bufexplorer plugin
+" Think l as in 'list the buffers'
+nmap <C-l> <ESC>\bs
+imap <C-l> <ESC>\bs
 
 
 " My own little helpers
-imap ;; <END>;<ESC>:w<CR>
-map ;; <Insert><END>;<ESC>:w<CR>
+" remove trailing whitespace, put a ; on the end of the line and write the
+" buffer.
+imap ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:nohl<CR>:<ESC>
+map ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:nohl<CR>:<ESC>
+
 imap (( ()<Left>
 imap [[ []<Left>
 imap "" ""<Left>
 imap '' ''<Left>
-
-"Supertabe settings.
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabDefaultCompletionTypeDiscovery = [
-	 \ "&omnifunc:<c-x><c-o>",
-	 \ "&completefunc:<c-x><c-u>",
-	 \ "&omnifunc:<c-x><c-k>",
-	\ ]
-let g:SuperTabMappingTabLiteral = '<s-tab>'
 
 
 
