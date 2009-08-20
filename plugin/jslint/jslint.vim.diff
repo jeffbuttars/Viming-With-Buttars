@@ -1,0 +1,29 @@
+--- jslint.vim.orig	2009-08-20 11:09:57.935873662 -0600
++++ jslint.vim	2009-08-20 11:03:16.734875646 -0600
+@@ -1,3 +1,15 @@
++
++" Global Options
++"
++" Enable/Disable highlighting of errors in source.
++" Default is Enable
++" To disable the highlighting put the line
++" let g:JSLintHighlightErrorLine = 0 
++" in your .vimrc
++if !exists("g:JSLintHighlightErrorLine")
++	let g:JSLintHighlightErrorLine = 1 
++endif
++
+ function! s:JSLint(args) range
+   cclose " Close quickfix window
+   cexpr [] " Create empty quickfix list
+@@ -46,7 +58,9 @@
+       let b:has_errors = 1
+       let l:line = b:parts[1] + (b:firstline - 1) " Get line relative to selection
+       " Add line to match list
+-      call add(b:errors, matchadd('Error', '\%' . l:line . 'l'))
++	  if g:JSLintHighlightErrorLine == 1
++		  call add(b:errors, matchadd('Error', '\%' . l:line . 'l'))
++	  endif
+ 
+       " Store the error for an error under the cursor
+       if l:line == line('.')
