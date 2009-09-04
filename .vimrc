@@ -163,6 +163,21 @@ vnoremap <silent> # :call VisualSearch('b')<CR>
 " make a diff split vertical by default
 set diffopt=vertical
 
+"Use real tabs, 4 spaces
+set tabstop=4
+set shiftwidth=4
+set smarttab
+
+" Show matching braces
+set showmatch 
+" Quick blink when a match is made
+set mat=5
+
+
+" C opts
+" Kernel style
+"set cinoptions=:0,(0,u0,W1s
+
 " Keep this many lines above/below the cursor while scrolling.
 "set scrolloff=5
 set so=3
