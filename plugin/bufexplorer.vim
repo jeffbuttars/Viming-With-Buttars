@@ -310,6 +310,7 @@ function s:MapKeys()
   nnoremap <buffer> <silent> m             :call <SID>MRUListShow()<cr>
   nnoremap <buffer> <silent> p             :call <SID>ToggleSplitOutPathName()<cr>
   nnoremap <buffer> <silent> q             :call <SID>Close()<cr>
+  nnoremap <buffer> <silent> <Esc>         :call <SID>Close()<cr>
   nnoremap <buffer> <silent> r             :call <SID>SortReverse()<cr>
   nnoremap <buffer> <silent> R             :call <SID>ToggleShowRelativePath()<cr>
   nnoremap <buffer> <silent> s             :call <SID>SortSelect()<cr>

@@ -108,7 +108,14 @@ set showcmd
 set modeline
 "set splitbelow
 "set splitright
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Some wordwrapp foo from
+"http://kmandla.wordpress.com/2009/07/27/proper-word-wrapping-in-vim/
 set formatoptions+=l
+set lbr
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 set selection=inclusive
 set shortmess=atI
 set wildmenu
@@ -120,8 +127,7 @@ set wildmode=list:longest
 set timeoutlen=300
 
 " Set up the status line
-"set statusline=%r%m%y\ %t\ b:%n\ %P\ %l,%v
-" Like setting ruler, but we add the buffer number and filetype
+" Like setting ruler, but we add the buffer number and filetype to the status
 "set statusline=%<%y\ %f\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set laststatus=2
@@ -132,7 +138,7 @@ set hidden
 nnoremap ' `
 nnoremap ` '
 
-" smart indent
+" Use smart indent
 set si
 
 "Highlight current row/col
@@ -165,6 +171,12 @@ colo jellybeans
 "colo nedit2 
 "colo TAqua 
 hi Normal guibg=black
+
+" Adjust the showmarks colors
+hi ShowMarksHLl ctermfg=darkblue ctermbg=black cterm=bold guifg=blue guibg=black gui=bold
+hi ShowMarksHLu ctermfg=darkblue ctermbg=black cterm=bold guifg=blue guibg=black gui=bold
+hi ShowMarksHLo ctermfg=darkblue ctermbg=black cterm=bold guifg=blue guibg=black gui=bold
+hi ShowMarksHLm ctermfg=darkblue ctermbg=black cterm=bold guifg=blue guibg=black gui=bold
 
 "Custom Omni menu colors
 "hi Pmenu guibg=brown guifg=gold
@@ -397,17 +409,38 @@ autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
 autocmd FileType cpp setlocal omnifunc=cppcomplete#Complete
 autocmd FileType c setlocal omnifunc=ccomplete#Complete
 
-" Map omnicomplete to Control-o
-imap <c-o> <C-X><C-O>
+" Map omnicomplete to Control-Space
+imap <c-o> <C-X><C-O> 
+ 
 
 set completeopt=menuone,preview
 "set completeopt=menuone
-let OmniCpp_SelectFirstItem = 2
+"let OmniCpp_SelectFirstItem = 2
+let OmniCpp_SelectFirstItem = 1
 let OmniCpp_MayCompleteDot = 1
 let OmniCpp_MayCompleteArrow = 1
 let OmniCpp_MayCompleteScope = 1
 let OmniCpp_ShowPrototypeInAbbr = 1
 imap <c-y> <c-y><esc>
+
+" Got this next bit from: http://stackoverflow.com/revisions/171533/list
+" Esc gets you back to original, Enter selects.
+"inoremap <expr> <Esc> pumvisible()?"\<C-E>":"\<Esc>" 
+"inoremap <expr> <CR>  pumvisible()?"\<C-Y><ESC>":"\<CR>"
+"inoremap <expr> j     pumvisible()?"\<C-N>":"j" 
+"inoremap <expr> k     pumvisible()?"\<C-P>":"k" 
+inoremap <expr> <CR>  pumvisible()?"\<C-Y>":"\<CR>"
+"inoremap <expr> <Tab> pumvisible()?"\<C-N>":"\<Tab>"
+" I never got tab to work right. Trying space instead.
+"function! CleverSpace()
+	"if !pumvisible() 
+		"return "\<Space>"
+	"endif
+
+	"return "\<C-N>"
+"endfunction
+"inoremap <Space> <C-R>=CleverSpace()<CR>
+
 
 "Supertab settings.
 "let g:SuperTabDefaultCompletionType = "context"
@@ -545,14 +578,14 @@ let g:netrw_altv = 1
 "Problem at line 13 character 26: ['length'] is better written in dot notation.    var num_rows = spec[ 'length' ];
 "au FileType js,javascript setlocal errorformat=Problem\ at\ line\ %l\ character\ %c:\ %m 
 " Now use the JSLint.vim plugin
-let g:JSLintHighlightErrorLine = 0
+"let g:JSLintHighlightErrorLine = 0
 au FileType javascript map <F5> <ESC>:JSLint<CR>
 au FileType javascript imap <F5> <ESC>:JSLint<CR>
 
 
 " Run pychecker on current file
 cabbr pyck Shell pychecker %
-au FileType *.py setlocal makeprg=pychecker\ %
+au FileType python setlocal makeprg=pychecker\ %
 "au BufEnter *.py setlocal makeprg=pychecker\ %
 "the last line: \%-G%.%# is meant to suppress some
 "late error messages that I found could occur e.g.
@@ -609,8 +642,17 @@ imap <C-l> <ESC>\bs
 " My own little helpers
 " remove trailing whitespace, put a ; on the end of the line and write the
 " buffer.
-imap ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:nohl<CR>:<ESC>
-map ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:nohl<CR>:<ESC>
+imap ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:set nohls<CR>:<ESC>
+nmap ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:set nohls<CR>:<ESC>
+
+" No ; and end of line in python, so just save the file, trim the end and put
+" the cursor at the end of the file.
+"au FileType python iunmap ;;
+"au FileType python nunmap ;;
+au FileType python imap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR><Insert>o<CR><ESC>
+au FileType python nmap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR><Insert>o<CR><ESC>
+au FileType python nmap :: <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR><Insert>o<CR><ESC>
+au FileType python imap :: <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR><Insert>o<CR><ESC>
 
 imap (( ()<Left>
 imap [[ []<Left>
@@ -650,6 +692,13 @@ vnoremap '  <ESC>`>a'<ESC>`<i'<ESC>
 vnoremap `  <ESC>`>a`<ESC>`<i`<ESC>
 vnoremap [  <ESC>`>a]<ESC>`<i[<ESC>
 vnoremap ]  <ESC>`>a]<ESC>`<i[<ESC>
+
+"http://plasticboy.com/markdown-vim-mode/
+"Markdown format options
+augroup mkd
+	autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
+augroup END
+
 
 
 "People and places that I've gotten stuff from

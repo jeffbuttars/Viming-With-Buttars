@@ -7,11 +7,19 @@ snippet proto
 # Function
 snippet fun
 	function ${1:function_name} (${2:argument}) {
-		${3:// body...}
+		${3:console.log( "$1()" );}
 	}//$1()
 # Anonymous Function
 snippet f
 	function(${1}) {${2}};
+snippet af
+	function(${1:args}) {${2}}
+# Var function 
+snippet vf
+	var ${1:func_name} = function(${2:args}) {
+		${3:console.log( '$1()' );}
+	};//$1()
+# Anonymouse function 
 # if
 snippet if If, standard multiline style 
 	if ( ${1:true} ) {
@@ -80,16 +88,8 @@ snippet do
 # Object Method
 snippet :f
 	${1:method_name}: function(${2:args}) {
-		${4}
+		${4:console.log( "$1()" );}
 	}${3}
-# Var function 
-snippet vf
-	var ${1:func_name} = function(${2:args}) {
-		${3}
-	};//$1()
-# Anonymouse function 
-snippet afun
-	function(${1:args}) {${2}}
 # setTimeout function
 snippet timeout
 	setTimeout(function() {${3}}${2}, ${1:10};
@@ -118,4 +118,7 @@ snippet rattr
 	.removeAttr( ${1} )${2}
 snippet val 
 	.val(${1})${2}
-
+snippet click
+	.click( function( ${1:ev} ) {${2}})
+snippet each
+	.each( function( ${1:iter} ) {${2}})

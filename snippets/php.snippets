@@ -163,7 +163,7 @@ snippet do
 		${2:// code... }
 	} while (${1:/* condition */});
 snippet if
-	if (${1:/* condition */}) {
+	if ( ${1:/* condition */} ) {
 		${2:// code...}
 	}
 snippet ife
@@ -219,6 +219,8 @@ snippet func
 # $... = array (...)
 snippet array
 	$${1:arrayName} = array('${2}' => ${3});${4}
+snippet ari # Array Item
+	${1} => ${2}
 snippet T
 	TRUE${1}
 snippet F
@@ -231,3 +233,5 @@ snippet dsem
 	drupal_set_message( ${1}, 'error' )
 snippet dssm
 	drupal_set_message( ${1}, 'status' )
+snippet t(
+	t( "${1}" )${2}
