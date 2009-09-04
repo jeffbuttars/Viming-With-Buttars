@@ -22,7 +22,7 @@
 " *********************************************************************************************
 " Jasmeet Anand  26th April, 2006 v2.0 
 " Fixed C commenting where a single line already had previous comments.
- "int x=0; /*this is an x value*/
+" int x=0; /*this is an x value*/
 " Still working on situations like
 " Issue A:
 " 1 int x=0; /*this
@@ -55,6 +55,34 @@
 " Jasmeet Anand  2nd May 2006 v2.5
 " Removed auto-indenting for .sql, .sh and normal files when un-commenting
 " *********************************************************************************************
+" Jasmeet Anand  5th June 2006 v2.6
+" Added support for .html, .xml, .xthml, .htm, .vim, .vimrc
+" files as provided by Jeff Buttars
+" *********************************************************************************************
+" Smolyar "Rastafarra" Denis 7th June 2007 v2.7
+" Added support for .tex
+" *********************************************************************************************
+" Jasmeet Anand  5th June 2006 v2.8
+" Added support for Fortran .f, .F, .f90, .F90, .f95, .F95
+" files as provided by Albert Farres
+" *********************************************************************************************
+" Jasmeet Anand  8th March 2008 v2.9
+" Added support for ML, Caml, OCaml .ml, mli, PHP (v.4) .php4, PHP (v.5) .php5
+" files as provided by Denis Smolyar
+" Added support for noweb (requires only a small enhancement to the tex type)
+" as provided by Meik "fuller" Teßmer
+" Added support for vhdl files provided by Trond Danielsen
+" *********************************************************************************************
+" Jasmeet Anand 20 th March 2008 v2.10
+" Bug fixes for php files as pointed by rastafarra
+" *********************************************************************************************
+" Jasmeet Anand 29th November 2008 v2.11
+" Added support for haskel
+" files as provided by Nicolas Martyanoff
+" File Format changed to UNIX
+" *********************************************************************************************
+" Jasmeet Anand 11th January 2009 v2.12
+" bug fix for haskel files as prpvided by Jean-Marie
 "
 
 " Exit if already loaded
@@ -62,31 +90,27 @@ if exists("loaded_comments_plugin")
   finish
 endif
 
-let loaded_comments_plugin="v2.5"
+let loaded_comments_plugin="v2.10"
 
 " key-mappings for comment line in normal mode
 noremap  <silent> <C-C> :call CommentLine()<CR>
-"noremap  <silent> c :call CommentLine()<CR>
 " key-mappings for range comment lines in visual <Shift-V> mode
 vnoremap <silent> <C-C> :call RangeCommentLine()<CR>
-"vnoremap <silent> c :call RangeCommentLine()<CR>
 
 " key-mappings for un-comment line in normal mode
 noremap  <silent> <C-X> :call UnCommentLine()<CR>
-"noremap  <silent> C :call UnCommentLine()<CR>
 " key-mappings for range un-comment lines in visual <Shift-V> mode
 vnoremap <silent> <C-X> :call RangeUnCommentLine()<CR>
-"vnoremap <silent> C :call RangeUnCommentLine()<CR>
 
 " function to comment line in normal mode
 function! CommentLine()
   let file_name = buffer_name("%")
 
-  " for .cpp or .hpp or .java files use //
-  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[23]\?$' || file_name =~ '\.js$'
+  " for .cpp or .hpp or .java or .C files use //
+  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$'
     execute ":silent! normal ^i//\<ESC>==\<down>^"
   " for .c or .h or .pc or .css files use /* */
-  elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$'
+  elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' || file_name =~ '\.js$'
     " if there are previous comments on this line ie /* ... */
     if stridx(getline("."), "\/\*") != -1 && stridx(getline("."), "\*\/") != -1
       execute ":silent! normal :nohlsearch\<CR>:s/\\([^\\/\\*]*\\)\\(\\/\\*.*\\*\\/\\)/\\1\\*\\/\\2/\<CR>:s/\\([^[:blank:]]\\+\\)/\\/\\*\\1/\<CR>:nohlsearch\<CR>=="
@@ -100,9 +124,13 @@ function! CommentLine()
     elseif stridx(getline("."), "\/\*") == -1 && stridx(getline("."), "\*\/") == -1
       execute ":silent! normal ^i/*\<ESC>$a*/\<ESC>==\<down>^"
     endif
-
-    " .html,.shtml,.xml,.xthml,.htm,.xslt
-  elseif file_name =~ '\.shtml$' || file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' ||  file_name =~ '\.xsl$' ||  file_name =~ '\.xslt$' 
+  "for .ml or .mli files use (* *)
+  elseif file_name =~ '\.ml$' || file_name =~ '\.mli$'
+    if stridx(getline("."), "\(\*") == -1 && stridx(getline("."), "\*)") == -1
+      execute ":silent! normal ^i(*\<ESC>$a*)\<ESC>==\<down>^"
+    endif
+    " .html,.xml,.xthml,.htm
+  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
     if stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) != -1
     elseif stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) == -1
         "  open, but a close "
@@ -130,6 +158,18 @@ function! CommentLine()
     " LUA
   elseif file_name =~ '\.lua$'
     execute ":silent! normal ^i--\<SPACE>\<ESC>\<down>^"
+  " for .tex files use %
+  elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
+    execute ":silent! normal ^i%\<ESC>\<down>^"
+  " for fortran 77 files use C on first column 
+  elseif file_name =~ '\.f$' || file_name =~ '\.F$'
+    execute ":silent! normal ^gIC\<ESC>\<down>^"
+  " for fortran 90/95 files use !
+  elseif file_name =~ '\.f90$' || file_name =~ '\.F90$' || file_name =~ '\.f95$' || file_name =~ '\.F95$'
+    execute ":silent! normal ^i!\<ESC>\<down>^"
+  " for VHDL and Haskell files use -- 
+  elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
+    execute ":silent! normal ^gI-- \<ESC>\<down>^"
   " for all other files use # 
   else
     execute ":silent! normal ^i#\<ESC>\<down>^"
@@ -140,11 +180,15 @@ endfunction
 function! UnCommentLine()
   let file_name = buffer_name("%")
 
-  " for .cpp or .hpp or .java files use //
-  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[23]\?$' || file_name =~ '\.js$'
+  " for .cpp or .hpp or .java or .C files use //
+  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$'
     execute ":silent! normal :nohlsearch\<CR>:s/\\/\\///\<CR>:nohlsearch\<CR>=="
+  " for .ml or .mli
+  elseif file_name =~ '\.ml$' || file_name =~ '\.mli$'
+    execute ":silent! normal :nohlsearch\<CR>:s/(\\*//\<CR>:nohlsearch\<CR>"
+	execute ":silent! normal :nohlsearch\<CR>:s/\\*)//\<CR>:nohlsearch\<CR>=="
   " for .c or .h or .pc or .css files use /* */
-  elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$'
+  elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' || file_name =~ '\.js$'
     execute ":silent! normal :nohlsearch\<CR>:s/\\/\\*//\<CR>:s/\\*\\///\<CR>:nohlsearch\<CR>=="
   " for .vim files use "
   elseif file_name =~ '\.vim$' || file_name =~ '\.vimrc$'
@@ -165,6 +209,18 @@ function! UnCommentLine()
   elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
     execute ":silent! normal :nohlsearch\<CR>:s/<!--//\<CR>=="
     execute ":silent! normal :nohlsearch\<CR>:s/-->//\<CR>=="
+  " for .tex use %
+  elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
+    execute ":silent! normal :nohlsearch\<CR>:s/%/\<CR>:nohlsearch\<CR>"
+  " for fortran 77 files use C on first column 
+  elseif file_name =~ '\.f$' || file_name =~ '\.F$'
+    execute ":silent! normal ^x\<ESC>\<down>^"
+  " for fortran 90/95 files use !
+  elseif file_name =~ '\.f90$' || file_name =~ '\.F90$' || file_name =~ '\.f95$' || file_name =~ '\.F95$'
+    execute ":silent! normal :nohlsearch\<CR>:s/!//\<CR>:nohlsearch\<CR>"
+  " for VHDL and Haskell files use --
+  elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
+    execute ":silent! normal :nohlsearch\<CR>:s/-- //\<CR>:nohlsearch\<CR>"
   " for all other files use # 
   else
     execute ":silent! normal :nohlsearch\<CR>:s/\\#//\<CR>:nohlsearch\<CR>"
@@ -175,11 +231,11 @@ endfunction
 function! RangeCommentLine()
   let file_name = buffer_name("%")
 
-  " for .cpp or .hpp or .java files use //
-  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[23]\?$' || file_name =~ '\.js$'
+  " for .cpp or .hpp or .java or .C files use //
+  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$'
     execute ":silent! normal :s/\\S/\\/\\/\\0/\<CR>:nohlsearch<CR>=="
   " for .c or .h or .pc or .css files use /* */
-  elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$'
+  elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' || file_name =~ '\.js$'
     " if there are previous comments on this line ie /* ... */
     if stridx(getline("."), "\/\*") != -1 && stridx(getline("."), "\*\/") != -1
       execute ":silent! normal :nohlsearch\<CR>:s/\\([^\\/\\*]*\\)\\(\\/\\*.*\\*\\/\\)/\\1\\*\\/\\2/\<CR>:s/\\([^[:blank:]]\\+\\)/\\/\\*\\1/\<CR>:nohlsearch\<CR>=="
@@ -193,8 +249,7 @@ function! RangeCommentLine()
     elseif stridx(getline("."), "\/\*") == -1 && stridx(getline("."), "\*\/") == -1
       execute ":silent! normal :s/\\(\\S.*$\\)/\\/\\*\\1\\*\\//\<CR>:nohlsearch\<CR>=="
     endif
-
-    " .html,.xml,.xthml,.htm
+  " .html,.xml,.xthml,.htm
   elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
     if stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) != -1
     elseif stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) == -1
@@ -210,6 +265,12 @@ function! RangeCommentLine()
   elseif file_name =~ '\.tmpl$'
     execute ":silent! normal :s/\\S/\\\#\#\\0/\<CR>:nohlsearch<CR>"
   " for .vim files use "
+   " for .ml, .mli files use (* *)
+  elseif file_name =~ '\.ml$' || file_name =~ '\.mli'
+    if stridx(getline("."), "\(\*") == -1 && stridx(getline("."), "\*)/") == -1
+      execute ":silent! normal ^i\(*\<ESC>$a*)\<ESC>==\<down>^"
+	endif
+  " for .vim files use --
   elseif file_name =~ '\.vim$' || file_name =~ '\.vimrc$'
     execute ":silent! normal :s/\\S/\\\"\\0/\<CR>:nohlsearch<CR>"
   " for .sql files use --
@@ -220,6 +281,18 @@ function! RangeCommentLine()
     execute ":silent! normal :s/\\S/\\#\\0/\<CR>:nohlsearch<CR>"
   elseif file_name =~ '\.lua$'
     execute ":silent! normal :s/\\S/\\--\<SPACE>\\0/\<CR>:nohlsearch<CR>"
+  " for .tex use %
+  elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
+    execute ":silent! normal :s/\\S/\\%\\0/\<CR>:nohlsearch<CR>"
+  " for fortran 77 files use C on first column 
+  elseif file_name =~ '\.f$' || file_name =~ '\.F$'
+    execute ":silent! normal ^gIC\<ESC>\<down>^"
+  " for fortran 90/95 files use !
+  elseif file_name =~ '\.f90$' || file_name =~ '\.F90$' || file_name =~ '\.f95$' || file_name =~ '\.F95$'
+    execute ":silent! normal :s/\\S/!\\0/\<CR>:nohlsearch<CR>"
+  " for VHDL and Haskell files use --
+  elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
+    execute ":silent! normal ^gI-- \<ESC>\<down>^"
   " for all other files use #  
   else
     execute ":silent! normal :s/\\S/\\#\\0/\<CR>:nohlsearch<CR>"
@@ -231,10 +304,10 @@ function! RangeUnCommentLine()
   let file_name = buffer_name("%")
 
   " for .cpp or .hpp or .java files use //
-  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[23]\?$' || file_name =~ '\.js$'
+  if file_name =~ '\.cpp$' || file_name =~ '\.hpp$' || file_name =~ '\.java$' || file_name =~ '\.php[2345]\?$' || file_name =~ '\.C$'
     execute ":silent! normal :s/\\/\\///\<CR>:nohlsearch\<CR>=="
   " for .c or .h or .pc or .css files use /* */
-  elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$'
+  elseif file_name =~ '\.c$' || file_name =~ '\.h$' || file_name =~ '\.pc$' || file_name =~ '\.css$' || file_name =~ '\.js$'
     execute ":silent! normal :nohlsearch\<CR>:s/\\/\\*//\<CR>:s/\\*\\///\<CR>:nohlsearch\<CR>=="
   " for .vim files use " 
   elseif file_name =~ '\.vim$' || file_name =~ '\.vimrc$'
@@ -254,6 +327,18 @@ function! RangeUnCommentLine()
     " Cheetah files
   elseif file_name =~ '\.tmpl$'
     execute ":silent! normal :s/\\##//\<CR>:nohlsearch\<CR>"
+  " for .tex use %
+  elseif file_name =~ '\.tex$' || file_name =~ '\.nw$'
+    execute ":silent! normal :s/%/\<CR>:nohlsearch\<CR>"
+  " for fortran 77 files use C on first column 
+  elseif file_name =~ '\.f$' || file_name =~ '\.F$'
+    execute ":silent! normal ^x\<ESC>\<down>^"
+  " for fortran 90/95 files use !
+  elseif file_name =~ '\.f90$' || file_name =~ '\.F90$' || file_name =~ '\.f95$' || file_name =~ '\.F95$'
+    execute ":silent! normal :s/!//\<CR>:nohlsearch\<CR>"
+  " for VHDL and Haskell files use --
+  elseif file_name =~ '\.vhd$' || file_name =~ '\.vhdl$' || file_name =~ '\.hs$'
+    execute ":silent! normal :s/-- //\<CR>:nohlsearch\<CR>"
   " for all other files use # 
   else
     execute ":silent! normal :s/\\#//\<CR>:nohlsearch\<CR>"

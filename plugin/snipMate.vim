@@ -123,6 +123,7 @@ fun s:DefineSnips(dir, aliasft, realft)
 endf
 
 fun! TriggerSnippet()
+
 	if exists('g:SuperTabMappingForward')
 		if g:SuperTabMappingForward == "<tab>"
 			let SuperTabKey = "\<c-n>"
@@ -132,6 +133,7 @@ fun! TriggerSnippet()
 	endif
 
 	if pumvisible() " Update snippet if completion is used, or deal with supertab
+
 		if exists('SuperTabKey')
 			call feedkeys(SuperTabKey) | return ''
 		endif

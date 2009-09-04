@@ -1,489 +1,145 @@
-" Vim
+" We start from the default example .vimrc
+" and then tweak from there.
 "
 " An example for a vimrc file.
 "
+" Maintainer:	Bram Moolenaar <Bram@vim.org>
+" Last change:	2008 Jul 02
+"
 " To use it, copy it to
 "     for Unix and OS/2:  ~/.vimrc
-"             for Amiga:  s:.vimrc
+"	      for Amiga:  s:.vimrc
 "  for MS-DOS and Win32:  $VIM\_vimrc
+"	    for OpenVMS:  sys$login:.vimrc
 
-filetype plugin on
+" When started as "evim", evim.vim will already have done these settings.
+if v:progname =~? "evim"
+  finish
+endif
 
-set nocompatible	" Use Vim defaults (much better!)
-set bs=2		" allow backspacing over everything in insert mode
-set ai			" always set autoindenting on
-" set tw=78		" always limit the width of text to 78
-set backup		" keep a backup file
-set viminfo='20,\"500	" read/write a .viminfo file, don't store more
-			" than 50 lines of registers
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible
 
-" wrap long lines
-set wrap
-                               
-" report result of commands over one or more lines
-set report=1 
-set hidden
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
 
-" comments default: sr:/*,mb:*,el:*/,://,b:#,:%,:XCOMM,n:>,fb:-
-set comments=b:#,:%,:\",fb:-,n:>,n:),n:\"
-
-"A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
-" This will detect file types and use oneline comments accordingle. Cool
-" because you visually select regions and comment/uncomment the whole region.
-" works with marked regions to.
-"source ~/.vim/comments.vim
-" don't need to source this, just put it in your plugin directory.
-
-" Format a paragraph (72 characters) without breaking words
-" map f		!}fmt 
-"
-"
-"       ,L  = "Last updated" - insert time stamp and delete old time stamp
-map     ,L mz1G/Last update: */e+1<CR>D:r!date<CR>kJ
-
-
-"interactive spell check
-" works only in non-gui mode for now
-map #sp :w<CR>:!ispell %<CR>:e %<CR> 
-
-"
-
-" Define "del" char to be the same as backspace (saves a LOT of trouble!)
-map <C-V>127 <C-H>
-
-"
-" autowrite: "on" saves a lot of trouble
-"set autowrite
-set autowriteall
-set	autoread
-" We use a custom statusline instead of ruler
-"set ruler
-" Change buffer without saving
-"set hid
-
-"
-"-------------------------------------------------------------------------------
-"Have vim fake your tabs, or not
-" expand tabs
-"set expandtab
-"set softtabstop=4
-"set softtabstop=0
-
-"Use real tabs, 4 spaces
-set tabstop=4
-set shiftwidth=4
-set smarttab
-
-" Emacs like tabs? this guy says for.
-"http://smalltalk.gnu.org/blog/bonzinip/emacs-ifying-vims-autoindent
-set cinkeys=0{,0},0),0#,!<Tab>,;,:,o,O,e
-set indentkeys=!<Tab>,o,O
-map <Tab> i<Tab><Esc>^
-filetype indent on
-" C opts
-" Kernel style
-set cinoptions=:0,(0,u0,W1s
-" GNU style
-"set cinoptions={1s,>2s,e-1s,^-1s,n-1s,:1s,p5,i4,(0,u0,W1s shiftwidth=2
-
-"Not sure if this is needed:
-"Unfortunately, this is still not enough because some ill-behaved vim files reset indentkeys instead of adding to it. 
-"For this I used the following shell snippet:
-"for i in tcl gitconfig ruby html xml php rst css make dtd xinetd yacc; do
-"  echo 'setlocal indentkeys+=!<Tab>' > .vim/after/indent/$i
-"done
-
-
-" Fisher: More addons for myself and Buttars
-set cindent
-set cino=>4
-set mousehide
-set showmode
-"     backup:  backups are for wimps  ;-)
-set nobackup
-" Show matching braces
-set showmatch 
-set mat=5
-set showcmd
-set modeline
-"set splitbelow
-"set splitright
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Some wordwrapp foo from
-"http://kmandla.wordpress.com/2009/07/27/proper-word-wrapping-in-vim/
-set formatoptions+=l
-set lbr
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-set selection=inclusive
-set shortmess=atI
-set wildmenu
-"set wildmode=longest:full,full
-set wildmode=list:longest
-"set previewheight=5
-
-" set key timeout, good for remaps
-set timeoutlen=300
-
-" Set up the status line
-" Like setting ruler, but we add the buffer number and filetype to the status
-"set statusline=%<%y\ %f\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+if has("vms")
+  set nobackup		" do not keep a backup file, use versions instead
+else
+  set backup		" keep a backup file
+endif
+set history=500		" keep 500 lines of command line history
+"set ruler		" show the cursor position all the time
+" Set up a custom status line. Like setting ruler, but we add the buffer number and filetype to the status
 set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set laststatus=2
 
+set showcmd		" display incomplete commands
+set incsearch		" do incremental searching
 
-set history=1000
-set hidden
-nnoremap ' `
-nnoremap ` '
+" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
+" let &guioptions = substitute(&guioptions, "t", "", "g")
 
-" Use smart indent
-set si
+" Don't use Ex mode, use Q for formatting
+map Q gq
 
-"Highlight current row/col
-"au WinLeave * set nocursorline nocursorcolumn
-"au WinEnter * set cursorline cursorcolumn
-" Using the cursorcolumn is pretty slow.
-"set cursorline cursorcolumn
-"au WinLeave * set nocursorline
-"au WinEnter * set cursorline
-set cursorline
-" I hate it when the cursorline is an underline
-hi clear CursorLine 
-"hi CursorLine       ctermfg=255 guifg=#a8a8a8 ctermbg=0   guibg=#000000
-"hi CursorLine       ctermbg=LightGray   guibg=#2c2c2c
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U> <C-G>u<C-U>
 
-" We want 256 colors.
-set t_Co=256
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+  set mouse=a
+endif
 
-"colorscheme elflord
-" Dark background schemes
-"colo baycomb 
-"colo evening 
-"colo xoria256 
-"colo ir_black 
-"colo mySlate 
-"colo vividchalk 
-colo jellybeans 
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
 
-" White/Light themes
-"colo nedit2 
-"colo TAqua 
-hi Normal guibg=black
-
-" Adjust the showmarks colors
-hi ShowMarksHLl ctermfg=darkblue ctermbg=black cterm=bold guifg=blue guibg=black gui=bold
-hi ShowMarksHLu ctermfg=darkblue ctermbg=black cterm=bold guifg=blue guibg=black gui=bold
-hi ShowMarksHLo ctermfg=darkblue ctermbg=black cterm=bold guifg=blue guibg=black gui=bold
-hi ShowMarksHLm ctermfg=darkblue ctermbg=black cterm=bold guifg=blue guibg=black gui=bold
-
-"Custom Omni menu colors
-"hi Pmenu guibg=brown guifg=gold
-"hi Pmenu ctermbg=blue ctermfg=white
-"hi PmenuSel guibg=#555555 guifg=#ffffff
-"hi PmenuSel guibg=#0000ff guifg=#ffffff
-"hi PmenuSel ctermbg=red ctermfg=white
-
-set nocp
-filetype plugin on
-filetype indent on
-set incsearch " start searching when I start typing
-"set ignorecase " Ignore case on searches.
-
-" Highlight all search matches.
-set hls
-
-" set linenumbers on
-set number 
-
- "Turn on syntax highlighting
-syntax on
-
-" drupal rules
+" Only do this part when compiled with support for autocommands.
 if has("autocmd")
-    augroup module
-        autocmd BufRead *.module,*.inc set filetype=php
-    augroup END
+
+  " Enable file type detection.
+  " Use the default filetype settings, so that mail gets 'tw' set to 72,
+  " 'cindent' is on in C files, etc.
+  " Also load indent files, to automatically do language-dependent indenting.
+  filetype plugin indent on
+
+  " Put these in an autocmd group, so that we can delete them easily.
+  augroup vimrcEx
+  au!
+
+  " For all text files set 'textwidth' to 78 characters.
+  autocmd FileType text setlocal textwidth=78
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  " Also don't do it when the mark is in the first line, that is the default
+  " position when opening a file.
+  autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
+
+  augroup END
+
+else
+
+  set autoindent		" always set autoindenting on
+
+endif " has("autocmd")
+
+" Convenient command to see the difference between the current buffer and the
+" file it was loaded from, thus the changes you made.
+" Only define it when not defined already.
+if !exists(":DiffOrig")
+  command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+		  \ | wincmd p | diffthis
 endif
 
 
-
-" TagList Plugin
-" Set taglist plugin options
-" Display function name in status bar:
-let g:ctags_statusline=1
-" Automatically start script
-let generate_tags=1
-" Displays taglist results in a vertical window:
-let Tlist_Use_Horiz_Window=0
-" Shorter commands to toggle Taglist display
-"nnoremap TT :TlistToggle<CR>
-nnoremap TT :TlistOpen<CR>
-map <F4> :TlistToggle<CR>
-
-let Tlist_Use_Right_Window = 1
-let Tlist_Exit_OnlyWindow = 1
-let Tlist_Enable_Fold_Column = 0
-let Tlist_Compact_Format = 1
-let Tlist_File_Fold_Auto_Close = 1
-
-"If you are running a terminal/console version of Vim and the terminal
-"doesn't support changing the window width then set the
-"'Tlist_Inc_Winwidth' variable to 0 in the .vimrc file.
-"let Tlist_Inc_Winwidth = 0
-
-"Tlist_WinWidth~
-"The default width of the vertically split taglist window is 30. This can be
-"changed by modifying the 'Tlist_WinWidth' variable:
-let Tlist_WinWidth = 60
-
-" Close Tlist when jumping to tag
-let Tlist_Close_On_Select = 1
-"Tlist_Display_Prototype~
-"By default, only the tag name will be displayed in the taglist window. If you
-"like to see tag prototypes instead of names, set the 'Tlist_Display_Prototype'
-"variable to 1. By default, this variable is set to zero and only tag names
-"will be displayed.
-let Tlist_Display_Prototype = 1
-
-"MRU Plugin
-" Display the Most recently used file list
-map <F1> :MRU<CR>
-imap <F1> <ESC>:MRU<CR>
-
-"let MRU_Max_Entries = 25 
-"let MRU_Exclude_Files = '^/tmp/.*\|^/var/tmp/.*'  " For Unix
-"let MRU_Window_Height = 30 
-
-"by default, when the :MRU command is invoked, the MRU list will be displayed
-"in a new window. Instead, if you want the MRU plugin to reuse the current
-"window, then you can set the 'MRU_Use_Current_Window' variable to one.
-"let MRU_Use_Current_Window = 1
-
-"The MRU plugin will reuse the current window. When a file name is selected,
-"the file is also opened in the current window.
-"When you select a file from the MRU window, the MRU window will be
-"automatically closed and the selected file will be opened in the previous
-"window. You can set the 'MRU_Auto_Close' variable to zero to keep the MRU
-"window open.
-"let MRU_Auto_Close = 0
-
-"If you don't use the 'File->Recent Files' menu and want to disable it,
-"then you can set the 'MRU_Add_Menu' variable to zero. By default, the;
-"menu is enabled.
-"let MRU_Add_Menu = 0 
-
-noremap <c-u> <ESC>:TRecentlyUsedFiles<cr>
-
-" Fix filetype detection
-"au BufNewFile,BufRead .torsmorc* set filetype=rc
-"au BufNewFile,BufRead *.inc set filetype=php
-"au BufNewFile,BufRead *.sys set filetype=php
-"au BufNewFile,BufRead grub.conf set filetype=grub
-"au BufNewFile,BufRead *.dentry set filetype=dentry
-"au BufNewFile,BufRead *.blog set filetype=blog
-
-
-"au FileType htmlcheetah setlocal syntax=cheetah 
-"au BufNewFile,BufRead *.tmpl setlocal filetype=cheetah
-
-" Use errorformat for parsing sql error output
-"au FileType sql set errorformat=on\ line\ %l:%m
-
-" Experimental stuff, I don't think I use this anymore.
-source ~/.vim/plugin/mypy.vim
-
-" Compile and run keymappings
-"au FileType c,cpp map <F5> :!./%:r<CR>
-"au FileType java map <F5> :make %<CR>
-"au FileType sh,php,perl,python,ruby map <F5> :!./%<CR>
-"au FileType java map <F6> :java %:r
-"au FileType php map <F5> :!php -l %<CR>
-"au FileType python,py map <F6> :w<CR>:!python %<CR>
-"au FileType perl map <F6> :!perl %<CR>
-"au FileType ruby map <F6> :!ruby %<CR>
-au FileType html,xhtml map <F5> :!firefox %<CR>
-"au FileType ruby setlocal sts=2 sw=2                " Enable width of 2 for ruby tabbing
-
-" MS Word document reading
-au BufReadPre *.doc set ro
-au BufReadPre *.doc set hlsearch!
-au BufReadPost *.doc %!antiword "%"
-
-" Toggle dark/light default colour theme for shitty terms
-"map <F2> :let &background = ( &background == "dark" ? "light" : "dark" )<CR>
-
-" Toggle taglist script
-inoremap <F3> <ESC>:Tlist<CR>
-map <F3> <ESC>:Tlist<CR>
-
-" Start with Tlist open.
-autocmd FileType c,h,bash,python,php,js TlistUpdate
-
-" VTreeExplorer
-"map <F12> :VSTreeExplore <CR>
-"let g:treeExplVertical=1
-"let g:treeExplWinSize=35
-"let g:treeExplDirSort=1
-
-" Need to learn how to file type bases macros
-" for python and stuff
-" Pyton code helpers
-"inoremap <CR><CR> <END><CR>
-"inoremap :: <END>:<CR>
-"inoremap {% {%%}<LEFT><LEFT>
- "Run in the Python interpreter
-"function! Python_Eval_VSplit() range
- "let src = tempname()
- "let dst = tempname()
- "execute ": " . a:firstline . "," . a:lastline . "w " . src
- "execute ":!python " . src . " > " . dst
- "execute ":pedit! " . dst
-"endfunction
-
-
-
-"Python version
-"inoremap {{  {{}}<LEFT><LEFT>
-" No sound on error "
-set noerrorbells
-    
-" Set were to keep the swap files
-"set dir=~/tmp
-
-" When vimrc is edited, automatically reload it!
-autocmd! bufwritepost .vimrc source ~/.vimrc
-
-" Enable auto html/xml tag closing with C^-(provided by closetag.vim) for certain file type.
-au Filetype html,xml,xsl,xhtml,htm,php,inc,js source ~/.vim/scripts/closetag.vim 
-
-" Map the '\' to automically create a fold region within
-" the containing braced [ or curly braced { block.
-"nmap <silent> <leader><leader> [{V%zf
-
-" display fold info on the side
-"set foldcolumn=2
-"set foldenable
-" Don't display fold info on the side
-"set foldcolumn=0
-
-" Automaticly save and load views
-autocmd BufWinLeave * if expand("%") != "" | mkview | endif
-autocmd BufWinEnter * if expand("%") != "" | silent loadview | endif
-
-"I usually don't want this
-" Set this if you want to split views to scroll together
-" by default.
-"set scrollbind
-
-" For the large file plugin
-let g:LargeFile= 30	" in megabytes
-
-" Enable use of the mouse in a terminal
-set mouse=a
-
-"     dictionary: english words first
-" add any text based dictionaries to the list.
-" Also, you can use C-X,C-K to autocomplete a word
-" using the dictionary.
-set dictionary=/usr/share/dict/words,/usr/dict/words,/usr/dict/extra.words
-
-" Enable english spell checking on text files.
-":setlocal spell spelllang=en
-"autocmd FileType txt setlocal spell spelllang=en
-autocmd BufEnter *.txt,*.text setlocal spell spelllang=en
-
-" Enable some omnicompletion types
-autocmd FileType python runtime! autoload/pythoncomplete.vim
-"autocmd FileType python set omnifunc=pythoncomplete#Complete
-" Enable pysmell
-"python import pysmell
-"autocmd FileType python setlocal omnifunc=pysmell#Complete
-
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
-autocmd FileType cpp setlocal omnifunc=cppcomplete#Complete
-autocmd FileType c setlocal omnifunc=ccomplete#Complete
-
-" Map omnicomplete to Control-Space
-imap <c-o> <C-X><C-O> 
- 
-
-set completeopt=menuone,preview
-"set completeopt=menuone
-"let OmniCpp_SelectFirstItem = 2
-let OmniCpp_SelectFirstItem = 1
-let OmniCpp_MayCompleteDot = 1
-let OmniCpp_MayCompleteArrow = 1
-let OmniCpp_MayCompleteScope = 1
-let OmniCpp_ShowPrototypeInAbbr = 1
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" OmniCompletion settings
+" When c-y is used to select, enter normal mode.
 imap <c-y> <c-y><esc>
-
-" Got this next bit from: http://stackoverflow.com/revisions/171533/list
-" Esc gets you back to original, Enter selects.
-"inoremap <expr> <Esc> pumvisible()?"\<C-E>":"\<Esc>" 
-"inoremap <expr> <CR>  pumvisible()?"\<C-Y><ESC>":"\<CR>"
-"inoremap <expr> j     pumvisible()?"\<C-N>":"j" 
-"inoremap <expr> k     pumvisible()?"\<C-P>":"k" 
+" Show the info preview window.
+set completeopt=menuone,preview
+" Map omnicomplete to Control-o
+imap <c-o> <C-X><C-O> 
+" Enter will do a simple accept of the selection
 inoremap <expr> <CR>  pumvisible()?"\<C-Y>":"\<CR>"
-"inoremap <expr> <Tab> pumvisible()?"\<C-N>":"\<Tab>"
-" I never got tab to work right. Trying space instead.
-"function! CleverSpace()
+" When the completion window is open, shift will cycle
+" forward through the menu.
+" This does not work with snipmate, so I have a hack
+" in after/plugin/snipmate
+"function! CleverTab()
 	"if !pumvisible() 
-		"return "\<Space>"
+		"return "\<Tab>"
 	"endif
 
 	"return "\<C-N>"
 "endfunction
-"inoremap <Space> <C-R>=CleverSpace()<CR>
+"inoremap <Tab> <C-R>=CleverTab()<CR>
 
-
-"Supertab settings.
-"let g:SuperTabDefaultCompletionType = "context"
-"let g:SuperTabDefaultCompletionTypeDiscovery = [
-	 "\ "&omnifunc:<c-x><c-o>",
-	 "\ "&completefunc:<c-x><c-u>",
-	 "\ "&omnifunc:<c-x><c-k>",
-	"\ ]
-"let g:SuperTabMappingTabLiteral = '<s-tab>'
-"let g:SuperTabMappingForward = '<c-o>'
-
-
-
-" movment keys while in insert mode?
-" interferes with some stuff, be careful, this
-" may be bad for you
-"imap <c-j> <Down>
-"imap <c-h> <Left>
-"imap <c-k> <Up>
-"imap <c-l> <Right>
 
 " Auto close the preview window
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
-"autocmd CursorMovedI * if pumvisible() == O|pclose|endif
-"autocmd InsertLeave * if pumvisible() ==  O|pclose|endif
-"autocmd CursorMovedI * if pumvisible() == pclose|endif
-"autocmd InsertLeave * if pumvisible() ==  pclose|endif
-     
-" set background black when using gui.
-"hi Normal guibg=black
+" My snipmate hack to work with popup_it.vim
+let g:SnipeMateAllowOmniTab = 1
 
-" make a diff split vertical by default
-set diffopt=vertical
+"End OmniCompletion settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Keep this many lines above/below the cursor while scrolling.
-"set scrolloff=5
-set so=3
-
-"set grepprg=ack\ -n
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " From an idea by Michael Naumann
+"You press * or # to search for the current visual selection !! Really useful
 function! VisualSearch(direction) range
   let l:saved_reg = @"
   execute "normal! vgvy"
@@ -497,147 +153,26 @@ function! VisualSearch(direction) range
   let @/ = l:pattern
   let @" = l:saved_reg
 endfunction
-
-"You press * or # to search for the current visual selection !! Really useful
 vnoremap <silent> * :call VisualSearch('f')<CR>
 vnoremap <silent> # :call VisualSearch('b')<CR>
+" End From an idea by Michael Naumann
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Can't say I fully understand this setting.
-try
-    set switchbuf=usetab
-    set stal=2
-catch
-endtry
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" More normal Vim tweaks.
+" make a diff split vertical by default
+set diffopt=vertical
 
-" Always open stuff up in a new tab
-":au BufAdd,BufNewFile,BufRead * nested tab sball
-
-""""""""""""""""""""""""""""""
-" SVN section
-"""""""""""""""""""""""""""""""
-" Open an svn diff of the current file in a split
-"map <F8> :new<CR>:read !svn diff<CR>:set syntax=diff buftype=nofile<CR>gg
-" use the VCS plugin to view a vimdiff of the current file
-map <F8> :VCSVimDiff<CR>
-
-" Some kind of experiment?
-"autocmd InsertEnter * call setline( ".", "ha" ) 
-"autocmd InsertChange * call setline( ".", "ha" ) 
-
-" map F5 to the make command
-"au FileType c,cpp map <F5> <ESC>:make<cr>
-map <F5> <ESC>:make<cr>
+" Keep this many lines above/below the cursor while scrolling.
+"set scrolloff=5
+set so=3
 
 set title
-
-"Vertical Explore open file
-let g:netrw_altv = 1
-
-
-" Insert <Tab> or complete indentifier
-" if the cursor isafter a keyword character.
-"function MyTabOrComplete()
-    "let col = col('.')-1
-    "if !col || getline('.')[col-1] !~ '\k'
-        "return "\<tab>"
-    "else
-        ""return "\<C-N>"
-        "return "\<C-X>\<C-O>"
-    "endif
-"endfunction
-
-"inoremap <Tab> <C-R>=MyTabOrComplete()<CR>
-
-"command! -complete=shellcmd -nargs=+ Shell call s:RunShellCommand(<q-args>)
-"function! s:RunShellCommand(cmdline)
-	"echo a:cmdline
-	"let expanded_cmdline = a:cmdline
-	"for part in split(a:cmdline, ' ')
-		"if part[0] =~ '\v[%#<]'
-			"let expanded_part = fnameescape(expand(part))
-			"let expanded_cmdline = substitute(expanded_cmdline, part, expanded_part, '')
-		"endif
-	"endfor
-	"botright new
-	"setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap
-	"call setline(1, 'You entered:    ' . a:cmdline)
-	"call setline(2, 'Expanded Form:  ' .expanded_cmdline)
-	"call setline(3,substitute(getline(2),'.','=','g'))
-	"execute '$read !'. expanded_cmdline
-	"setlocal nomodifiable
-	"1
-"endfunction
-" Enable running a file through JSLint and putting output in a scratch buffer
-"cabbr js read !js ~/bin/runjslint.js "`cat %`" \| ~/bin/format_lint_output.py
-"cabbr js Shell js ~/bin/runjslint.js "`cat %`" \| ~/bin/format_lint_output.py
-
-"cabbr jslint Shell jslint %
-" Type make to run JSLINT and jump to error
-"au FileType js,javascript setlocal makeprg=jslint\ %
-" Use errorformat for parsing JSLINT error output, example outoupt:
-"Problem at line 13 character 26: ['length'] is better written in dot notation.    var num_rows = spec[ 'length' ];
-"au FileType js,javascript setlocal errorformat=Problem\ at\ line\ %l\ character\ %c:\ %m 
-" Now use the JSLint.vim plugin
-"let g:JSLintHighlightErrorLine = 0
-au FileType javascript map <F5> <ESC>:JSLint<CR>
-au FileType javascript imap <F5> <ESC>:JSLint<CR>
-
-
-" Run pychecker on current file
-cabbr pyck Shell pychecker %
-au FileType python setlocal makeprg=pychecker\ %
-"au BufEnter *.py setlocal makeprg=pychecker\ %
-"the last line: \%-G%.%# is meant to suppress some
-"late error messages that I found could occur e.g.
-"with wxPython and that prevent one from using :clast
-"to go to the relevant file and line of the traceback.
-au FileType python setlocal errorformat=
-	\%A\ \ File\ \"%f\"\\\,\ line\ %l\\\,%m,
-	\%C\ \ \ \ %.%#,
-	\%+Z%.%#Error\:\ %.%#,
-	\%A\ \ File\ \"%f\"\\\,\ line\ %l,
-	\%+C\ \ %.%#,
-	\%-C%p^,
-	\%Z%m,
-	\%-G%.%#
-
-" Use php syntax check when doing :make
-au FileType php setlocal makeprg=php\ -l\ %
-autocmd BufEnter *.php,*.inc,*.module setlocal makeprg=php\ -l\ %
-" Use errorformat for parsing PHP error output
-au FileType php setlocal errorformat=%m\ in\ %f\ on\ line\ %l
-
-" Allow a quick way back to traditional make when
-" makeprg is set to something non-makeish.
-" bad hack.
-cabbr Make !make
-
-"Enable autotag.vim
-source ~/.vim/scripts/autotag.vim
-
 
 " Easy cycle through buffers using Ctrl-PgUp/PgDown 
 " similar to FireFox
 nmap <C-PageDown> :bnext<CR>
 nmap <C-PageUp> :bprevious<CR>
-
-" Use Ctrl-d to open/close the NERDTree.
-nmap <C-d> <ESC>:NERDTreeToggle<CR>
-imap <C-d> <ESC>:NERDTreeToggle<CR>
-let NERDChristmasTree=1
-let NERDTreeQuitOnOpen=1
-
-" Bufexplorer options
- "let g:bufExplorerSortBy='extension'  " Sort by file extension.
- "let g:bufExplorerSortBy='fullpath'   " Sort by full file path name.
- "let g:bufExplorerSortBy='mru'        " Sort by most recently used.
- "let g:bufExplorerSortBy='name'       " Sort by the buffer's name.
- "let g:bufExplorerSortBy='number'     " Sort by the buffer's number.
-" Use Ctrl-l to cut to the buf browser from bufexplorer plugin
-" Think l as in 'list the buffers'
-nmap <C-l> <ESC>\bs
-imap <C-l> <ESC>\bs
-
 
 " My own little helpers
 " remove trailing whitespace, put a ; on the end of the line and write the
@@ -647,32 +182,17 @@ nmap ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:set nohls<CR>:<ESC>
 
 " No ; and end of line in python, so just save the file, trim the end and put
 " the cursor at the end of the file.
-"au FileType python iunmap ;;
-"au FileType python nunmap ;;
+" But, we can do something similar for :
 au FileType python imap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR><Insert>o<CR><ESC>
 au FileType python nmap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR><Insert>o<CR><ESC>
-au FileType python nmap :: <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR><Insert>o<CR><ESC>
-au FileType python imap :: <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR><Insert>o<CR><ESC>
+au FileType python nmap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:set nohls<CR><Insert>o<CR><ESC>
+au FileType python imap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:set nohls<CR><Insert>o<CR><ESC>
 
+" Drop the close match then move the cursor in between them
 imap (( ()<Left>
 imap [[ []<Left>
 imap "" ""<Left>
 imap '' ''<Left>
-
-
-
-" This fucks up ctags
-" You can use isk 'is keyword' to change
-" how searching works.
-"set isk=@,48-57,192-255
-"set isk-=_
-
-" Disable binary search on tags.
-"set notagbsearch
-
-" Make the CWD directory follow the current buffer, may brake plugins
-" Not a big fan of this.
-"set autochdir
 
 "http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
 " The above URL also has good stuff for autoclosing matching pairs, like (). 
@@ -693,16 +213,172 @@ vnoremap `  <ESC>`>a`<ESC>`<i`<ESC>
 vnoremap [  <ESC>`>a]<ESC>`<i[<ESC>
 vnoremap ]  <ESC>`>a]<ESC>`<i[<ESC>
 
+" When vimrc is edited, automatically reload it!
+autocmd! bufwritepost .vimrc source ~/.vimrc
+
+set viminfo='20,\"500	" read/write a .viminfo file, don't store more
+			" than 50 lines of registers
+
+" wrap long lines
+set wrap
+" Some wordwrapp foo from
+"http://kmandla.wordpress.com/2009/07/27/proper-word-wrapping-in-vim/
+set formatoptions+=l
+set lbr
+
+set selection=inclusive
+set shortmess=atI
+set wildmenu
+set wildmode=list:longest
+
+" set key timeout, good for remaps
+set timeoutlen=300
+
+" I hate it when the cursorline is an underline
+set cursorline
+hi clear CursorLine 
+
+" Dark background schemes
+"colo elflord
+"colo baycomb 
+"colo evening 
+"colo xoria256 
+"colo ir_black 
+"colo mySlate 
+"colo vividchalk 
+colo jellybeans 
+
+" set linenumbers on
+set number 
+
+" drupal rules
+if has("autocmd")
+    augroup module
+        autocmd BufRead *.module,*.inc set filetype=php
+    augroup END
+endif
+
+" autowrite: "on" saves a lot of trouble
+"set autowrite
+" be aggressive/paranoid and save often automatically.
+set autowriteall
+set	autoread
+
+
+"interactive spell check
+" works only in non-gui mode for now
+map #sp :w<CR>:!ispell %<CR>:e %<CR> 
+
+
+" Use php syntax check when doing :make
+au FileType php setlocal makeprg=php\ -l\ %
+autocmd BufEnter *.php,*.inc,*.module setlocal makeprg=php\ -l\ %
+" Use errorformat for parsing PHP error output
+au FileType php setlocal errorformat=%m\ in\ %f\ on\ line\ %l
+
+" Allow a quick way back to traditional make when
+" makeprg is set to something non-makeish.
+" bad hack.
+cabbr Make !make
+
+
 "http://plasticboy.com/markdown-vim-mode/
 "Markdown format options
 augroup mkd
 	autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
 augroup END
 
+" End More normal Vim tweaks.
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins and external addons
 
-"People and places that I've gotten stuff from
+""" Bufexplorer options
+"let g:bufExplorerSortBy='extension'  " Sort by file extension.
+"let g:bufExplorerSortBy='fullpath'   " Sort by full file path name.
+"let g:bufExplorerSortBy='mru'        " Sort by most recently used.
+"let g:bufExplorerSortBy='name'       " Sort by the buffer's name.
+"let g:bufExplorerSortBy='number'     " Sort by the buffer's number.
+" Use Ctrl-l to cut to the buf browser from bufexplorer plugin
+" Think l as in 'list the buffers'
+nmap <C-l> <ESC>\bs
+imap <C-l> <ESC>\bs
+
+""" comments.vim
+"A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
+" This will detect file types and use oneline comments accordingle. Cool
+" because you visually select regions and comment/uncomment the whole region.
+" works with marked regions to.
+" Just put it in your plugin directory.
+
+""" TagList
+" Set taglist plugin options
+" Display function name in status bar:
+let g:ctags_statusline=1
+" Automatically start script
+let generate_tags=1
+" Displays taglist results in a vertical window:
+let Tlist_Use_Horiz_Window=0
+" Shorter commands to toggle Taglist display
+"nnoremap TT :TlistToggle<CR>
+nnoremap TT :TlistOpen<CR>
+map <F4> :TlistToggle<CR>
+
+let Tlist_Use_Right_Window = 1
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_Enable_Fold_Column = 0
+let Tlist_Compact_Format = 1
+let Tlist_File_Fold_Auto_Close = 1
+
+"Tlist_WinWidth~
+"The default width of the vertically split taglist window is 30. This can be
+"changed by modifying the 'Tlist_WinWidth' variable:
+let Tlist_WinWidth = 60
+
+" Close Tlist when jumping to tag
+let Tlist_Close_On_Select = 1
+"Tlist_Display_Prototype~
+"By default, only the tag name will be displayed in the taglist window. If you
+"like to see tag prototypes instead of names, set the 'Tlist_Display_Prototype'
+"variable to 1. By default, this variable is set to zero and only tag names
+"will be displayed.
+let Tlist_Display_Prototype = 1
+""" End TagList
+
+""" Snipmate 
+" Don't trigger snipmate when using completion
+let g:SnipeMateAllowOmniTab = 1
+
+""" NERDTree
+" Use Ctrl-d to open/close the NERDTree.
+nmap <C-d> <ESC>:NERDTreeToggle<CR>
+imap <C-d> <ESC>:NERDTreeToggle<CR>
+let NERDChristmasTree=1
+let NERDTreeQuitOnOpen=1
+
+""" Bufexplorer options
+ "let g:bufExplorerSortBy='extension'  " Sort by file extension.
+ "let g:bufExplorerSortBy='fullpath'   " Sort by full file path name.
+ "let g:bufExplorerSortBy='mru'        " Sort by most recently used.
+ "let g:bufExplorerSortBy='name'       " Sort by the buffer's name.
+ "let g:bufExplorerSortBy='number'     " Sort by the buffer's number.
+" Use Ctrl-l to cut to the buf browser from bufexplorer plugin
+" Think l as in 'list the buffers'
+nmap <C-l> <ESC>\bs
+imap <C-l> <ESC>\bs
+
+""" JSLint.vim plugin
+"let g:JSLintHighlightErrorLine = 0
+au FileType javascript map <F5> <ESC>:JSLint<CR>
+au FileType javascript imap <F5> <ESC>:JSLint<CR>
+
+"Enable autotag.vim
+source ~/.vim/plugin/autotag.vim
+
+ "End Plugins and external addons
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Misc People and places that I've gotten stuff from
 "http://dancingpenguinsoflight".com"/2009/02/code-navigation-completion-snippets-in-vim/
 "http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/
-
-
