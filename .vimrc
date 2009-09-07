@@ -253,6 +253,9 @@ set timeoutlen=300
 set cursorline
 hi clear CursorLine 
 
+" Explicitly say we want 256 colors.
+set t_Co=256
+
 " Dark background schemes
 "colo elflord
 "colo baycomb 
