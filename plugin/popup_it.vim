@@ -1,8 +1,8 @@
-"    Author:  Vande (vimtexhappy@gmail.com)
+"    Author:  Fvw (vimtexhappy@gmail.com)
 "             a easy config auto complete popup plugin
-"   Version:  v01
-"   Created:  2008-03-14
-"   License:  Copyright (c) 2001-2009, Vande
+"   Version:  v01.01
+"   Created:  2008-09-10
+"   License:  Copyright (c) 2001-2009, Fvw
 "             This program is free software; you can redistribute it and/or
 "             modify it under the terms of the GNU General Public License as
 "             published by the Free Software Foundation, version 2 of the
@@ -13,27 +13,28 @@
 "             PURPOSE.
 "             See the GNU General Public License version 2 for more details.
 "     Usage:  Put this file in your VIM plugin dir  
-"             You can put a user auto popup table in you .vimrc like this:
-"             let useTable[filetype] = [[auto_exec_complete1, key_word], ...]
 "
-"             This is a example for c file.
-"             let usrTable = {}
-"             let usrTable["c"] = [
-"                         \ ["\<c-x>\<c-o>",'\k.','\k->',
-"                         \ 'gtk_\k\{2,\}','GTK_\k\{1,\}','Gtk\k\{1,\}',
-"                         \ 'g_\k\{2,\}', 'G_\k\{1,\}'],
-"                         \ ["\<c-n>",'\k\{3,\}'],
-"                         \]
-"             When you type . -> gtk_(>2char) GTK_(>1char) Gtk_(>1char) 
-"             g_(>2char) G_(>1char) than <c-x><c-o> exec.
-"             When you type >3char <c-n> exec.
+"             You can set usr pupop like this.
+"             let b:useTable = [[auto_exec_complete1, key_word], ...]
+"
+"             All Option is belong to current buffer, 
+"             so if you put it in ther .vimrc you need 
+"
+"             For c gtk Complete:
+"             autocmd FileType c
+"                         \ let b:usrTable = [
+"                         \ ["\<c-x>\<c-o>",'\k\.','\k->',
+"                         \ 'gtk_\k\{2,}','GTK_\k\{1,}','Gtk\k\{1,}',
+"                         \ 'gdk_\k\{2,}','GDK_\k\{1,}','Gdk\k\{1,}',
+"                         \ 'g_\k\{2,}', 'G_\k\{1,}'],
+"                         \ ["\<c-n>",'\k\{3,}'],
+"                         \ ]
+"
 "popup_it.vim: {{{1
 if v:version < 700 || exists("loaded_popup_it")
     finish
 endif
 let loaded_popup_it= 1
-
-let popup_it_in_word = 0
 
 let s:keys    = [
             \ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
@@ -45,58 +46,81 @@ let s:keys    = [
             \ '.', ',', ':', '!', '#', '=', '%', '$', '@', '<', '>',
             \ '/', '\']
 
-autocmd bufreadpost,BufNewFile * call AutoCompleteStart()
-amenu <silent> &Complete.Auto\ Start :call AutoCompleteStart()<CR>
-amenu <silent> &Complete.Auto\ Stop  :call ClearAutoComplete()<CR>
+autocmd bufreadpost,BufNewFile * call <SID>AutoCplRun()
+autocmd FileType * call <SID>AutoCplRun()
+amenu <silent> &Complete.Auto\ Start :call <SID>AutoCplRun()<CR>
+amenu <silent> &Complete.Auto\ Stop  :call <SID>AutoCplClr()<CR>
 
+fun! s:GetSid()
+    return matchstr(expand('<sfile>'), '<SNR>\d\+_')
+endfun
 
-"ClearAutoComplete: {{{1
-fun! ClearAutoComplete()
-    let b:pumtips = ''
+"AutoCplClr: {{{1
+fun! s:AutoCplClr()
+    let b:pumTips = ''
     let b:nowcpl  = []
-    if maparg('<c-b>', 'i') =~ 'AutoSelect'
-        silent! iunmap <buffer> <c-b>
-    endif
     for key in s:keys
-        if maparg(key, 'i') =~ 'AutoComplete'
+        if maparg(key, 'i') =~ 'AutoCpl'
             exec "silent! iunmap <buffer> ".key
         endif
     endfor
+    silent! iunmap <buffer> <c-x><c-o>
+    silent! iunmap <buffer> <c-n>
+    silent! iunmap <buffer> <c-p>
 endfun
 
-"AutoCompleteStart: {{{1
-fun! AutoCompleteStart()
-    call ClearAutoComplete()
+"AutoCplRun: {{{1
+fun! s:AutoCplRun()
+    call s:AutoCplClr()
     call s:GetNowCpl()
-    setlocal completeopt=menuone
+
     if has("autocmd") && exists("+omnifunc")
         if &omnifunc == "" 
             setlocal omnifunc=syntaxcomplete#Complete 
         endif
     endif
-    if maparg('<c-b>', 'i') == ''
-        silent! inoremap <buffer> <c-b> 
-                    \ <c-x><c-o><c-r>=AutoSelect('OmniTips')<cr>
-    endif
+    silent! inoremap <buffer> <expr> <c-x><c-o> 
+                \ (pumvisible()?"\<c-y>":"").
+                \ "\<c-x>\<c-o>\<c-r>=<SID>AutoFix('OmniTips')\<cr>"
+    silent! inoremap <buffer> <expr> <c-n> 
+                \ (pumvisible()?"\<c-n>":
+                \ "\<c-n>\<c-r>=<SID>AutoFix('CtrlNTips')\<cr>")
+
     for key in s:keys
         if maparg(key, 'i') == ''
-            exec "silent! inoremap <buffer> "
-                        \ .key." ".key."\<c-r>=<SID>AutoComplete()\<CR>"
+            exec "silent! inoremap <buffer> ".key." ".key.
+                        \ "\<c-r>=<SID>AutoCpl()\<cr>"
         endif
     endfor
 endfun
 
-"AutoSelect: {{{1
-fun! AutoSelect(who)
+"AutoFix: {{{1
+fun! s:AutoFix(who)
     if !pumvisible() 
-        return ''
+        call feedkeys("\<c-e>", "n")
+    else
+        let b:pumTips = a:who
+        call feedkeys("\<c-p>", "n")
     endif
-    let b:pumtips = a:who
-    return "\<c-p>"
+    return ""
 endfun
 
-"AutoComplete: {{{1
-fun! s:AutoComplete()
+"AutoCpl: {{{1
+fun! s:AutoCpl()
+
+    "ignore
+    if &paste 
+        return ""
+    end
+
+    if pumvisible() && (b:pumTips == "SnipTips" 
+                \ ||b:pumTips == "SelTips"
+                \ ||b:pumTips == "CtrlNTips"
+                \ ||b:pumTips == "OmniTips"
+                \)
+        return ""
+    endif
+
     let iLine = getline('.')[:col('.')-2]
     let i = 0
     for cpl in b:nowcpl
@@ -106,11 +130,23 @@ fun! s:AutoComplete()
                 let first_item = 0
                 continue
             endif
-            if iLine =~ '\V\C'.pattern.'\$'
-                if pumvisible() && b:pumtips == "AutoTips".i
+            if pattern != "" && iLine =~ '\m\C'.pattern.'$'
+                if !(pumvisible() && b:pumTips == "AutoTips".i)
+                    "\C-r = don't see map
+                    "return cpl[0]."\<c-r>=".s:GetSid()."AutoFix('AutoTips".i."')\<CR>"
+                    "Feedkeys seed map
+                    if cpl[0] == "\<c-n>" 
+                                \|| cpl[0] == "\<c-x>\<c-o>" 
+                        let mapFlag = 'n'
+                    else
+                        let mapFlag = 'm'
+                    end
+                    call feedkeys(cpl[0].
+                                \ "\<c-r>=".s:GetSid()."AutoFix('AutoTips".i."')\<CR>"
+                                \ , mapFlag)
                     return ""
-                else 
-                    return cpl[0]."\<c-r>=AutoSelect('AutoTips".i."')\<CR>"
+                else
+                    return ""
                 endif
             endif
         endfor
@@ -138,8 +174,8 @@ endfun
 
 "GetNowCpl: {{{1
 fun! s:GetNowCpl()
-    if exists("g:usrTable") && has_key(g:usrTable, &ft)
-        call s:MyExtend(b:nowcpl, g:usrTable[&ft])
+    if exists("b:usrTable") && type(b:usrTable) ==  type([])
+        call s:MyExtend(b:nowcpl, b:usrTable)
     endif
     if has_key(s:defTable, &ft)
         call s:MyExtend(b:nowcpl, s:defTable[&ft])
@@ -147,14 +183,22 @@ fun! s:GetNowCpl()
     call s:MyExtend(b:nowcpl, s:defTable['*'])
 endfun
 
-"defTable: {{{1
+"def Table: {{{1
 let s:defTable = {}
 let s:defTable["*"]    = [
-            \ ["\<c-n>",'\k\{3,\}']
+            \ ["\<c-n>",'\k\{4,\}']
             \]
 let s:defTable["c"]    = [
             \ ["\<c-x>\<c-o>",'\k.','\k->'],
-            \ ["\<c-n>",'\k\{3,\}'],
+            \ ["\<c-n>",'\k\{4,\}'],
+            \]
+let s:defTable["javascript"]    = [
+            \ ["\<c-x>\<c-o>",'\k.'],
+            \ ["\<c-n>",'\k\{4,\}'],
+            \]
+let s:defTable["php"]    = [
+            \ ["\<c-x>\<c-o>",'\k.'],
+            \ ["\<c-n>",'\k\{4,\}'],
             \]
 let s:defTable["tex"]  = [
             \ ["\<c-n>",'\\\k\{2,\}','\([\|{\)\.\*\k\{2,\}'],
@@ -162,4 +206,5 @@ let s:defTable["tex"]  = [
 let s:defTable["html"] = [
             \ ["\<c-x>\<c-o>",'<','</','<\.\*\s\+\k','<\.\*\k\+\s\*="\k'],
             \]
+
 " vim: set ft=vim ff=unix fdm=marker :
