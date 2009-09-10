@@ -126,10 +126,12 @@ inoremap <expr> <CR>  pumvisible()?"\<C-Y>":"\<CR>"
 "endfunction
 "inoremap <Tab> <C-R>=CleverTab()<CR>
 
+"set complete+=k/usr/shar/dict/*
 
 " Auto close the preview window
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
 
 " My snipmate hack to work with popup_it.vim
 let g:SnipeMateAllowOmniTab = 1
@@ -198,10 +200,13 @@ nmap ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:set nohls<CR>:<ESC>
 " No ; and end of line in python, so just save the file, trim the end and put
 " the cursor at the end of the file.
 " But, we can do something similar for :
-au FileType python imap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR><Insert>o<CR><ESC>
-au FileType python nmap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR><Insert>o<CR><ESC>
-au FileType python nmap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:set nohls<CR><Insert>o<CR><ESC>
-au FileType python imap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:set nohls<CR><Insert>o<CR><ESC>
+au FileType python imap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR>o<ESC>
+au FileType python nmap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR>o<ESC>
+au FileType python nmap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:set nohls<CR>o
+au FileType python imap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:set nohls<CR>o
+
+au FileType php nmap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:set nohls<CR>o
+au FileType php imap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:set nohls<CR>o
 
 " Drop the close match then move the cursor in between them
 imap (( ()<Left>
@@ -260,11 +265,11 @@ set t_Co=256
 "colo elflord
 "colo baycomb 
 "colo evening 
-"colo xoria256 
+colo xoria256 
 "colo ir_black 
 "colo mySlate 
 "colo vividchalk 
-colo jellybeans 
+"colo jellybeans 
 
 " set linenumbers on
 set number 
@@ -296,7 +301,7 @@ au FileType php setlocal errorformat=%m\ in\ %f\ on\ line\ %l
 
 " Allow a quick way back to traditional make when
 " makeprg is set to something non-makeish.
-" bad hack.
+" bad hack. Need make better use of the quickfix instead using make.
 cabbr Make !make
 
 
@@ -306,22 +311,25 @@ augroup mkd
 	autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
 augroup END
 
+" I like to put system library tags in a different tag file that
+" is only generated once in a while.
+au FileType php set tags += "~/.tags/tags-php"
+au FileType python set tags += "~/.tags/tags-python"
+
 " End More normal Vim tweaks.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins and external addons
 
-""" Bufexplorer options
-"let g:bufExplorerSortBy='extension'  " Sort by file extension.
-"let g:bufExplorerSortBy='fullpath'   " Sort by full file path name.
-"let g:bufExplorerSortBy='mru'        " Sort by most recently used.
-"let g:bufExplorerSortBy='name'       " Sort by the buffer's name.
-"let g:bufExplorerSortBy='number'     " Sort by the buffer's number.
+""" Bufexplorer
 " Use Ctrl-l to cut to the buf browser from bufexplorer plugin
 " Think l as in 'list the buffers'
-nmap <C-l> <ESC>\bs
-imap <C-l> <ESC>\bs
+"let g:bufExplorerFindActive = 0
+"nmap <C-l> <ESC>\bv
+"imap <C-l> <ESC>\bv
+nmap <silent> <c-l> <esc>:BufExplorer<CR>
+imap <silent> <c-l> <esc>:BufExplorer<CR>
 
 """ comments.vim
 "A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
@@ -375,19 +383,11 @@ imap <C-d> <ESC>:NERDTreeToggle<CR>
 let NERDChristmasTree=1
 let NERDTreeQuitOnOpen=1
 
-""" Bufexplorer options
- "let g:bufExplorerSortBy='extension'  " Sort by file extension.
- "let g:bufExplorerSortBy='fullpath'   " Sort by full file path name.
- "let g:bufExplorerSortBy='mru'        " Sort by most recently used.
- "let g:bufExplorerSortBy='name'       " Sort by the buffer's name.
- "let g:bufExplorerSortBy='number'     " Sort by the buffer's number.
-" Use Ctrl-l to cut to the buf browser from bufexplorer plugin
-" Think l as in 'list the buffers'
-nmap <C-l> <ESC>\bs
-imap <C-l> <ESC>\bs
-
 """ JSLint.vim plugin
-"let g:JSLintHighlightErrorLine = 0
+
+" Turn off error highlighting. I like having just the
+" quickfix window.
+let g:JSLintHighlightErrorLine = 0
 au FileType javascript map <F5> <ESC>:JSLint<CR>
 au FileType javascript imap <F5> <ESC>:JSLint<CR>
 
