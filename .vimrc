@@ -198,15 +198,15 @@ imap ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:set nohls<CR>:<ESC>
 nmap ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:set nohls<CR>:<ESC>
 
 " No ; and end of line in python, so just save the file, trim the end and put
-" the cursor at the end of the file.
+" the cursor at the end of the line.
 " But, we can do something similar for :
 au FileType python imap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR>o<ESC>
 au FileType python nmap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR>o<ESC>
 au FileType python nmap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:set nohls<CR>o
 au FileType python imap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:set nohls<CR>o
 
-au FileType php nmap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:set nohls<CR>o
-au FileType php imap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:set nohls<CR>o
+au FileType php,javascript nmap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:set nohls<CR>o
+au FileType php,javascript imap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:set nohls<CR>o
 
 " Drop the close match then move the cursor in between them
 imap (( ()<Left>
