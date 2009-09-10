@@ -13,12 +13,23 @@ function! CleverSnip()
 
 	return TriggerSnippet() 
 endfunction
+function! CleverBackSnip()
+	if pumvisible() 
+		return "\<C-P>"
+	endif
 
+	return BackwardsSnippet() 
+endfunction
+
+" It would be cool to trigger the snippet if it exists
+" but otherwise return a tab.
 if exists( "g:SnipeMateAllowOmniTab" )
 	if g:SnipeMateAllowOmniTab == 1
 		ino <silent> <tab> <c-r>=CleverSnip()<cr>
+		ino <silent> <s-tab> <c-r>=CleverBackSnip()<cr>
 	else
 		ino <silent> <tab> <c-r>=TriggerSnippet()<cr>
+		ino <silent> <s-tab> <c-r>=BackwardsSnippet()<cr>
 	endif
 endif
 
