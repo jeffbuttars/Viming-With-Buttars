@@ -265,7 +265,8 @@ set t_Co=256
 "colo elflord
 "colo baycomb 
 "colo evening 
-colo xoria256 
+"colo xoria256 
+colo wombat256
 "colo ir_black 
 "colo mySlate 
 "colo vividchalk 
