@@ -1,6 +1,6 @@
 "    Author:  Fvw (vimtexhappy@gmail.com)
 "             a easy config auto complete popup plugin
-"   Version:  v01.01
+"   Version:  v01.02
 "   Created:  2008-09-10
 "   License:  Copyright (c) 2001-2009, Fvw
 "             This program is free software; you can redistribute it and/or
@@ -66,7 +66,7 @@ fun! s:AutoCplClr()
     endfor
     silent! iunmap <buffer> <c-x><c-o>
     silent! iunmap <buffer> <c-n>
-    silent! iunmap <buffer> <c-p>
+    silent! iunmap <buffer> <c-b>
 endfun
 
 "AutoCplRun: {{{1
@@ -85,6 +85,9 @@ fun! s:AutoCplRun()
     silent! inoremap <buffer> <expr> <c-n> 
                 \ (pumvisible()?"\<c-n>":
                 \ "\<c-n>\<c-r>=<SID>AutoFix('CtrlNTips')\<cr>")
+    silent! inoremap <buffer> <expr> <c-b>
+                \ (pumvisible()?"\<c-y>":"").
+                \ "\<c-n>\<c-r>=<SID>AutoFix('CtrlNTips')\<cr>"
 
     for key in s:keys
         if maparg(key, 'i') == ''
@@ -135,13 +138,20 @@ fun! s:AutoCpl()
                     "\C-r = don't see map
                     "return cpl[0]."\<c-r>=".s:GetSid()."AutoFix('AutoTips".i."')\<CR>"
                     "Feedkeys seed map
+                    let mapFlag = 'm'
                     if cpl[0] == "\<c-n>" 
                                 \|| cpl[0] == "\<c-x>\<c-o>" 
                         let mapFlag = 'n'
                     else
                         let mapFlag = 'm'
                     end
-                    call feedkeys(cpl[0].
+                    let stopCpl = ""
+                    if pumvisible()
+                        let stopCpl = "\<c-e>"
+                    endif
+                    call feedkeys(
+                                \ stopCpl.
+                                \ cpl[0].
                                 \ "\<c-r>=".s:GetSid()."AutoFix('AutoTips".i."')\<CR>"
                                 \ , mapFlag)
                     return ""
@@ -186,25 +196,28 @@ endfun
 "def Table: {{{1
 let s:defTable = {}
 let s:defTable["*"]    = [
-            \ ["\<c-n>",'\k\{4,\}']
+            \ ["\<c-x>\<c-f>",'\f/\f\{1,}'],
+            \ ["\<c-n>",'\k\@<!\k\{3,20}'],
             \]
 let s:defTable["c"]    = [
-            \ ["\<c-x>\<c-o>",'\k.','\k->'],
+            \ ["\<c-x>\<c-o>",'\k\.','\k->'],
             \ ["\<c-n>",'\k\{4,\}'],
             \]
-let s:defTable["javascript"]    = [
-            \ ["\<c-x>\<c-o>",'\k.'],
+let s:defTable["tex"]  = [
+            \ ["\<c-n>",'\\\k\{3,20}','\([\|{\)\k\{3,20}'],
+            \]
+let s:defTable["html"] = [
+            \ ["\<c-x>\<c-o>",'&','<','</','<.*\s\+\k','<.*\k\+\s*="\k'],
+            \]
+let s:defTable["css"] = [
+            \ ["\<c-x>\<c-o>",'\(\k\|-)\@<!\(\k\|-\)\{2,}'],
+            \]
+let s:defTable["javascript"] = [
+            \ ["\<c-x>\<c-o>",'\k\.'],
             \ ["\<c-n>",'\k\{4,\}'],
             \]
 let s:defTable["php"]    = [
             \ ["\<c-x>\<c-o>",'\k.'],
             \ ["\<c-n>",'\k\{4,\}'],
             \]
-let s:defTable["tex"]  = [
-            \ ["\<c-n>",'\\\k\{2,\}','\([\|{\)\.\*\k\{2,\}'],
-            \]
-let s:defTable["html"] = [
-            \ ["\<c-x>\<c-o>",'<','</','<\.\*\s\+\k','<\.\*\k\+\s\*="\k'],
-            \]
-
 " vim: set ft=vim ff=unix fdm=marker :
