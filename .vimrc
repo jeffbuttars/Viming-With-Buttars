@@ -163,7 +163,9 @@ vnoremap <silent> # :call VisualSearch('b')<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " More normal Vim tweaks.
 " make a diff split vertical by default
-set diffopt=vertical
+" ignore whitespace
+" show 10 lines of context
+set diffopt=filler,vertical,iwhite,context:10
 
 "Use real tabs, 4 spaces
 set tabstop=4
@@ -259,6 +261,8 @@ set cursorline
 hi clear CursorLine 
 
 " Explicitly say we want 256 colors.
+" When this is set it can mess up using vim on a real console.
+"  Definitely in Fedora 11.
 set t_Co=256
 
 " Dark background schemes
@@ -266,11 +270,12 @@ set t_Co=256
 "colo baycomb 
 "colo evening 
 "colo xoria256 
-colo wombat256
+"colo wombat256
+"colo pyte " A white theme
 "colo ir_black 
 "colo mySlate 
 "colo vividchalk 
-"colo jellybeans 
+colo jellybeans 
 
 " set linenumbers on
 set number 
@@ -314,8 +319,23 @@ augroup END
 
 " I like to put system library tags in a different tag file that
 " is only generated once in a while.
-au FileType php set tags += "~/.tags/tags-php"
+"au FileType php set tags += "~/.tags/tags-php"
 au FileType python set tags += "~/.tags/tags-python"
+au FileType c set tags += "~/.tags/tags-c
+
+" Remove menu bar from gvim
+set guioptions-=m
+
+" Remove toolbar from gvim
+set guioptions-=T
+" Set gvim font. I like the droid
+set guifont=Droid\ Sans\ Mono\ 12
+
+"     dictionary: english words first
+" add any text based dictionaries to the list.
+" Also, you can use C-X,C-K to autocomplete a word
+" using the dictionary.
+set dictionary=/usr/share/dict/words,/usr/dict/words,/usr/dict/extra.words
 
 " End More normal Vim tweaks.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
