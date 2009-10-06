@@ -211,10 +211,10 @@ au FileType php,javascript nmap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<
 au FileType php,javascript imap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:set nohls<CR>o
 
 " Drop the close match then move the cursor in between them
-imap (( ()<Left>
-imap [[ []<Left>
-imap "" ""<Left>
-imap '' ''<Left>
+"imap (( ()<Left>
+"imap [[ []<Left>
+"imap "" ""<Left>
+"imap '' ''<Left>
 
 "http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
 " The above URL also has good stuff for autoclosing matching pairs, like (). 

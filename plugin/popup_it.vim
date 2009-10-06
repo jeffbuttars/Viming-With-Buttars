@@ -93,7 +93,7 @@ fun! s:AutoCplRun()
         if maparg(key, 'i') == ''
             exec "silent! inoremap <buffer> ".key." ".key.
                         \ "\<c-r>=<SID>AutoCpl()\<cr>"
-        endif
+		endif
     endfor
 endfun
 
@@ -110,7 +110,7 @@ endfun
 
 "AutoCpl: {{{1
 fun! s:AutoCpl()
-
+	 
     "ignore
     if &paste 
         return ""
@@ -218,6 +218,11 @@ let s:defTable["javascript"] = [
             \]
 let s:defTable["php"]    = [
             \ ["\<c-x>\<c-o>",'\k.'],
+            \ ["\<c-n>",'\k\{4,\}'],
+            \]
+let s:defTable["python"]    = [
+            \ ["\<c-x>\<c-o>",'\k.'],
+            \ ["\<c-x>\<c-o>",'\k\{3,\}'],
             \ ["\<c-n>",'\k\{4,\}'],
             \]
 " vim: set ft=vim ff=unix fdm=marker :
