@@ -111,8 +111,6 @@ imap <c-y> <c-y><esc>
 set completeopt=menuone,preview
 " Map omnicomplete to Control-o
 imap <c-o> <C-X><C-O> 
-" Enter will do a simple accept of the selection
-inoremap <expr> <CR>  pumvisible()?"\<C-Y>":"\<CR>"
 " When the completion window is open, shift will cycle
 " forward through the menu.
 " This does not work with snipmate, so I have a hack
@@ -125,6 +123,19 @@ inoremap <expr> <CR>  pumvisible()?"\<C-Y>":"\<CR>"
 	"return "\<C-N>"
 "endfunction
 "inoremap <Tab> <C-R>=CleverTab()<CR>
+
+" Enter will do a simple accept of the selection
+"Moved this into delimitMate to get them
+"to work together
+"function! CleverCR()
+	"if !pumvisible() 
+		"return "\<CR>"
+	"endif
+
+	"return "\<C-Y>"
+"endfunction
+"inoremap <CR> <C-R>=CleverCR()<CR>
+
 
 "set complete+=k/usr/shar/dict/*
 
@@ -211,10 +222,19 @@ au FileType php,javascript nmap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<
 au FileType php,javascript imap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:set nohls<CR>o
 
 " Drop the close match then move the cursor in between them
+let b:delimitMate_autoclose = 0
 "imap (( ()<Left>
 "imap [[ []<Left>
+"imap {{ {}<Left>
 "imap "" ""<Left>
 "imap '' ''<Left>
+" Use this mapping in conjuction with delimitMate 
+" is great if the delimitMate_autoclose is off.
+imap (( ()
+imap [[ []
+imap {{ {}
+imap "" ""
+imap '' ''
 
 "http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
 " The above URL also has good stuff for autoclosing matching pairs, like (). 
@@ -414,6 +434,16 @@ au FileType javascript imap <F5> <ESC>:JSLint<CR>
 
 "Enable autotag.vim
 source ~/.vim/plugin/autotag.vim
+
+""DelimitMate
+au FileType text,markdown,mkd let b:delimitMate_autoclose = 0
+
+" Custom DelimitMate pairs.
+"let delimitMate = "(:),[:],{:},<:>"
+au FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:},<:>"
+au FileType sh let b:delimitMate_matchpairs = "(:),[:],{:}"
+au FileType python let b:delimitMate_matchpairs = "(:),[:],{:}"
+
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
