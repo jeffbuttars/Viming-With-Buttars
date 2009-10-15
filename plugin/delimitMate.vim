@@ -326,6 +326,11 @@ function! s:RestoreRegister() " {{{1
 endfunction " }}}1
 
 function! s:ExpandReturn() "{{{1
+
+	if pumvisible() 
+		return "\<C-Y>"
+	endif
+
 	if s:WithinEmptyPair()
 		return s:expand_return
 	else
