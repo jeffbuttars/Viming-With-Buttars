@@ -125,7 +125,7 @@ if &background=='light'
     endif
     hi TabLine		gui=underline
     hi TabLineFill	gui=underline
-    hi CursorLine	gui=underline
+    "hi CursorLine	gui=underline
   endif
 
   " For reversed stuffs, clear the reversed prop and set the bold prop again
@@ -222,7 +222,6 @@ if &background=='light'
       hi TabLineFill	ctermfg=fg	ctermbg=250	cterm=NONE
       hi TabLineSel	ctermfg=fg	ctermbg=NONE	cterm=NONE
       hi CursorColumn	ctermfg=NONE	ctermbg=216
-      hi CursorLine	ctermfg=NONE	ctermbg=NONE	cterm=underline
       hi MatchParen	ctermfg=NONE	ctermbg=150
     endif
 
@@ -561,7 +560,7 @@ elseif &background=='dark'
       hi TabLine	cterm=underline  
       hi TabLineFill	cterm=underline  
       hi Underlined	cterm=underline  
-      hi CursorLine	cterm=underline 
+      "hi CursorLine	cterm=underline 
     endif
 
   endif " t_Co
@@ -590,6 +589,8 @@ hi link		CalToday	PreProc
 " these are used by TagList
 hi link		MyTagListTagName	IncSearch
 hi link		MyTagListTagScope	Constant
+
+hi clear  CursorLine     
 
 " COLOR LINKS DEFINE END
 
