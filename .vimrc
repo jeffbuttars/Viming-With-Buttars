@@ -450,14 +450,3 @@ let g:MenuDelayedDelay = '.7'
 " Misc People and places that I've gotten stuff from
 "http://dancingpenguinsoflight".com"/2009/02/code-navigation-completion-snippets-in-vim/
 "http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/
-"
-"
-"
-
-"let moveflag = 0
-"let k = 1
-"au CursorHold * echo k | let k+=1 | let moveflag=1 | exe "normal l"
-"au CursorMoved * if moveflag==1 | exe "normal h" | let moveflag=0 | endif
-"set noswapfile
-"set ut=5000
-
