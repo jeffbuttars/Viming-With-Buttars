@@ -295,6 +295,8 @@ set t_Co=256
 "colo ir_black 
 "colo mySlate 
 "colo vividchalk 
+" A light theme.
+"colo peaksea 
 colo jellybeans 
 
 " set linenumbers on
@@ -316,7 +318,8 @@ set	autoread
 
 "interactive spell check
 " works only in non-gui mode for now
-map #sp :w<CR>:!ispell %<CR>:e %<CR> 
+""map #sp :w<CR>:!ispell %<CR>:e %<CR> 
+au FileType text,mkd setlocal spell spelllang=en_us
 
 
 " Use php syntax check when doing :make
@@ -432,18 +435,14 @@ let g:JSLintHighlightErrorLine = 0
 au FileType javascript map <F5> <ESC>:JSLint<CR>
 au FileType javascript imap <F5> <ESC>:JSLint<CR>
 
+au FileType python nmap <F5> <ESC>:w<CR>:!python %<CR>
+au FileType python imap <F5> <ESC>:w<CR>:!python %<CR>
+
 "Enable autotag.vim
 source ~/.vim/plugin/autotag.vim
 
-""DelimitMate
-au FileType text,markdown,mkd let b:delimitMate_autoclose = 0
-
-" Custom DelimitMate pairs.
-"let delimitMate = "(:),[:],{:},<:>"
-au FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:},<:>"
-au FileType sh let b:delimitMate_matchpairs = "(:),[:],{:}"
-au FileType python let b:delimitMate_matchpairs = "(:),[:],{:}"
-
+" Set Menu Delay
+let g:MenuDelayedDelay = '.7' 
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -451,3 +450,14 @@ au FileType python let b:delimitMate_matchpairs = "(:),[:],{:}"
 " Misc People and places that I've gotten stuff from
 "http://dancingpenguinsoflight".com"/2009/02/code-navigation-completion-snippets-in-vim/
 "http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/
+"
+"
+"
+
+"let moveflag = 0
+"let k = 1
+"au CursorHold * echo k | let k+=1 | let moveflag=1 | exe "normal l"
+"au CursorMoved * if moveflag==1 | exe "normal h" | let moveflag=0 | endif
+"set noswapfile
+"set ut=5000
+
