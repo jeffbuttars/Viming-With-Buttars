@@ -222,7 +222,7 @@ au FileType php,javascript nmap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<
 au FileType php,javascript imap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:set nohls<CR>o
 
 " Drop the close match then move the cursor in between them
-let b:delimitMate_autoclose = 0
+let g:delimitMate_autoclose = 0
 "imap (( ()<Left>
 "imap [[ []<Left>
 "imap {{ {}<Left>
