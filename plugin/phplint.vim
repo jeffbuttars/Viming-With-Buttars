@@ -1,3 +1,7 @@
+if exists("b:phplint_plugin_loaded")
+  finish
+endif
+
 fun! s:PHPLintRaw()
 	echo system("php -l ".expand('%'))
 endfun
@@ -30,3 +34,4 @@ endfun
 command! PHPLint call s:PHPLint()
 command! PHPLintRaw call s:PHPLintRaw()
 
+let b:phplint_plugin_loaded = 1
