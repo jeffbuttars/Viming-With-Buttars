@@ -323,11 +323,6 @@ au FileType text,mkd setlocal spell spelllang=en_us
 
 
 
-" Allow a quick way back to traditional make when
-" makeprg is set to something non-makeish.
-" bad hack. Need make better use of the quickfix instead using make.
-"cabbr Make !make
-
 
 "http://plasticboy.com/markdown-vim-mode/
 "Markdown format options
