@@ -81,8 +81,8 @@ def MenuDelayedShowMenu():
 	#return
 
 	# If we're not in insert mode don't do anything
-	if 'i' != vim.eval( 'mode()'):
-		return
+	#if 'i' != vim.eval( 'mode()'):
+	#	return
 	# make sure the current character isn't a blank
 	try:
 		pos = vim.current.window.cursor
@@ -324,7 +324,6 @@ let s:defTable["php"]    = [
             \]
 let s:defTable["python"]    = [
             \ ["\<c-x>\<c-o>",'\k.'],
-            \ ["\<c-x>\<c-o>",'\k\{3,\}'],
-            \ ["\<c-n>",'\k\{4,\}'],
+            \ ["\<c-n>",'\k\{3,\}'],
             \]
 " vim: set ft=vim ff=unix fdm=marker :
