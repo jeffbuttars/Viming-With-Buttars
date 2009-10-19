@@ -7,6 +7,6 @@ endif
 
 augroup markdown
 	au!
-	au BufRead,BufNewFile *.mkd setfiletype mkd
+	au BufRead,BufNewFile *.mkd,*.markdown setfiletype mkd
 augroup END
 
