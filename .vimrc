@@ -322,16 +322,11 @@ set	autoread
 au FileType text,mkd setlocal spell spelllang=en_us
 
 
-" Use php syntax check when doing :make
-au FileType php setlocal makeprg=php\ -l\ %
-autocmd BufEnter *.php,*.inc,*.module setlocal makeprg=php\ -l\ %
-" Use errorformat for parsing PHP error output
-au FileType php setlocal errorformat=%m\ in\ %f\ on\ line\ %l
 
 " Allow a quick way back to traditional make when
 " makeprg is set to something non-makeish.
 " bad hack. Need make better use of the quickfix instead using make.
-cabbr Make !make
+"cabbr Make !make
 
 
 "http://plasticboy.com/markdown-vim-mode/
@@ -437,6 +432,9 @@ au FileType javascript imap <F5> <ESC>:JSLint<CR>
 
 au FileType python nmap <F5> <ESC>:w<CR>:!python %<CR>
 au FileType python imap <F5> <ESC>:w<CR>:!python %<CR>
+
+" php synax check via 'php -l'
+au FileType php map <F5> <ESC>:w<CR>:PHPLint<CR>
 
 "Enable autotag.vim
 source ~/.vim/plugin/autotag.vim
