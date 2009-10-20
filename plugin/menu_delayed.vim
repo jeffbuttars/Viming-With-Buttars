@@ -70,55 +70,23 @@ fun! s:GetSid()
     return matchstr(expand('<sfile>'), '<SNR>\d\+_')
 endfun
 
+
 python << PEOF
-import vim,os,threading,subprocess
+import vim,threading,subprocess
 ptimer = None
-#cur_cmd = ""
-SID = vim.eval("matchstr(expand('<sfile>'), '<SNR>\d\+_')")
 
 def MenuDelayedShowMenu():
-	#print cur_cmd
-	#return
-
-	# If we're not in insert mode don't do anything
-	#if 'i' != vim.eval( 'mode()'):
-	#	return
-	# make sure the current character isn't a blank
-	try:
-		pos = vim.current.window.cursor
-		cc = vim.current.buffer[pos[0]-1][pos[1]-1]
-		#print "%s,%s %s" % (pos[0],pos[1],cc)
-		if cc == "":
-			return
-	except Exception, e:
-		return
-
 
 	sname = vim.eval( 'v:servername' )
 	if not sname or sname == "":
 		return
 
-	# find if we should issue and command and if so, what is it. 
-	cur_cmd = vim.eval( "%sMenuDelayedCpl()" % SID )
-	if not cur_cmd or cur_cmd == "":
-		return
-
 	try:
-		subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-send", cur_cmd]  )
+		dnull = open( '/dev/null' , 'w' )
+		subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-expr", "MenuDelayedAsyncCpl()"],
+	  		stdout=dnull, stderr=dnull )
 	except:
 		pass
-
-
-def MenuDelayedCheckContext():
-	global ptimer
-	if ptimer != None:
-		ptimer.cancel()
-
-	delay = vim.eval("g:MenuDelayedDelay")
-	if not delay:
-		delay = '.8'
-	ptimer = threading.Timer( float(delay), MenuDelayedShowMenu )
-	ptimer.start()
 PEOF
 
 "MenuDelayedCheckContext: {{{1
@@ -129,24 +97,16 @@ fun! s:MenuDelayedCheckContext()
         return ""
     end
 
-    if pumvisible() && (b:pumTips == "SnipTips" 
-                \ ||b:pumTips == "SelTips"
-                \ ||b:pumTips == "CtrlNTips"
-                \ ||b:pumTips == "OmniTips"
-                \)
-        return ""
-    endif
-
-	let cpl_cmd =  "OK"
-
 python << PEOF
-global SID
-SID = vim.eval("matchstr(expand('<sfile>'), '<SNR>\d\+_')")
-#print "SID %s" % SID
+global ptimer
+if ptimer:
+	ptimer.cancel()
 
-#cur_cmd = vim.eval('cpl_cmd')
-#if cur_cmd != "":
-MenuDelayedCheckContext()
+delay = vim.eval("g:MenuDelayedDelay")
+if not delay:
+	delay = '.8'
+ptimer = threading.Timer( float(delay), MenuDelayedShowMenu )
+ptimer.start()
 PEOF
 	return ""
 endfun
@@ -205,8 +165,7 @@ fun! s:MenuDelayedFix(who)
     return ""
 endfun
 
-"MenuDelayedCpl: {{{1
-fun! s:MenuDelayedCpl()
+fun! MenuDelayedAsyncCpl()
 
 	if "i" != mode()
         return ""
@@ -216,6 +175,22 @@ fun! s:MenuDelayedCpl()
     if &paste 
         return ""
     endif
+
+	" Make sure the current character
+	" is in the allowed key map. In the time
+	" past since the trigger the cursor may be on a
+	" char we don't want to complete.
+    let nchar = getline('.')[col('.')-2]
+	let goahead = 0
+	for key in s:keys
+		if key == nchar
+			let goahead = 1
+			break
+		endif
+	endfor
+	if 0 == goahead
+		return ""
+	endif
 
     if pumvisible() && (b:pumTips == "SnipTips" 
                 \ ||b:pumTips == "SelTips"
@@ -243,15 +218,13 @@ fun! s:MenuDelayedCpl()
                     if cpl[0] == "\<c-n>" 
                                 \|| cpl[0] == "\<c-x>\<c-o>" 
                         let mapFlag = 'n'
-                    else
-                        let mapFlag = 'm'
                     end
                     let stopCpl = ""
                     if pumvisible()
                         let stopCpl = "\<c-e>"
                     endif
-					return stopCpl.cpl[0]."\<c-r>=".s:GetSid()."MenuDelayedFix('AutoTips".i."')\<CR>"
-					"return "\<c-r>=".s:GetSid()."MenuDelayedCpl()\<CR>"
+					let cplcmd = stopCpl.cpl[0]."\<c-r>=".s:GetSid()."MenuDelayedFix('AutoTips".i."')\<CR>"
+					call feedkeys( cplcmd, mapFlag ) 
                 else
                     return ""
                 endif
