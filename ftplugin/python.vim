@@ -54,5 +54,4 @@ command! PyLint call PythonGrep('pylint')
 "autocmd BufWrite *.{py} :Pychecker
 "autocmd BufWrite *.{py} :Pylint
 
-map <F1> <ESC>:w<CR>:PyFlakes<CR>
 
