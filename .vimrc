@@ -332,7 +332,6 @@ augroup END
 
 " I like to put system library tags in a different tag file that
 " is only generated once in a while.
-"au FileType php set tags += "~/.tags/tags-php"
 au FileType python set tags += "~/.tags/tags-python"
 au FileType c set tags += "~/.tags/tags-c
 
@@ -422,20 +421,24 @@ let NERDTreeQuitOnOpen=1
 " Turn off error highlighting. I like having just the
 " quickfix window.
 let g:JSLintHighlightErrorLine = 0
-au FileType javascript map <F5> <ESC>:JSLint<CR>
+let g:JSLintIgnoreImpliedGlobals = 1
+au FileType javascript nmap <F5> <ESC>:JSLint<CR>
 au FileType javascript imap <F5> <ESC>:JSLint<CR>
 
 au FileType python nmap <F5> <ESC>:w<CR>:!python %<CR>
 au FileType python imap <F5> <ESC>:w<CR>:!python %<CR>
+au FileType python nmap <F1> <ESC>:w<CR>:PyFlakes<CR>
+au FileType python imap <F1> <ESC>:w<CR>:PyFlakes<CR>
 
 " php synax check via 'php -l'
-au FileType php map <F5> <ESC>:w<CR>:PHPLint<CR>
+au FileType php nmap <F5> <ESC>:w<CR>:PHPLint<CR>
+au FileType php imap <F5> <ESC>:w<CR>:PHPLint<CR>
 
 "Enable autotag.vim
 source ~/.vim/plugin/autotag.vim
 
-" Set Menu Delay
-let g:MenuDelayedDelay = '.7' 
+" Set NiceMenu Delay
+let g:NiceMenuDelay = '.6' 
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
