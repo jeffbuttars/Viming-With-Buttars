@@ -57,7 +57,7 @@ let s:keys    = [
             \ 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2',
             \ '3', '4', '5', '6', '7', '8', '9', '-', '_', '~', '^',
             \ '.', ',', ':', '!', '#', '=', '%', '$', '@', '<', '>',
-            \ '/', '\']
+            \ '/', '\', '']
 
 autocmd bufreadpost,BufNewFile * call <SID>NiceMenuCplRun()
 autocmd FileType * call <SID>NiceMenuCplRun()
@@ -96,6 +96,11 @@ fun! s:NiceMenuCheckContext()
     if &paste 
         return ""
     end
+
+	" Still in testing
+	"if pumvisible()
+		"return ""
+	"endif
 
 python << PEOF
 global ptimer
@@ -176,6 +181,11 @@ fun! NiceMenuAsyncCpl()
         return ""
     endif
 
+	" Not sure about this yet.
+    "if pumvisible()
+        "return ""
+    "endif
+
 	" Make sure the current character
 	" is in the allowed key map. In the time
 	" past since the trigger the cursor may be on a
@@ -223,9 +233,8 @@ fun! NiceMenuAsyncCpl()
                     if pumvisible()
                         let stopCpl = "\<c-e>"
                     endif
-					"let cplcmd = stopCpl.cpl[0]."\<c-r>=".s:GetSid()."NiceMenuFix('AutoTips".i."')\<CR>"
-					echo cpl[0]
-					let cplcmd = cpl[0]
+					let cplcmd = stopCpl.cpl[0]."\<c-r>=".s:GetSid()."NiceMenuFix('AutoTips".i."')\<CR>"
+					"let cplcmd = stopCpl.cpl[0]
 					call feedkeys( cplcmd, mapFlag ) 
                     return ""
                 else
