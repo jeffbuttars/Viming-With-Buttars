@@ -40,11 +40,11 @@ if v:version < 700 || exists("loaded_menu_delayed")
     finish
 endif
 
-" Set g:MenuDelayedDelay in your .vimrc to change the menu delay
+" Set g:NiceMenuDelay in your .vimrc to change the menu delay
 " You can even change this based on the filetype if you wish or
 " while vim is running.
-if !exists( "MenuDelayedDelay" )
-	let g:MenuDelayedDelay = '.5' 
+if !exists( "NiceMenuDelay" )
+	let g:NiceMenuDelay = '.5' 
 endif
 
 let loaded_menu_delayed= 1
@@ -59,12 +59,12 @@ let s:keys    = [
             \ '.', ',', ':', '!', '#', '=', '%', '$', '@', '<', '>',
             \ '/', '\']
 
-autocmd bufreadpost,BufNewFile * call <SID>MenuDelayedCplRun()
-autocmd FileType * call <SID>MenuDelayedCplRun()
+autocmd bufreadpost,BufNewFile * call <SID>NiceMenuCplRun()
+autocmd FileType * call <SID>NiceMenuCplRun()
 
 
-amenu <silent> &Complete.Auto\ Start :call <SID>MenuDelayedCplRun()<CR>
-amenu <silent> &Complete.Auto\ Stop  :call <SID>MenuDelayedCplClr()<CR>
+amenu <silent> &Complete.Auto\ Start :call <SID>NiceMenuCplRun()<CR>
+amenu <silent> &Complete.Auto\ Stop  :call <SID>NiceMenuCplClr()<CR>
 
 fun! s:GetSid()
     return matchstr(expand('<sfile>'), '<SNR>\d\+_')
@@ -75,7 +75,7 @@ python << PEOF
 import vim,threading,subprocess
 ptimer = None
 
-def MenuDelayedShowMenu():
+def NiceMenuShowMenu():
 
 	sname = vim.eval( 'v:servername' )
 	if not sname or sname == "":
@@ -83,14 +83,14 @@ def MenuDelayedShowMenu():
 
 	try:
 		dnull = open( '/dev/null' , 'w' )
-		subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-expr", "MenuDelayedAsyncCpl()"],
+		subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-expr", "NiceMenuAsyncCpl()"],
 	  		stdout=dnull, stderr=dnull )
 	except:
 		pass
 PEOF
 
-"MenuDelayedCheckContext: {{{1
-fun! s:MenuDelayedCheckContext()
+"NiceMenuCheckContext: {{{1
+fun! s:NiceMenuCheckContext()
 	
     "ignore
     if &paste 
@@ -102,21 +102,21 @@ global ptimer
 if ptimer:
 	ptimer.cancel()
 
-delay = vim.eval("g:MenuDelayedDelay")
+delay = vim.eval("g:NiceMenuDelay")
 if not delay:
 	delay = '.8'
-ptimer = threading.Timer( float(delay), MenuDelayedShowMenu )
+ptimer = threading.Timer( float(delay), NiceMenuShowMenu )
 ptimer.start()
 PEOF
 	return ""
 endfun
 
-"MenuDelayedCplClr: {{{1
-fun! s:MenuDelayedCplClr()
+"NiceMenuCplClr: {{{1
+fun! s:NiceMenuCplClr()
     let b:pumTips = ''
     let b:nowcpl  = []
     for key in s:keys
-        if maparg(key, 'i') =~ 'MenuDelayedCpl'
+        if maparg(key, 'i') =~ 'NiceMenuCpl'
             exec "silent! iunmap <buffer> ".key
         endif
     endfor
@@ -126,9 +126,9 @@ fun! s:MenuDelayedCplClr()
 endfun
 
 " Setup the mapping to trigger the menu events
-"MenuDelayedCplRun: {{{1
-fun! s:MenuDelayedCplRun()
-    call s:MenuDelayedCplClr()
+"NiceMenuCplRun: {{{1
+fun! s:NiceMenuCplRun()
+    call s:NiceMenuCplClr()
     call s:GetNowCpl()
 
     if has("autocmd") && exists("+omnifunc")
@@ -138,24 +138,24 @@ fun! s:MenuDelayedCplRun()
     endif
     silent! inoremap <buffer> <expr> <c-x><c-o> 
                 \ (pumvisible()?"\<c-y>":"").
-                \ "\<c-x>\<c-o>\<c-r>=<SID>MenuDelayedFix('OmniTips')\<cr>"
+                \ "\<c-x>\<c-o>\<c-r>=<SID>NiceMenuFix('OmniTips')\<cr>"
     silent! inoremap <buffer> <expr> <c-n> 
                 \ (pumvisible()?"\<c-n>":
-                \ "\<c-n>\<c-r>=<SID>MenuDelayedFix('CtrlNTips')\<cr>")
+                \ "\<c-n>\<c-r>=<SID>NiceMenuFix('CtrlNTips')\<cr>")
     silent! inoremap <buffer> <expr> <c-b>
                 \ (pumvisible()?"\<c-y>":"").
-                \ "\<c-n>\<c-r>=<SID>MenuDelayedFix('CtrlNTips')\<cr>"
+                \ "\<c-n>\<c-r>=<SID>NiceMenuFix('CtrlNTips')\<cr>"
 
     for key in s:keys
         if maparg(key, 'i') == ''
             exec "silent! inoremap <buffer> ".key." ".key.
-                        \ "\<c-r>=<SID>MenuDelayedCheckContext()\<cr>"
+                        \ "\<c-r>=<SID>NiceMenuCheckContext()\<cr>"
 		endif
     endfor
 endfun
 
-"MenuDelayedFix: {{{1
-fun! s:MenuDelayedFix(who)
+"NiceMenuFix: {{{1
+fun! s:NiceMenuFix(who)
     if !pumvisible() 
         call feedkeys("\<c-e>", "n")
     else
@@ -165,7 +165,7 @@ fun! s:MenuDelayedFix(who)
     return ""
 endfun
 
-fun! MenuDelayedAsyncCpl()
+fun! NiceMenuAsyncCpl()
 
 	if "i" != mode()
         return ""
@@ -212,7 +212,7 @@ fun! MenuDelayedAsyncCpl()
             if pattern != "" && iLine =~ '\m\C'.pattern.'$'
                 if !(pumvisible() && b:pumTips == "AutoTips".i)
                     "\C-r = don't see map
-                    "return cpl[0]."\<c-r>=".s:GetSid()."MenuDelayedFix('AutoTips".i."')\<CR>"
+                    "return cpl[0]."\<c-r>=".s:GetSid()."NiceMenuFix('AutoTips".i."')\<CR>"
                     "Feedkeys seed map
                     let mapFlag = 'm'
                     if cpl[0] == "\<c-n>" 
@@ -223,7 +223,9 @@ fun! MenuDelayedAsyncCpl()
                     if pumvisible()
                         let stopCpl = "\<c-e>"
                     endif
-					let cplcmd = stopCpl.cpl[0]."\<c-r>=".s:GetSid()."MenuDelayedFix('AutoTips".i."')\<CR>"
+					"let cplcmd = stopCpl.cpl[0]."\<c-r>=".s:GetSid()."NiceMenuFix('AutoTips".i."')\<CR>"
+					echo cpl[0]
+					let cplcmd = cpl[0]
 					call feedkeys( cplcmd, mapFlag ) 
                     return ""
                 else
@@ -236,8 +238,8 @@ fun! MenuDelayedAsyncCpl()
     return ""
 endfun
 
-"MenuDelayedExtend: {{{1
-fun! s:MenuDelayedExtend(list1, list2)
+"NiceMenuExtend: {{{1
+fun! s:NiceMenuExtend(list1, list2)
     let listTmp = copy(a:list1)
     for item2 in a:list2
         let append = 1
@@ -256,12 +258,12 @@ endfun
 "GetNowCpl: {{{1
 fun! s:GetNowCpl()
     if exists("b:usrTable") && type(b:usrTable) ==  type([])
-        call s:MenuDelayedExtend(b:nowcpl, b:usrTable)
+        call s:NiceMenuExtend(b:nowcpl, b:usrTable)
     endif
     if has_key(s:defTable, &ft)
-        call s:MenuDelayedExtend(b:nowcpl, s:defTable[&ft])
+        call s:NiceMenuExtend(b:nowcpl, s:defTable[&ft])
     endif
-    call s:MenuDelayedExtend(b:nowcpl, s:defTable['*'])
+    call s:NiceMenuExtend(b:nowcpl, s:defTable['*'])
 endfun
 
 "def Table: {{{1
