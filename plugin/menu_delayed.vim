@@ -180,15 +180,15 @@ fun! MenuDelayedAsyncCpl()
 	" is in the allowed key map. In the time
 	" past since the trigger the cursor may be on a
 	" char we don't want to complete.
-    let nchar = getline('.')[col('.')-2]
-	let goahead = 0
+    let b:nchar = getline('.')[col('.')-2]
+	let b:goahead = 0
 	for key in s:keys
-		if key == nchar
-			let goahead = 1
+		if key == b:nchar
+			let b:goahead = 1
 			break
 		endif
 	endfor
-	if 0 == goahead
+	if 0 == b:goahead
 		return ""
 	endif
 
