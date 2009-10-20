@@ -225,6 +225,7 @@ fun! MenuDelayedAsyncCpl()
                     endif
 					let cplcmd = stopCpl.cpl[0]."\<c-r>=".s:GetSid()."MenuDelayedFix('AutoTips".i."')\<CR>"
 					call feedkeys( cplcmd, mapFlag ) 
+                    return ""
                 else
                     return ""
                 endif
