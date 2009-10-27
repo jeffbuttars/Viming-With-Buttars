@@ -32,7 +32,9 @@ endif
 set history=500		" keep 500 lines of command line history
 "set ruler		" show the cursor position all the time
 " Set up a custom status line. Like setting ruler, but we add the buffer number and filetype to the status
-set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{getfperm(@%)}\ %P
+"set statusline=%f\ %<%y\ b%n\ %2*%m\ %1*%h%r%=[%{&encoding}\ %{&fileformat}\ %{strlen(&ft)?&ft:'none'}\ %{getfperm(@%)}]\ 0x%B\ %12.(%c:%l/%L%)
+
 set laststatus=2
 
 set showcmd		" display incomplete commands
@@ -109,6 +111,9 @@ endif
 imap <c-y> <c-y><esc>
 " Show the info preview window.
 set completeopt=menuone,preview
+"(default: ".,w,b,u,t,i")
+"set complete=".,w,b,u,U,t,i,kspell,d,t"
+"set complete=".,w,b,u,t,i,kspell"
 " Map omnicomplete to Control-o
 imap <c-o> <C-X><C-O> 
 " When the completion window is open, shift will cycle
@@ -136,8 +141,6 @@ imap <c-o> <C-X><C-O>
 "endfunction
 "inoremap <CR> <C-R>=CleverCR()<CR>
 
-
-"set complete+=k/usr/shar/dict/*
 
 " Auto close the preview window
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
@@ -433,6 +436,9 @@ au FileType python imap <F1> <ESC>:w<CR>:PyFlakes<CR>
 " php synax check via 'php -l'
 au FileType php nmap <F5> <ESC>:w<CR>:PHPLint<CR>
 au FileType php imap <F5> <ESC>:w<CR>:PHPLint<CR>
+
+au FileType sh,bash nmap <F5> <ESC>:w<CR>:!sh ./%<CR>
+au FileType sh,bash imap <F5> <ESC>:w<CR>:!sh ./%<CR>
 
 "Enable autotag.vim
 source ~/.vim/plugin/autotag.vim
