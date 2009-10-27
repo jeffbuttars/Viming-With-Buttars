@@ -15,6 +15,8 @@ snippet lim
 	LIMIT ${1:start}${2:,end}
 snippet cat
 	CONCAT( ${1}, ${2} )
+snippet conv # Convert from one base to another
+	CONV( ${1:value}, ${2:from_base}, ${3:to_base} )
 snippet set
 	SET @${1:varname} = ${2:value};
 snippet decl 
