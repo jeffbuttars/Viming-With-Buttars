@@ -40,6 +40,10 @@
 
 " Section: Plugin header {{{1
 
+if exists('VCSCommandDisableAll')
+	finish
+endif
+
 if v:version < 700
 	echohl WarningMsg|echomsg 'VCSCommand requires at least VIM 7.0'|echohl None
 	finish
@@ -247,6 +251,8 @@ function! s:gitFunctions.Update(argList)
 	throw "This command is not implemented for git because file-by-file update doesn't make much sense in that context.  If you have an idea for what it should do, please let me know."
 endfunction
 
+" Annotate setting {{{2
+let s:gitFunctions.AnnotateSplitRegex = ') '
 
 " Section: Plugin Registration {{{1
 call VCSCommandRegisterModule('git', expand('<sfile>'), s:gitFunctions, [])
