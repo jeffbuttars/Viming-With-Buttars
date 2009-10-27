@@ -3,12 +3,12 @@ if exists("b:phplint_plugin_loaded")
 endif
 
 fun! s:PHPLintRaw()
-	echo system("php -l ".expand('%'))
+	echo system("php -lq ".expand('%'))
 endfun
 
 fun! s:PHPLint()
 
-	let b:php_errors = system("php -l ".expand('%'))
+	let b:php_errors = system("php -ql ".expand('%'))
 	let b:has_errors = 0
 
 	cclose " Close quickfix window
