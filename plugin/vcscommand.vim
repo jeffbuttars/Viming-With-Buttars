@@ -1,8 +1,9 @@
 " vim600: set foldmethod=marker:
 "
-" Vim plugin to assist in working with files under control of CVS or SVN.
+" Vim plugin to assist in working with files under control of various Version
+" Control Systems, such as CVS, SVN, SVK, and git.
 "
-" Version:       Beta 26
+" Version:       1.99.31
 " Maintainer:    Bob Hiestand <bob.hiestand@gmail.com>
 " License:
 " Copyright (c) 2008 Bob Hiestand
@@ -43,13 +44,17 @@
 "
 " VCSAdd           Adds the current file to source control.
 "
-" VCSAnnotate      Displays the current file with each line annotated with the
+" VCSAnnotate[!]   Displays the current file with each line annotated with the
 "                  version in which it was most recently changed.  If an
 "                  argument is given, the argument is used as a revision
 "                  number to display.  If not given an argument, it uses the
 "                  most recent version of the file on the current branch.
 "                  Additionally, if the current buffer is a VCSAnnotate buffer
 "                  already, the version number on the current line is used.
+"
+"                  If '!' is used, the view of the annotated buffer is split
+"                  so that the annotation is in a separate window from the
+"                  content, and each is highlighted separately.
 "
 " VCSBlame         Alias for 'VCSAnnotate'.
 "
@@ -151,6 +156,7 @@
 "
 "   <Leader>ca VCSAdd
 "   <Leader>cn VCSAnnotate
+"   <Leader>cN VCSAnnotate!
 "   <Leader>cc VCSCommit
 "   <Leader>cD VCSDelete
 "   <Leader>cd VCSDiff
@@ -187,6 +193,11 @@
 "   This variable overrides the VCSCommandSplit variable, but only for buffers
 "   created with VCSVimDiff.
 "
+" VCSCommandDisableAll
+"   This variable, if set, prevents the plugin or any extensions from loading
+"   at all.  This is useful when a single runtime distribution is used on
+"   multiple systems with varying versions.
+"
 " VCSCommandDisableMappings
 "   This variable, if set to a non-zero value, prevents the default command
 "   mappings from being set.
@@ -206,6 +217,16 @@
 "   the file is VCS-controlled.  This is useful for displaying version
 "   information in the status bar.  Additional options may be set by
 "   individual VCS plugins.
+"
+" VCSCommandMappings
+"   This variable, if set, overrides the default mappings used for shortcuts.
+"   It should be a List of 2-element Lists, each containing a shortcut and
+"   function name pair.
+"
+" VCSCommandMapPrefix
+"   This variable, if set, overrides the default mapping prefix ('<Leader>c').
+"   This allows customization of the mapping space used by the vcscommand
+"   shortcuts.
 "
 " VCSCommandResultBufferNameExtension
 "   This variable, if set to a non-blank value, is appended to the name of the
@@ -234,6 +255,14 @@
 "   one another.  If set to 'vertical', the resulting windows will be
 "   side-by-side.  If not set, it defaults to 'horizontal' for all but
 "   VCSVimDiff windows.
+"
+" VCSCommandVCSTypeOverride
+"   This variable allows the VCS type detection to be overridden on a
+"   path-by-path basis.  The value of this variable is expected to be a List
+"   of Lists.  Each high-level List item is a List containing two elements.
+"   The first element is a regular expression that will be matched against the
+"   full file name of a given buffer.  If it matches, the second element will
+"   be used as the VCS type.
 "
 " Event documentation {{{2
 "   For additional customization, VCSCommand.vim uses User event autocommand
@@ -271,6 +300,10 @@
 " loaded_VCSCommand is set to 1 when the initialization begins, and 2 when it
 " completes.  This allows various actions to only be taken by functions after
 " system initialization.
+
+if exists('VCSCommandDisableAll')
+	finish
+endif
 
 if exists('loaded_VCSCommand')
 	finish
@@ -329,6 +362,27 @@ unlet! s:vimDiffScratchList
 
 function! s:ReportError(error)
 	echohl WarningMsg|echomsg 'VCSCommand:  ' . a:error|echohl None
+endfunction
+
+
+" Function: s:CreateMapping(shortcut, expansion, display) {{{2
+" Creates the given mapping by prepending the contents of
+" 'VCSCommandMapPrefix' (by default '<Leader>c') to the given shortcut and
+" mapping it to the given plugin function.  If a mapping exists for the
+" specified shortcut + prefix, emit an error but continue.  If a mapping
+" exists for the specified function, do nothing.
+
+function! s:CreateMapping(shortcut, expansion, display)
+	let lhs = VCSCommandGetOption('VCSCommandMapPrefix', '<Leader>c') . a:shortcut
+	if !hasmapto(a:expansion)
+		try
+			execute 'nmap <silent> <unique>' lhs a:expansion
+		catch /^Vim(.*):E227:/
+			if(&verbose != 0)
+				echohl WarningMsg|echomsg 'VCSCommand:  mapping ''' . lhs . ''' already exists, refusing to overwrite.  The mapping for ' . a:display . ' will not be available.'|echohl None
+			endif
+		endtry
+	endif
 endfunction
 
 " Function: s:ExecuteExtensionMapping(mapping) {{{2
@@ -431,15 +485,6 @@ endfunction
 function! s:EditFile(command, originalBuffer, statusText)
 	let vcsType = getbufvar(a:originalBuffer, 'VCSCommandVCSType')
 
-	let nameExtension = VCSCommandGetOption('VCSCommandResultBufferNameExtension', '')
-	if nameExtension == ''
-		let nameFunction = VCSCommandGetOption('VCSCommandResultBufferNameFunction', 's:GenerateResultBufferName')
-	else
-		let nameFunction = VCSCommandGetOption('VCSCommandResultBufferNameFunction', 's:GenerateResultBufferNameWithExtension')
-	endif
-
-	let resultBufferName = call(nameFunction, [a:command, a:originalBuffer, vcsType, a:statusText])
-
 	" Protect against useless buffer set-up
 	let s:isEditFileRunning += 1
 	try
@@ -454,26 +499,43 @@ function! s:EditFile(command, originalBuffer, statusText)
 
 		enew
 
-		let b:VCSCommandCommand = a:command
-		let b:VCSCommandOriginalBuffer = a:originalBuffer
-		let b:VCSCommandSourceFile = bufname(a:originalBuffer)
-		let b:VCSCommandVCSType = vcsType
+		call s:SetupScratchBuffer(a:command, vcsType, a:originalBuffer, a:statusText)
 
-		setlocal buftype=nofile
-		setlocal noswapfile
-		let &filetype = vcsType . a:command
-
-		if a:statusText != ''
-			let b:VCSCommandStatusText = a:statusText
-		endif
-
-		if VCSCommandGetOption('VCSCommandDeleteOnHide', 0)
-			setlocal bufhidden=delete
-		endif
-		silent noautocmd file `=resultBufferName`
 	finally
 		let s:isEditFileRunning -= 1
 	endtry
+endfunction
+
+" Function: s:SetupScratchBuffer(command, vcsType, originalBuffer, statusText) {{{2
+" Creates convenience buffer variables and the name of a vcscommand result
+" buffer.
+
+function! s:SetupScratchBuffer(command, vcsType, originalBuffer, statusText)
+	let nameExtension = VCSCommandGetOption('VCSCommandResultBufferNameExtension', '')
+	if nameExtension == ''
+		let nameFunction = VCSCommandGetOption('VCSCommandResultBufferNameFunction', 's:GenerateResultBufferName')
+	else
+		let nameFunction = VCSCommandGetOption('VCSCommandResultBufferNameFunction', 's:GenerateResultBufferNameWithExtension')
+	endif
+
+	let name = call(nameFunction, [a:command, a:originalBuffer, a:vcsType, a:statusText])
+
+	let b:VCSCommandCommand = a:command
+	let b:VCSCommandOriginalBuffer = a:originalBuffer
+	let b:VCSCommandSourceFile = bufname(a:originalBuffer)
+	let b:VCSCommandVCSType = a:vcsType
+	if a:statusText != ''
+		let b:VCSCommandStatusText = a:statusText
+	endif
+
+	setlocal buftype=nofile
+	setlocal noswapfile
+	let &filetype = a:vcsType . a:command
+
+	if VCSCommandGetOption('VCSCommandDeleteOnHide', 0)
+		setlocal bufhidden=delete
+	endif
+	silent noautocmd file `=name`
 endfunction
 
 " Function: s:SetupBuffer() {{{2
@@ -618,6 +680,43 @@ endfunction
 
 " Section: Generic VCS command functions {{{1
 
+" Function: s:VCSAnnotate(...) {{{2
+function! s:VCSAnnotate(bang, ...)
+	try
+		let annotateBuffer = s:ExecuteVCSCommand('Annotate', a:000)
+		if annotateBuffer == -1
+			return -1
+		endif
+		if a:bang == '!' && VCSCommandGetOption('VCSCommandDisableSplitAnnotate', 0) == 0
+			let vcsType = VCSCommandGetVCSType(annotateBuffer)
+			let functionMap = s:plugins[vcsType][1]
+			let splitRegex = ''
+			if has_key(s:plugins[vcsType][1], 'AnnotateSplitRegex')
+				let splitRegex = s:plugins[vcsType][1]['AnnotateSplitRegex']
+			endif
+			let splitRegex = VCSCommandGetOption('VCSCommand' . vcsType . 'AnnotateSplitRegex', splitRegex)
+			if splitRegex == ''
+				return annotateBuffer
+			endif
+			let originalBuffer = VCSCommandGetOriginalBuffer(annotateBuffer)
+			let originalFileType = getbufvar(originalBuffer, '&ft')
+			let annotateFileType = getbufvar(annotateBuffer, '&ft')
+			execute "normal 0zR\<c-v>G/" . splitRegex . "/e\<cr>d"
+			call setbufvar('%', '&filetype', getbufvar(originalBuffer, '&filetype'))
+			set scrollbind
+			leftabove vert new
+			normal 0P
+			execute "normal" . col('$') . "\<c-w>|"
+			call s:SetupScratchBuffer('annotate', vcsType, originalBuffer, 'header')
+			wincmd l
+		endif
+		return annotateBuffer
+	catch
+		call s:ReportError(v:exception)
+		return -1
+	endtry
+endfunction
+
 " Function: s:VCSCommit() {{{2
 function! s:VCSCommit(bang, message)
 	try
@@ -740,6 +839,10 @@ function! s:VCSVimDiff(...)
 				call s:WipeoutCommandBuffers(s:vimDiffSourceBuffer, 'vimdiff')
 			endif
 
+			let orientation = &diffopt =~ 'horizontal' ? 'horizontal' : 'vertical'
+			let orientation = VCSCommandGetOption('VCSCommandSplit', orientation)
+			let orientation = VCSCommandGetOption('VCSCommandDiffSplit', orientation)
+
 			" Split and diff
 			if(a:0 == 2)
 				" Reset the vimdiff system, as 2 explicit versions were provided.
@@ -756,7 +859,7 @@ function! s:VCSVimDiff(...)
 				let s:vimDiffScratchList = [resultBuffer]
 				" If no split method is defined, cheat, and set it to vertical.
 				try
-					call s:OverrideOption('VCSCommandSplit', VCSCommandGetOption('VCSCommandDiffSplit', VCSCommandGetOption('VCSCommandSplit', 'vertical')))
+					call s:OverrideOption('VCSCommandSplit', orientation)
 					let resultBuffer = s:plugins[vcsType][1].Review([a:2])
 				finally
 					call s:OverrideOption('VCSCommandSplit')
@@ -773,7 +876,7 @@ function! s:VCSVimDiff(...)
 				call s:OverrideOption('VCSCommandEdit', 'split')
 				try
 					" Force splitting behavior, otherwise why use vimdiff?
-					call s:OverrideOption('VCSCommandSplit', VCSCommandGetOption('VCSCommandDiffSplit', VCSCommandGetOption('VCSCommandSplit', 'vertical')))
+					call s:OverrideOption('VCSCommandSplit', orientation)
 					try
 						if(a:0 == 0)
 							let resultBuffer = s:plugins[vcsType][1].Review([])
@@ -858,6 +961,15 @@ function! VCSCommandGetVCSType(buffer)
 	if strlen(vcsType) > 0
 		return vcsType
 	endif
+	if exists("g:VCSCommandVCSTypeOverride")
+		let fullpath = fnamemodify(bufname(a:buffer), ':p')
+		for [path, vcsType] in g:VCSCommandVCSTypeOverride
+			if match(fullpath, path) > -1
+				call setbufvar(a:buffer, 'VCSCommandVCSType', vcsType)
+				return vcsType
+			endif
+		endfor
+	endif
 	let matches = []
 	for vcsType in keys(s:plugins)
 		let identified = s:plugins[vcsType][1].Identify(a:buffer)
@@ -930,8 +1042,9 @@ function! VCSCommandRegisterModule(name, path, commandMap, mappingMap)
 	if !empty(a:mappingMap)
 				\ && !VCSCommandGetOption('VCSCommandDisableMappings', 0)
 				\ && !VCSCommandGetOption('VCSCommandDisableExtensionMappings', 0)
-		for mapname in keys(a:mappingMap)
-			execute 'noremap <silent> <Leader>' . mapname ':call <SID>ExecuteExtensionMapping(''' . mapname . ''')<CR>'
+		for shortcut in keys(a:mappingMap)
+			let expansion = ":call <SID>ExecuteExtensionMapping('" . shortcut . "')<CR>"
+			call s:CreateMapping(shortcut, expansion, a:name . " extension mapping " . shortcut)
 		endfor
 	endif
 endfunction
@@ -1100,8 +1213,8 @@ endfunction
 " Section: Command definitions {{{1
 " Section: Primary commands {{{2
 com! -nargs=* VCSAdd call s:MarkOrigBufferForSetup(s:ExecuteVCSCommand('Add', [<f-args>]))
-com! -nargs=* VCSAnnotate call s:ExecuteVCSCommand('Annotate', [<f-args>])
-com! -nargs=* VCSBlame call s:ExecuteVCSCommand('Annotate', [<f-args>])
+com! -nargs=* -bang VCSAnnotate call s:VCSAnnotate(<q-bang>, <f-args>)
+com! -nargs=* -bang VCSBlame call s:VCSAnnotate(<q-bang>, <f-args>)
 com! -nargs=? -bang VCSCommit call s:VCSCommit(<q-bang>, <q-args>)
 com! -nargs=* VCSDelete call s:ExecuteVCSCommand('Delete', [<f-args>])
 com! -nargs=* VCSDiff call s:ExecuteVCSCommand('Diff', [<f-args>])
@@ -1137,6 +1250,7 @@ nnoremap <silent> <Plug>VCSLock :VCSLock<CR>
 nnoremap <silent> <Plug>VCSLog :VCSLog<CR>
 nnoremap <silent> <Plug>VCSRevert :VCSRevert<CR>
 nnoremap <silent> <Plug>VCSReview :VCSReview<CR>
+nnoremap <silent> <Plug>VCSSplitAnnotate :VCSAnnotate!<CR>
 nnoremap <silent> <Plug>VCSStatus :VCSStatus<CR>
 nnoremap <silent> <Plug>VCSUnlock :VCSUnlock<CR>
 nnoremap <silent> <Plug>VCSUpdate :VCSUpdate<CR>
@@ -1144,55 +1258,30 @@ nnoremap <silent> <Plug>VCSVimDiff :VCSVimDiff<CR>
 
 " Section: Default mappings {{{1
 
+let s:defaultMappings = [
+			\['a', 'VCSAdd'],
+			\['c', 'VCSCommit'],
+			\['D', 'VCSDelete'],
+			\['d', 'VCSDiff'],
+			\['G', 'VCSClearAndGotoOriginal'],
+			\['g', 'VCSGotoOriginal'],
+			\['i', 'VCSInfo'],
+			\['L', 'VCSLock'],
+			\['l', 'VCSLog'],
+			\['N', 'VCSSplitAnnotate'],
+			\['n', 'VCSAnnotate'],
+			\['q', 'VCSRevert'],
+			\['r', 'VCSReview'],
+			\['s', 'VCSStatus'],
+			\['U', 'VCSUnlock'],
+			\['u', 'VCSUpdate'],
+			\['v', 'VCSVimDiff'],
+			\]
+
 if !VCSCommandGetOption('VCSCommandDisableMappings', 0)
-	if !hasmapto('<Plug>VCSAdd')
-		nmap <unique> <Leader>ca <Plug>VCSAdd
-	endif
-	if !hasmapto('<Plug>VCSAnnotate')
-		nmap <unique> <Leader>cn <Plug>VCSAnnotate
-	endif
-	if !hasmapto('<Plug>VCSClearAndGotoOriginal')
-		nmap <unique> <Leader>cG <Plug>VCSClearAndGotoOriginal
-	endif
-	if !hasmapto('<Plug>VCSCommit')
-		nmap <unique> <Leader>cc <Plug>VCSCommit
-	endif
-	if !hasmapto('<Plug>VCSDelete')
-		nmap <unique> <Leader>cD <Plug>VCSDelete
-	endif
-	if !hasmapto('<Plug>VCSDiff')
-		nmap <unique> <Leader>cd <Plug>VCSDiff
-	endif
-	if !hasmapto('<Plug>VCSGotoOriginal')
-		nmap <unique> <Leader>cg <Plug>VCSGotoOriginal
-	endif
-	if !hasmapto('<Plug>VCSInfo')
-		nmap <unique> <Leader>ci <Plug>VCSInfo
-	endif
-	if !hasmapto('<Plug>VCSLock')
-		nmap <unique> <Leader>cL <Plug>VCSLock
-	endif
-	if !hasmapto('<Plug>VCSLog')
-		nmap <unique> <Leader>cl <Plug>VCSLog
-	endif
-	if !hasmapto('<Plug>VCSRevert')
-		nmap <unique> <Leader>cq <Plug>VCSRevert
-	endif
-	if !hasmapto('<Plug>VCSReview')
-		nmap <unique> <Leader>cr <Plug>VCSReview
-	endif
-	if !hasmapto('<Plug>VCSStatus')
-		nmap <unique> <Leader>cs <Plug>VCSStatus
-	endif
-	if !hasmapto('<Plug>VCSUnlock')
-		nmap <unique> <Leader>cU <Plug>VCSUnlock
-	endif
-	if !hasmapto('<Plug>VCSUpdate')
-		nmap <unique> <Leader>cu <Plug>VCSUpdate
-	endif
-	if !hasmapto('<Plug>VCSVimDiff')
-		nmap <unique> <Leader>cv <Plug>VCSVimDiff
-	endif
+	for [shortcut, vcsFunction] in VCSCommandGetOption('VCSCommandMappings', s:defaultMappings)
+		call s:CreateMapping(shortcut, '<Plug>' . vcsFunction, '''' . vcsFunction . '''')
+	endfor
 endif
 
 " Section: Menu items {{{1
