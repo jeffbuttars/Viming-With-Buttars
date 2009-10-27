@@ -116,9 +116,13 @@ snippet attr
 	.attr( ${1}${2:, } )${3}
 snippet rattr
 	.removeAttr( ${1} )${2}
-snippet val 
+snippet $val 
 	.val(${1})${2}
-snippet click
+snippet $click
 	.click( function( ${1:ev} ) {${2}})
-snippet each
+snippet $each
 	.each( function( ${1:iter} ) {${2}})
+snippet $change
+	.change( function( ${1:iter} ) {${2}})
+snippet al
+	alert( ${1} );
