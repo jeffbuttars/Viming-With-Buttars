@@ -298,10 +298,11 @@ let s:defTable["html"] = [
             \]
 let s:defTable["css"] = [
             \ ["\<c-x>\<c-o>",'\(\k\|-)\@<!\(\k\|-\)\{2,}'],
+            \ ["\<c-n>",'\k\{2,\}'],
             \]
 let s:defTable["javascript"] = [
             \ ["\<c-x>\<c-o>",'\k\.'],
-            \ ["\<c-n>",'\k\{4,\}'],
+            \ ["\<c-n>",'\k\{3,\}'],
             \]
 let s:defTable["php"]    = [
             \ ["\<c-x>\<c-o>",'\k.'],
