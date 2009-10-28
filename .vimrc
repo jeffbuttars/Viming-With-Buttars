@@ -143,8 +143,8 @@ imap <c-o> <C-X><C-O>
 
 
 " Auto close the preview window
-autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+autocmd CursorHold * if pumvisible() == 0|pclose|endif
+"autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 
 
 " My snipmate hack to work with popup_it.vim
@@ -392,6 +392,7 @@ let Tlist_Exit_OnlyWindow = 1
 let Tlist_Enable_Fold_Column = 0
 let Tlist_Compact_Format = 1
 let Tlist_File_Fold_Auto_Close = 1
+let Tlist_Auto_Highlight_Tag = 1
 
 "Tlist_WinWidth~
 "The default width of the vertically split taglist window is 30. This can be
@@ -445,6 +446,7 @@ source ~/.vim/plugin/autotag.vim
 
 " Set NiceMenu Delay
 let g:NiceMenuDelay = '.6' 
+let g:acp_mappingDriven = 1
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
