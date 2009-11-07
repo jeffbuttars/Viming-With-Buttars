@@ -33,7 +33,30 @@ let s:contextMap = [
 " before we complete
 let s:minContextLen = 3
 
-function nice_menu#enable()
+function! NiceMenu#is_file_path(cur_text)
+    "if !g:NeoComplCache_TryFilenameCompletion || ((has('win32') || has('win64')) && &filetype == 'tex')
+        "return -1
+    "endif
+
+    " Not Filename pattern.
+    if a:cur_text =~ '[*/\\][/\\]\f*$\|[^[:print:]]\f*$\|/c\%[ygdrive/]$'
+        return -1
+    endif
+
+    let l:PATH_SEPARATOR = (has('win32') || has('win64')) ? '/\\' : '/'
+    " Filename pattern.
+    let l:pattern = printf('[/~]\?\%%(\\.\|\f\)\+[%s]\%%(\\.\|\f\)*$', l:PATH_SEPARATOR)
+
+    let l:cur_keyword_pos = match(a:cur_text, l:pattern)
+    "if len(matchstr(a:cur_text, l:pattern)) < g:NeoComplCache_KeywordCompletionStartLength
+        "return -1
+    "endif
+
+    return l:cur_keyword_pos
+endfunction
+
+
+function NiceMenu#enable()
 	call s:mapForMappingDriven()
 endfunction
 
@@ -99,10 +122,14 @@ function! NiceMenuAsyncCpl()
 
 	let line = s:getCurrentWord()
 	if exists('&omnifunc') && &omnifunc != ''
-		if match( line, '\k->$' ) > 0 || match( line, '\k\.$' ) > 0
+
+		if NiceMenu#is_file_path(line)
+			call feedkeys("\<C-X>\<C-F>", 't')
+		elseif match( line, '\k->$' ) > 0 || match( line, '\k\.$' ) > 0
 			call feedkeys("\<C-X>\<C-O>", 't')
-			return
 		endif
+
+		return
 	endif
 	
 	call feedkeys("\<C-N>", 't')
@@ -152,4 +179,4 @@ PEOF
 	return ""
 endfun
 
-call nice_menu#enable()
+call NiceMenu#enable()
