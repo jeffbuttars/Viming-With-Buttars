@@ -63,21 +63,25 @@ function! s:JSLint(args) range
   let b:impliedGlobals = 0
   let b:has_errors = 0
   let b:error_under_cursor = 'No error on current line' "default
+  "let b:global_err_list = []
 
   for error in split(b:jslint_output, "\n")
 
     " Match {line}:{char}:{message}
     let b:parts = matchlist(error, "\\(\\d\\+\\):\\(\\d\\+\\):\\(.*\\)")
     if !empty(b:parts)
-      let b:has_errors = 1
       let l:line = b:parts[1] + (b:firstline - 1) " Get line relative to selection
 
 	  " Implied global errors can be overwhelming. Let the user
 	  " squash that error if they wish.
 	  if g:JSLintIgnoreImpliedGlobals && b:parts[3] =~ '^Implied global'
 			let b:impliedGlobals = 1
+			"let b:parts[1] = l:line
+			"call add(b:global_err_list, b:parts )
 			continue
 	  endif
+
+      let b:has_errors = 1
 
       " Add line to match list
 	  if g:JSLintHighlightErrorLine == 1
@@ -95,7 +99,11 @@ function! s:JSLint(args) range
   endfor
 
   if g:JSLintIgnoreImpliedGlobals && b:impliedGlobals
-      caddexpr expand("%") . ":0:0:" . "Implied global errors were found"
+      "caddexpr expand("%") . ":0:0:" . "Implied global errors were found"
+      echo "Implied global errors were found"
+	  "for error in b:global_err_list
+		  "caddexpr expand("%") . ":" . error[1] . ":" . error[2] . ":" . error[3]
+	  "endfor
   endif
 
   " Open the quickfix window if errors are present
