@@ -32,7 +32,7 @@ endif
 set history=500		" keep 500 lines of command line history
 "set ruler		" show the cursor position all the time
 " Set up a custom status line. Like setting ruler, but we add the buffer number and filetype to the status
-set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{getfperm(@%)}\ %P
+set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 "set statusline=%f\ %<%y\ b%n\ %2*%m\ %1*%h%r%=[%{&encoding}\ %{&fileformat}\ %{strlen(&ft)?&ft:'none'}\ %{getfperm(@%)}]\ 0x%B\ %12.(%c:%l/%L%)
 
 set laststatus=2
@@ -110,7 +110,7 @@ endif
 " When c-y is used to select, enter normal mode.
 imap <c-y> <c-y><esc>
 " Show the info preview window.
-set completeopt=menuone,preview
+set completeopt=menu,preview
 "(default: ".,w,b,u,t,i")
 "set complete=".,w,b,u,U,t,i,kspell,d,t"
 "set complete=".,w,b,u,t,i,kspell"
@@ -144,7 +144,7 @@ imap <c-o> <C-X><C-O>
 
 " Auto close the preview window
 autocmd CursorHold * if pumvisible() == 0|pclose|endif
-"autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 
 
 " My snipmate hack to work with popup_it.vim
@@ -191,6 +191,9 @@ set showmatch
 " Quick blink when a match is made
 set mat=5
 
+" Keep our swap and backup files out of the way
+set directory=~/.vim/swapback
+set backupdir=~/.vim/swapback
 
 " C opts
 " Kernel style
@@ -210,34 +213,36 @@ nmap <C-PageUp> :bprevious<CR>
 " My own little helpers
 " remove trailing whitespace, put a ; on the end of the line and write the
 " buffer.
-imap ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:set nohls<CR>:<ESC>
-nmap ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:set nohls<CR>:<ESC>
+imap ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:nohl<CR>:<ESC>
+nmap ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:nohl<CR>:<ESC>
 
 " No ; and end of line in python, so just save the file, trim the end and put
 " the cursor at the end of the line.
 " But, we can do something similar for :
-au FileType python imap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR>o<ESC>
-au FileType python nmap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:set nohls<CR>o<ESC>
-au FileType python nmap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:set nohls<CR>o
-au FileType python imap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:set nohls<CR>o
+au FileType python imap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:nohl<CR>o<ESC>
+au FileType python nmap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:nohl<CR>o<ESC>
+au FileType python nmap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:nohl<CR>o
+au FileType python imap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:nohl<CR>o
 
-au FileType php,javascript nmap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:set nohls<CR>o
-au FileType php,javascript imap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:set nohls<CR>o
+au FileType php,javascript,js nmap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:nohl<ESC>
+au FileType php,javascript,js imap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:nohl<ESC>
 
 " Drop the close match then move the cursor in between them
-let g:delimitMate_autoclose = 0
-"imap (( ()<Left>
-"imap [[ []<Left>
-"imap {{ {}<Left>
-"imap "" ""<Left>
-"imap '' ''<Left>
+"let g:delimitMate_autoclose = 0
+"let b:delimitMate_expand_space = 0
+"let b:delimitMate_expand_cr = 0
+imap (( ()<Left>
+imap [[ []<Left>
+imap {{ {}<Left>
+imap "" ""<Left>
+imap '' ''<Left>
 " Use this mapping in conjuction with delimitMate 
 " is great if the delimitMate_autoclose is off.
-imap (( ()
-imap [[ []
-imap {{ {}
-imap "" ""
-imap '' ''
+"imap (( ()
+"imap [[ []
+"imap {{ {}
+"imap "" ""
+"imap '' ''
 
 "http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
 " The above URL also has good stuff for autoclosing matching pairs, like (). 
@@ -344,7 +349,7 @@ set guioptions-=m
 " Remove toolbar from gvim
 set guioptions-=T
 " Set gvim font. I like the droid
-set guifont=Droid\ Sans\ Mono\ 12
+set guifont=Inconsolata\ Medium\ 14
 
 "     dictionary: english words first
 " add any text based dictionaries to the list.
@@ -445,7 +450,7 @@ au FileType sh,bash imap <F5> <ESC>:w<CR>:!sh ./%<CR>
 source ~/.vim/plugin/autotag.vim
 
 " Set NiceMenu Delay
-let g:NiceMenuDelay = '.6' 
+let g:NiceMenuDelay = '.7' 
 let g:acp_mappingDriven = 1
 
  "End Plugins and external addons
@@ -454,3 +459,4 @@ let g:acp_mappingDriven = 1
 " Misc People and places that I've gotten stuff from
 "http://dancingpenguinsoflight".com"/2009/02/code-navigation-completion-snippets-in-vim/
 "http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/
+
