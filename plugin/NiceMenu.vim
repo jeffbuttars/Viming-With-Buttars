@@ -7,10 +7,18 @@ elseif v:version < 702
 endif
 let g:loaded_nice_menu = 1
 
-"if exists('g:loaded_autoload_nice_menu') || v:version < 702
-  "finish
-"endif
-"let g:loaded_autoload_nice_menu = 1
+" The delay from when typing stops to when
+" a completions is should
+if ! exists( 'g:NiceMenuDelay' )
+	let g:NiceMenuDelay = '.8' 
+endif
+
+" The minimum number of characters in word
+" needed before a completions will be presented.
+if ! exists( 'g:NiceMenuMin' )
+	let g:NiceMenuMin = 3 
+endif
+
 
 " only pop completion if one of these chars is to the
 " left of the cursor.
@@ -27,7 +35,14 @@ let s:contextMap = [
 	\ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 	\ 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 	\ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	\ '-', '_', '.', '$', ]
+	\ '-', '_', '.', '$','\<C-H>' ]
+
+" Maybe we should have a cancel map. Characters that when typed will
+" cancel any timers/completions and not set a new timer?
+"
+" Need some fixes so if a completion starts the user can type away
+" without a completion getting in the way. I think popup_it has
+" some of this fixing logic.
 
 " specify the minimum 'word' length the must be present
 " before we complete
@@ -120,20 +135,22 @@ function! NiceMenuAsyncCpl()
 		return ""
 	endif
 
+	let l:compl = "\<C-N>"
+
 	let line = s:getCurrentWord()
+
 	if exists('&omnifunc') && &omnifunc != ''
 
 		if NiceMenu#is_file_path(line)
-			call feedkeys("\<C-X>\<C-F>", 't')
+			let l:compl = "\<C-X>\<C-F>"
 		elseif match( line, '\k->$' ) > 0 || match( line, '\k\.$' ) > 0
-			call feedkeys("\<C-X>\<C-O>", 't')
+			let l:compl = "\<C-X>\<C-O>"
 		endif
 
 		return
 	endif
 	
-	call feedkeys("\<C-N>", 't')
-	
+	call feedkeys( l:compl, 't')
 endfunction
 
 python << PEOF
@@ -161,8 +178,16 @@ fun! s:NiceMenuCheckContext()
 	"if 1 != s:CheckContext()
 		"return ""
 	"endif
+	
+	" Only if current word/text is of a min length
+	let l:cline = s:getCurrentText()
+	let l:cword = s:getCurrentWord()
+	if strlen(l:cword) < g:NiceMenuMin
+		return "" 
+	endif
+
 	if pumvisible() || &paste || ('i' != mode() )
-		return 0 
+		return "" 
 	endif
 
 python << PEOF
