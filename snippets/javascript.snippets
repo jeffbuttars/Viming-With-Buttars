@@ -109,12 +109,13 @@ snippet ({
 	({${1}})
 snippet cl 
 	console.log( ${1} );
+###############
 # JQuery helpers
 snippet $
 	$(${1})${2}
-snippet attr
+snippet $attr
 	.attr( ${1}${2:, } )${3}
-snippet rattr
+snippet $rattr
 	.removeAttr( ${1} )${2}
 snippet $val 
 	.val(${1})${2}
@@ -123,6 +124,6 @@ snippet $click
 snippet $each
 	.each( function( ${1:iter} ) {${2}})
 snippet $change
-	.change( function( ${1:iter} ) {${2}})
+	.change( function( ${1:ev} ) {${2}})
 snippet al
 	alert( ${1} );
