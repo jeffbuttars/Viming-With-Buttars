@@ -12,11 +12,11 @@ fun! s:HTMLTidy()
 
 	if strlen(l:tidy_errors) > 0
 		for error in split( l:tidy_errors,"\n" )
-			"Match 'line 142 column 9 - Warning: <div> proprietary attribute'
-			"let l:eparts = matchlist( error, "^.*:\\(.*\\)\ in\ \\(.*\\)\ on\ line\ \\(\\d\\+\\)" )
+			"Match errors like: 'line 142 column 9 - Warning: <div> proprietary attribute'
 			let l:eparts = matchlist( error, "^line\ \\(\\d\\+\\)\ column\ \\(\\d\\+\\)\ -\ \\(.*\\)$" )
 			if !empty(l:eparts) && len(l:eparts) > 2
 				let l:has_errors = 1
+				"filename:line#:col#:errormsg"
 				caddexpr expand("%") . ":" . l:eparts[1] . ":" . l:eparts[2] . ":" . l:eparts[3]
 			endif
 		endfor
