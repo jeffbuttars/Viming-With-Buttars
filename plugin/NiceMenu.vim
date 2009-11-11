@@ -35,7 +35,9 @@ let s:contextMap = [
 	\ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 	\ 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 	\ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	\ '-', '_', '.', '$','\<C-H>' ]
+	\ '-', '_', '.', '$','\<C-H>', '\<Space>' ]
+
+let s:complPos = [0,0,0,0]
 
 " Maybe we should have a cancel map. Characters that when typed will
 " cancel any timers/completions and not set a new timer?
@@ -94,6 +96,10 @@ function s:unmapForMappingDriven()
   let s:keysMappingDriven = []
 endfunction
 
+function s:getCurrentChar()
+	return strpart( getline('.'), col('.')-2, 1)
+endfunction
+
 "
 function s:getCurrentWord()
   return matchstr(s:getCurrentText(), '\k*$')
@@ -112,7 +118,7 @@ function! s:CheckContext()
 
 	" only complete if context is correct.
 	let inContext = 0 
-	let curChar =  strpart( getline('.'), col('.')-2, 1)
+	let curChar = s:getCurrentChar() 
 
 	for char in s:contextMap
 		if char == curChar
@@ -128,10 +134,38 @@ function! s:CheckContext()
 	return 1
 endfunction
 
+function! s:charIsMapped()
+	
+	let cur_char = getCurrentChar()
+	for char in s:contextMap
+		if cur_char == char
+			return 1 
+		endif
+	endfor
+
+	return 0
+endfunction
+
 function! NiceMenuAsyncCpl()
 	"call s:feedPopup()
+	
+	" Make sure the pos is the same as when this
+	" was started.
+	let l:npos = getpos(".")
+
+	if l:npos[1] != s:complPos[1] || l:npos[2] != s:complPos[2] || l:npos[3] != s:complPos[3]
+		return ""
+	endif
 
 	if 1 != s:CheckContext()
+		return ""
+	endif
+
+	" Make sure we're next to an acceptable
+	" char. Pretty ghetto right now, we look
+	" through the entire map. We should use
+	" regex
+	if 1 != charIsMapped()
 		return ""
 	endif
 
@@ -144,7 +178,11 @@ function! NiceMenuAsyncCpl()
 		if NiceMenu#is_file_path(line)
 			let l:compl = "\<C-X>\<C-F>"
 		elseif match( line, '\k->$' ) > 0 || match( line, '\k\.$' ) > 0
-			let l:compl = "\<C-X>\<C-O>"
+			" Test the complete function before setting it.
+			let compl_res = call( &omnifunc, [1,''] )
+			if compl_res > 0
+				let l:compl = "\<C-X>\<C-O>"
+			endif
 		endif
 
 		return
@@ -189,6 +227,8 @@ fun! s:NiceMenuCheckContext()
 	if pumvisible() || &paste || ('i' != mode() )
 		return "" 
 	endif
+
+	let s:complPos = getpos(".")
 
 python << PEOF
 global ptimer
