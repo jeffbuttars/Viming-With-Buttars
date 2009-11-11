@@ -110,7 +110,8 @@ endif
 " When c-y is used to select, enter normal mode.
 imap <c-y> <c-y><esc>
 " Show the info preview window.
-set completeopt=menu,preview
+set completeopt=menuone,preview,longest
+
 "(default: ".,w,b,u,t,i")
 "set complete=".,w,b,u,U,t,i,kspell,d,t"
 "set complete=".,w,b,u,t,i,kspell"
@@ -236,6 +237,32 @@ imap [[ []<Left>
 imap {{ {}<Left>
 imap "" ""<Left>
 imap '' ''<Left>
+
+function! GoToNextChar( thechar )
+	" See if it's there.
+	let l:cline = getline(".")
+	let l:cpos = getpos(".")
+	let l:ccol = l:cpos[2]
+
+	let l:nchar = stridx( l:cline, a:thechar, l:ccol )
+	if l:nchar < l:ccol
+		return a:thechar.a:thechar
+	endif
+
+	let l:ccur = getpos(".")
+	let l:ccur[2] = l:nchar+2
+	call setpos( '.', l:ccur )
+
+	return ""
+endfunction
+ 
+imap )) <C-R>=GoToNextChar(")")<CR>
+imap ]] <C-R>=GoToNextChar("]")<CR>
+imap "" <C-R>=GoToNextChar('"')<CR>
+imap '' <C-R>=GoToNextChar("'")<CR>
+imap }} <C-R>=GoToNextChar("}")<CR>
+
+
 " Use this mapping in conjuction with delimitMate 
 " is great if the delimitMate_autoclose is off.
 "imap (( ()
@@ -443,11 +470,20 @@ au FileType python imap <F1> <ESC>:w<CR>:PyFlakes<CR>
 au FileType php nmap <F5> <ESC>:w<CR>:PHPLint<CR>
 au FileType php imap <F5> <ESC>:w<CR>:PHPLint<CR>
 
+" use tidy
+au FileType html nmap <F5> <ESC>:w<CR>:HTMLTidyLint<CR>
+au FileType html imap <F5> <ESC>:w<CR>:HTMLTidyLint<CR>
+
+
 au FileType sh,bash nmap <F5> <ESC>:w<CR>:!sh ./%<CR>
 au FileType sh,bash imap <F5> <ESC>:w<CR>:!sh ./%<CR>
 
 "Enable autotag.vim
 source ~/.vim/plugin/autotag.vim
+
+" load the tag closer
+au Filetype html let b:closetag_html_style=1
+au Filetype html,xml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
 
 " Set NiceMenu Delay
 let g:NiceMenuDelay = '.7' 
