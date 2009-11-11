@@ -2,7 +2,10 @@ if exists("b:htmltidy_plugin_loaded")
   finish
 endif
 
-fun! s:HTMLTidy()
+" Uncomment the next line to use tidy as the = program
+"exe 'set equalprg=tidy -quiet -f '.&errorfile
+
+fun! s:HTMLTidyLint()
 
 	let l:tidy_errors = system("tidy ".expand('%'))
 	let l:has_errors = 0
@@ -25,9 +28,11 @@ fun! s:HTMLTidy()
 	if l:has_errors
 		copen
 	else
-		echo "HTMLTidy: All good."
+		echo "HTMLTidyLint: All good."
 	endif
 endfun
-command! HTMLTidy call s:HTMLTidy()
+command! HTMLTidyLint call s:HTMLTidyLint()
+
 
 let b:htmltidy_plugin_loaded = 1
+
