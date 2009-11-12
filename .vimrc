@@ -269,7 +269,7 @@ imap ]] <C-R>=GoToNextChar("]")<CR>
 imap "" <C-R>=GoToNextChar('"')<CR>
 imap '' <C-R>=GoToNextChar("'")<CR>
 imap }} <C-R>=GoToNextChar("}")<CR>
-au FileType javascript ++ <C-R>=GoToNextChar("}")<Left>
+au FileType javascript imap ++ <C-R>=GoToNextChar('+')<CR>
 
 
 " Use this mapping in conjuction with delimitMate 
