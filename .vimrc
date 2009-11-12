@@ -235,17 +235,25 @@ au FileType php,javascript,js imap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>
 imap (( ()<Left>
 imap [[ []<Left>
 imap {{ {}<Left>
-imap "" ""<Left>
-imap '' ''<Left>
+"imap "" ""<Left>
+"imap '' ''<Left>
+"au FileType javascript ++ ++<Left>
 
+" If the given char is to the 
+" right of us, go to the right of it.
+" But only if it appears to close a matching
+" left? Maybe we'll do that last part later, we'll see.
 function! GoToNextChar( thechar )
 	" See if it's there.
 	let l:cline = getline(".")
 	let l:cpos = getpos(".")
-	let l:ccol = l:cpos[2]
+	let l:ccol = l:cpos[2]-1
 
 	let l:nchar = stridx( l:cline, a:thechar, l:ccol )
 	if l:nchar < l:ccol
+		if a:thechar == '"' || a:thechar == "'" || a:thechar == "+"
+			return a:thechar.a:thechar."\<left>"
+		endif
 		return a:thechar.a:thechar
 	endif
 
@@ -261,6 +269,7 @@ imap ]] <C-R>=GoToNextChar("]")<CR>
 imap "" <C-R>=GoToNextChar('"')<CR>
 imap '' <C-R>=GoToNextChar("'")<CR>
 imap }} <C-R>=GoToNextChar("}")<CR>
+au FileType javascript ++ <C-R>=GoToNextChar("}")<Left>
 
 
 " Use this mapping in conjuction with delimitMate 
