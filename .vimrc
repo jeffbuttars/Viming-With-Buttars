@@ -239,6 +239,28 @@ imap {{ {}<Left>
 "imap '' ''<Left>
 "au FileType javascript ++ ++<Left>
 
+" Find out however many instances of a char
+" appear from the curent cursor position to the
+" end of the line.
+" This is not very good. We need to determine
+" If we are inside a pair or not. We should be
+" able to steal a method to do that fron a syntax file.
+function! NumCharsLeft( thechar )
+
+	let l:cline = getline(".")
+	let l:cpos = getpos(".")
+	let l:ccol = l:cpos[2]
+	let l:inst = 0
+
+	let l:nchar = stridx( l:cline, a:thechar, l:ccol )
+	while l:nchar > l:ccol 
+		let l:inst = l:inst+1
+		let l:nchar = stridx( l:cline, a:thechar, l:nchar+1 )
+	endwhile
+
+	return l:inst
+endfunction
+
 " If the given char is to the 
 " right of us, go to the right of it.
 " But only if it appears to close a matching
@@ -251,7 +273,7 @@ function! GoToNextChar( thechar )
 
 	let l:nchar = stridx( l:cline, a:thechar, l:ccol )
 	if l:nchar < l:ccol
-		if a:thechar == '"' || a:thechar == "'" || a:thechar == "+"
+		if (a:thechar == '"' || a:thechar == "'" || a:thechar == "+") && NumCharsLeft( a:thechar )%2 == 0
 			return a:thechar.a:thechar."\<left>"
 		endif
 		return a:thechar.a:thechar
