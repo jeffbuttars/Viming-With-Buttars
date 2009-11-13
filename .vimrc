@@ -237,14 +237,11 @@ imap [[ []<Left>
 imap {{ {}<Left>
 "imap "" ""<Left>
 "imap '' ''<Left>
-"au FileType javascript ++ ++<Left>
+"au FileType javascript imap ++ ++<Left>
 
 " Find out however many instances of a char
 " appear from the curent cursor position to the
 " end of the line.
-" This is not very good. We need to determine
-" If we are inside a pair or not. We should be
-" able to steal a method to do that fron a syntax file.
 function! NumCharsLeft( thechar )
 
 	let l:cline = getline(".")
@@ -261,6 +258,10 @@ function! NumCharsLeft( thechar )
 	return l:inst
 endfunction
 
+function! b:InString()
+	return synIDattr(synID(line("."), col("."), 0), "name" ) =~ 'String'
+endfunction
+
 " If the given char is to the 
 " right of us, go to the right of it.
 " But only if it appears to close a matching
@@ -273,8 +274,20 @@ function! GoToNextChar( thechar )
 
 	let l:nchar = stridx( l:cline, a:thechar, l:ccol )
 	if l:nchar < l:ccol
-		if (a:thechar == '"' || a:thechar == "'" || a:thechar == "+") && NumCharsLeft( a:thechar )%2 == 0
+		if (a:thechar == '"' || a:thechar == "'") && !b:InString()
 			return a:thechar.a:thechar."\<left>"
+		elseif a:thechar == '+'
+			"if the cursor is on or to left of a '+', jump out.
+			let l:tchar = strpart( getline('.'), col('.')-2, 1)
+			let l:rchar = strpart( getline('.'), col('.')-1, 1)
+			if l:tchar == a:thechar || l:rchar == a:thechar
+				let l:ccur = getpos(".")
+				let l:ccur[2] = l:nchar+2
+				call setpos( '.', l:ccur )
+				return ""
+			else
+				return a:thechar.a:thechar."\<left>"
+			endif
 		endif
 		return a:thechar.a:thechar
 	endif
@@ -517,8 +530,7 @@ au Filetype html let b:closetag_html_style=1
 au Filetype html,xml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
 
 " Set NiceMenu Delay
-let g:NiceMenuDelay = '.7' 
-let g:acp_mappingDriven = 1
+let g:NiceMenuDelay = '.8' 
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
