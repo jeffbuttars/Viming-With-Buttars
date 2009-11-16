@@ -133,14 +133,14 @@ imap <c-o> <C-X><C-O>
 " Enter will do a simple accept of the selection
 "Moved this into delimitMate to get them
 "to work together
-"function! CleverCR()
-	"if !pumvisible() 
-		"return "\<CR>"
-	"endif
+function! CleverCR()
+	if !pumvisible() 
+		return "\<CR>"
+	endif
 
-	"return "\<C-Y>"
-"endfunction
-"inoremap <CR> <C-R>=CleverCR()<CR>
+	return "\<C-Y>"
+endfunction
+inoremap <CR> <C-R>=CleverCR()<CR>
 
 
 " Auto close the preview window
@@ -214,19 +214,38 @@ nmap <C-PageUp> :bprevious<CR>
 " My own little helpers
 " remove trailing whitespace, put a ; on the end of the line and write the
 " buffer.
-imap ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:nohl<CR>:<ESC>
-nmap ;; <ESC>:s/\s*$//<CR><Insert><END>;<ESC>:w<CR>:nohl<CR>:<ESC>
+function! DoubleAtEnd( thechar )
+	" If a semicolon exists already, don't do anything.
+	let l:regex = a:thechar . '$'
+	if getline(".") =~ l:regex 
+		return
+	endif
+
+	let l:cline = substitute( getline("."), '\s*$', '', 'g' )
+	echo l:cline . a:thechar 
+	call setline( ".", l:cline . a:thechar )
+endfunction
+
+imap ;; <ESC>:call DoubleAtEnd(';')<CR>:w<CR><ESC>
+nmap ;; <ESC>:call DoubleAtEnd(';')<CR>:w<CR><ESC>
 
 " No ; and end of line in python, so just save the file, trim the end and put
 " the cursor at the end of the line.
 " But, we can do something similar for :
-au FileType python imap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:nohl<CR>o<ESC>
-au FileType python nmap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:nohl<CR>o<ESC>
-au FileType python nmap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:nohl<CR>o
-au FileType python imap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:nohl<CR>o
+"au FileType python imap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:nohl<CR>o<ESC>
+"au FileType python nmap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:nohl<CR>o<ESC>
+au FileType python imap ;; <ESC>:call DoubleAtEnd(';')<CR>:w<CR>o<ESC>
+au FileType python nmap ;; <ESC>:call DoubleAtEnd(';')<CR>:w<CR>o<ESC>
 
-au FileType php,javascript,js nmap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:nohl<ESC>
-au FileType php,javascript,js imap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:nohl<ESC>
+"au FileType python nmap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:nohl<CR>o
+"au FileType python imap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:nohl<CR>o
+au FileType python nmap :: <ESC>:call DoubleAtEnd(':')<CR>:w<CR>o<ESC>
+au FileType python imap :: <ESC>:call DoubleAtEnd(':')<CR>:w<CR>o<ESC>
+
+"au FileType php,javascript,js nmap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:nohl<ESC>
+"au FileType php,javascript,js imap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:nohl<ESC>
+au FileType php,javascript,js nmap ,, <ESC>:call DoubleAtEnd(',')<CR>:w<CR>o<ESC>
+au FileType php,javascript,js imap ,, <ESC>:call DoubleAtEnd(',')<CR>:w<CR>o<ESC>
 
 " Drop the close match then move the cursor in between them
 "let g:delimitMate_autoclose = 0
