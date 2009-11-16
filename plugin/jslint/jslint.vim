@@ -114,6 +114,7 @@ function! s:JSLint(args) range
       echo b:error_under_cursor
     endif
   else
+	cclose " Close quickfix window
     echo "JSLint: All good."
   endif
 endfunction
