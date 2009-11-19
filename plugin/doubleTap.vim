@@ -9,6 +9,17 @@
 "               resulting from the use of this software.
 " Name Of File: doubleTap.vim
 "  Description: DoubleTap Vim Plugin
+"               This plugin provides a more manual, but easy, way to insert
+"               matching pair characters, ie: [],(),'', and not so matchy
+"               characters like + and ., common concatenation characters.
+"               Also provides a quick and easy way to terminate a line no
+"               matter where on the line the cursor is.
+"               For instance a double semicolon, ;;, will trim all of the
+"               space at the end of the line and insert a semicolon at the end
+"               of the current line. DoubleTap provides some simple abstract 
+"               functions to the more intricate work and then provides default 
+"               mappings to wire those functions to characters,pairs and
+"               events.
 "   Maintainer: Jeff Buttars (jeffbuttars at gmail dot com)
 " Last Changed: Thursday, 19 Nov 2009
 "      Version: See g:double_tap_version for version number.
