@@ -20,11 +20,59 @@
 "               functions to the more intricate work and then provides default 
 "               mappings to wire those functions to characters,pairs and
 "               events.
+"
+"                   Another great plugin that provides a more automatic 'as you
+"               type' matching pair insertion/completion is 
+"               DelimitMate,http://www.vim.org/scripts/script.php?script_id=2754
+"               Check it out if haven't already. It provided inspiration for
+"               me to finally write this plugin.
+"
+"     Examples: 
+"
+"     			For true matching pairs like {}:
+"     			typing a double left curly brace, {{, will insert a matching
+"     			pair of curly braces, {}, with the cursor in the middle.
+"     			typing a double right curly brace, }}, will place the cursor
+"     			after the next instance of a right curly brace in the buffer.
+"     			This behavior is used with {},[],() pairs by default.
+"     				For string containers, quote marks, the behavior is similar
+"     			to matching pairs. When a single quote is typed in twice 
+"     			quickly, '', if the cursor is inside a string, as determined by 
+"     			the syntax highlighting, then the curso will be set to the
+"     			right of the next occurrence of '. Otherwise two quotes are
+"     			inserted into the buffer with the cursor between them. This
+"     			is the behavior of ' and " by default
+"     				There is also a pseudo matching pair functionality used
+"     			for characters that aren't paired or used as a container. This
+"     			is used for concatenation characters at the time of this
+"     			release.It's used for the . and + characters. It is very
+"     			simple. If .. is typed and there is a. to the right of the
+"     			cursor the cursor position is set to the right of the next . on the
+"     			current line. Otherwise two periods are inserted with the cursor 
+"     			in between them. By default this is the behaviour of the . and
+"     			+ characters, depending on filetype.
+"     				The second part of this plugin is finish line. By double
+"     			tapping a character the current line is 'finished' for
+"     			you. The basic behaviour is to trim all white space from the
+"     			end of the current line and insert a character, like a ;, at
+"     			the end of the clean line. Some additional functionality, like
+"     			saving the file, can be easily added in the mapping.
+ "
 "   Maintainer: Jeff Buttars (jeffbuttars at gmail dot com)
 " Last Changed: Thursday, 19 Nov 2009
 "      Version: See g:double_tap_version for version number.
 "        Usage: This file should reside in the plugin directory and be
 "               automatically sourced.
+"     			    All functionality of this plugin is triggered by a key mapping.
+"     			Double Tap comes with it's own set of default mappings
+"     			enabled. You can easily disable any of the default mappings
+"     			from you .vimrc by setting the appropriate setting variable to
+"     			0. For example to disable left bracket insertion put the
+"     			following in you .vimrc:
+"                   let b:DoubleTab_map_left_bracket = 0
+"               Look in the 'Default settings' section bellow to see all of the
+"               settings variables. Look at the 'Set up key mappings' section
+"               to see how the mappings are set.
 "
 "=============================================================================
 
@@ -141,14 +189,14 @@ function! s:inString()
 endfunction
 "1}}}
 
-" g:DoubleTapFinishLine( thechar )
+" DoubleTapFinishLine( thechar )
 " public
 " Remove trailing whitespace, put the given character at the end of the line  
 " {{{1
-function! g:DoubleTapFinishLine( thechar )
+function! DoubleTapFinishLine( thechar )
 
 	if &paste
-	  return a:thechar
+	  return a:thechar.a:thechar
 	endif
 
 	" If thechar already exists already, don't do anything.
@@ -165,31 +213,44 @@ endfunction
 
 " DoubleTapJumpOut( thechar )
 " public
-" If the next instance of a char is to the 
-" right of us, go to the right of it.
-" But only if it appears to close a matching
-" left? Maybe we'll do that last part later, we'll see. 
+" Find the next instance of thechar in the current
+" buffer and jump to it.
 " {{{1
 function! DoubleTapJumpOut( thechar )
 
 	if &paste
-	  return a:thechar
+	  return a:thechar.a:thechar
 	endif
 
-	" See if it's there.
+	" First see if it's on the cursor. 
+	" If it is jump out and return.
+	" Otherwise find the next instance in the buffer and 
+	" go there.
+
 	let l:cline = getline(".")
 	let l:cpos = getpos(".")
-	let l:ccol = l:cpos[2]-1
 
-	let l:nchar = stridx( l:cline, a:thechar, l:ccol )
-	if l:nchar < l:ccol
-		return a:thechar.a:thechar
+	"if the cursor is to left of thechar, jump out.
+	let l:rchar = strpart( l:cline, col('.')-1, 1)
+
+	if l:rchar == a:thechar 
+		let l:cpos[2] = l:cpos[2]+2
+		call setpos( '.', l:cpos )
+		return ""
 	endif
 
-	let l:cpos[2] = l:nchar+2
-	call setpos( '.', l:ccur )
+	"find next position of this character in the buffer.
+	let l:npos = searchpos( a:thechar, 'n' )
+	if l:npos[0] > 0 && l:npos[1] > 0
 
-	return ""
+	  let l:cpos[1] = l:npos[0]
+	  let l:cpos[2] = l:npos[1]+1
+	  call setpos( '.', l:cpos )
+
+	  return ""
+	endif
+
+	return a:thechar.a:thechar
 endfunction
 "1}}}
 
@@ -198,28 +259,20 @@ endfunction
 " public
 " This is a lot like DoubleTapJumpOut() but is explicity
 " for the string enclosing ''' and '"'
-" For now only works with single line strings.
 function! DoubleTapInsertJumpString( thechar )
 
 	if &paste
-	  return a:thechar
+	  return a:thechar.a:thechar
 	endif
 
-	if (a:thechar != '"' && a:thechar != "'")
-	  echo "DoubleTapInsertJumpString() only works with ' and \""
-	  return a:thechar . a:thechar
-	endif
-
-
-	let l:cline = getline(".")
-	let l:cpos = getpos(".")
-	let l:ccol = l:cpos[2]-1
-	let l:nchar = stridx( l:cline, a:thechar, l:ccol )
-	
 	" If we're in a string, jump out
+	" Otherwise, lay down a pair
 	if s:inString()
 	  " jump out
-	  let l:cpos[2] = l:nchar+2
+	  let l:cpos = getpos(".")
+	  let l:npos = searchpos( a:thechar, 'n' )
+	  let l:cpos[1] = l:npos[0]
+	  let l:cpos[2] = l:npos[1]+1
 	  call setpos( '.', l:cpos )
 	  return ""
 	endif
@@ -233,7 +286,7 @@ endfunction
 " public
 " This is a lot like DoubleTapJumpOut() but it is used
 " for characters that aren't usually considered a matching
-" pair. This can be a convenience for concatination operators
+" pair. This can be a convenience for concatenation operators
 " like . and +
 " If the char is present to the right of the cursor
 " jump to it. Otherwise insert a pair and put the cursor
@@ -242,7 +295,7 @@ endfunction
 function! DoubleTapInsertJumpSimple( thechar )
 
 	if &paste
-	  return a:thechar
+	  return a:thechar.a:thechar
 	endif
 
 	" See if it's there.
@@ -256,9 +309,8 @@ function! DoubleTapInsertJumpSimple( thechar )
 		  let l:tchar = strpart( getline('.'), col('.')-2, 1)
 		  let l:rchar = strpart( getline('.'), col('.')-1, 1)
 		  if l:tchar == a:thechar || l:rchar == a:thechar
-			  let l:ccur = getpos(".")
-			  let l:ccur[2] = l:nchar+2
-			  call setpos( '.', l:ccur )
+			  let l:cpos[2] = l:nchar+2
+			  call setpos( '.', l:cpos )
 			  return ""
 		  else
 			  return a:thechar.a:thechar."\<left>"
@@ -268,33 +320,12 @@ function! DoubleTapInsertJumpSimple( thechar )
 	endif
 
 	let l:cpos[2] = l:nchar+2
-	call setpos( '.', l:ccur )
+	call setpos( '.', l:cpos )
 
 	return ""
 endfunction
 "1}}}
  
-"{{{1
-" Find out however many instances of a char
-" appear from the curent cursor position to the
-" end of the line.
-"function! NumCharsLeft( thechar )
-
-	"let l:cline = getline(".")
-	"let l:cpos = getpos(".")
-	"let l:ccol = l:cpos[2]
-	"let l:inst = 0
-
-	"let l:nchar = stridx( l:cline, a:thechar, l:ccol )
-	"while l:nchar > l:ccol 
-		"let l:inst = l:inst+1
-		"let l:nchar = stridx( l:cline, a:thechar, l:nchar+1 )
-	"endwhile
-
-	"return l:inst
-"endfunction
-"1}}}
-
 "Set up key mappings 
 "{{{1
 " Enable default left bracket mapping
@@ -310,7 +341,7 @@ endif
 if 1 == b:DoubleTab_map_left_brace
   imap {{ {}<Left>
 endif
-" Enable default rightt curly brace mapping
+" Enable default right curly brace mapping
 if 1 == b:DoubleTab_map_right_brace
   imap }} <C-R>=DoubleTapJumpOut("}")<CR>
 endif
@@ -368,8 +399,8 @@ endif
 " Enable default double tap comma finish line
 " Only for javascript and php by default
 if 1 == b:DoubleTab_map_colon_finish_line
-au FileType php,javascript nmap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>o<ESC>
-au FileType php,javascript imap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>o<ESC>
+  au FileType php,javascript nmap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>o
+  au FileType php,javascript imap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>o
 endif
 
 "1}}}
