@@ -211,129 +211,6 @@ set title
 nmap <C-PageDown> :bnext<CR>
 nmap <C-PageUp> :bprevious<CR>
 
-" My own little helpers
-" remove trailing whitespace, put a ; on the end of the line and write the
-" buffer.
-function! DoubleAtEnd( thechar )
-	" If a semicolon exists already, don't do anything.
-	let l:regex = a:thechar . '$'
-	if getline(".") =~ l:regex 
-		return
-	endif
-
-	let l:cline = substitute( getline("."), '\s*$', '', 'g' )
-	echo l:cline . a:thechar 
-	call setline( ".", l:cline . a:thechar )
-endfunction
-
-imap ;; <ESC>:call DoubleAtEnd(';')<CR>:w<CR><ESC>
-nmap ;; <ESC>:call DoubleAtEnd(';')<CR>:w<CR><ESC>
-
-" No ; and end of line in python, so just save the file, trim the end and put
-" the cursor at the end of the line.
-" But, we can do something similar for :
-"au FileType python imap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:nohl<CR>o<ESC>
-"au FileType python nmap ;; <ESC>:s/\s*$//<CR><END><ESC>:w<CR>:nohl<CR>o<ESC>
-au FileType python imap ;; <ESC>:call DoubleAtEnd(';')<CR>:w<CR>o<ESC>
-au FileType python nmap ;; <ESC>:call DoubleAtEnd(';')<CR>:w<CR>o<ESC>
-
-"au FileType python nmap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:nohl<CR>o
-"au FileType python imap :: <ESC>:s/\s*$//<CR><Insert><END>:<END><ESC>:w<CR>:nohl<CR>o
-au FileType python nmap :: <ESC>:call DoubleAtEnd(':')<CR>:w<CR>o<ESC>
-au FileType python imap :: <ESC>:call DoubleAtEnd(':')<CR>:w<CR>o<ESC>
-
-"au FileType php,javascript,js nmap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:nohl<ESC>
-"au FileType php,javascript,js imap ,, <ESC>:s/\s*$//<CR><Insert><END>,<END><ESC>:w<CR>:nohl<ESC>
-au FileType php,javascript,js nmap ,, <ESC>:call DoubleAtEnd(',')<CR>:w<CR>o<ESC>
-au FileType php,javascript,js imap ,, <ESC>:call DoubleAtEnd(',')<CR>:w<CR>o<ESC>
-
-" Drop the close match then move the cursor in between them
-"let g:delimitMate_autoclose = 0
-"let b:delimitMate_expand_space = 0
-"let b:delimitMate_expand_cr = 0
-imap (( ()<Left>
-imap [[ []<Left>
-imap {{ {}<Left>
-"imap "" ""<Left>
-"imap '' ''<Left>
-"au FileType javascript imap ++ ++<Left>
-
-" Find out however many instances of a char
-" appear from the curent cursor position to the
-" end of the line.
-function! NumCharsLeft( thechar )
-
-	let l:cline = getline(".")
-	let l:cpos = getpos(".")
-	let l:ccol = l:cpos[2]
-	let l:inst = 0
-
-	let l:nchar = stridx( l:cline, a:thechar, l:ccol )
-	while l:nchar > l:ccol 
-		let l:inst = l:inst+1
-		let l:nchar = stridx( l:cline, a:thechar, l:nchar+1 )
-	endwhile
-
-	return l:inst
-endfunction
-
-function! b:InString()
-	return synIDattr(synID(line("."), col("."), 0), "name" ) =~ 'String'
-endfunction
-
-" If the given char is to the 
-" right of us, go to the right of it.
-" But only if it appears to close a matching
-" left? Maybe we'll do that last part later, we'll see.
-function! GoToNextChar( thechar )
-	" See if it's there.
-	let l:cline = getline(".")
-	let l:cpos = getpos(".")
-	let l:ccol = l:cpos[2]-1
-
-	let l:nchar = stridx( l:cline, a:thechar, l:ccol )
-	if l:nchar < l:ccol
-		if (a:thechar == '"' || a:thechar == "'") && !b:InString()
-			return a:thechar.a:thechar."\<left>"
-		elseif a:thechar == '+'
-			"if the cursor is on or to left of a '+', jump out.
-			let l:tchar = strpart( getline('.'), col('.')-2, 1)
-			let l:rchar = strpart( getline('.'), col('.')-1, 1)
-			if l:tchar == a:thechar || l:rchar == a:thechar
-				let l:ccur = getpos(".")
-				let l:ccur[2] = l:nchar+2
-				call setpos( '.', l:ccur )
-				return ""
-			else
-				return a:thechar.a:thechar."\<left>"
-			endif
-		endif
-		return a:thechar.a:thechar
-	endif
-
-	let l:ccur = getpos(".")
-	let l:ccur[2] = l:nchar+2
-	call setpos( '.', l:ccur )
-
-	return ""
-endfunction
- 
-imap )) <C-R>=GoToNextChar(")")<CR>
-imap ]] <C-R>=GoToNextChar("]")<CR>
-imap "" <C-R>=GoToNextChar('"')<CR>
-imap '' <C-R>=GoToNextChar("'")<CR>
-imap }} <C-R>=GoToNextChar("}")<CR>
-au FileType javascript imap ++ <C-R>=GoToNextChar('+')<CR>
-
-
-" Use this mapping in conjuction with delimitMate 
-" is great if the delimitMate_autoclose is off.
-"imap (( ()
-"imap [[ []
-"imap {{ {}
-"imap "" ""
-"imap '' ''
-
 "http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
 " The above URL also has good stuff for autoclosing matching pairs, like (). 
 "One of the nicer minor features of TextMate is its treatment of highlighted text. 
@@ -395,7 +272,12 @@ set t_Co=256
 "colo vividchalk 
 " A light theme.
 "colo peaksea 
-colo jellybeans 
+
+if has( "gui_running" )
+	colo tango
+else
+	colo jellybeans 
+endif
 
 " set linenumbers on
 set number 
