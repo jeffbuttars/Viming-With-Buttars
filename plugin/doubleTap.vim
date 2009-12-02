@@ -180,12 +180,42 @@ endif
 "1}}}
 
 
-" s:inString()
+"" s:inString()
 " private
  "See if the cursor is inside a string according the current syntax definition
  "{{{1
-function! s:inString()
-	return synIDattr(synID(line("."), col("."), 0), "name" ) =~ 'String'
+function! s:inString( thechar )
+
+	" This will often contain whether we are in a single or double quote
+	" string. How that is represented seems syntax specific, not standard.
+	" We still leverage that knowledge if we can.
+	let l:synstr = synIDattr(synID(line("."), col("."), 0), "name" )
+
+	if l:synstr  !~? 'String'
+	  return 0
+	endif
+
+	let l:inSingle = 0
+	let l:theSingle = 0
+
+	"" See if the string we're in is the same kind we're tapping.
+	" So, if we're in a '      ' but double tap a ", we should end up
+	" with '    ""   ' and not jump to the next ".
+	"
+	" Is there more at the end of the string? a 'S' or 'Single'?
+	" If so, see if we can detect the quote type and then match it
+	" to the chare being tapped.
+	if l:synstr  !~? 'String$'
+	  if l:synstr  =~? 'StringS'
+		let l:inSingle = 1
+	  endif
+
+	  if a:thechar == "'"
+		let l:theSingle = 1
+	  endif
+	endif
+
+	return l:inSingle == l:theSingle
 endfunction
 "1}}}
 
@@ -267,7 +297,7 @@ function! DoubleTapInsertJumpString( thechar )
 
 	" If we're in a string, jump out
 	" Otherwise, lay down a pair
-	if s:inString()
+	if s:inString( a:thechar )
 	  " jump out
 	  let l:cpos = getpos(".")
 	  let l:npos = searchpos( a:thechar, 'n' )
@@ -380,8 +410,8 @@ if 1 == b:DoubleTab_map_semicolon_finish_line
   " we use a different mapping in Python.
   if &ft == 'python'
 	" NOTICE: This will insert a ':', not a semicolon.
-	au FileType python imap ;; <ESC>:call DoubleTapFinishLine(':')<CR>:w<CR>o<ESC>
-	au FileType python nmap ;; <ESC>:call DoubleTapFinishLine(':')<CR>:w<CR>o<ESC>
+	imap ;; <ESC>:call DoubleTapFinishLine(':')<CR>:w<CR>o<ESC>
+	nmap ;; <ESC>:call DoubleTapFinishLine(':')<CR>:w<CR>o<ESC>
   else
 	imap ;; <ESC>:call DoubleTapFinishLine(';')<CR>:w<CR><ESC>
 	nmap ;; <ESC>:call DoubleTapFinishLine(';')<CR>:w<CR><ESC>
@@ -399,8 +429,8 @@ endif
 " Enable default double tap comma finish line
 " Only for javascript and php by default
 if 1 == b:DoubleTab_map_colon_finish_line
-  au FileType php,javascript nmap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>o
-  au FileType php,javascript imap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>o
+  au FileType php,javascript nmap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>
+  au FileType php,javascript imap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>
 endif
 
 "1}}}
