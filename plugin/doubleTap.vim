@@ -179,7 +179,6 @@ if !exists( "b:DoubleTab_map_comma_finish_line" )
 endif
 "1}}}
 
-
 "" s:inString()
 " private
  "See if the cursor is inside a string according the current syntax definition
@@ -192,6 +191,14 @@ function! s:inString( thechar )
 	let l:synstr = synIDattr(synID(line("."), col("."), 0), "name" )
 
 	if l:synstr  !~? 'String'
+	  " If we're not 'in' the string, we may be sitting
+	  " on the quote, if so return true/1
+	  
+	  if strpart( getline("."), col('.')-1, 1) == a:thechar
+		echo "We're in"
+		return 1
+	  endif
+
 	  return 0
 	endif
 
@@ -299,7 +306,15 @@ function! DoubleTapInsertJumpString( thechar )
 	" Otherwise, lay down a pair
 	if s:inString( a:thechar )
 	  " jump out
+
 	  let l:cpos = getpos(".")
+	  " Make sure we're not sitting on the quote. 
+	  " If we are, move the cursor to the left by one.
+	  if strpart( getline("."), col('.')-1, 1) == a:thechar
+		  let l:cpos[2] = l:cpos[2] - 1 
+		  call setpos( '.', l:cpos )
+	  endif
+	  
 	  let l:npos = searchpos( a:thechar, 'n' )
 	  let l:cpos[1] = l:npos[0]
 	  let l:cpos[2] = l:npos[1]+1
@@ -435,4 +450,4 @@ endif
 
 "1}}}
 
-" vim:ft=vim foldmethod=marker sw=2
+" vim:ft=vim foldmethod=marker sw=4
