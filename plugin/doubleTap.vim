@@ -133,6 +133,21 @@ if !exists( "b:DoubleTab_map_right_paren" )
   let b:DoubleTab_map_right_paren = 1
 endif
 
+" Enable default left angle mapping
+" << 
+if !exists( "b:DoubleTab_map_left_angle" )
+	let b:DoubleTab_map_left_angle = 1
+	"au FileType html,xhtml let b:closetag_html_style=1
+	"au FileType html,xhtml let b:DoubleTab_map_left_angle = 1
+	"echo "b:DoubleTab_map_left_angle " . b:DoubleTab_map_left_angle
+endif
+" Enable default right angle mapping
+" >> 
+if !exists( "b:DoubleTab_map_right_angle" )
+	let b:DoubleTab_map_right_angle = 1
+	"au Filetype html,xml,xhtml,htmlcheetah,javascript,php let b:DoubleTab_map_right_angle = 1
+endif
+
 " Enable default single quote insert/jump mapping
 " ''
 if !exists( "b:DoubleTab_map_single_quote_insert_jump" )
@@ -398,6 +413,19 @@ endif
 " Enable default right paren mapping
 if 1 == b:DoubleTab_map_right_paren
   imap )) <C-R>=DoubleTapJumpOut(")")<CR>
+endif
+
+" Enable default left paren mapping
+if 1 == b:DoubleTab_map_left_angle
+	au Filetype html,xml,xhtml,htmlcheetah,javascript,php imap << <><Left>
+endif
+" Enable default right paren mapping
+if 1 == b:DoubleTab_map_right_angle
+	au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >> <C-R>=DoubleTapJumpOut(">")<CR>
+" This needs to be conditional on the existense of GetCloseTag()
+	if exists("loaded_closetag")
+		au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >/ <C-R>=DoubleTapJumpOut(">").GetCloseTag()<CR>
+	endif
 endif
 
 " Enable default single quote insert mapping
