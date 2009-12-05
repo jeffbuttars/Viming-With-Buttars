@@ -194,6 +194,29 @@ if !exists( "b:DoubleTab_map_comma_finish_line" )
 endif
 "1}}}
 
+
+function! s:getSynName()
+	return synIDattr(synID(line("."), col("."), 0), "name" )
+endfunction	
+
+let b:DoubleTab_is_tag_name = 1
+let b:DoubleTab_is_end_tag = 2
+function! s:inXTag()
+	let l:synstr = s:getSynName()
+
+	if l:synstr  =~? 'Tag' || l:synstr  =~? 'String' || l:synstr  =~? 'Arg'
+		echo "tagname"
+		return b:DoubleTab_is_tag_name
+	endif
+	if l:synstr  =~? 'EndTag'
+		echo "endtag"
+		return b:DoubleTab_is_end_tag
+	endif
+
+		echo "notagname"
+	return 0
+endfunction
+
 "" s:inString()
 " private
  "See if the cursor is inside a string according the current syntax definition
@@ -203,7 +226,7 @@ function! s:inString( thechar )
 	" This will often contain whether we are in a single or double quote
 	" string. How that is represented seems syntax specific, not standard.
 	" We still leverage that knowledge if we can.
-	let l:synstr = synIDattr(synID(line("."), col("."), 0), "name" )
+	let l:synstr = s:getSynName()
 
 	if l:synstr  !~? 'String'
 	  " If we're not 'in' the string, we may be sitting
@@ -292,8 +315,8 @@ function! DoubleTapJumpOut( thechar )
 	endif
 
 	"find next position of this character in the buffer.
-	let l:npos = searchpos( a:thechar, 'n' )
-	if l:npos[0] > 0 && l:npos[1] > 0
+	let l:npos = searchpos( a:thechar, 'nW' )
+	if l:npos[0] > 0 && l:npos[1] > 0 && l:npos[0] >= l:cpos[1]
 
 	  let l:cpos[1] = l:npos[0]
 	  let l:cpos[2] = l:npos[1]+1
@@ -314,30 +337,58 @@ endfunction
 function! DoubleTapInsertJumpString( thechar )
 
 	if &paste
-	  return a:thechar.a:thechar
+		return a:thechar.a:thechar
 	endif
 
 	" If we're in a string, jump out
 	" Otherwise, lay down a pair
 	if s:inString( a:thechar )
-	  " jump out
+		" jump out
 
-	  let l:cpos = getpos(".")
-	  " Make sure we're not sitting on the quote. 
-	  " If we are, move the cursor to the left by one.
-	  if strpart( getline("."), col('.')-1, 1) == a:thechar
-		  let l:cpos[2] = l:cpos[2] - 1 
-		  call setpos( '.', l:cpos )
-	  endif
-	  
-	  let l:npos = searchpos( a:thechar, 'n' )
-	  let l:cpos[1] = l:npos[0]
-	  let l:cpos[2] = l:npos[1]+1
-	  call setpos( '.', l:cpos )
-	  return ""
+		let l:cpos = getpos(".")
+		" Make sure we're not sitting on the quote. 
+		" If we are, move the cursor to the left by one.
+		if strpart( getline("."), col('.')-1, 1) == a:thechar
+			let l:cpos[2] = l:cpos[2] - 1 
+			call setpos( '.', l:cpos )
+		endif
+
+		let l:npos = searchpos( a:thechar, 'nW' )
+ 		if l:npos[0] >= l:cpos[1]
+			let l:cpos[1] = l:npos[0]
+			let l:cpos[2] = l:npos[1]+1
+			call setpos( '.', l:cpos )
+			return ""
+		endif
 	endif
 
 	return a:thechar.a:thechar."\<left>"
+endfunction
+"1}}}
+
+"{{{1
+" DoubleTapAngleInsert()
+" public
+" Helper for syntax sensitive insertion of <>
+function! DoubleTapAngleInsert()
+
+	if 0 == s:inXTag()
+		return "<>\<Left>"
+	endif
+	
+	return '<<'
+endfunction
+"1}}}
+
+"{{{1
+" DoubleTapAngleJumpOut( )
+" public
+function! DoubleTapAngleJumpOut()
+	if 0 < s:inXTag()
+		return DoubleTapJumpOut( '>' )
+	endif
+
+	return '>>'
 endfunction
 "1}}}
 
@@ -417,14 +468,17 @@ endif
 
 " Enable default left paren mapping
 if 1 == b:DoubleTab_map_left_angle
-	au Filetype html,xml,xhtml,htmlcheetah,javascript,php imap << <><Left>
+	"au Filetype html,xml,xhtml,htmlcheetah,javascript,php imap << <><Left>
+	au Filetype html,xml,xhtml,htmlcheetah,javascript,php imap << <C-R>=DoubleTapAngleInsert()<CR>
 endif
 " Enable default right paren mapping
 if 1 == b:DoubleTab_map_right_angle
-	au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >> <C-R>=DoubleTapJumpOut(">")<CR>
+	au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >> <C-R>=DoubleTapAngleJumpOut()<CR>
+
+" Some simple integration with the closetag plugin.
 " This needs to be conditional on the existense of GetCloseTag()
 	if exists("loaded_closetag")
-		au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >/ <C-R>=DoubleTapJumpOut(">").GetCloseTag()<CR>
+		au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >/ <C-R>=DoubleTapAngleJumpOut().GetCloseTag()<CR><ESC>
 	endif
 endif
 
