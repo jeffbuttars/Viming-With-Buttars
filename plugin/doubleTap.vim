@@ -195,27 +195,43 @@ endif
 "1}}}
 
 
+ "getSynName()
+ "get the syntax type under the cursor
+ "{{{1
 function! s:getSynName()
 	return synIDattr(synID(line("."), col("."), 0), "name" )
 endfunction	
+"1}}}
 
-let b:DoubleTab_is_tag_name = 1
-let b:DoubleTab_is_end_tag = 2
+ "getSynStack()
+ "get the syntax stack under the cursor
+ "{{{1
+function! s:getSynStack()
+	return synstack( line("."), col(".") )
+endfunction	
+"1}}}
+
+ "{{{1
+"let b:DoubleTab_is_tag_name = 1
+"let b:DoubleTab_is_end_tag = 2
 function! s:inXTag()
 	let l:synstr = s:getSynName()
 
 	if l:synstr  =~? 'Tag' || l:synstr  =~? 'String' || l:synstr  =~? 'Arg'
-		echo "tagname"
-		return b:DoubleTab_is_tag_name
+		"echo "tagname"
+		return 1 
+		"return b:DoubleTab_is_tag_name
 	endif
 	if l:synstr  =~? 'EndTag'
-		echo "endtag"
-		return b:DoubleTab_is_end_tag
+		"echo "endtag"
+		return 2
+		"return b:DoubleTab_is_end_tag
 	endif
 
 		echo "notagname"
 	return 0
 endfunction
+"1}}}
 
 "" s:inString()
 " private
@@ -370,26 +386,26 @@ endfunction
 " DoubleTapAngleInsert()
 " public
 " Helper for syntax sensitive insertion of <>
-function! DoubleTapAngleInsert()
+"function! DoubleTapAngleInsert()
 
-	if 0 == s:inXTag()
-		return "<>\<Left>"
-	endif
+	"if 0 == s:inXTag()
+		"return "<>\<Left>"
+	"endif
 	
-	return '<<'
-endfunction
+	"return '<<'
+"endfunction
 "1}}}
 
 "{{{1
 " DoubleTapAngleJumpOut( )
 " public
-function! DoubleTapAngleJumpOut()
-	if 0 < s:inXTag()
-		return DoubleTapJumpOut( '>' )
-	endif
+"function! DoubleTapAngleJumpOut()
+	"if 0 < s:inXTag()
+		"return DoubleTapJumpOut( '>' )
+	"endif
 
-	return '>>'
-endfunction
+	"return '>>'
+"endfunction
 "1}}}
 
 "{{{1
@@ -468,18 +484,19 @@ endif
 
 " Enable default left paren mapping
 if 1 == b:DoubleTab_map_left_angle
-	"au Filetype html,xml,xhtml,htmlcheetah,javascript,php imap << <><Left>
-	au Filetype html,xml,xhtml,htmlcheetah,javascript,php imap << <C-R>=DoubleTapAngleInsert()<CR>
+	au Filetype html,xml,xhtml,htmlcheetah,javascript,php imap << <><Left>
+	"au Filetype html,xml,xhtml,htmlcheetah,javascript,php imap << <C-R>=DoubleTapAngleInsert()<CR>
 endif
 " Enable default right paren mapping
 if 1 == b:DoubleTab_map_right_angle
-	au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >> <C-R>=DoubleTapAngleJumpOut()<CR>
+	"au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >> <C-R>=DoubleTapAngleJumpOut()<CR>
+	au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >> <C-R>=DoubleTapJumpOut(">")<CR>
 
 " Some simple integration with the closetag plugin.
 " This needs to be conditional on the existense of GetCloseTag()
-	if exists("loaded_closetag")
-		au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >/ <C-R>=DoubleTapAngleJumpOut().GetCloseTag()<CR><ESC>
-	endif
+	"if exists("loaded_closetag")
+		"au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >/ <C-R>=DoubleTapAngleJumpOut().GetCloseTag()<CR><ESC>
+	"endif
 endif
 
 " Enable default single quote insert mapping
