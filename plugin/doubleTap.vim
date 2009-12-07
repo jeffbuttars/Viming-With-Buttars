@@ -11,15 +11,16 @@
 "  Description: DoubleTap Vim Plugin
 "               This plugin provides a more manual, but easy, way to insert
 "               matching pair characters, ie: [],(),'', and not so matchy
-"               characters like + and ., common concatenation characters.
+"               characters like + and . , common concatenation characters.
 "               Also provides a quick and easy way to terminate a line no
 "               matter where on the line the cursor is.
 "               For instance a double semicolon, ;;, will trim all of the
 "               space at the end of the line and insert a semicolon at the end
-"               of the current line. DoubleTap provides some simple abstract 
-"               functions to the more intricate work and then provides default 
+"               of the current line. DoubleTap provides some simple abstraction
+"               functions to the do the more intricate work and then provides default 
 "               mappings to wire those functions to characters,pairs and
-"               events.
+"               events. You can easily use the core functions provided by doubleTap to 
+"               create your own mappings and behaviours.
 "
 "                   Another great plugin that provides a more automatic 'as you
 "               type' matching pair insertion/completion is 
@@ -59,7 +60,7 @@
 "     			saving the file, can be easily added in the mapping.
  "
 "   Maintainer: Jeff Buttars (jeffbuttars at gmail dot com)
-" Last Changed: Thursday, 19 Nov 2009
+" Last Changed: Thursday, 9 Dec 2009
 "      Version: See g:double_tap_version for version number.
 "        Usage: This file should reside in the plugin directory and be
 "               automatically sourced.
@@ -76,17 +77,17 @@
 "
 "=============================================================================
 
-
+" Allow doubleTap to 
 " Exit quickly if already running or when 'compatible' is set. 
 " {{{1
-if exists("g:double_tap_version") || &cp
+if exists("g:loaded_doubleTap") || &cp
   finish
 endif
 "1}}}
 
 " Version number
 " {{{1
-let g:double_tap_version = '1.0'
+let g:loaded_doubleTap = '1.0'
 "1}}}
 
 " Check for Vim version 700 or greater 
@@ -137,15 +138,11 @@ endif
 " << 
 if !exists( "b:DoubleTab_map_left_angle" )
 	let b:DoubleTab_map_left_angle = 1
-	"au FileType html,xhtml let b:closetag_html_style=1
-	"au FileType html,xhtml let b:DoubleTab_map_left_angle = 1
-	"echo "b:DoubleTab_map_left_angle " . b:DoubleTab_map_left_angle
 endif
 " Enable default right angle mapping
 " >> 
 if !exists( "b:DoubleTab_map_right_angle" )
 	let b:DoubleTab_map_right_angle = 1
-	"au Filetype html,xml,xhtml,htmlcheetah,javascript,php let b:DoubleTab_map_right_angle = 1
 endif
 
 " Enable default single quote insert/jump mapping
@@ -157,10 +154,6 @@ endif
 " Enable default double quote insert/jump mapping
 if !exists( "b:DoubleTab_map_double_quote_insert_jump" )
   let b:DoubleTab_map_double_quote_insert_jump = 1
-endif
-" Enable default double quote jump out mapping
-if !exists( "b:DoubleTab_map_double_quote_jump_out" )
-  let b:DoubleTab_map_double_quote_jump_out = 1
 endif
 
 " Enable default double plus insert/jump mapping
@@ -195,48 +188,29 @@ endif
 "1}}}
 
 
- "getSynName()
- "get the syntax type under the cursor
- "{{{1
+" Private Helper:
+" getSynName:
+" get the syntax type under the cursor
+"{{{1
 function! s:getSynName()
 	return synIDattr(synID(line("."), col("."), 0), "name" )
 endfunction	
 "1}}}
 
- "getSynStack()
- "get the syntax stack under the cursor
- "{{{1
+" Private Helper:
+" getSynStack:
+" get the syntax stack under the cursor
+"{{{1
 function! s:getSynStack()
 	return synstack( line("."), col(".") )
 endfunction	
 "1}}}
 
- "{{{1
-"let b:DoubleTab_is_tag_name = 1
-"let b:DoubleTab_is_end_tag = 2
-function! s:inXTag()
-	let l:synstr = s:getSynName()
-
-	if l:synstr  =~? 'Tag' || l:synstr  =~? 'String' || l:synstr  =~? 'Arg'
-		"echo "tagname"
-		return 1 
-		"return b:DoubleTab_is_tag_name
-	endif
-	if l:synstr  =~? 'EndTag'
-		"echo "endtag"
-		return 2
-		"return b:DoubleTab_is_end_tag
-	endif
-
-		echo "notagname"
-	return 0
-endfunction
-"1}}}
-
-"" s:inString()
-" private
- "See if the cursor is inside a string according the current syntax definition
- "{{{1
+" Private Helper:
+" inString
+" Param: thechar the quote character that's been double tapped.
+" See if the cursor is inside a string according the current syntax definition
+"{{{1
 function! s:inString( thechar )
 
 	" This will often contain whether we are in a single or double quote
@@ -280,9 +254,9 @@ function! s:inString( thechar )
 endfunction
 "1}}}
 
-" DoubleTapFinishLine( thechar )
-" public
-" Remove trailing whitespace, put the given character at the end of the line  
+" Public Interface:
+" DoubleTapFinishLine: Remove trailing whitespace, put the given character at the end of the line  
+" Param: thechar the character to place at the end of the cleaned line.
 " {{{1
 function! DoubleTapFinishLine( thechar )
 
@@ -302,10 +276,10 @@ function! DoubleTapFinishLine( thechar )
 endfunction
 "1}}}
 
-" DoubleTapJumpOut( thechar )
-" public
-" Find the next instance of thechar in the current
+" Public Interface:
+" DoubleTapJumpOut: Find the next instance of thechar in the current
 " buffer and jump to it.
+" Param: thechar the character to jump too.
 " {{{1
 function! DoubleTapJumpOut( thechar )
 
@@ -314,7 +288,7 @@ function! DoubleTapJumpOut( thechar )
 	endif
 
 	" First see if it's on the cursor. 
-	" If it is jump out and return.
+	" If it is go right one and return.
 	" Otherwise find the next instance in the buffer and 
 	" go there.
 
@@ -345,11 +319,12 @@ function! DoubleTapJumpOut( thechar )
 endfunction
 "1}}}
 
-"{{{1
-" DoubleTapInsertJumpString( thechar )
-" public
-" This is a lot like DoubleTapJumpOut() but is explicity
+" Public Interface:
+" DoubleTapInsertJumpString: This is a lot like DoubleTapJumpOut() but is explicity
 " for the string enclosing ''' and '"'
+" Param: thechar the quote character used to define the new string or jukmp
+" too.
+"{{{1
 function! DoubleTapInsertJumpString( thechar )
 
 	if &paste
@@ -382,36 +357,8 @@ function! DoubleTapInsertJumpString( thechar )
 endfunction
 "1}}}
 
-"{{{1
-" DoubleTapAngleInsert()
-" public
-" Helper for syntax sensitive insertion of <>
-"function! DoubleTapAngleInsert()
-
-	"if 0 == s:inXTag()
-		"return "<>\<Left>"
-	"endif
-	
-	"return '<<'
-"endfunction
-"1}}}
-
-"{{{1
-" DoubleTapAngleJumpOut( )
-" public
-"function! DoubleTapAngleJumpOut()
-	"if 0 < s:inXTag()
-		"return DoubleTapJumpOut( '>' )
-	"endif
-
-	"return '>>'
-"endfunction
-"1}}}
-
-"{{{1
-" DoubleTapInsertJumpSimple( thechar )
-" public
-" This is a lot like DoubleTapJumpOut() but it is used
+" Public Interface:
+" DoubleTapInsertJumpSimple: This is a lot like DoubleTapJumpOut() but it is used
 " for characters that aren't usually considered a matching
 " pair. This can be a convenience for concatenation operators
 " like . and +
@@ -419,6 +366,8 @@ endfunction
 " jump to it. Otherwise insert a pair and put the cursor
 " in the middle of them.
 " For now only works with single line matches 
+" Param: thechar the character to insert or jump too.
+"{{{1
 function! DoubleTapInsertJumpSimple( thechar )
 
 	if &paste
@@ -482,21 +431,13 @@ if 1 == b:DoubleTab_map_right_paren
   imap )) <C-R>=DoubleTapJumpOut(")")<CR>
 endif
 
-" Enable default left paren mapping
+" Enable default left angle mapping
 if 1 == b:DoubleTab_map_left_angle
 	au Filetype html,xml,xhtml,htmlcheetah,javascript,php imap << <><Left>
-	"au Filetype html,xml,xhtml,htmlcheetah,javascript,php imap << <C-R>=DoubleTapAngleInsert()<CR>
 endif
-" Enable default right paren mapping
+" Enable default right angle mapping
 if 1 == b:DoubleTab_map_right_angle
-	"au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >> <C-R>=DoubleTapAngleJumpOut()<CR>
 	au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >> <C-R>=DoubleTapJumpOut(">")<CR>
-
-" Some simple integration with the closetag plugin.
-" This needs to be conditional on the existense of GetCloseTag()
-	"if exists("loaded_closetag")
-		"au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >/ <C-R>=DoubleTapAngleJumpOut().GetCloseTag()<CR><ESC>
-	"endif
 endif
 
 " Enable default single quote insert mapping
@@ -509,14 +450,14 @@ if 1 == b:DoubleTab_map_double_quote_insert_jump
   imap "" <C-R>=DoubleTapInsertJumpString('"')<CR>
 endif
 
-" Enable default double quote insert mapping
+" Enable default double plus insert mapping
 if 1 == b:DoubleTab_map_plus_insert_jump
   au FileType javascript,python imap ++ <C-R>=DoubleTapInsertJumpSimple('+')<CR>
 endif
 
-" Enable default double quote insert mapping
+" Enable default double period insert mapping
 if 1 == b:DoubleTab_map_period_insert_jump
-  au FileType php,vim imap .. <C-R>=DoubleTapInsertJumpSimple('.')<CR>
+  au FileType php,perl,vim imap .. <C-R>=DoubleTapInsertJumpSimple('.')<CR>
 endif
 
 " Enable default double tap semicolon finish line
@@ -542,7 +483,7 @@ endif
 
 " Enable default double tap comma finish line
 " Only for javascript and php by default
-if 1 == b:DoubleTab_map_colon_finish_line
+if 1 == b:DoubleTab_map_comma_finish_line
   au FileType php,javascript nmap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>
   au FileType php,javascript imap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>
 endif
