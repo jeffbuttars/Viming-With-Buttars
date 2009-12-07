@@ -257,7 +257,7 @@ hi clear CursorLine
 
 " Explicitly say we want 256 colors.
 " When this is set it can mess up using vim on a real console.
-"  Definitely in Fedora 11.
+"  Definitely in Fedora >= 11.
 set t_Co=256
 
 " Dark background schemes
@@ -321,7 +321,7 @@ set guioptions-=m
 " Remove toolbar from gvim
 set guioptions-=T
 " Set gvim font. I like the droid
-set guifont=Inconsolata\ Medium\ 14
+set guifont=Inconsolata\ Medium\ 12
 
 "     dictionary: english words first
 " add any text based dictionaries to the list.
