@@ -97,7 +97,7 @@ The behaviour of this script can be customized setting the following options
 in your vimrc file. You can use the options to set the configuration for
 specific file types, see |doubleTapOptionDetails| for examples.
 
-|b:load_doubleTap|				Enable/Disable doubleTap plugin
+|b:loaded_doubleTap|				Enable/Disable doubleTap plugin
 
 |b:DoubleTab_map_left_bracket|			Enable/Disable doubleTap's
 						default mapping for [[
@@ -152,13 +152,13 @@ Add the shown lines to your vimrc file in order to set the below options.
 Options can be used along with autocmd to modify doubleTap's behavior 
 for specific file types.
 
-                                                   *'b:load_doubleTap'*
+                                                   *'b:loaded_doubleTap'*
 Values: 0 or 1.                                                              ~
 Default: 1                                                                   ~
 
 This option can prevent doubleTap from loading.
 e.g.: >
-        au FileType mail let b:load_doubleTap = 0
+        au FileType mail let b:loaded_doubleTap = 0
 <
 ------------------------------------------------------------------------------
 
