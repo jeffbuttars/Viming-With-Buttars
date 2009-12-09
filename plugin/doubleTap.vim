@@ -3,7 +3,7 @@
 "               Permission is hereby granted to use and distribute this code,
 "               with or without modifications, provided that this copyright
 "               notice is copied with it. Like anything else that's free,
-"               doubleTab.vim is provided *as is* and comes with no
+"               doubleTap.vim is provided *as is* and comes with no
 "               warranty of any kind, either expressed or implied. In no
 "               event will the copyright holder be liable for any damages
 "               resulting from the use of this software.
@@ -70,7 +70,7 @@
 "     			from you .vimrc by setting the appropriate setting variable to
 "     			0. For example to disable left bracket insertion put the
 "     			following in you .vimrc:
-"                   let b:DoubleTab_map_left_bracket = 0
+"                   let b:DoubleTap_map_left_bracket = 0
 "               Look in the 'Default settings' section bellow to see all of the
 "               settings variables. Look at the 'Set up key mappings' section
 "               to see how the mappings are set.
@@ -100,90 +100,120 @@ endif
 
 " Default settings 
 " {{{1
-"
 "[[
 " Enable default left bracket mapping
-if !exists( "b:DoubleTab_map_left_bracket" )
-  let b:DoubleTab_map_left_bracket = 1
+if !exists( "b:DoubleTap_map_left_bracket" )
+  let b:DoubleTap_map_left_bracket = 0
 endif
 " Enable default right bracket mapping
 "]]
-if !exists( "b:DoubleTab_map_right_bracket" )
-  let b:DoubleTab_map_right_bracket = 1
+if !exists( "b:DoubleTap_map_right_bracket" )
+  let b:DoubleTap_map_right_bracket = 0
 endif
 
 " Enable default left curly brace mapping
 " {{
-if !exists( "b:DoubleTab_map_left_brace" )
-  let b:DoubleTab_map_left_brace = 1
+if !exists( "b:DoubleTap_map_left_brace" )
+  let b:DoubleTap_map_left_brace = 0
 endif
 " Enable default rightt curly brace mapping
 " }}
-if !exists( "b:DoubleTab_map_right_brace" )
-  let b:DoubleTab_map_right_brace = 1
+if !exists( "b:DoubleTap_map_right_brace" )
+  let b:DoubleTap_map_right_brace = 0
 endif
 
 " Enable default left paren mapping
 " ((
-if !exists( "b:DoubleTab_map_left_paren" )
-  let b:DoubleTab_map_left_paren = 1
+if !exists( "b:DoubleTap_map_left_paren" )
+  let b:DoubleTap_map_left_paren = 0
 endif
 " Enable default right paren mapping
 " ))
-if !exists( "b:DoubleTab_map_right_paren" )
-  let b:DoubleTab_map_right_paren = 1
+if !exists( "b:DoubleTap_map_right_paren" )
+  let b:DoubleTap_map_right_paren = 0
 endif
 
 " Enable default left angle mapping
 " << 
-if !exists( "b:DoubleTab_map_left_angle" )
-	let b:DoubleTab_map_left_angle = 1
+if !exists( "b:DoubleTap_map_left_angle" )
+	let b:DoubleTap_map_left_angle = 0
 endif
 " Enable default right angle mapping
 " >> 
-if !exists( "b:DoubleTab_map_right_angle" )
-	let b:DoubleTab_map_right_angle = 1
+if !exists( "b:DoubleTap_map_right_angle" )
+	let b:DoubleTap_map_right_angle = 0
 endif
 
 " Enable default single quote insert/jump mapping
 " ''
-if !exists( "b:DoubleTab_map_single_quote_insert_jump" )
-  let b:DoubleTab_map_single_quote_insert_jump = 1
+if !exists( "b:DoubleTap_map_single_quote_insert_jump" )
+  let b:DoubleTap_map_single_quote_insert_jump = 0
 endif
 
 " Enable default double quote insert/jump mapping
-if !exists( "b:DoubleTab_map_double_quote_insert_jump" )
-  let b:DoubleTab_map_double_quote_insert_jump = 1
+if !exists( "b:DoubleTap_map_double_quote_insert_jump" )
+  let b:DoubleTap_map_double_quote_insert_jump = 0
 endif
 
 " Enable default double plus insert/jump mapping
 " ++
-if !exists( "b:DoubleTab_map_plus_insert_jump" )
-  let b:DoubleTab_map_plus_insert_jump = 1
+if !exists( "b:DoubleTap_map_plus_insert_jump" )
+  let b:DoubleTap_map_plus_insert_jump = 0
 endif
 
 " Enable default double period insert/jump mapping
 " ..
-if !exists( "b:DoubleTab_map_period_insert_jump" )
-  let b:DoubleTab_map_period_insert_jump = 1
+if !exists( "b:DoubleTap_map_period_insert_jump" )
+  let b:DoubleTap_map_period_insert_jump = 0
 endif
 
 " Enable default double semicolon finish line mapping 
 " ;;
-if !exists( "b:DoubleTab_map_semicolon_finish_line" )
-  let b:DoubleTab_map_semicolon_finish_line = 1
+if !exists( "b:DoubleTap_map_semicolon_finish_line" )
+  let b:DoubleTap_map_semicolon_finish_line = 0
 endif
 
 " Enable default double colon finish line mapping 
 " ::
-if !exists( "b:DoubleTab_map_colon_finish_line" )
-  let b:DoubleTab_map_colon_finish_line = 1
+if !exists( "b:DoubleTap_map_colon_finish_line" )
+  let b:DoubleTap_map_colon_finish_line = 0
 endif
 
 " Enable default double comma finish line mapping 
 " ,,
-if !exists( "b:DoubleTab_map_comma_finish_line" )
-  let b:DoubleTab_map_comma_finish_line = 1
+if !exists( "b:DoubleTap_map_comma_finish_line" )
+  let b:DoubleTap_map_comma_finish_line = 0
+endif
+"
+"
+function! s:enableAllDefaults()
+	let b:DoubleTap_map_left_bracket = 1
+	let b:DoubleTap_map_right_bracket = 1
+	let b:DoubleTap_map_left_brace = 1
+	let b:DoubleTap_map_right_brace = 1
+	let b:DoubleTap_map_left_paren = 1
+	let b:DoubleTap_map_right_paren = 1
+	let b:DoubleTap_map_left_angle = 1
+	let b:DoubleTap_map_right_angle = 1
+	let b:DoubleTap_map_single_quote_insert_jump = 1
+	let b:DoubleTap_map_double_quote_insert_jump = 1
+	let b:DoubleTap_map_plus_insert_jump = 1
+	let b:DoubleTap_map_period_insert_jump = 1
+	let b:DoubleTap_map_semicolon_finish_line = 1
+	let b:DoubleTap_map_colon_finish_line = 1
+	let b:DoubleTap_map_comma_finish_line = 1
+endfunction
+
+
+"" We can enable/disable all doubleTap defaults
+" with one var.
+" By default, all defaults are enabled, of course.
+if !exists( "b:DoubleTap_enable_defaults" )
+	let b:DoubleTap_enable_defaults = 1
+endif
+
+if 1 == b:DoubleTap_enable_defaults 
+	call s:enableAllDefaults()
 endif
 "1}}}
 
@@ -405,63 +435,63 @@ endfunction
 "Set up key mappings 
 "{{{1
 " Enable default left bracket mapping
-if 1 == b:DoubleTab_map_left_bracket
+if 1 == b:DoubleTap_map_left_bracket
   imap [[ []<Left>
 endif
 " Enable default right bracket mapping
-if 1 == b:DoubleTab_map_right_bracket
+if 1 == b:DoubleTap_map_right_bracket
   imap ]] <C-R>=DoubleTapJumpOut("]")<CR>
 endif
 
 " Enable default left curly brace mapping
-if 1 == b:DoubleTab_map_left_brace
+if 1 == b:DoubleTap_map_left_brace
   imap {{ {}<Left>
 endif
 " Enable default right curly brace mapping
-if 1 == b:DoubleTab_map_right_brace
+if 1 == b:DoubleTap_map_right_brace
   imap }} <C-R>=DoubleTapJumpOut("}")<CR>
 endif
 
 " Enable default left paren mapping
-if 1 == b:DoubleTab_map_left_paren
+if 1 == b:DoubleTap_map_left_paren
   imap (( ()<Left>
 endif
 " Enable default right paren mapping
-if 1 == b:DoubleTab_map_right_paren
+if 1 == b:DoubleTap_map_right_paren
   imap )) <C-R>=DoubleTapJumpOut(")")<CR>
 endif
 
 " Enable default left angle mapping
-if 1 == b:DoubleTab_map_left_angle
+if 1 == b:DoubleTap_map_left_angle
 	au Filetype html,xml,xhtml,htmlcheetah,javascript,php imap << <><Left>
 endif
 " Enable default right angle mapping
-if 1 == b:DoubleTab_map_right_angle
+if 1 == b:DoubleTap_map_right_angle
 	au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >> <C-R>=DoubleTapJumpOut(">")<CR>
 endif
 
 " Enable default single quote insert mapping
-if 1 == b:DoubleTab_map_single_quote_insert_jump
+if 1 == b:DoubleTap_map_single_quote_insert_jump
   imap '' <C-R>=DoubleTapInsertJumpString("'")<CR>
 endif
 
 " Enable default double quote insert mapping
-if 1 == b:DoubleTab_map_double_quote_insert_jump
+if 1 == b:DoubleTap_map_double_quote_insert_jump
   imap "" <C-R>=DoubleTapInsertJumpString('"')<CR>
 endif
 
 " Enable default double plus insert mapping
-if 1 == b:DoubleTab_map_plus_insert_jump
+if 1 == b:DoubleTap_map_plus_insert_jump
   au FileType javascript,python imap ++ <C-R>=DoubleTapInsertJumpSimple('+')<CR>
 endif
 
 " Enable default double period insert mapping
-if 1 == b:DoubleTab_map_period_insert_jump
+if 1 == b:DoubleTap_map_period_insert_jump
   au FileType php,perl,vim imap .. <C-R>=DoubleTapInsertJumpSimple('.')<CR>
 endif
 
 " Enable default double tap semicolon finish line
-if 1 == b:DoubleTab_map_semicolon_finish_line
+if 1 == b:DoubleTap_map_semicolon_finish_line
   " we use a different mapping in Python.
   if &ft == 'python'
 	" NOTICE: This will insert a ':', not a semicolon.
@@ -476,14 +506,14 @@ endif
 
 " Enable default double tap colon finish line
 " Only for Python by default
-if 1 == b:DoubleTab_map_colon_finish_line
+if 1 == b:DoubleTap_map_colon_finish_line
   au FileType python nmap :: <ESC>:call DoubleTapFinishLine(':')<CR>:w<CR>o<ESC>
   au FileType python imap :: <ESC>:call DoubleTapFinishLine(':')<CR>:w<CR>o<ESC>
 endif
 
 " Enable default double tap comma finish line
 " Only for javascript and php by default
-if 1 == b:DoubleTab_map_comma_finish_line
+if 1 == b:DoubleTap_map_comma_finish_line
   au FileType php,javascript nmap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>
   au FileType php,javascript imap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>
 endif
