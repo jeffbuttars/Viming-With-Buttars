@@ -263,12 +263,6 @@ hi clear CursorLine
 " CursorLine really slows down php files
 au FileType php set nocursorline 
 
-" Explicitly say we want 256 colors.
-" When this is set it can mess up using vim on a real console.
-"  Definitely in Fedora >= 11.
-if $TERM =~ '256' 
-	set t_Co=256
-endif
 
 " Dark background schemes
 "colo elflord
@@ -283,13 +277,23 @@ endif
 " A light theme.
 "colo peaksea 
 
+" Explicitly say we want 256 colors when we find 256
+" in the TERM environmental variable.
+" When this is set it can mess up using vim on a real console.
+"  Definitely in Fedora >= 11. So we try to be smart about
+" it and only set it if we think it's wanted.
+"
+
 if has( "gui_running" )
 	"colo tango
 	colo vylight 
 else
 	if $TERM =~ '256' 
+		" set up a nice 256 color theme
+		set t_Co=256
 		colo jellybeans 
 	else
+		" Use a console friendly theme
 		colo elflord 
 		hi clear CursorLine 
 	endif
@@ -320,10 +324,10 @@ au FileType text,mkd setlocal spell spelllang=en_us
 
 " http://vim.wikia.com/wiki/Improved_Hex_editing
 " ex command for toggling hex mode - define mapping if desired
-command -bar Hexmode call ToggleHex()
+command! -bar Hexmode call ToggleHex()
 
 " helper function to toggle hex mode
-function ToggleHex()
+function! ToggleHex()
   " hex mode should be considered a read-only operation
   " save values for modified and read-only for restoration later,
   " and clear the read-only flag for now
