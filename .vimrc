@@ -142,19 +142,26 @@ function! CleverCR()
 endfunction
 inoremap <CR> <C-R>=CleverCR()<CR>
 
-let g:loaded_nice_menu = 1
-"g:NeoComplCache_EnableAtStartup = 1
 
 " Auto close the preview window
 autocmd CursorHold * if pumvisible() == 0|pclose|endif
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 
-
-" My snipmate hack
+""" Snipmate 
+" Don't trigger snipmate when using completion
 let g:SnipeMateAllowOmniTab = 1
+
+let g:loaded_nice_menu = 0
 let g:NeoComplCache_EnableAtStartup = 1
 let g:NeoComplCache_IgnoreCase = 0
 let g:NeoComplCache_EnableQuickMatch = 0
+
+" NeoComplCache	Plugin key-mappings.
+imap <C-m>     <Plug>(neocomplcache_snippets_expand)
+smap <C-m>     <Plug>(neocomplcache_snippets_expand)
+"inoremap <expr><C-h> pumvisible() ? "\<C-y>\<C-h>" : "\<C-h>"
+"inoremap <expr><C-g>     neocomplcache#undo_completion()
+
 
 "End OmniCompletion settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -429,9 +436,6 @@ set dictionary=/usr/share/dict/words,/usr/dict/words,/usr/dict/extra.words
 """ Bufexplorer
 " Use Ctrl-l to cut to the buf browser from bufexplorer plugin
 " Think l as in 'list the buffers'
-"let g:bufExplorerFindActive = 0
-"nmap <C-l> <ESC>\bv
-"imap <C-l> <ESC>\bv
 nmap <silent> <c-l> <esc>:BufExplorer<CR>
 imap <silent> <c-l> <esc>:BufExplorer<CR>
 
@@ -477,9 +481,6 @@ let Tlist_Close_On_Select = 1
 let Tlist_Display_Prototype = 1
 """ End TagList
 
-""" Snipmate 
-" Don't trigger snipmate when using completion
-let g:SnipeMateAllowOmniTab = 0
 
 """ NERDTree
 " Use Ctrl-d to open/close the NERDTree.
