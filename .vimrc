@@ -142,6 +142,8 @@ function! CleverCR()
 endfunction
 inoremap <CR> <C-R>=CleverCR()<CR>
 
+let g:loaded_nice_menu = 1
+"g:NeoComplCache_EnableAtStartup = 1
 
 " Auto close the preview window
 autocmd CursorHold * if pumvisible() == 0|pclose|endif
@@ -150,6 +152,9 @@ autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 
 " My snipmate hack to work with popup_it.vim
 let g:SnipeMateAllowOmniTab = 1
+let g:NeoComplCache_EnableAtStartup = 1
+let g:NeoComplCache_IgnoreCase = 0
+let g:NeoComplCache_EnableQuickMatch = 0
 
 "End OmniCompletion settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -255,10 +260,15 @@ set timeoutlen=300
 set cursorline
 hi clear CursorLine 
 
+" CursorLine really slows down php files
+au FileType php set nocursorline 
+
 " Explicitly say we want 256 colors.
 " When this is set it can mess up using vim on a real console.
 "  Definitely in Fedora >= 11.
-set t_Co=256
+if $TERM =~ '256' 
+	set t_Co=256
+endif
 
 " Dark background schemes
 "colo elflord
@@ -274,9 +284,15 @@ set t_Co=256
 "colo peaksea 
 
 if has( "gui_running" )
-	colo tango
+	"colo tango
+	colo vylight 
 else
-	colo jellybeans 
+	if $TERM =~ '256' 
+		colo jellybeans 
+	else
+		colo elflord 
+		hi clear CursorLine 
+	endif
 endif
 
 " set linenumbers on
@@ -302,7 +318,75 @@ set	autoread
 au FileType text,mkd setlocal spell spelllang=en_us
 
 
+" http://vim.wikia.com/wiki/Improved_Hex_editing
+" ex command for toggling hex mode - define mapping if desired
+command -bar Hexmode call ToggleHex()
 
+" helper function to toggle hex mode
+function ToggleHex()
+  " hex mode should be considered a read-only operation
+  " save values for modified and read-only for restoration later,
+  " and clear the read-only flag for now
+  let l:modified=&mod
+  let l:oldreadonly=&readonly
+  let &readonly=0
+  let l:oldmodifiable=&modifiable
+  let &modifiable=1
+  if !exists("b:editHex") || !b:editHex
+    " save old options
+    let b:oldft=&ft
+    let b:oldbin=&bin
+    " set new options
+    setlocal binary " make sure it overrides any textwidth, etc.
+    let &ft="xxd"
+    " set status
+    let b:editHex=1
+    " switch to hex editor
+    %!xxd
+  else
+    " restore old options
+    let &ft=b:oldft
+    if !b:oldbin
+      setlocal nobinary
+    endif
+    " set status
+    let b:editHex=0
+    " return to normal editing
+    %!xxd -r
+  endif
+  " restore values for modified and read only state
+  let &mod=l:modified
+  let &readonly=l:oldreadonly
+  let &modifiable=l:oldmodifiable
+endfunction
+
+" autocmds to automatically enter hex mode and handle file writes properly
+if has("autocmd")
+  " vim -b : edit binary using xxd-format!
+  augroup Binary
+    au!
+    au BufReadPre *.bin,*.hex setlocal binary
+    au BufReadPost *
+          \ if &binary | Hexmode | endif
+    au BufWritePre *
+          \ if exists("b:editHex") && b:editHex && &binary |
+          \  let oldro=&ro | let &ro=0 |
+          \  let oldma=&ma | let &ma=1 |
+          \  exe "%!xxd -r" |
+          \  let &ma=oldma | let &ro=oldro |
+          \  unlet oldma | unlet oldro |
+          \ endif
+    au BufWritePost *
+          \ if exists("b:editHex") && b:editHex && &binary |
+          \  let oldro=&ro | let &ro=0 |
+          \  let oldma=&ma | let &ma=1 |
+          \  exe "%!xxd" |
+          \  exe "set nomod" |
+          \  let &ma=oldma | let &ro=oldro |
+          \  unlet oldma | unlet oldro |
+          \ endif
+  augroup END
+endif
 
 "http://plasticboy.com/markdown-vim-mode/
 "Markdown format options
@@ -388,7 +472,7 @@ let Tlist_Display_Prototype = 1
 
 """ Snipmate 
 " Don't trigger snipmate when using completion
-let g:SnipeMateAllowOmniTab = 1
+let g:SnipeMateAllowOmniTab = 0
 
 """ NERDTree
 " Use Ctrl-d to open/close the NERDTree.
@@ -420,15 +504,18 @@ au FileType html nmap <F5> <ESC>:w<CR>:HTMLTidyLint<CR>
 au FileType html imap <F5> <ESC>:w<CR>:HTMLTidyLint<CR>
 
 
-au FileType sh,bash nmap <F5> <ESC>:w<CR>:!sh ./%<CR>
-au FileType sh,bash imap <F5> <ESC>:w<CR>:!sh ./%<CR>
+au FileType sh,bash nmap <F1> <ESC>:w<CR>:!sh %<CR>
+au FileType sh,bash imap <F1> <ESC>:w<CR>:!sh %<CR>
+au FileType sh,bash nmap <F5> <ESC>:w<CR>:BashRun<CR>
+au FileType sh,bash imap <F5> <ESC>:w<CR>:BashRun<CR>
+"au FileType sh,bash setlocal errorformat=%f\ line\ %l:\ %m
 
 "Enable autotag.vim
 source ~/.vim/plugin/autotag.vim
 
 " load the tag closer
-au Filetype html let b:closetag_html_style=1
-au Filetype html,xml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
+au FileType html,xhtml let b:closetag_html_style=1
+au FileType html,xml,xhtml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
 
 " Set NiceMenu Delay
 let g:NiceMenuDelay = '.8' 
