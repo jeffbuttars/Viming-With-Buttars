@@ -150,7 +150,7 @@ autocmd CursorHold * if pumvisible() == 0|pclose|endif
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 
 
-" My snipmate hack to work with popup_it.vim
+" My snipmate hack
 let g:SnipeMateAllowOmniTab = 1
 let g:NeoComplCache_EnableAtStartup = 1
 let g:NeoComplCache_IgnoreCase = 0
@@ -238,8 +238,16 @@ vnoremap ]  <ESC>`>a]<ESC>`<i[<ESC>
 " When vimrc is edited, automatically reload it!
 autocmd! bufwritepost .vimrc source ~/.vimrc
 
-set viminfo='20,\"500	" read/write a .viminfo file, don't store more
-			" than 50 lines of registers
+" Big nasty viminfo setup. If you you have a smaller/slower system use the
+" commented viminfo below, it's tuned down.
+" track up to 20,000 files.
+" store global marks.
+" no more than 500 lines per register are saved
+" a 1000 lines of history
+" save the buffer list
+set viminfo='20000,f1,<500,:1000,@1000,/1000,%
+"set viminfo='1000,f1,<500,:100,@100,/100,%
+
 
 " wrap long lines
 set wrap
@@ -257,25 +265,21 @@ set wildmode=list:longest
 set timeoutlen=300
 
 " I hate it when the cursorline is an underline
-set cursorline
-hi clear CursorLine 
+"set cursorline
+"hi clear CursorLine 
 
 " CursorLine really slows down php files
 au FileType php set nocursorline 
 
 
 " Dark background schemes
-"colo elflord
-"colo baycomb 
-"colo evening 
-"colo xoria256 
-"colo wombat256
+"colo elflord " a low color dark theme. Great for the real console.
+"colo evening " dark theme, low color console friendly
+"colo xoria256 " a nice dark theme for 256 color terms
+"colo wombat256 " the classic wombat theme for 256 color terms
 "colo pyte " A white theme
-"colo ir_black 
 "colo mySlate 
-"colo vividchalk 
-" A light theme.
-"colo peaksea 
+"colo peaksea " A light theme
 
 " Explicitly say we want 256 colors when we find 256
 " in the TERM environmental variable.
@@ -283,31 +287,30 @@ au FileType php set nocursorline
 "  Definitely in Fedora >= 11. So we try to be smart about
 " it and only set it if we think it's wanted.
 "
+" We default to a theme that works everywere.
+" Then we see if we can upgrade to a better theme
+" based on the environment.
+colo evening 
 
 if has( "gui_running" )
-	"colo tango
+	set cursorline
+	hi clear CursorLine 
 	colo vylight 
-else
-	if $TERM =~ '256' 
-		" set up a nice 256 color theme
-		set t_Co=256
-		colo jellybeans 
-	else
-		" Use a console friendly theme
-		colo elflord 
-		hi clear CursorLine 
-	endif
+elseif $TERM =~ '256' 
+	" Use a console friendly theme and turn off cursorline
+	set t_Co=256
+	set cursorline
+	hi clear CursorLine 
+	colo jellybeans 
 endif
 
 " set linenumbers on
 set number 
 
 " drupal rules
-if has("autocmd")
-    augroup module
-        autocmd BufRead *.module,*.inc set filetype=php
-    augroup END
-endif
+augroup drupal_module
+	autocmd BufRead *.module,*.inc set filetype=php
+augroup END
 
 " autowrite: "on" saves a lot of trouble
 "set autowrite
@@ -365,32 +368,32 @@ function! ToggleHex()
 endfunction
 
 " autocmds to automatically enter hex mode and handle file writes properly
-if has("autocmd")
-  " vim -b : edit binary using xxd-format!
-  augroup Binary
-    au!
-    au BufReadPre *.bin,*.hex setlocal binary
-    au BufReadPost *
-          \ if &binary | Hexmode | endif
-    au BufWritePre *
-          \ if exists("b:editHex") && b:editHex && &binary |
-          \  let oldro=&ro | let &ro=0 |
-          \  let oldma=&ma | let &ma=1 |
-          \  exe "%!xxd -r" |
-          \  let &ma=oldma | let &ro=oldro |
-          \  unlet oldma | unlet oldro |
-          \ endif
-    au BufWritePost *
-          \ if exists("b:editHex") && b:editHex && &binary |
-          \  let oldro=&ro | let &ro=0 |
-          \  let oldma=&ma | let &ma=1 |
-          \  exe "%!xxd" |
-          \  exe "set nomod" |
-          \  let &ma=oldma | let &ro=oldro |
-          \  unlet oldma | unlet oldro |
-          \ endif
-  augroup END
-endif
+"if has("autocmd")
+  "" vim -b : edit binary using xxd-format!
+  "augroup Binary
+    "au!
+    "au BufReadPre *.bin,*.hex setlocal binary
+    "au BufReadPost *
+          "\ if &binary | Hexmode | endif
+    "au BufWritePre *
+          "\ if exists("b:editHex") && b:editHex && &binary |
+          "\  let oldro=&ro | let &ro=0 |
+          "\  let oldma=&ma | let &ma=1 |
+          "\  exe "%!xxd -r" |
+          "\  let &ma=oldma | let &ro=oldro |
+          "\  unlet oldma | unlet oldro |
+          "\ endif
+    "au BufWritePost *
+          "\ if exists("b:editHex") && b:editHex && &binary |
+          "\  let oldro=&ro | let &ro=0 |
+          "\  let oldma=&ma | let &ma=1 |
+          "\  exe "%!xxd" |
+          "\  exe "set nomod" |
+          "\  let &ma=oldma | let &ro=oldro |
+          "\  unlet oldma | unlet oldro |
+          "\ endif
+  "augroup END
+"endif
 
 "http://plasticboy.com/markdown-vim-mode/
 "Markdown format options
