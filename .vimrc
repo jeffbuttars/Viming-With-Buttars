@@ -527,6 +527,7 @@ au FileType html,xml,xhtml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
 
 " Set NiceMenu Delay
 let g:NiceMenuDelay = '.8' 
+let g:NeoDelay = '.6' 
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
