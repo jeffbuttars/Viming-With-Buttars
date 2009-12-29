@@ -153,14 +153,19 @@ let g:SnipeMateAllowOmniTab = 1
 
 let g:loaded_nice_menu = 0
 let g:NeoComplCache_EnableAtStartup = 1
-let g:NeoComplCache_IgnoreCase = 0
-let g:NeoComplCache_EnableQuickMatch = 0
 
-" NeoComplCache	Plugin key-mappings.
-imap <C-m>     <Plug>(neocomplcache_snippets_expand)
-smap <C-m>     <Plug>(neocomplcache_snippets_expand)
-"inoremap <expr><C-h> pumvisible() ? "\<C-y>\<C-h>" : "\<C-h>"
-"inoremap <expr><C-g>     neocomplcache#undo_completion()
+if 1 == g:NeoComplCache_EnableAtStartup
+	let g:NeoComplCache_IgnoreCase = 0
+	let g:NeoComplCache_EnableQuickMatch = 0
+	"let g:NeoComplCache_DisableSelectModeMappings = 1
+
+	" NeoComplCache	Plugin key-mappings.
+	"imap <C-m> <Plug>(neocomplcache_snippets_expand)
+	"smap <C-m> <Plug>(neocomplcache_snippets_expand)
+	inoremap <expr><C-h> pumvisible() ? "\<C-y>\<C-h>" : "\<C-h>"
+	inoremap <expr><C-g> neocomplcache#undo_completion()
+
+endif
 
 
 "End OmniCompletion settings
