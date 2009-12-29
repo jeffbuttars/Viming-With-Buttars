@@ -26,6 +26,12 @@
 " Version: 4.02, for Vim 7.0
 "=============================================================================
 "
+"
+" The delay from when typing stops to when
+" a completions is should
+if ! exists( 'g:NeoDelay' )
+	let g:NeoDelay = '.7' 
+endif
 python << PEOF
 # Set up globals and define some def
 import vim,threading,subprocess
@@ -57,8 +63,8 @@ global ptimer
 if ptimer:
 	ptimer.cancel()
 
+delay = vim.eval("g:NeoDelay")
 
-delay = '.8'
 ptimer = threading.Timer( float(delay), NeoDelayedShowMenu )
 ptimer.start()
 
