@@ -150,6 +150,10 @@ autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 """ Snipmate 
 " Don't trigger snipmate when using completion
 let g:SnipeMateAllowOmniTab = 1
+autocmd FileType python set ft=python.django 		" For SnipMate
+autocmd BufRead *.djml set ft=html.django_template 	" For SnipMate
+
+
 
 let g:loaded_nice_menu = 0
 let g:NeoComplCache_EnableAtStartup = 1
@@ -157,6 +161,7 @@ let g:NeoComplCache_EnableAtStartup = 1
 if 1 == g:NeoComplCache_EnableAtStartup
 	let g:NeoComplCache_IgnoreCase = 0
 	let g:NeoComplCache_EnableQuickMatch = 0
+	let g:NeoDelay = '1' 
 	"let g:NeoComplCache_DisableSelectModeMappings = 1
 
 	" NeoComplCache	Plugin key-mappings.
@@ -532,7 +537,6 @@ au FileType html,xml,xhtml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
 
 " Set NiceMenu Delay
 let g:NiceMenuDelay = '.8' 
-let g:NeoDelay = '.6' 
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
