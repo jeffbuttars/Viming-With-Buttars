@@ -463,11 +463,11 @@ endif
 
 " Enable default left angle mapping
 if 1 == b:DoubleTap_map_left_angle
-	au Filetype html,xml,xhtml,htmlcheetah,javascript,php imap << <><Left>
+	au Filetype html,html.django_template,xml,xhtml,htmlcheetah,javascript,php imap << <><Left>
 endif
 " Enable default right angle mapping
 if 1 == b:DoubleTap_map_right_angle
-	au FileType html,xml,xhtml,htmlcheetah,javascript,php imap >> <C-R>=DoubleTapJumpOut(">")<CR>
+	au FileType html,html.django_template,xml,xhtml,htmlcheetah,javascript,php imap >> <C-R>=DoubleTapJumpOut(">")<CR>
 endif
 
 " Enable default single quote insert mapping
@@ -514,8 +514,8 @@ endif
 " Enable default double tap comma finish line
 " Only for javascript and php by default
 if 1 == b:DoubleTap_map_comma_finish_line
-  au FileType php,javascript nmap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>
-  au FileType php,javascript imap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>
+  au FileType php,javascript,python nmap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>
+  au FileType php,javascript,python imap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>
 endif
 
 "1}}}
