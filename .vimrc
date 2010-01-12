@@ -116,7 +116,7 @@ set completeopt=menuone,preview,longest
 "set complete=".,w,b,u,U,t,i,kspell,d,t"
 "set complete=".,w,b,u,t,i,kspell"
 " Map omnicomplete to Control-o
-imap <c-o> <C-X><C-O> 
+imap <C-O> <C-X><C-O> 
 " When the completion window is open, shift will cycle
 " forward through the menu.
 " This does not work with snipmate, so I have a hack
@@ -153,15 +153,18 @@ let g:SnipeMateAllowOmniTab = 1
 autocmd FileType python set ft=python.django 		" For SnipMate
 autocmd BufRead *.djml set ft=html.django_template 	" For SnipMate
 
-
-
 let g:loaded_nice_menu = 0
-let g:NeoComplCache_EnableAtStartup = 1
+let g:NeoComplCache_EnableAtStartup = 0
 
 if 1 == g:NeoComplCache_EnableAtStartup
+
+	let g:NeoComplCache_DisableAutoComplete = 1
+
 	let g:NeoComplCache_IgnoreCase = 0
-	let g:NeoComplCache_EnableQuickMatch = 0
-	let g:NeoDelay = '1' 
+	let g:NeoComplCache_MinKeywordLength = 0
+	"let g:NeoComplCache_SmartCase = 1
+	"let g:NeoComplCache_EnableQuickMatch = 0
+	let g:NeoDelay = '.7' 
 	"let g:NeoComplCache_DisableSelectModeMappings = 1
 
 	" NeoComplCache	Plugin key-mappings.
@@ -169,7 +172,8 @@ if 1 == g:NeoComplCache_EnableAtStartup
 	"smap <C-m> <Plug>(neocomplcache_snippets_expand)
 	inoremap <expr><C-h> pumvisible() ? "\<C-y>\<C-h>" : "\<C-h>"
 	inoremap <expr><C-g> neocomplcache#undo_completion()
-
+	"inoremap <expr><C-j> neocomplcache#manual_omni_complete()
+	"imap <C-O> <C-X><C-U> 
 endif
 
 
@@ -508,10 +512,10 @@ let g:JSLintIgnoreImpliedGlobals = 1
 au FileType javascript nmap <F5> <ESC>:JSLint<CR>
 au FileType javascript imap <F5> <ESC>:JSLint<CR>
 
-au FileType python nmap <F5> <ESC>:w<CR>:!python %<CR>
-au FileType python imap <F5> <ESC>:w<CR>:!python %<CR>
-au FileType python nmap <F1> <ESC>:w<CR>:PyFlakes<CR>
-au FileType python imap <F1> <ESC>:w<CR>:PyFlakes<CR>
+au FileType python nmap <F1> <ESC>:w<CR>:!python %<CR>
+au FileType python imap <F1> <ESC>:w<CR>:!python %<CR>
+au FileType python nmap <F5> <ESC>:w<CR>:PyFlakes<CR>
+au FileType python imap <F5> <ESC>:w<CR>:PyFlakes<CR>
 
 " php synax check via 'php -l'
 au FileType php nmap <F5> <ESC>:w<CR>:PHPLint<CR>
@@ -537,6 +541,9 @@ au FileType html,xml,xhtml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
 
 " Set NiceMenu Delay
 let g:NiceMenuDelay = '.8' 
+
+" We don't use this yet.
+let g:rails_dbext = 0
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
