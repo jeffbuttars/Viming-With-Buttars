@@ -1,6 +1,8 @@
 # select 
 snippet select 
 	SELECT ${1} FROM ${2} ${3:WHERE} ${4};
+snippet selectd
+	SELECT DISTINCT ${1} FROM ${2} ${3:WHERE} ${4};
 snippet jn 
 	JOIN ${1} ON ${2}
 snippet lj 
@@ -59,3 +61,13 @@ snippet fun
 		${5:-- code}
 	$
 	delimiter ;
+snippet repeat
+	REPEAT
+		${1}
+	${2:UNTIL done} END REPEAT;
+snippet fetch
+	FETCH ${1:cursorname} INTO ${2:vars}
+snippet while
+	WHILE ${1} DO
+		${2:statement_list}
+	END WHILE;
