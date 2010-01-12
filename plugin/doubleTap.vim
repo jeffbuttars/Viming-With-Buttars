@@ -507,8 +507,8 @@ endif
 " Enable default double tap colon finish line
 " Only for Python by default
 if 1 == b:DoubleTap_map_colon_finish_line
-  au FileType python nmap :: <ESC>:call DoubleTapFinishLine(':')<CR>:w<CR>o<ESC>
-  au FileType python imap :: <ESC>:call DoubleTapFinishLine(':')<CR>:w<CR>o<ESC>
+  au FileType python nmap :: <ESC>:call DoubleTapFinishLine(':')<CR>:w<CR>
+  au FileType python imap :: <ESC>:call DoubleTapFinishLine(':')<CR>:w<CR>
 endif
 
 " Enable default double tap comma finish line
