@@ -39,6 +39,9 @@ ptimer = None
 
 def NeoDelayedShowMenu():
 
+	if 0 == vim.eval('pumvisible()') or ('i' != vim.eval('mode()')):
+		return
+
 	sname = vim.eval( 'v:servername' )
 	if not sname or sname == "":
 		return
@@ -58,6 +61,10 @@ function! NeoCompleteAsync()
 endfunction
 
 function! s:completeDelayed()
+	if &paste || 'i' != mode()
+		return ""
+	endif
+
 python << PEOF
 global ptimer
 if ptimer:
