@@ -24,8 +24,10 @@ hi Normal guifg=#000000 guibg=#F8F8FF
 
 " {{{ Cursor
 hi Cursor		guibg=#000000 guifg=#F8F8FF
-hi CursorLine	guibg=#D8D8DD
+hi clear CursorLine
+hi CursorLine	gui=none guibg=#D8D8DD
 hi CursorColumn	guibg=#E8E8EE
+set cursorline
 " }}}
 
 " {{{ Diff
