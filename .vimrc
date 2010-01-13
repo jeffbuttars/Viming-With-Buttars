@@ -153,7 +153,6 @@ let g:SnipeMateAllowOmniTab = 1
 autocmd FileType python set ft=python.django 		" For SnipMate
 autocmd BufRead *.djml set ft=html.django_template 	" For SnipMate
 
-let g:loaded_nice_menu = 0
 let g:NeoComplCache_EnableAtStartup = 0
 
 if 1 == g:NeoComplCache_EnableAtStartup
@@ -540,10 +539,12 @@ au FileType html,xhtml let b:closetag_html_style=1
 au FileType html,xml,xhtml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
 
 " Set NiceMenu Delay
+let g:loaded_nice_menu = 1
 let g:NiceMenuDelay = '.8' 
+let g:NiceMenuMin = 1
 
 " We don't use this yet.
-let g:rails_dbext = 0
+"let g:rails_dbext = 0
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
