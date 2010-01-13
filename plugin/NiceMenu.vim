@@ -29,13 +29,13 @@ endif
 " perform a completion type performed by first matching class type and then
 " fail back on a default(<C-N). We should have a global catch all chain to handle
 " things like file path completions.
-let s:contextMap = [
-	\ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-	\ 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-	\ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-	\ 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-	\ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	\ '-', '_', '.', '$','\<C-H>', '\<Space>' ]
+"let s:contextMap = [
+	"\ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+	"\ 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+	"\ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+	"\ 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+	"\ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+	"\ '-', '_', '.', '$','\<C-H>', '\<Space>' ]
 
 let s:complPos = [0,0,0,0]
 
@@ -48,9 +48,9 @@ let s:complPos = [0,0,0,0]
 
 " specify the minimum 'word' length the must be present
 " before we complete
-let s:minContextLen = 3
+"let s:minContextLen = 3
 
-function! NiceMenu#is_file_path(cur_text)
+function! NiceMenu_is_file_path(cur_text)
     "if !g:NeoComplCache_TryFilenameCompletion || ((has('win32') || has('win64')) && &filetype == 'tex')
         "return -1
     "endif
@@ -73,7 +73,7 @@ function! NiceMenu#is_file_path(cur_text)
 endfunction
 
 
-function NiceMenu#enable()
+function NiceMenu_enable()
 	call s:mapForMappingDriven()
 endfunction
 
@@ -117,19 +117,19 @@ function! s:CheckContext()
 
 
 	" only complete if context is correct.
-	let inContext = 0 
-	let curChar = s:getCurrentChar() 
+	"let inContext = 0 
+	"let curChar = s:getCurrentChar() 
 
-	for char in s:contextMap
-		if char == curChar
-			let inContext = 1 
-			break
-		endif
-	endfor	
+	"for char in s:contextMap
+		"if char == curChar
+			"let inContext = 1 
+			"break
+		"endif
+	"endfor	
 
-	if 1 != inContext
-		return 0 
-	endif
+	"if 1 != inContext
+		"return 0 
+	"endif
 
 	return 1
 endfunction
@@ -165,19 +165,20 @@ function! NiceMenuAsyncCpl()
 	" char. Pretty ghetto right now, we look
 	" through the entire map. We should use
 	" regex
-	if 1 != charIsMapped()
-		return ""
-	endif
+	"if 1 != charIsMapped()
+		"return ""
+	"endif
 
-	let l:compl = "\<C-N>"
+	let l:compl = "\<C-X>\<C-N>"
 
 	let line = s:getCurrentWord()
 
 	if exists('&omnifunc') && &omnifunc != ''
 
-		if NiceMenu#is_file_path(line)
+		if NiceMenu_is_file_path(line)
 			let l:compl = "\<C-X>\<C-F>"
-		elseif match( line, '\k->$' ) > 0 || match( line, '\k\.$' ) > 0
+		"elseif match( line, '\k->$' ) > 0 || match( line, '\k\.$' ) > 0
+		elseif match( line, '\k$' ) > 0
 			" Test the complete function before setting it.
 			let compl_res = call( &omnifunc, [1,''] )
 			if compl_res > 0
@@ -187,7 +188,7 @@ function! NiceMenuAsyncCpl()
 
 		return
 	endif
-	
+
 	call feedkeys( l:compl, 't')
 endfunction
 
@@ -244,4 +245,4 @@ PEOF
 	return ""
 endfun
 
-call NiceMenu#enable()
+call NiceMenu_enable()
