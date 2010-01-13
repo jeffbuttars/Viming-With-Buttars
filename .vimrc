@@ -110,7 +110,8 @@ endif
 " When c-y is used to select, enter normal mode.
 imap <c-y> <c-y><esc>
 " Show the info preview window.
-set completeopt=menuone,preview,longest
+"set completeopt=menuone,preview,longest
+set completeopt=menuone,preview
 
 "(default: ".,w,b,u,t,i")
 "set complete=".,w,b,u,U,t,i,kspell,d,t"
@@ -538,10 +539,13 @@ source ~/.vim/plugin/autotag.vim
 au FileType html,xhtml let b:closetag_html_style=1
 au FileType html,xml,xhtml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
 
+" doubleTap
+"let g:loaded_doubleTap = 1
+
 " Set NiceMenu Delay
-let g:loaded_nice_menu = 1
+"let g:loaded_nice_menu = 1
 let g:NiceMenuDelay = '.8' 
-let g:NiceMenuMin = 1
+let g:NiceMenuMin = 3
 
 " We don't use this yet.
 "let g:rails_dbext = 0
