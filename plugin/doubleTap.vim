@@ -445,7 +445,7 @@ endif
 
 " Enable default left curly brace mapping
 if 1 == b:DoubleTap_map_left_brace
-  imap {{ {}<Left>
+  imap {{ {}<Left><CR><esc>O
 endif
 " Enable default right curly brace mapping
 if 1 == b:DoubleTap_map_right_brace
