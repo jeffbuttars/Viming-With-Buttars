@@ -29,13 +29,13 @@ endif
 " perform a completion type performed by first matching class type and then
 " fail back on a default(<C-N). We should have a global catch all chain to handle
 " things like file path completions.
-let s:contextMap = [
-	\ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-	\ 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-	\ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-	\ 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-	\ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	\ '-', '_', '.', '$','\<c-h>', '\<Space>' ]
+"let s:contextMap = [
+	"\ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+	"\ 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+	"\ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+	"\ 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+	"\ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+	"\ '-', '_', '.', '$', '\<c-h>', '\<Space>', '<' ]
 
 let s:complPos = [0,0,0,0]
 
@@ -45,6 +45,25 @@ let s:complPos = [0,0,0,0]
 " Need some fixes so if a completion starts the user can type away
 " without a completion getting in the way. I think popup_it has
 " some of this fixing logic.
+
+function s:mapForMappingDriven()
+	call s:unmapForMappingDriven()
+	"let s:keysMappingDriven = s:contextMap
+	"for key in s:keysMappingDriven
+	"execute printf('inoremap <silent> %s %s<c-r>=<SID>NiceMenuCompl()<CR>', key, key)
+	"endfor
+
+	"for key in s:keysMappingDriven
+		"if maparg(key, 'i') == ''
+			"exec "silent! inoremap ".key." ".key.
+						"\ "\<c-r>=<SID>NiceMenuCompl()\<cr>"
+		"endif
+	"endfor
+
+	autocmd InsertEnter * call  NiceMenuCompl()
+	autocmd CursorMovedI * call NiceMenuCompl()
+endfunction
+
 
 " specify the minimum 'word' length the must be present
 " before we complete
@@ -118,15 +137,6 @@ function NiceMenu_enable()
 	call s:mapForMappingDriven()
 endfunction
 
-function s:mapForMappingDriven()
-  call s:unmapForMappingDriven()
-	let s:keysMappingDriven = s:contextMap
-  for key in s:keysMappingDriven
-    execute printf('inoremap <silent> %s %s<c-r>=<SID>NiceMenuCompl()<CR>',
-          \        key, key)
-  endfor
-endfunction
-
 function s:unmapForMappingDriven()
   if !exists('s:keysMappingDriven')
     return
@@ -164,58 +174,21 @@ function! NiceMenuCheckContext()
 	" was started.
 	let l:npos = getpos(".")
 	if l:npos[1] != s:complPos[1] || l:npos[2] != s:complPos[2] || l:npos[3] != s:complPos[3]
+		"echo "NiceMenuCheckContext bad pos " l:npos ":" s:complPos
 		return 0 
 	endif
-
-
-	" only complete if context is correct.
-	"let inContext = 0 
-	"let curChar = s:getCurrentChar() 
-
-	"for char in s:contextMap
-		"if char == curChar
-			"let inContext = 1 
-			"break
-		"endif
-	"endfor	
-
-	"if 1 != inContext
-		"return 0 
-	"endif
 
 	return 1
 endfunction
 
-function! s:charIsMapped()
-	
-	let cur_char = getCurrentChar()
-	for char in s:contextMap
-		if cur_char == char
-			return 1 
-		endif
-	endfor
-
-	return 0
-endfunction
-
 function! NiceMenuAsyncCpl()
-	"call s:feedPopup()
-	"echo "NiceMenuAsyncCpl()"
+	echo "NiceMenuAsyncCpl()"
 
 	if 1 != NiceMenuCheckContext()
 		"echo "NiceMenuAsyncCpl() bad context"
 		return ""
 	endif
 	
-
-	" Make sure we're next to an acceptable
-	" char. Pretty ghetto right now, we look
-	" through the entire map. We should use
-	" regex
-	"if 1 != charIsMapped()
-		"return ""
-	"endif
-
 	let l:compl = "\<C-X>\<C-N>"
 
 	let cword = s:getCurrentWord()
@@ -258,14 +231,15 @@ ptimer = None
 
 def NiceMenuShowMenu():
 
+	#print 'NiceMenuShowMenu' 
+
 	if 1 != int(vim.eval('NiceMenuCheckContext()')):
-		#print "NiceMenuShowMenu() no context %s " % (vim.eval('NiceMenuCheckContext()'))
+		#print 'NiceMenuShowMenu bad context' 
 		return
-	#print "NiceMenuShowMenu() context %s " % (vim.eval('NiceMenuCheckContext()'))
 
 	sname = vim.eval( 'v:servername' )
 	if not sname or sname == "":
-		#print "NiceMenuShowMenu() no servername"
+		print 'NiceMenuShowMenu bad sname' 
 		return
 
 	try:
@@ -273,11 +247,13 @@ def NiceMenuShowMenu():
 		subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-expr", "NiceMenuAsyncCpl()"],
 	  		stdout=dnull, stderr=dnull )
 	except:
+		print 'NiceMenuShowMenu except' 
 		pass
 PEOF
 "
 "NiceMenuCompl: {{{1
-fun! s:NiceMenuCompl()
+"fun! s:NiceMenuCompl()
+fun! NiceMenuCompl()
 	
 	"echo "s:NiceMenuCompl"
 
@@ -285,14 +261,25 @@ fun! s:NiceMenuCompl()
 		return "" 
 	endif
 	
+	"let curChar = s:getCurrentChar() 
+	"echo "checking: " curChar
+	"let inContext = 0
+	"for char in s:contextMap
+		"if char == curChar
+			"let inContext = 1 
+			"break
+		"endif
+	"endfor	
+
+	"if 0 == inContext
+		""echo "out of context: " curChar
+		"return ""
+	"endif
+
 	" Only if current word/text is of a min length
 	let l:cline = s:getCurrentText()
 	let l:cword = s:getCurrentWord()
 	if strlen(l:cword) < g:NiceMenuMin
-		return "" 
-	endif
-
-	if pumvisible() || &paste || ('i' != mode() )
 		return "" 
 	endif
 
