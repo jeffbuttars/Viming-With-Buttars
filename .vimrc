@@ -452,7 +452,6 @@ set dictionary=/usr/share/dict/words,/usr/dict/words,/usr/dict/extra.words
 " Think l as in 'list the buffers'
 nmap <silent> <c-l> <esc>:BufExplorer<CR>
 imap <silent> <c-l> <esc>:BufExplorer<CR>
-
 """ comments.vim
 "A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
 " This will detect file types and use oneline comments accordingle. Cool
@@ -544,8 +543,8 @@ au FileType html,xml,xhtml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
 
 " Set NiceMenu Delay
 "let g:loaded_nice_menu = 1
-let g:NiceMenuDelay = '.8' 
-let g:NiceMenuMin = 3
+let g:NiceMenuDelay = '.7' 
+let g:NiceMenuMin = 1
 
 " We don't use this yet.
 "let g:rails_dbext = 0
