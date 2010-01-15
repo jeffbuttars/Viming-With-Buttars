@@ -543,7 +543,7 @@ au FileType html,xml,xhtml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
 
 " Set NiceMenu Delay
 "let g:loaded_nice_menu = 1
-let g:NiceMenuDelay = '.7' 
+let g:NiceMenuDelay = '.4' 
 let g:NiceMenuMin = 1
 
 " We don't use this yet.
