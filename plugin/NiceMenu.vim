@@ -141,6 +141,10 @@ function s:getCurrentChar()
 	return strpart( getline('.'), col('.')-2, 1)
 endfunction
 
+function s:getOmniWord( spoint )
+	return strpart( getline('.'), a:spoint, col('.')-1)
+endfunction
+
 "
 function s:getCurrentWord()
   return matchstr(s:getCurrentText(), '\k*$')
@@ -225,11 +229,13 @@ function! NiceMenuAsyncCpl()
 			"elseif match( cword, '\k->$' ) > 0 || match( cword, '\k\.$' ) > 0
 			"if match( cword, '\k$' ) > 0
 		"elseif match( cword, '\k$' ) > 0
-		if match( cword, '\k$' ) > 0
+		if match( cword, '\k$' ) > 0 || match( cword, '\k->$' ) > 0 || match( cword, '\k\.$' ) > 0
 			" Test the complete function before setting it.
 			let compl_res = call( &omnifunc, [1,''] )
 			if -1 != compl_res
-				let l:compl = "\<C-X>\<C-O>"
+				let compl_list = call( &omnifunc, [0,s:getOmniWord(compl_res)] )
+				if ! empty(compl_list)
+					let l:compl = "\<C-X>\<C-O>"
 			endif
 		endif
 
