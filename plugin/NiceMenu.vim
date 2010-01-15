@@ -228,12 +228,19 @@ function! NiceMenuAsyncCpl()
 		if match( cword, '\k$' ) > 0
 			" Test the complete function before setting it.
 			let compl_res = call( &omnifunc, [1,''] )
-			if compl_res > 0
+			if -1 != compl_res
 				let l:compl = "\<C-X>\<C-O>"
 			endif
 		endif
 
 	endif
+
+
+	" Select first option without inserting it's text 
+	" TODO: This should be a configurable option.
+	set completeopt -= menu
+	set completeopt += menuone
+	let l:compl .= "\<C-P>"
 
 	call feedkeys( l:compl, 't')
 endfunction
