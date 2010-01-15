@@ -210,10 +210,18 @@ function! NiceMenuAsyncCpl()
 				if ! empty(compl_list)
 					let l:compl = "\<C-X>\<C-O>"
 			endif
+
 		endif
 
 	endif
 
+	 "If a <c-n> doesn't work, try the dictionary.
+		"let compl_res = call( &omnifunc, [1,''] )
+		"if -1 != compl_res
+			"let compl_list = call( &omnifunc, [0,s:getOmniWord(compl_res)] )
+			"if ! empty(compl_list)
+				"let l:compl = "\<C-X>\<C-O>"
+		"endif
 
 	" Select first option without inserting it's text 
 	" TODO: This should be a configurable option.
