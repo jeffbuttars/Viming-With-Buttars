@@ -29,12 +29,13 @@ endif
 " perform a completion type performed by first matching class type and then
 " fail back on a default(<C-N). We should have a global catch all chain to handle
 " things like file path completions.
-"let s:contextMap = [
-	"\ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-	"\ 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-	"\ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-	"\ 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-	"\ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+let s:contextMap = [
+	\ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+	\ 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+	\ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+	\ 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+	\ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+	\ '-', '_', '.', '$', '<', '>' ]
 	"\ '-', '_', '.', '$', '\<c-h>', '\<Space>', '<' ]
 
 let s:complPos = [0,0,0,0]
@@ -60,8 +61,8 @@ function s:mapForMappingDriven()
 		"endif
 	"endfor
 
-	autocmd InsertEnter * call  NiceMenuCompl()
-	autocmd CursorMovedI * call NiceMenuCompl()
+	autocmd InsertEnter  * call NiceMenuCompl(0)
+	autocmd CursorMovedI * call NiceMenuCompl(1)
 endfunction
 
 
@@ -151,6 +152,10 @@ function s:getCurrentChar()
 	return strpart( getline('.'), col('.')-2, 1)
 endfunction
 
+function s:getNextChar()
+	return strpart( getline('.'), col('.')-1, 1)
+endfunction
+
 function s:getOmniWord( spoint )
 	return strpart( getline('.'), a:spoint, col('.')-1)
 endfunction
@@ -178,7 +183,28 @@ function! NiceMenuCheckContext()
 		return 0 
 	endif
 
-	return 1
+	" Sure the next character is whitespace.
+	" This is to help prevent doing a completion
+	" in the middle of a word.
+	" TODO: Needs to be a config param.
+	if s:getNextChar() !~ '\s'
+		return 0
+	endif
+
+	let curChar = s:getCurrentChar() 
+	"echo "checking: " curChar
+	let inContext = 0
+	if index( s:contextMap, curChar)
+		let inContext = 1 
+	endif
+	"for char in s:contextMap
+		"if char == curChar
+			"let inContext = 1 
+			"break
+		"endif
+	"endfor	
+
+	return inContext 
 endfunction
 
 function! NiceMenuAsyncCpl()
@@ -188,7 +214,7 @@ function! NiceMenuAsyncCpl()
 		"echo "NiceMenuAsyncCpl() bad context"
 		return ""
 	endif
-	
+
 	let l:compl = "\<C-X>\<C-N>"
 
 	let cword = s:getCurrentWord()
@@ -261,28 +287,14 @@ PEOF
 "
 "NiceMenuCompl: {{{1
 "fun! s:NiceMenuCompl()
-fun! NiceMenuCompl()
+fun! NiceMenuCompl( need_i )
 	
 	"echo "s:NiceMenuCompl"
 
-	if pumvisible() || &paste || ('i' != mode())
+	if pumvisible() || &paste || (('i' != mode()) && a:need_i )
 		return "" 
 	endif
 	
-	"let curChar = s:getCurrentChar() 
-	"echo "checking: " curChar
-	"let inContext = 0
-	"for char in s:contextMap
-		"if char == curChar
-			"let inContext = 1 
-			"break
-		"endif
-	"endfor	
-
-	"if 0 == inContext
-		""echo "out of context: " curChar
-		"return ""
-	"endif
 
 	" Only if current word/text is of a min length
 	let l:cline = s:getCurrentText()
