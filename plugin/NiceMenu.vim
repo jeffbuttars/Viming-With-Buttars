@@ -47,8 +47,8 @@ let s:complPos = [0,0,0,0]
 " without a completion getting in the way. I think popup_it has
 " some of this fixing logic.
 
-function s:mapForMappingDriven()
-	call s:unmapForMappingDriven()
+"function s:mapForMappingDriven()
+	"call s:unmapForMappingDriven()
 	"let s:keysMappingDriven = s:contextMap
 	"for key in s:keysMappingDriven
 	"execute printf('inoremap <silent> %s %s<c-r>=<SID>NiceMenuCompl()<CR>', key, key)
@@ -60,10 +60,7 @@ function s:mapForMappingDriven()
 						"\ "\<c-r>=<SID>NiceMenuCompl()\<cr>"
 		"endif
 	"endfor
-
-	autocmd InsertEnter  * call NiceMenuCompl(0)
-	autocmd CursorMovedI * call NiceMenuCompl(1)
-endfunction
+"endfunction
 
 
 " specify the minimum 'word' length the must be present
@@ -134,19 +131,16 @@ function! NiceMenu_is_file_path(cur_text)
 endfunction
 
 
-function NiceMenu_enable()
-	call s:mapForMappingDriven()
-endfunction
 
-function s:unmapForMappingDriven()
-  if !exists('s:keysMappingDriven')
-    return
-  endif
-  for key in s:keysMappingDriven
-    execute 'iunmap ' . key
-  endfor
-  let s:keysMappingDriven = []
-endfunction
+"function s:unmapForMappingDriven()
+  "if !exists('s:keysMappingDriven')
+    "return
+  "endif
+  "for key in s:keysMappingDriven
+    "execute 'iunmap ' . key
+  "endfor
+  "let s:keysMappingDriven = []
+"endfunction
 
 function s:getCurrentChar()
 	return strpart( getline('.'), col('.')-2, 1)
@@ -172,6 +166,7 @@ endfunction
 
 function! NiceMenuCheckContext()
 	if pumvisible() || &paste || ('i' != mode())
+		"echo "NiceMenuCheckContext bad mode"
 		return 0 
 	endif
 
@@ -187,7 +182,8 @@ function! NiceMenuCheckContext()
 	" This is to help prevent doing a completion
 	" in the middle of a word.
 	" TODO: Needs to be a config param.
-	if s:getNextChar() !~ '\s'
+	if (strlen(s:getNextChar()) > 0) && s:getNextChar() !~ '\s'
+		"echo "NiceMenuCheckContext bad next char: '" s:getNextChar() "'"
 		return 0
 	endif
 
@@ -204,11 +200,13 @@ function! NiceMenuCheckContext()
 		"endif
 	"endfor	
 
+	"echo "NiceMenuCheckContext inContext " inContext
 	return inContext 
 endfunction
 
 function! NiceMenuAsyncCpl()
-	echo "NiceMenuAsyncCpl()"
+	"echo "NiceMenuAsyncCpl()"
+	"
 
 	if 1 != NiceMenuCheckContext()
 		"echo "NiceMenuAsyncCpl() bad context"
@@ -267,9 +265,9 @@ def NiceMenuShowMenu():
 
 	#print 'NiceMenuShowMenu' 
 
-	if 1 != int(vim.eval('NiceMenuCheckContext()')):
-		#print 'NiceMenuShowMenu bad context' 
-		return
+	#if 'i' != vim.eval('mode()'):
+	#print 'NiceMenuShowMenu bad context' 
+	#	return
 
 	sname = vim.eval( 'v:servername' )
 	if not sname or sname == "":
@@ -318,5 +316,21 @@ ptimer.start()
 PEOF
 	return ""
 endfun
+
+function! s:NiceMenuCancel()
+python << PEOF
+global ptimer
+if ptimer:
+	ptimer.cancel()
+
+PEOF
+endfunction
+
+function NiceMenu_enable()
+	"call s:mapForMappingDriven()
+	autocmd InsertEnter  * call NiceMenuCompl(0)
+	autocmd InsertLeave  * call s:NiceMenuCancel()
+	autocmd CursorMovedI * call NiceMenuCompl(1)
+endfunction
 
 call NiceMenu_enable()
