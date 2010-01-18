@@ -535,8 +535,8 @@ au FileType sh,bash imap <F5> <ESC>:w<CR>:BashRun<CR>
 source ~/.vim/plugin/autotag.vim
 
 " load the tag closer
-au FileType html,xhtml let b:closetag_html_style=1
-au FileType html,xml,xhtml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
+"au FileType html,xhtml let b:closetag_html_style=1
+"au FileType html,xml,xhtml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
 
 " doubleTap
 "let g:loaded_doubleTap = 1
