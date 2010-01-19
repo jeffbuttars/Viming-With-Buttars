@@ -219,9 +219,7 @@ function! NiceMenuAsyncCpl()
 		return ""
 	endif
 
-	"let l:compl = "\<C-X>\<C-N>"
 	let l:compl = s:getDefaultCompl() 
-
 
 	let cword = s:getCurrentWord()
 
@@ -245,10 +243,6 @@ function! NiceMenuAsyncCpl()
 		endif
 	endif
 
-	"if (&filetype == 'mkd' || &filetype == 'text') && l:compl == "\<C-X>\<C-N>"
-		 "let l:compl = "\<C-X>\<C-K>"
-	"endif
-
 	 "If a <c-n> doesn't work, try the dictionary.
 		"let compl_res = call( &omnifunc, [1,''] )
 		"if -1 != compl_res
@@ -262,7 +256,6 @@ function! NiceMenuAsyncCpl()
 	set completeopt -= menu
 	set completeopt += menuone
 	let l:compl .= "\<C-P>"
-
 
 	call feedkeys( l:compl, 't')
 	echo ""
