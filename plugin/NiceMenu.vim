@@ -19,6 +19,10 @@ if ! exists( 'g:NiceMenuMin' )
 	let g:NiceMenuMin = 3 
 endif
 
+if ! exists( 'g:NiceMenuDefaultCompl' )
+	let g:NiceMenuDefaultCompl = "\<C-X>\<C-N>" 
+endif
+
 
 " only pop completion if one of these chars is to the
 " left of the cursor.
@@ -39,29 +43,6 @@ let s:contextMap = [
 	"\ '-', '_', '.', '$', '\<c-h>', '\<Space>', '<' ]
 
 let s:complPos = [0,0,0,0]
-
-" Maybe we should have a cancel map. Characters that when typed will
-" cancel any timers/completions and not set a new timer?
-"
-" Need some fixes so if a completion starts the user can type away
-" without a completion getting in the way. I think popup_it has
-" some of this fixing logic.
-
-"function s:mapForMappingDriven()
-	"call s:unmapForMappingDriven()
-	"let s:keysMappingDriven = s:contextMap
-	"for key in s:keysMappingDriven
-	"execute printf('inoremap <silent> %s %s<c-r>=<SID>NiceMenuCompl()<CR>', key, key)
-	"endfor
-
-	"for key in s:keysMappingDriven
-		"if maparg(key, 'i') == ''
-			"exec "silent! inoremap ".key." ".key.
-						"\ "\<c-r>=<SID>NiceMenuCompl()\<cr>"
-		"endif
-	"endfor
-"endfunction
-
 
 " specify the minimum 'word' length the must be present
 " before we complete
@@ -90,7 +71,7 @@ function! NiceMenu_is_file_path(cur_text)
 
     let l:cur_keyword_pos = match(a:cur_text, l:pattern)
     let l:cur_keyword_str = a:cur_text[l:cur_keyword_pos :]
-    if len(l:cur_keyword_str) < g:NiceMenuMin
+    if len(l:cur_keyword_str) < s:getWordMin() 
 		echo "NiceMenu_is_file_path() nope 1 ".len(l:cur_keyword_str)
         return -1
     endif
@@ -108,7 +89,7 @@ function! NiceMenu_is_file_path(cur_text)
     endif
 
     "let l:cur_keyword_pos = match(a:cur_text, l:pattern)
-    "if len(matchstr(a:cur_text, l:pattern)) < g:NiceMenuMin
+    "if len(matchstr(a:cur_text, l:pattern)) < s:getWordMin() 
 		"echo "NiceMenu_is_file_path() nope 1 ".len(matchstr(a:cur_text, l:pattern))
         "return -1
     "endif
@@ -141,6 +122,30 @@ endfunction
   "endfor
   "let s:keysMappingDriven = []
 "endfunction
+
+function! s:getWordMin()
+	if exists( 'b:NiceMenuMin' )
+		return b:NiceMenuMin
+	endif
+
+	return g:NiceMenuMin
+endfunction
+
+function! s:getDefaultCompl()
+	if exists( 'b:NiceMenuDefaultCompl' )
+		return b:NiceMenuDefaultCompl
+	endif
+
+	return g:NiceMenuDefaultCompl
+endfunction
+
+function! NiceMenuGetDelay()
+	if exists( 'b:NiceMenuDelay' )
+		return b:NiceMenuDelay
+	endif
+
+	return g:NiceMenuDelay
+endfunction
 
 function s:getCurrentChar()
 	return strpart( getline('.'), col('.')-2, 1)
@@ -182,7 +187,8 @@ function! NiceMenuCheckContext()
 	" This is to help prevent doing a completion
 	" in the middle of a word.
 	" TODO: Needs to be a config param.
-	if (strlen(s:getNextChar()) > 0) && s:getNextChar() !~ '\s'
+	l:nextChar = s:getNextChar()
+	if (strlen(l:nextChar) > 0) && l:nextChar !~ '\s' && l:nextChar !~ '\W'
 		"echo "NiceMenuCheckContext bad next char: '" s:getNextChar() "'"
 		return 0
 	endif
@@ -213,14 +219,15 @@ function! NiceMenuAsyncCpl()
 		return ""
 	endif
 
-	let l:compl = "\<C-X>\<C-N>"
+	"let l:compl = "\<C-X>\<C-N>"
+	let l:compl = s:getDefaultCompl() 
+
 
 	let cword = s:getCurrentWord()
 
 	if exists('&omnifunc') && &omnifunc != ''
 		"echo "NiceMenu_is_file_path() ".NiceMenu_is_file_path(cword)
 		"return ""
-
 		"if NiceMenu_is_file_path(cword)
 			"let l:compl = "\<C-X>\<C-F>"
 			"elseif match( cword, '\k->$' ) > 0 || match( cword, '\k\.$' ) > 0
@@ -233,11 +240,14 @@ function! NiceMenuAsyncCpl()
 				let compl_list = call( &omnifunc, [0,s:getOmniWord(compl_res)] )
 				if ! empty(compl_list)
 					let l:compl = "\<C-X>\<C-O>"
+				endif
 			endif
-
 		endif
-
 	endif
+
+	"if (&filetype == 'mkd' || &filetype == 'text') && l:compl == "\<C-X>\<C-N>"
+		 "let l:compl = "\<C-X>\<C-K>"
+	"endif
 
 	 "If a <c-n> doesn't work, try the dictionary.
 		"let compl_res = call( &omnifunc, [1,''] )
@@ -253,7 +263,10 @@ function! NiceMenuAsyncCpl()
 	set completeopt += menuone
 	let l:compl .= "\<C-P>"
 
+
 	call feedkeys( l:compl, 't')
+	echo ""
+	redraw
 endfunction
 
 python << PEOF
@@ -292,28 +305,38 @@ fun! NiceMenuCompl( need_i )
 	if pumvisible() || &paste || (('i' != mode()) && a:need_i )
 		return "" 
 	endif
+
+	" If we're in the same spot as the last trigger, don't show the menu
+	" again.
+	let l:npos = getpos(".")
+	if l:npos[1] == s:complPos[1] && l:npos[2] == s:complPos[2] && l:npos[3] == s:complPos[3]
+		"echo "NiceMenuCheckContext bad pos " l:npos ":" s:complPos
+		return "" 
+	endif
 	
 
 	" Only if current word/text is of a min length
 	let l:cline = s:getCurrentText()
 	let l:cword = s:getCurrentWord()
-	if strlen(l:cword) < g:NiceMenuMin
+	if strlen(l:cword) < s:getWordMin() 
+		"echo "s:NiceMenuCompl word to short"
 		return "" 
 	endif
 
-	let s:complPos = getpos(".")
+	let s:complPos = l:npos
 
 python << PEOF
 global ptimer
 if ptimer:
 	ptimer.cancel()
 
-delay = vim.eval("g:NiceMenuDelay")
+delay = vim.eval("NiceMenuGetDelay()")
 if not delay:
 	delay = '.8'
 ptimer = threading.Timer( float(delay), NiceMenuShowMenu )
 ptimer.start()
 PEOF
+	"echo "s:NiceMenuCompl word to long done"
 	return ""
 endfun
 
