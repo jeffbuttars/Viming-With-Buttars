@@ -76,7 +76,8 @@ if has("autocmd")
   au!
 
   " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
+  "autocmd FileType text,txt,mkd setlocal textwidth=78
+  autocmd FileType text,txt setlocal textwidth=78
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
@@ -134,14 +135,15 @@ imap <C-O> <C-X><C-O>
 " Enter will do a simple accept of the selection
 "Moved this into delimitMate to get them
 "to work together
-function! CleverCR()
-	if !pumvisible() 
-		return "\<CR>"
-	endif
+ "THIS INTERFERES WITH NICE MENU
+"function! CleverCR()
+	"if !pumvisible() 
+		"return "\<CR>"
+	"endif
 
-	return "\<C-Y>"
-endfunction
-inoremap <CR> <C-R>=CleverCR()<CR>
+	"return "\<C-Y>"
+"endfunction
+"inoremap <CR> <C-R>=CleverCR()<CR>
 
 
 " Auto close the preview window
@@ -272,6 +274,7 @@ set viminfo='20000,f1,<500,:1000,@1000,/1000,%
 
 " wrap long lines
 set wrap
+set sidescroll=3
 " Some wordwrapp foo from
 "http://kmandla.wordpress.com/2009/07/27/proper-word-wrapping-in-vim/
 set formatoptions+=l
@@ -342,8 +345,17 @@ set	autoread
 
 "interactive spell check
 " works only in non-gui mode for now
-""map #sp :w<CR>:!ispell %<CR>:e %<CR> 
-au FileType text,mkd setlocal spell spelllang=en_us
+map #sp :w<CR>:!ispell %<CR>:e %<CR> 
+"au FileType text,mkd setlocal spell spelllang=en_us
+au FileType text setlocal spell spelllang=en_us
+set mousemodel=popup
+
+"     dictionary: english words first
+" add any text based dictionaries to the list.
+" Also, you can use C-X,C-K to autocomplete a word
+" using the dictionary.
+set dictionary+=/usr/share/dict/words,/usr/dict/words,/usr/dict/extra.words
+
 
 
 " http://vim.wikia.com/wiki/Improved_Hex_editing
@@ -418,9 +430,9 @@ endfunction
 
 "http://plasticboy.com/markdown-vim-mode/
 "Markdown format options
-augroup mkd
-	autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
-augroup END
+"augroup mkd
+	"autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
+"augroup END
 
 " I like to put system library tags in a different tag file that
 " is only generated once in a while.
@@ -434,12 +446,6 @@ set guioptions-=m
 set guioptions-=T
 " Set gvim font. I like the droid
 set guifont=Inconsolata\ Medium\ 12
-
-"     dictionary: english words first
-" add any text based dictionaries to the list.
-" Also, you can use C-X,C-K to autocomplete a word
-" using the dictionary.
-set dictionary=/usr/share/dict/words,/usr/dict/words,/usr/dict/extra.words
 
 " End More normal Vim tweaks.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
