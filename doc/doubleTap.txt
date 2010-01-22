@@ -541,6 +541,10 @@ Example: >
 
 - Better, easier configuration setup and easy filetype support.
 - Make |DoubleTapInsertJumpSimple| smarter.
+- Stop using vims map, use our own map system.
+- Spacyness. Add option to create a spaced style on insertion
+- Smarter curly brackets. Know when to put on the same line or to
+  multiline(function style). Default to sameline insertion.
 
 
 ==============================================================================
