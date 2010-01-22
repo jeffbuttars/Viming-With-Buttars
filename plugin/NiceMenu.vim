@@ -111,18 +111,6 @@ function! NiceMenu_is_file_path(cur_text)
     return l:cur_keyword_pos
 endfunction
 
-
-
-"function s:unmapForMappingDriven()
-  "if !exists('s:keysMappingDriven')
-    "return
-  "endif
-  "for key in s:keysMappingDriven
-    "execute 'iunmap ' . key
-  "endfor
-  "let s:keysMappingDriven = []
-"endfunction
-
 function! s:getWordMin()
 	if exists( 'b:NiceMenuMin' )
 		return b:NiceMenuMin
@@ -159,12 +147,10 @@ function s:getOmniWord( spoint )
 	return strpart( getline('.'), a:spoint, col('.')-1)
 endfunction
 
-"
 function s:getCurrentWord()
   return matchstr(s:getCurrentText(), '\k*$')
 endfunction
 
-"
 function s:getCurrentText()
   return strpart(getline('.'), 0, col('.') - 1)
 endfunction
@@ -187,7 +173,8 @@ function! NiceMenuCheckContext()
 	" This is to help prevent doing a completion
 	" in the middle of a word.
 	" TODO: Needs to be a config param.
-	l:nextChar = s:getNextChar()
+	let l:nextChar = s:getNextChar()
+	
 	if (strlen(l:nextChar) > 0) && l:nextChar !~ '\s' && l:nextChar !~ '\W'
 		"echo "NiceMenuCheckContext bad next char: '" s:getNextChar() "'"
 		return 0
@@ -195,30 +182,34 @@ function! NiceMenuCheckContext()
 
 	let curChar = s:getCurrentChar() 
 	"echo "checking: " curChar
-	let inContext = 0
-	if index( s:contextMap, curChar)
-		let inContext = 1 
+	let inContext = index( s:contextMap, curChar)
+	if -1 == inContext 
+		let inContext = 0
 	endif
-	"for char in s:contextMap
-		"if char == curChar
-			"let inContext = 1 
-			"break
-		"endif
-	"endfor	
 
 	"echo "NiceMenuCheckContext inContext " inContext
 	return inContext 
 endfunction
 
+function! NiceMenuComplCleanup()
+
+	if 'i' == mode() && pumvisible()
+		return "\<C-P>"
+	endif
+
+	return ""
+endfunction
+
 function! NiceMenuAsyncCpl()
 	"echo "NiceMenuAsyncCpl()"
 	"
+	
 
-	if 1 != NiceMenuCheckContext()
+	if 0 == NiceMenuCheckContext()
 		"echo "NiceMenuAsyncCpl() bad context"
 		return ""
 	endif
-
+	
 	let l:compl = s:getDefaultCompl() 
 
 	let cword = s:getCurrentWord()
@@ -250,15 +241,21 @@ function! NiceMenuAsyncCpl()
 			"if ! empty(compl_list)
 				"let l:compl = "\<C-X>\<C-O>"
 		"endif
+	
+	if complete_check()
+		return ""
+	endif
 
-	" Select first option without inserting it's text 
+	" Select first(original typed text) option without inserting it's text 
 	" TODO: This should be a configurable option.
-	set completeopt -= menu
-	set completeopt += menuone
+	"set completeopt -= menu
+	"set completeopt += menuone
 	let l:compl .= "\<C-P>"
 
-	call feedkeys( l:compl, 't')
-	echo ""
+	"call feedkeys( l:compl, 'n')
+	return l:compl
+
+	echo
 	redraw
 endfunction
 
@@ -271,9 +268,9 @@ def NiceMenuShowMenu():
 
 	#print 'NiceMenuShowMenu' 
 
-	#if 'i' != vim.eval('mode()'):
-	#print 'NiceMenuShowMenu bad context' 
-	#	return
+	if 'i' != vim.eval('mode()'):
+		#print 'NiceMenuShowMenu bad context' 
+		return
 
 	sname = vim.eval( 'v:servername' )
 	if not sname or sname == "":
@@ -282,16 +279,27 @@ def NiceMenuShowMenu():
 
 	try:
 		dnull = open( '/dev/null' , 'w' )
-		subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-expr", "NiceMenuAsyncCpl()"],
+		#subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-expr", "NiceMenuAsyncCpl()"],
+		subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-send", '<C-R>=NiceMenuAsyncCpl()<CR>'],
 	  		stdout=dnull, stderr=dnull )
 	except:
 		print 'NiceMenuShowMenu except' 
 		pass
 PEOF
-"
+
+function! s:NiceMenuCancel()
+	"echo "s:NiceMenuCancel"
+python << PEOF
+global ptimer
+if ptimer:
+	ptimer.cancel()
+PEOF
+endfunction
+
+
 "NiceMenuCompl: {{{1
 "fun! s:NiceMenuCompl()
-fun! NiceMenuCompl( need_i )
+fun! s:NiceMenuCompl( need_i )
 	
 	"echo "s:NiceMenuCompl"
 
@@ -317,11 +325,10 @@ fun! NiceMenuCompl( need_i )
 	endif
 
 	let s:complPos = l:npos
+	call s:NiceMenuCancel()
 
 python << PEOF
 global ptimer
-if ptimer:
-	ptimer.cancel()
 
 delay = vim.eval("NiceMenuGetDelay()")
 if not delay:
@@ -333,20 +340,13 @@ PEOF
 	return ""
 endfun
 
-function! s:NiceMenuCancel()
-python << PEOF
-global ptimer
-if ptimer:
-	ptimer.cancel()
-
-PEOF
-endfunction
-
 function NiceMenu_enable()
 	"call s:mapForMappingDriven()
-	autocmd InsertEnter  * call NiceMenuCompl(0)
+	autocmd InsertEnter  * call s:NiceMenuCompl(0)
 	autocmd InsertLeave  * call s:NiceMenuCancel()
-	autocmd CursorMovedI * call NiceMenuCompl(1)
+	autocmd CursorMovedI * call s:NiceMenuCompl(1)
+
 endfunction
 
 call NiceMenu_enable()
+
