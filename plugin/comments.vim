@@ -130,7 +130,7 @@ function! CommentLine()
       execute ":silent! normal ^i(*\<ESC>$a*)\<ESC>==\<down>^"
     endif
     " .html,.xml,.xthml,.htm
-  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
+  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' || file_name =~ '\.mkd$'
     if stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) != -1
     elseif stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) == -1
         "  open, but a close "
@@ -206,7 +206,7 @@ function! UnCommentLine()
   elseif file_name =~ '\.lua$'
     execute ":silent! normal :nohlsearch\<CR>:s/\\--\<SPACE>//\<CR>:nohlsearch\<CR>"
   " for .xml .html .xhtml .htm use <!-- -->
-  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
+  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'  || file_name =~ '\.mkd$'
     execute ":silent! normal :nohlsearch\<CR>:s/<!--//\<CR>=="
     execute ":silent! normal :nohlsearch\<CR>:s/-->//\<CR>=="
   " for .tex use %
@@ -250,7 +250,7 @@ function! RangeCommentLine()
       execute ":silent! normal :s/\\(\\S.*$\\)/\\/\\*\\1\\*\\//\<CR>:nohlsearch\<CR>=="
     endif
   " .html,.xml,.xthml,.htm
-  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
+  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' || file_name =~ '\.mkd$' 
     if stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) != -1
     elseif stridx( getline("."), "\<!--" ) != -1 && stridx( getline("."), "--\>" ) == -1
         "  open, but a close "
@@ -316,7 +316,7 @@ function! RangeUnCommentLine()
   elseif file_name =~ '\.sql$'
     execute ":silent! normal :s/\\-\\- //\<CR>:nohlsearch\<CR>"
   " for .xml .html .xhtml .htm use <!-- -->
-  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$' 
+  elseif file_name =~ '\.html$' || file_name =~ '\.htm$' || file_name =~ '\.xml$' || file_name =~ '\.xhtml$'  || file_name =~ '\.mkd$'
     execute ":silent! normal :nohlsearch\<CR>:s/<!--//\<CR>=="
     execute ":silent! normal :nohlsearch\<CR>:s/-->//\<CR>=="
   elseif file_name =~ '\.[kc]\?sh$' || file_name =~ '\.pl$' || file_name =~ '\.pm$'
