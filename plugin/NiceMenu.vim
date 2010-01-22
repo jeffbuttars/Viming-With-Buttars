@@ -242,10 +242,6 @@ function! NiceMenuAsyncCpl()
 				"let l:compl = "\<C-X>\<C-O>"
 		"endif
 	
-	if complete_check()
-		return ""
-	endif
-
 	" Select first(original typed text) option without inserting it's text 
 	" TODO: This should be a configurable option.
 	"set completeopt -= menu
@@ -255,8 +251,8 @@ function! NiceMenuAsyncCpl()
 	"call feedkeys( l:compl, 'n')
 	return l:compl
 
-	echo
-	redraw
+	"echo
+	"redraw
 endfunction
 
 python << PEOF
