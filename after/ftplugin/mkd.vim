@@ -2,6 +2,8 @@
 "Set 'textwidth' to 78 characters.
 setlocal textwidth=78
 setlocal spell spelllang=en_us
+" I prefer the CursorLine off when editing text
+hi clear CursorLine
 
 "http://plasticboy.com/markdown-vim-mode/
 "Markdown format options
