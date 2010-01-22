@@ -1,3 +1,8 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Maintainer: Jeff Buttars 
+"			jeffbuttars@gmail.com
+"           http://code.google.com/p/vimingwithbuttar/ 
+"
 " We start from the default example .vimrc
 " and then tweak from there.
 "
@@ -131,6 +136,7 @@ imap <C-O> <C-X><C-O>
 	"return "\<C-N>"
 "endfunction
 "inoremap <Tab> <C-R>=CleverTab()<CR>
+"
 
 " Enter will do a simple accept of the selection
 "Moved this into delimitMate to get them
@@ -551,6 +557,7 @@ source ~/.vim/plugin/autotag.vim
 "let g:loaded_nice_menu = 1
 let g:NiceMenuDelay = '.4' 
 let g:NiceMenuMin = 1
+imap <silent> <esc> <esc><esc>
 
 " We don't use this yet.
 "let g:rails_dbext = 0
