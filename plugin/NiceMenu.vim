@@ -39,7 +39,7 @@ let s:contextMap = [
 	\ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 	\ 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 	\ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	\ '-', '_', '.', '$', '<', '>' ]
+	\ '-', '_', '.', '$', '<', '>', ':' ]
 	"\ '-', '_', '.', '$', '\<c-h>', '\<Space>', '<' ]
 
 let s:complPos = [0,0,0,0]
@@ -182,13 +182,12 @@ function! NiceMenuCheckContext()
 
 	let curChar = s:getCurrentChar() 
 	"echo "checking: " curChar
-	let inContext = index( s:contextMap, curChar)
-	if -1 == inContext 
-		let inContext = 0
+	if index( s:contextMap, curChar) < 0
+		return 0
 	endif
 
-	"echo "NiceMenuCheckContext inContext " inContext
-	return inContext 
+	"echo "NiceMenuCheckContext inContext 0"
+	return 1 
 endfunction
 
 function! NiceMenuComplCleanup()
@@ -343,6 +342,16 @@ function NiceMenu_enable()
 	autocmd CursorMovedI * call s:NiceMenuCompl(1)
 
 endfunction
+
+" This mapping is a work around for a race condition in
+" NiceMenu. If you hit <esc> while a completion is building
+" its menu list when the list is done being built the completion
+" menu will try to show itself and drop the user back into Insert mode.
+" But, if there is another <ESC> loaded into the typeahead buffer it will 
+" cancel out menu put the user back into Normal mode like 
+" they want to be. This all happens very quickly and to the user it looks
+" typing ESC to get into normal mode works just like it should.
+imap <silent> <ESC> <ESC><ESC>
 
 call NiceMenu_enable()
 
