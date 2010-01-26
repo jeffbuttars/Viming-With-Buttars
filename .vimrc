@@ -142,14 +142,14 @@ imap <C-O> <C-X><C-O>
 "Moved this into delimitMate to get them
 "to work together
  "THIS INTERFERES WITH NICE MENU
-"function! CleverCR()
-	"if !pumvisible() 
-		"return "\<CR>"
-	"endif
+function! CleverCR()
+	if !pumvisible() 
+		return "\<CR>"
+	endif
 
-	"return "\<C-Y>"
-"endfunction
-"inoremap <CR> <C-R>=CleverCR()<CR>
+	return "\<C-Y>"
+endfunction
+inoremap <CR> <C-R>=CleverCR()<CR>
 
 
 " Auto close the preview window
@@ -470,6 +470,8 @@ imap <silent> <c-l> <esc>:BufExplorer<CR>
 " because you visually select regions and comment/uncomment the whole region.
 " works with marked regions to.
 " Just put it in your plugin directory.
+"
+
 
 """ TagList
 " Set taglist plugin options
@@ -558,6 +560,7 @@ source ~/.vim/plugin/autotag.vim
 let g:NiceMenuDelay = '.4' 
 let g:NiceMenuMin = 1
 imap <silent> <esc> <esc><esc>
+
 
 " We don't use this yet.
 "let g:rails_dbext = 0
