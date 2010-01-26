@@ -100,6 +100,20 @@ endif
 
 " Default settings 
 " {{{1
+
+if !exists( "b:DoubleTapInsertTimer" )
+	let b:DoubleTapInsertTimer = 0.5
+endif
+let b:lcharChar = ''
+let b:lcharTime = reltimestr( reltime() )
+
+" Spacey
+" If you have a spacey stile, ( arg ) vs (arg)
+" Try setting this to 1, default is 0/off
+if !exists( "b:DoubleTapSpacey" )
+  let b:DoubleTapSpacey = 1
+endif
+
 "[[
 " Enable default left bracket mapping
 if !exists( "b:DoubleTap_map_left_bracket" )
@@ -217,7 +231,6 @@ if 1 == b:DoubleTap_enable_defaults
 endif
 "1}}}
 
-
 " Private Helper:
 " getSynName:
 " get the syntax type under the cursor
@@ -284,6 +297,76 @@ function! s:inString( thechar )
 endfunction
 "1}}}
 
+function! s:checkDoubleInsert( thechar )
+
+	let l:ntime = reltimestr( reltime() )
+	
+	if (a:thechar != b:lcharChar) || (l:ntime - b:lcharTime > b:DoubleTapInsertTimer)
+		let b:lcharTime = l:ntime
+		let b:lcharChar = a:thechar
+		return 0 
+	endif
+
+	let b:lcharTime = l:ntime
+	return 1
+endfunction
+
+" Public Interface:
+" DoubleTapInsert:
+" is this a double insert of a doubleTap char? 
+"{{{1
+function! DoubleTapInsert( thechar, mchar, ... )
+
+	
+	if ! s:checkDoubleInsert( a:thechar )
+		return a:thechar
+		"let l:lline = strpart( l:cline, 0, l:cpos[2])
+		""strpart({src}, {start}[, {len}])
+		"let l:rline = strpart( l:cline, l:cpos[2], strlen( l:cline - l:cpos[2] ) )
+		
+		"call setline( l:cpos[1], l:lline.a:thechar.l:rline )
+
+		"let l:cpos[2] = l:cpos[2]+1
+		"call setpos( '.', l:cpos )
+		"return "" 
+	endif
+
+	"let l:cpos = getpos(".")
+	"let l:cpos[2] = l:cpos[2]-1
+	"call setpos( '.', l:cpos )
+	"
+	if a:0 > 0 
+		""echo "execing " . substitute( a:1, "<\\", "<", "g" )
+		""execute "normal " . substitute( a:1, "<\\", "<", "g" )
+		"execute "normal " a:1
+		return a:mchar . a:1 
+	endif
+
+	return a:mchar
+
+	" Lay down the match char, go left.
+	"reminder -> getpos() returns this:[bufnum, lnum, col, off]
+	"let l:cpos = getpos(".")
+	"let l:cline = getline( "." )
+	"let l:lline = strpart( l:cline, 0, l:cpos[2]-1)
+	""strpart({src}, {start}[, {len}])
+	"let l:rline = strpart( l:cline, l:cpos[2]-1, strlen( l:cline - l:cpos[2]-1 ) )
+	
+	"call setline( l:cpos[1], l:lline.a:mchar.l:rline )
+
+	"let b:lcharChar = a:mchar
+
+	"if a:0 > 0 
+		""echo "execing " . substitute( a:1, "<\\", "<", "g" )
+		""execute "normal " . substitute( a:1, "<\\", "<", "g" )
+		"execute "normal " a:1
+	"endif
+
+	"return "" 
+endfunction	
+"1}}}
+
+
 " Public Interface:
 " DoubleTapFinishLine: Remove trailing whitespace, put the given character at the end of the line  
 " Param: thechar the character to place at the end of the cleaned line.
@@ -291,18 +374,25 @@ endfunction
 function! DoubleTapFinishLine( thechar )
 
 	if &paste
-	  return a:thechar.a:thechar
+		"return a:thechar.a:thechar
+		return 0
 	endif
+
+	"if !s:checkDoubleInsert( a:thechar )
+		"return 0
+	"endif
 
 	" If thechar already exists already, don't do anything.
 	let l:regex = a:thechar . '$'
 	if getline(".") =~ l:regex 
-		return
+		return 0
 	endif
 
 	let l:cline = substitute( getline("."), '\s*$', '', 'g' )
 	echo l:cline . a:thechar 
 	call setline( ".", l:cline . a:thechar )
+
+	return 1
 endfunction
 "1}}}
 
@@ -436,7 +526,11 @@ endfunction
 "{{{1
 " Enable default left bracket mapping
 if 1 == b:DoubleTap_map_left_bracket
-  imap [[ []<Left>
+	if b:DoubleTapSpacey
+		imap <silent><expr> [ DoubleTapInsert( "[", "]", "\<LEFT>\<SPACE>\<SPACE>\<LEFT>" )
+	else
+		imap <silent><expr> [ DoubleTapInsert( "[", "]", "\<LEFT>" )
+	endif
 endif
 " Enable default right bracket mapping
 if 1 == b:DoubleTap_map_right_bracket
@@ -445,7 +539,11 @@ endif
 
 " Enable default left curly brace mapping
 if 1 == b:DoubleTap_map_left_brace
-  imap {{ {}<Left><CR><ESC>O
+	if b:DoubleTapSpacey
+		imap <silent><expr> { DoubleTapInsert( "{", "}", "\<LEFT>\<SPACE>\<SPACE>\<LEFT>" )
+	else
+		imap <silent><expr> { DoubleTapInsert( "{", "}", "\<LEFT>" )
+	endif
 endif
 " Enable default right curly brace mapping
 if 1 == b:DoubleTap_map_right_brace
@@ -454,7 +552,11 @@ endif
 
 " Enable default left paren mapping
 if 1 == b:DoubleTap_map_left_paren
-  imap (( ()<Left>
+	if b:DoubleTapSpacey
+		imap <silent><expr> ( DoubleTapInsert( "(", ")", "\<LEFT>\<SPACE>\<SPACE>\<LEFT>" )
+	else
+		imap <silent><expr> ( DoubleTapInsert( "(", ")", "\<LEFT>" )
+	endif
 endif
 " Enable default right paren mapping
 if 1 == b:DoubleTap_map_right_paren
@@ -463,7 +565,8 @@ endif
 
 " Enable default left angle mapping
 if 1 == b:DoubleTap_map_left_angle
-	au Filetype html,html.django_template,xml,xhtml,htmlcheetah,javascript,php imap << <><Left>
+	au Filetype html,html.django_template,xml,xhtml,htmlcheetah,javascript,php imap <silent><expr> < DoubleTapInsert( "<", ">", "\<LEFT>" )
+  
 endif
 " Enable default right angle mapping
 if 1 == b:DoubleTap_map_right_angle
