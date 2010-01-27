@@ -104,8 +104,9 @@ endif
 if !exists( "b:DoubleTapInsertTimer" )
 	let b:DoubleTapInsertTimer = 0.5
 endif
-let b:lcharChar = ''
-let b:lcharTime = reltimestr( reltime() )
+
+let s:lcharChar = ''
+let s:lcharTime = reltimestr( reltime() )
 
 " Spacey
 " If you have a spacey stile, ( arg ) vs (arg)
@@ -300,15 +301,30 @@ endfunction
 function! s:checkDoubleInsert( thechar )
 
 	let l:ntime = reltimestr( reltime() )
-	
-	if (a:thechar != b:lcharChar) || (l:ntime - b:lcharTime > b:DoubleTapInsertTimer)
-		let b:lcharTime = l:ntime
-		let b:lcharChar = a:thechar
+
+	if (a:thechar != s:lcharChar) || (l:ntime - s:lcharTime > b:DoubleTapInsertTimer)
+		let s:lcharTime = l:ntime
+		let s:lcharChar = a:thechar
 		return 0 
 	endif
 
-	let b:lcharTime = l:ntime
+	let s:lcharTime = l:ntime
 	return 1
+endfunction
+
+
+function! s:sliceChar()
+	" Splice out the current char 
+
+	let l:cline = getline(".")
+	let l:cpos = getpos(".")
+
+	let l:left_line = strpart( l:cline, 0, l:cpos[2]-2 )
+	let l:right_line = strpart( l:cline, l:cpos[2]-1 )
+	call setline( l:cpos[1], l:left_line . l:right_line )
+
+	let l:cpos[2] = l:cpos[2]-1 
+	call setpos( '.', l:cpos )
 endfunction
 
 " Public Interface:
@@ -317,52 +333,15 @@ endfunction
 "{{{1
 function! DoubleTapInsert( thechar, mchar, ... )
 
-	
 	if ! s:checkDoubleInsert( a:thechar )
 		return a:thechar
-		"let l:lline = strpart( l:cline, 0, l:cpos[2])
-		""strpart({src}, {start}[, {len}])
-		"let l:rline = strpart( l:cline, l:cpos[2], strlen( l:cline - l:cpos[2] ) )
-		
-		"call setline( l:cpos[1], l:lline.a:thechar.l:rline )
-
-		"let l:cpos[2] = l:cpos[2]+1
-		"call setpos( '.', l:cpos )
-		"return "" 
 	endif
 
-	"let l:cpos = getpos(".")
-	"let l:cpos[2] = l:cpos[2]-1
-	"call setpos( '.', l:cpos )
-	"
 	if a:0 > 0 
-		""echo "execing " . substitute( a:1, "<\\", "<", "g" )
-		""execute "normal " . substitute( a:1, "<\\", "<", "g" )
-		"execute "normal " a:1
 		return a:mchar . a:1 
 	endif
 
 	return a:mchar
-
-	" Lay down the match char, go left.
-	"reminder -> getpos() returns this:[bufnum, lnum, col, off]
-	"let l:cpos = getpos(".")
-	"let l:cline = getline( "." )
-	"let l:lline = strpart( l:cline, 0, l:cpos[2]-1)
-	""strpart({src}, {start}[, {len}])
-	"let l:rline = strpart( l:cline, l:cpos[2]-1, strlen( l:cline - l:cpos[2]-1 ) )
-	
-	"call setline( l:cpos[1], l:lline.a:mchar.l:rline )
-
-	"let b:lcharChar = a:mchar
-
-	"if a:0 > 0 
-		""echo "execing " . substitute( a:1, "<\\", "<", "g" )
-		""execute "normal " . substitute( a:1, "<\\", "<", "g" )
-		"execute "normal " a:1
-	"endif
-
-	"return "" 
 endfunction	
 "1}}}
 
@@ -403,9 +382,10 @@ endfunction
 " {{{1
 function! DoubleTapJumpOut( thechar )
 
-	if &paste
-	  return a:thechar.a:thechar
+	if &paste || ! s:checkDoubleInsert( a:thechar )
+		return a:thechar
 	endif
+
 
 	" First see if it's on the cursor. 
 	" If it is go right one and return.
@@ -419,6 +399,11 @@ function! DoubleTapJumpOut( thechar )
 	let l:rchar = strpart( l:cline, col('.')-1, 1)
 
 	if l:rchar == a:thechar 
+
+		call s:sliceChar()
+
+		"let l:cpos = getpos(".")
+
 		let l:cpos[2] = l:cpos[2]+2
 		call setpos( '.', l:cpos )
 		return ""
@@ -428,14 +413,18 @@ function! DoubleTapJumpOut( thechar )
 	let l:npos = searchpos( a:thechar, 'nW' )
 	if l:npos[0] > 0 && l:npos[1] > 0 && l:npos[0] >= l:cpos[1]
 
-	  let l:cpos[1] = l:npos[0]
-	  let l:cpos[2] = l:npos[1]+1
-	  call setpos( '.', l:cpos )
+		call s:sliceChar()
+		"let l:cpos = getpos(".")
 
-	  return ""
+		let l:cpos[1] = l:npos[0]
+		let l:cpos[2] = l:npos[1]
+		call setpos( '.', l:cpos )
+
+		return ""
 	endif
 
-	return a:thechar.a:thechar
+	"return a:thechar.a:thechar
+	return a:thechar
 endfunction
 "1}}}
 
@@ -490,16 +479,26 @@ endfunction
 "{{{1
 function! DoubleTapInsertJumpSimple( thechar )
 
+	"if &paste
+	"return a:thechar.a:thechar
+	"endif
 	if &paste
-	  return a:thechar.a:thechar
+		return a:thechar
 	endif
 
+	if ! s:checkDoubleInsert( a:thechar )
+		return a:thechar
+	endif
+
+	call s:sliceChar()
+	
 	" See if it's there.
-	let l:cline = getline(".")
 	let l:cpos = getpos(".")
+	let l:cline = getline(".")
 	let l:ccol = l:cpos[2]-1
 
 	let l:nchar = stridx( l:cline, a:thechar, l:ccol )
+	echo l:nchar
 	if l:nchar < l:ccol
 		  "if the cursor is on or to left of thechar, jump out.
 		  let l:tchar = strpart( getline('.'), col('.')-2, 1)
@@ -507,6 +506,7 @@ function! DoubleTapInsertJumpSimple( thechar )
 		  if l:tchar == a:thechar || l:rchar == a:thechar
 			  let l:cpos[2] = l:nchar+2
 			  call setpos( '.', l:cpos )
+			  "echo "moving to"
 			  return ""
 		  else
 			  return a:thechar.a:thechar."\<left>"
@@ -518,6 +518,7 @@ function! DoubleTapInsertJumpSimple( thechar )
 	let l:cpos[2] = l:nchar+2
 	call setpos( '.', l:cpos )
 
+   echo "moving to"
 	return ""
 endfunction
 "1}}}
@@ -534,7 +535,7 @@ if 1 == b:DoubleTap_map_left_bracket
 endif
 " Enable default right bracket mapping
 if 1 == b:DoubleTap_map_right_bracket
-  imap ]] <C-R>=DoubleTapJumpOut("]")<CR>
+  imap ] <C-R>=DoubleTapJumpOut("]")<CR>
 endif
 
 " Enable default left curly brace mapping
@@ -547,7 +548,7 @@ if 1 == b:DoubleTap_map_left_brace
 endif
 " Enable default right curly brace mapping
 if 1 == b:DoubleTap_map_right_brace
-  imap }} <C-R>=DoubleTapJumpOut("}")<CR>
+  imap } <C-R>=DoubleTapJumpOut("}")<CR>
 endif
 
 " Enable default left paren mapping
@@ -560,7 +561,7 @@ if 1 == b:DoubleTap_map_left_paren
 endif
 " Enable default right paren mapping
 if 1 == b:DoubleTap_map_right_paren
-  imap )) <C-R>=DoubleTapJumpOut(")")<CR>
+  imap ) <C-R>=DoubleTapJumpOut(")")<CR>
 endif
 
 " Enable default left angle mapping
@@ -570,7 +571,7 @@ if 1 == b:DoubleTap_map_left_angle
 endif
 " Enable default right angle mapping
 if 1 == b:DoubleTap_map_right_angle
-	au FileType html,html.django_template,xml,xhtml,htmlcheetah,javascript,php imap >> <C-R>=DoubleTapJumpOut(">")<CR>
+	au FileType html,html.django_template,xml,xhtml,htmlcheetah,javascript,php imap > <C-R>=DoubleTapJumpOut(">")<CR>
 endif
 
 " Enable default single quote insert mapping
@@ -585,12 +586,12 @@ endif
 
 " Enable default double plus insert mapping
 if 1 == b:DoubleTap_map_plus_insert_jump
-  au FileType javascript,python imap ++ <C-R>=DoubleTapInsertJumpSimple('+')<CR>
+  au FileType javascript,python imap + <C-R>=DoubleTapInsertJumpSimple('+')<CR>
 endif
 
 " Enable default double period insert mapping
 if 1 == b:DoubleTap_map_period_insert_jump
-  au FileType php,perl,vim imap .. <C-R>=DoubleTapInsertJumpSimple('.')<CR>
+  au FileType php,perl,vim imap . <C-R>=DoubleTapInsertJumpSimple('.')<CR>
 endif
 
 " Enable default double tap semicolon finish line
