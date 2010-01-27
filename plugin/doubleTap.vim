@@ -102,7 +102,7 @@ endif
 " {{{1
 
 if !exists( "g:DoubleTapInsertTimer" )
-	let g:DoubleTapInsertTimer = 0.5
+	let g:DoubleTapInsertTimer = &timeout
 endif
 
 let s:lcharChar = ''
@@ -410,7 +410,7 @@ function! DoubleTapJumpOut( thechar )
 	if l:npos[0] > 0 && l:npos[1] > 0 && l:npos[0] >= l:cpos[1]
 
 		let l:cpos[1] = l:npos[0]
-		let l:cpos[2] = l:npos[1]
+		let l:cpos[2] = l:npos[1]+1
 		call setpos( '.', l:cpos )
 
 		return ""
