@@ -554,6 +554,7 @@ source ~/.vim/plugin/autotag.vim
 
 " doubleTap
 "let g:loaded_doubleTap = 1
+let g:DoubleTapInsertTimer = 0.8
 
 " Set NiceMenu Delay
 "let g:loaded_nice_menu = 1
