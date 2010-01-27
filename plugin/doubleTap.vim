@@ -101,8 +101,8 @@ endif
 " Default settings 
 " {{{1
 
-if !exists( "b:DoubleTapInsertTimer" )
-	let b:DoubleTapInsertTimer = 0.5
+if !exists( "g:DoubleTapInsertTimer" )
+	let g:DoubleTapInsertTimer = 0.5
 endif
 
 let s:lcharChar = ''
@@ -302,7 +302,7 @@ function! s:checkDoubleInsert( thechar )
 
 	let l:ntime = reltimestr( reltime() )
 
-	if (a:thechar != s:lcharChar) || (l:ntime - s:lcharTime > b:DoubleTapInsertTimer)
+	if (a:thechar != s:lcharChar) || (l:ntime - s:lcharTime > g:DoubleTapInsertTimer)
 		let s:lcharTime = l:ntime
 		let s:lcharChar = a:thechar
 		return 0 
@@ -353,13 +353,8 @@ endfunction
 function! DoubleTapFinishLine( thechar )
 
 	if &paste
-		"return a:thechar.a:thechar
 		return 0
 	endif
-
-	"if !s:checkDoubleInsert( a:thechar )
-		"return 0
-	"endif
 
 	" If thechar already exists already, don't do anything.
 	let l:regex = a:thechar . '$'
@@ -392,6 +387,8 @@ function! DoubleTapJumpOut( thechar )
 	" Otherwise find the next instance in the buffer and 
 	" go there.
 
+	call s:sliceChar()
+
 	let l:cline = getline(".")
 	let l:cpos = getpos(".")
 
@@ -400,7 +397,6 @@ function! DoubleTapJumpOut( thechar )
 
 	if l:rchar == a:thechar 
 
-		call s:sliceChar()
 
 		"let l:cpos = getpos(".")
 
@@ -413,9 +409,6 @@ function! DoubleTapJumpOut( thechar )
 	let l:npos = searchpos( a:thechar, 'nW' )
 	if l:npos[0] > 0 && l:npos[1] > 0 && l:npos[0] >= l:cpos[1]
 
-		call s:sliceChar()
-		"let l:cpos = getpos(".")
-
 		let l:cpos[1] = l:npos[0]
 		let l:cpos[2] = l:npos[1]
 		call setpos( '.', l:cpos )
@@ -423,8 +416,7 @@ function! DoubleTapJumpOut( thechar )
 		return ""
 	endif
 
-	"return a:thechar.a:thechar
-	return a:thechar
+	return a:thechar.a:thechar
 endfunction
 "1}}}
 
@@ -436,13 +428,17 @@ endfunction
 "{{{1
 function! DoubleTapInsertJumpString( thechar )
 
-	if &paste
-		return a:thechar.a:thechar
+	if &paste || ! s:checkDoubleInsert( a:thechar )
+		"return a:thechar.a:thechar
+		return a:thechar
 	endif
+
+	call s:sliceChar()
 
 	" If we're in a string, jump out
 	" Otherwise, lay down a pair
 	if s:inString( a:thechar )
+
 		" jump out
 
 		let l:cpos = getpos(".")
@@ -479,14 +475,7 @@ endfunction
 "{{{1
 function! DoubleTapInsertJumpSimple( thechar )
 
-	"if &paste
-	"return a:thechar.a:thechar
-	"endif
-	if &paste
-		return a:thechar
-	endif
-
-	if ! s:checkDoubleInsert( a:thechar )
+	if &paste || ! s:checkDoubleInsert( a:thechar )
 		return a:thechar
 	endif
 
@@ -506,7 +495,6 @@ function! DoubleTapInsertJumpSimple( thechar )
 		  if l:tchar == a:thechar || l:rchar == a:thechar
 			  let l:cpos[2] = l:nchar+2
 			  call setpos( '.', l:cpos )
-			  "echo "moving to"
 			  return ""
 		  else
 			  return a:thechar.a:thechar."\<left>"
@@ -518,7 +506,6 @@ function! DoubleTapInsertJumpSimple( thechar )
 	let l:cpos[2] = l:nchar+2
 	call setpos( '.', l:cpos )
 
-   echo "moving to"
 	return ""
 endfunction
 "1}}}
@@ -576,12 +563,12 @@ endif
 
 " Enable default single quote insert mapping
 if 1 == b:DoubleTap_map_single_quote_insert_jump
-  imap '' <C-R>=DoubleTapInsertJumpString("'")<CR>
+  imap ' <C-R>=DoubleTapInsertJumpString("'")<CR>
 endif
 
 " Enable default double quote insert mapping
 if 1 == b:DoubleTap_map_double_quote_insert_jump
-  imap "" <C-R>=DoubleTapInsertJumpString('"')<CR>
+  imap " <C-R>=DoubleTapInsertJumpString('"')<CR>
 endif
 
 " Enable default double plus insert mapping
