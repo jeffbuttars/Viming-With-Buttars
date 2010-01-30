@@ -39,7 +39,7 @@ let s:contextMap = [
 	\ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 	\ 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 	\ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	\ '-', '_', '.', '$', '<', '>', ':' ]
+	\ '-', '_', '.', '$', ':' ]
 	"\ '-', '_', '.', '$', '\<c-h>', '\<Space>', '<' ]
 
 let s:complPos = [0,0,0,0]
@@ -47,6 +47,28 @@ let s:complPos = [0,0,0,0]
 " specify the minimum 'word' length the must be present
 " before we complete
 "let s:minContextLen = 3
+"
+" Private Helper:
+" getSynName:
+" get the syntax type under the cursor
+"{{{1
+function! s:getSynName()
+	return synIDattr(synID(line("."), col("."), 0), "name" )
+endfunction	
+"1}}}
+
+" Private Helper:
+" inString
+"{{{1
+function! s:inString()
+
+	if s:getSynName()  =~? 'String'
+		return 1
+	endif
+
+	return 0
+endfunction
+"1}}}
 
 " THIS DOEN'T WORK
 function! NiceMenu_is_file_path(cur_text)
@@ -213,7 +235,7 @@ function! NiceMenuAsyncCpl()
 
 	let cword = s:getCurrentWord()
 
-	if exists('&omnifunc') && &omnifunc != ''
+	if exists('&omnifunc') && &omnifunc != '' && (! s:inString())
 		"echo "NiceMenu_is_file_path() ".NiceMenu_is_file_path(cword)
 		"return ""
 		"if NiceMenu_is_file_path(cword)
@@ -247,6 +269,7 @@ function! NiceMenuAsyncCpl()
 	"set completeopt += menuone
 	let l:compl .= "\<C-P>"
 
+	let b:NiceMenu_has_shown = 1
 	"call feedkeys( l:compl, 'n')
 	return l:compl
 
@@ -300,6 +323,12 @@ fun! s:NiceMenuCompl( need_i )
 
 	if pumvisible() || &paste || (('i' != mode()) && a:need_i )
 		return "" 
+	endif
+
+
+	if exists( 'b:NiceMenu_has_shown' ) && 1 == b:NiceMenu_has_shown
+		let b:NiceMenu_has_shown = 0
+		return ""
 	endif
 
 	" If we're in the same spot as the last trigger, don't show the menu
