@@ -79,27 +79,27 @@
 
 " Allow doubleTap to 
 " Exit quickly if already running or when 'compatible' is set. 
-" {{{1
+" 
 if exists("g:loaded_doubleTap") || &cp
   finish
 endif
-"1}}}
+"1
 
 " Version number
-" {{{1
+" 
 let g:loaded_doubleTap = '1.0'
-"1}}}
+"1
 
 " Check for Vim version 700 or greater 
-" {{{1
+" 
 if v:version < 700
   echo "Sorry, doubleTap ".g:double_tap_version."\nONLY runs with Vim 7.0 and greater."
   finish
 endif
-"1}}}
+"1
 
 " Default settings 
-" {{{1
+" 
 
 if !exists( "g:DoubleTapInsertTimer" )
 	let g:DoubleTapInsertTimer = &timeout
@@ -230,31 +230,31 @@ endif
 if 1 == b:DoubleTap_enable_defaults 
 	call s:enableAllDefaults()
 endif
-"1}}}
+"1
 
 " Private Helper:
 " getSynName:
 " get the syntax type under the cursor
-"{{{1
+
 function! s:getSynName()
 	return synIDattr(synID(line("."), col("."), 0), "name" )
 endfunction	
-"1}}}
+"1
 
 " Private Helper:
 " getSynStack:
 " get the syntax stack under the cursor
-"{{{1
+
 function! s:getSynStack()
 	return synstack( line("."), col(".") )
 endfunction	
-"1}}}
+"1
 
 " Private Helper:
 " inString
 " Param: thechar the quote character that's been double tapped.
 " See if the cursor is inside a string according the current syntax definition
-"{{{1
+
 function! s:inString( thechar )
 
 	" This will often contain whether we are in a single or double quote
@@ -296,7 +296,7 @@ function! s:inString( thechar )
 
 	return l:inSingle == l:theSingle
 endfunction
-"1}}}
+"1
 
 function! s:checkDoubleInsert( thechar )
 
@@ -308,8 +308,17 @@ function! s:checkDoubleInsert( thechar )
 		return 0 
 	endif
 
+	let l:cline = getline( '.' )
+	let l:cpos = getpos( '.' )[2]
+	if l:cline[l:cpos - 2] == a:thechar 
+		let s:lcharTime = l:ntime
+		let s:lcharChar = '' 
+		return 1
+	endif
+
 	let s:lcharTime = l:ntime
-	return 1
+	let s:lcharChar = a:thechar
+	return 0
 endfunction
 
 
@@ -330,7 +339,7 @@ endfunction
 " Public Interface:
 " DoubleTapInsert:
 " is this a double insert of a doubleTap char? 
-"{{{1
+
 function! DoubleTapInsert( thechar, mchar, ... )
 
 	if ! s:checkDoubleInsert( a:thechar )
@@ -339,17 +348,19 @@ function! DoubleTapInsert( thechar, mchar, ... )
 
 	if a:0 > 0 
 		return a:mchar . a:1 
+	else
+		return a:mchar . "\<LEFT>"
 	endif
 
 	return a:mchar
 endfunction	
-"1}}}
+"1
 
 
 " Public Interface:
 " DoubleTapFinishLine: Remove trailing whitespace, put the given character at the end of the line  
 " Param: thechar the character to place at the end of the cleaned line.
-" {{{1
+" 
 function! DoubleTapFinishLine( thechar )
 
 	if &paste
@@ -368,13 +379,13 @@ function! DoubleTapFinishLine( thechar )
 
 	return 1
 endfunction
-"1}}}
+"1
 
 " Public Interface:
 " DoubleTapJumpOut: Find the next instance of thechar in the current
 " buffer and jump to it.
 " Param: thechar the character to jump too.
-" {{{1
+" 
 function! DoubleTapJumpOut( thechar )
 
 	if &paste || ! s:checkDoubleInsert( a:thechar )
@@ -418,14 +429,14 @@ function! DoubleTapJumpOut( thechar )
 
 	return a:thechar.a:thechar
 endfunction
-"1}}}
+"1
 
 " Public Interface:
 " DoubleTapInsertJumpString: This is a lot like DoubleTapJumpOut() but is explicity
 " for the string enclosing ''' and '"'
 " Param: thechar the quote character used to define the new string or jukmp
 " too.
-"{{{1
+
 function! DoubleTapInsertJumpString( thechar )
 
 	if &paste || ! s:checkDoubleInsert( a:thechar )
@@ -460,7 +471,7 @@ function! DoubleTapInsertJumpString( thechar )
 
 	return a:thechar.a:thechar."\<left>"
 endfunction
-"1}}}
+"1
 
 " Public Interface:
 " DoubleTapInsertJumpSimple: This is a lot like DoubleTapJumpOut() but it is used
@@ -472,7 +483,7 @@ endfunction
 " in the middle of them.
 " For now only works with single line matches 
 " Param: thechar the character to insert or jump too.
-"{{{1
+
 function! DoubleTapInsertJumpSimple( thechar )
 
 	if &paste || ! s:checkDoubleInsert( a:thechar )
@@ -508,10 +519,10 @@ function! DoubleTapInsertJumpSimple( thechar )
 
 	return ""
 endfunction
-"1}}}
+"1
  
 "Set up key mappings 
-"{{{1
+
 " Enable default left bracket mapping
 if 1 == b:DoubleTap_map_left_bracket
 	if b:DoubleTapSpacey
@@ -577,9 +588,9 @@ if 1 == b:DoubleTap_map_plus_insert_jump
 endif
 
 " Enable default double period insert mapping
-if 1 == b:DoubleTap_map_period_insert_jump
-  au FileType php,perl,vim imap . <C-R>=DoubleTapInsertJumpSimple('.')<CR>
-endif
+"if 1 == b:DoubleTap_map_period_insert_jump
+  "au FileType php,perl,vim imap . <C-R>=DoubleTapInsertJumpSimple('.')<CR>
+"endif
 
 " Enable default double tap semicolon finish line
 if 1 == b:DoubleTap_map_semicolon_finish_line
@@ -609,6 +620,6 @@ if 1 == b:DoubleTap_map_comma_finish_line
   au FileType php,javascript,python imap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>
 endif
 
-"1}}}
+"1
 
 " vim:ft=vim foldmethod=marker sw=4
