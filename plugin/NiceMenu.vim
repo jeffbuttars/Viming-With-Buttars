@@ -8,9 +8,11 @@ endif
 let g:loaded_nice_menu = 1
 
 " The delay from when typing stops to when
-" a completions is should
+" a completions is should. Defaults to the vim
+" timeout variable.
 if ! exists( 'g:NiceMenuDelay' )
-	let g:NiceMenuDelay = '.8' 
+	"let g:NiceMenuDelay = "0.8"
+	let g:NiceMenuDelay = &timeout 
 endif
 
 " The minimum number of characters in word
@@ -41,6 +43,7 @@ let s:contextMap = [
 	\ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 	\ '-', '_', '.', '$', ':' ]
 	"\ '-', '_', '.', '$', '\<c-h>', '\<Space>', '<' ]
+let s:contextRegx = '[a-zA-Z0-9_<>:\-\.\$]' 
 
 let s:complPos = [0,0,0,0]
 
@@ -166,16 +169,47 @@ function s:getNextChar()
 endfunction
 
 function s:getOmniWord( spoint )
-	return strpart( getline('.'), a:spoint, col('.')-1)
+	"return strpart( getline('.'), a:spoint, col('.')-1)
+	return strpart( getline('.'), a:spoint, col('.'))
 endfunction
 
 function s:getCurrentWord()
-  return matchstr(s:getCurrentText(), '\k*$')
+	"return matchstr(s:getCurrentText(), '\k*$')
+
+	let l:wlist = split( strpart(getline('.'), 0, col('.')), '\s' )
+	if empty( l:wlist )
+		return ""
+	endif
+
+	return l:wlist[ -1 ]
 endfunction
 
 function s:getCurrentText()
   return strpart(getline('.'), 0, col('.') - 1)
 endfunction
+
+" Private Helper:
+" getSynName:
+" get the syntax type under the cursor
+"{{{1
+"function! s:getSynName()
+	"return synIDattr(synID(line("."), col("."), 0), "name" )
+"endfunction	
+"1}}}
+
+" Private Helper:
+" inString
+" Param: thechar the quote character that's been double tapped.
+" See if the cursor is inside a string according the current syntax definition
+"{{{1
+function! s:inString()
+
+	" This will often contain whether we are in a single or double quote
+	" string. How that is represented seems syntax specific, not standard.
+	" We still leverage that knowledge if we can.
+	return synIDattr(synID(line("."), col("."), 0), "name" ) =~? 'string'
+endfunction
+"1}}}
 
 function! NiceMenuCheckContext()
 	if pumvisible() || &paste || ('i' != mode())
@@ -205,6 +239,13 @@ function! NiceMenuCheckContext()
 	let curChar = s:getCurrentChar() 
 	"echo "checking: " curChar
 	if index( s:contextMap, curChar) < 0
+	"if curChar =~ s:contextRegx
+		return 0
+	endif
+
+	"TODO: make optional
+	"If we're inside a string, don't try to complete
+	if s:inString()
 		return 0
 	endif
 
@@ -223,9 +264,8 @@ endfunction
 
 function! NiceMenuAsyncCpl()
 	"echo "NiceMenuAsyncCpl()"
-	"
 	
-
+	
 	if 0 == NiceMenuCheckContext()
 		"echo "NiceMenuAsyncCpl() bad context"
 		return ""
@@ -243,7 +283,9 @@ function! NiceMenuAsyncCpl()
 			"elseif match( cword, '\k->$' ) > 0 || match( cword, '\k\.$' ) > 0
 			"if match( cword, '\k$' ) > 0
 		"elseif match( cword, '\k$' ) > 0
-		if match( cword, '\k$' ) > 0 || match( cword, '\k->$' ) > 0 || match( cword, '\k\.$' ) > 0
+		"if match( cword, '\k$' ) > 0 || match( cword, '\k->$' ) > 0 || match( cword, '\k\.$' ) > 0
+		if match( cword, '\k$' ) > 0 || match( cword, '->$' ) > 0 || match( cword, '\.$' ) > 0
+		"if 1 
 			" Test the complete function before setting it.
 			let compl_res = call( &omnifunc, [1,''] )
 			if -1 != compl_res
@@ -296,10 +338,11 @@ def NiceMenuShowMenu():
 		return
 
 	try:
-		dnull = open( '/dev/null' , 'w' )
+		#dnull = open( '/dev/null' , 'w' )
 		#subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-expr", "NiceMenuAsyncCpl()"],
-		subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-send", '<C-R>=NiceMenuAsyncCpl()<CR>'],
-	  		stdout=dnull, stderr=dnull )
+		#subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-send", '<C-R>=NiceMenuAsyncCpl()<CR>'],
+	  		#stdout=dnull, stderr=dnull )
+		subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-send", '<C-R>=NiceMenuAsyncCpl()<CR>'] )
 	except:
 		print 'NiceMenuShowMenu except' 
 		pass
@@ -319,7 +362,7 @@ endfunction
 "fun! s:NiceMenuCompl()
 fun! s:NiceMenuCompl( need_i )
 	
-	"echo "s:NiceMenuCompl"
+	"echo "s:NiceMenuCompl " s:getCurrentChar()
 
 	if pumvisible() || &paste || (('i' != mode()) && a:need_i )
 		return "" 
@@ -348,6 +391,18 @@ fun! s:NiceMenuCompl( need_i )
 		return "" 
 	endif
 
+	" If it's just a number, don't
+	" TODO: make optional
+	if l:cword =~ '^\d\+$'
+		return "" 
+	endif
+
+	"TODO: make optional
+	"If we're inside a string, don't try to complete
+	if s:inString()
+		return 0
+	endif
+
 	let s:complPos = l:npos
 	call s:NiceMenuCancel()
 
@@ -366,10 +421,9 @@ endfun
 
 function NiceMenu_enable()
 	"call s:mapForMappingDriven()
+	autocmd CursorMovedI * call s:NiceMenuCompl(1)
 	autocmd InsertEnter  * call s:NiceMenuCompl(0)
 	autocmd InsertLeave  * call s:NiceMenuCancel()
-	autocmd CursorMovedI * call s:NiceMenuCompl(1)
-
 endfunction
 
 " This mapping is a work around for a race condition in
