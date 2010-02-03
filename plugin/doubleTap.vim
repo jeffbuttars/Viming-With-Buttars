@@ -79,27 +79,27 @@
 
 " Allow doubleTap to 
 " Exit quickly if already running or when 'compatible' is set. 
-" 
+" {{{1
 if exists("g:loaded_doubleTap") || &cp
   finish
 endif
-"1
+"1}}}
 
 " Version number
-" 
+" {{{1
 let g:loaded_doubleTap = '1.0'
-"1
+"1}}}
 
 " Check for Vim version 700 or greater 
-" 
+" {{{1
 if v:version < 700
   echo "Sorry, doubleTap ".g:double_tap_version."\nONLY runs with Vim 7.0 and greater."
   finish
 endif
-"1
+"1}}}
 
 " Default settings 
-" 
+" {{{1
 
 if !exists( "g:DoubleTapInsertTimer" )
 	let g:DoubleTapInsertTimer = &timeout
@@ -230,31 +230,31 @@ endif
 if 1 == b:DoubleTap_enable_defaults 
 	call s:enableAllDefaults()
 endif
-"1
+"1}}}
 
 " Private Helper:
 " getSynName:
 " get the syntax type under the cursor
-
+"{{{1
 function! s:getSynName()
 	return synIDattr(synID(line("."), col("."), 0), "name" )
 endfunction	
-"1
+"1}}}
 
 " Private Helper:
 " getSynStack:
 " get the syntax stack under the cursor
-
+"{{{1
 function! s:getSynStack()
 	return synstack( line("."), col(".") )
 endfunction	
-"1
+"1}}}
 
 " Private Helper:
 " inString
 " Param: thechar the quote character that's been double tapped.
 " See if the cursor is inside a string according the current syntax definition
-
+"{{{1
 function! s:inString( thechar )
 
 	" This will often contain whether we are in a single or double quote
@@ -296,7 +296,7 @@ function! s:inString( thechar )
 
 	return l:inSingle == l:theSingle
 endfunction
-"1
+"1}}}
 
 function! s:checkDoubleInsert( thechar )
 
