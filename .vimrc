@@ -117,7 +117,8 @@ endif
 imap <c-y> <c-y><esc>
 " Show the info preview window.
 "set completeopt=menuone,preview,longest
-set completeopt=menuone,preview
+"set completeopt=menuone,preview
+set completeopt=menu,preview
 
 "(default: ".,w,b,u,t,i")
 "set complete=".,w,b,u,U,t,i,kspell,d,t"
@@ -310,6 +311,7 @@ au FileType php set nocursorline
 "colo pyte " A white theme
 "colo mySlate 
 "colo peaksea " A light theme
+"colo molokai " A dark pastelly theme
 
 " Explicitly say we want 256 colors when we find 256
 " in the TERM environmental variable.
@@ -331,7 +333,8 @@ elseif $TERM =~ '256'
 	set t_Co=256
 	set cursorline
 	hi clear CursorLine 
-	colo jellybeans 
+	"colo jellybeans 
+	colo molokai 
 endif
 
 " set linenumbers on
@@ -554,11 +557,11 @@ source ~/.vim/plugin/autotag.vim
 
 " doubleTap
 "let g:loaded_doubleTap = 1
-let g:DoubleTapInsertTimer = 0.8
+"let g:DoubleTapInsertTimer = 0.8
 
 " Set NiceMenu Delay
 "let g:loaded_nice_menu = 1
-let g:NiceMenuDelay = '.4' 
+"let g:NiceMenuDelay = '1'
 let g:NiceMenuMin = 1
 imap <silent> <esc> <esc><esc>
 
