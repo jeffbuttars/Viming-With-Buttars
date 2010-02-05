@@ -105,8 +105,10 @@ if !exists( "g:DoubleTapInsertTimer" )
 	let g:DoubleTapInsertTimer = &timeout
 endif
 
-let s:lcharChar = ''
-let s:lcharTime = reltimestr( reltime() )
+
+au BufRead * let b:lcharChar = ''
+au BufRead * let b:lcharTime = reltimestr( reltime() )
+au BufRead * let b:lcharPos = [-1,-1,-1,-1] 
 
 " Spacey
 " If you have a spacey stile, ( arg ) vs (arg)
@@ -301,10 +303,12 @@ endfunction
 function! s:checkDoubleInsert( thechar )
 
 	let l:ntime = reltimestr( reltime() )
+	let l:npos = getpos('.')
 
-	if (a:thechar != s:lcharChar) || (l:ntime - s:lcharTime > g:DoubleTapInsertTimer)
-		let s:lcharTime = l:ntime
-		let s:lcharChar = a:thechar
+	if (a:thechar != b:lcharChar) || (l:ntime - b:lcharTime > g:DoubleTapInsertTimer) || ( l:npos[1] != b:lcharPos[1] ) || ( (l:npos[2]-1) != b:lcharPos[2] )
+		let b:lcharTime = l:ntime
+		let b:lcharChar = a:thechar
+		let b:lcharPos = l:npos 
 		return 0 
 	endif
 
@@ -313,6 +317,9 @@ function! s:checkDoubleInsert( thechar )
 	if l:cline[l:cpos - 2] == a:thechar 
 		let s:lcharTime = l:ntime
 		let s:lcharChar = '' 
+		if exists( 'NiceMenuCancel' )
+			call NiceMenuCancel()
+		endif
 		return 1
 	endif
 
