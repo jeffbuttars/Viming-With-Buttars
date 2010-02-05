@@ -28,21 +28,11 @@ endif
 
 " only pop completion if one of these chars is to the
 " left of the cursor.
-" We should make these regexs? To slow? We should try.
-" a-zA-Z0-9 . -> - _ $
 " We should also have different classes of mappings and be able to chain them
 " per file type. So a ftype can have classes A,B,C chained in that order. And
 " perform a completion type performed by first matching class type and then
 " fail back on a default(<C-N). We should have a global catch all chain to handle
 " things like file path completions.
-let s:contextMap = [
-	\ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-	\ 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-	\ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-	\ 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-	\ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	\ '-', '_', '.', '$', ':' ]
-	"\ '-', '_', '.', '$', '\<c-h>', '\<Space>', '<' ]
 let s:contextRegx = '[a-zA-Z0-9_<>:\-\.\$]' 
 
 let s:complPos = [0,0,0,0]
@@ -238,8 +228,7 @@ function! NiceMenuCheckContext()
 
 	let curChar = s:getCurrentChar() 
 	"echo "checking: " curChar
-	if index( s:contextMap, curChar) < 0
-	"if curChar =~ s:contextRegx
+	if curChar !~ s:contextRegx
 		return 0
 	endif
 
