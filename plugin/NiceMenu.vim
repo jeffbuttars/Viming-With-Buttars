@@ -281,7 +281,7 @@ function! NiceMenuAsyncCpl()
 				let compl_list = call( &omnifunc, [0,s:getOmniWord(compl_res)] )
 				if ! empty(compl_list)
 					"let l:compl = "\<C-X>\<C-O>"
-					call complete( col('.') -1 , compl_list )
+					call complete( col('.') - compl_res, compl_list )
 					return "\<C-P>"
 				endif
 			endif
