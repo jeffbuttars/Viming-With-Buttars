@@ -35,7 +35,7 @@ endif
 " things like file path completions.
 let s:contextRegx = '[a-zA-Z0-9_<>:\-\.\$]' 
 
-let s:complPos = [0,0,0,0]
+au BufRead * let b:complPos = [0,0,0,0]
 
 " specify the minimum 'word' length the must be present
 " before we complete
@@ -210,8 +210,8 @@ function! NiceMenuCheckContext()
 	" Make sure the pos is the same as when this
 	" was started.
 	let l:npos = getpos(".")
-	if l:npos[1] != s:complPos[1] || l:npos[2] != s:complPos[2] || l:npos[3] != s:complPos[3]
-		"echo "NiceMenuCheckContext bad pos " l:npos ":" s:complPos
+	if l:npos[1] != b:complPos[1] || l:npos[2] != b:complPos[2] || l:npos[3] != b:complPos[3]
+		"echo "NiceMenuCheckContext bad pos " l:npos ":" b:complPos
 		return 0 
 	endif
 
@@ -366,8 +366,8 @@ fun! s:NiceMenuCompl( need_i )
 	" If we're in the same spot as the last trigger, don't show the menu
 	" again.
 	let l:npos = getpos(".")
-	if l:npos[1] == s:complPos[1] && l:npos[2] == s:complPos[2] && l:npos[3] == s:complPos[3]
-		"echo "NiceMenuCheckContext bad pos " l:npos ":" s:complPos
+	if l:npos[1] == b:complPos[1] && l:npos[2] == b:complPos[2] && l:npos[3] == b:complPos[3]
+		"echo "NiceMenuCheckContext bad pos " l:npos ":" b:complPos
 		return "" 
 	endif
 	
@@ -392,7 +392,7 @@ fun! s:NiceMenuCompl( need_i )
 		return 0
 	endif
 
-	let s:complPos = l:npos
+	let b:complPos = l:npos
 	call s:NiceMenuCancel()
 
 python << PEOF
