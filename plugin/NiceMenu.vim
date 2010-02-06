@@ -201,6 +201,35 @@ function! s:inString()
 endfunction
 "1}}}
 
+
+	"word		the text that will be inserted, mandatory
+	"abbr		abbreviation of "word"; when not empty it is used in
+			"the menu instead of "word"
+	"menu		extra text for the popup menu, displayed after "word"
+			"or "abbr"
+	"info		more information about the item, can be displayed in a
+			"preview window
+	"kind		single letter indicating the type of completion
+	"icase		when non-zero case is to be ignored when comparing
+			"items to be equal; when omitted zero is used, thus
+			"items that only differ in case are added
+	"dup		when non-zero this match will be added even when an
+			"item with the same word is already present.
+"TODO: make the number of spell returns configurable.
+function! s:checkSpell( word )
+
+	let l:spug = spellsuggest( a:word, 50 )
+	let l:clist = [] 
+
+	if ! empty( l:spug )
+		for item in l:spug
+			let l:clist += [{'word':item, 'menu':' | sp', 'dup':0}]
+		endfor
+	endif
+
+	return l:clist
+endfunction
+
 function! NiceMenuCheckContext()
 	if pumvisible() || &paste || ('i' != mode())
 		"echo "NiceMenuCheckContext bad mode"
@@ -265,30 +294,46 @@ function! NiceMenuAsyncCpl()
 	let cword = s:getCurrentWord()
 
 	if exists('&omnifunc') && &omnifunc != '' && (! s:inString())
-		"echo "NiceMenu_is_file_path() ".NiceMenu_is_file_path(cword)
+		"echo "NiceMenu_is_file_path() ".NiceMenu_is_file_path(l:cword)
 		"return ""
-		"if NiceMenu_is_file_path(cword)
+		"if NiceMenu_is_file_path(l:cword)
 			"let l:compl = "\<C-X>\<C-F>"
-			"elseif match( cword, '\k->$' ) > 0 || match( cword, '\k\.$' ) > 0
-			"if match( cword, '\k$' ) > 0
-		"elseif match( cword, '\k$' ) > 0
-		"if match( cword, '\k$' ) > 0 || match( cword, '\k->$' ) > 0 || match( cword, '\k\.$' ) > 0
-		if match( cword, '\k$' ) > 0 || match( cword, '->$' ) > 0 || match( cword, '\.$' ) > 0
+			"elseif match( l:cword, '\k->$' ) > 0 || match( l:cword, '\k\.$' ) > 0
+			"if match( l:cword, '\k$' ) > 0
+		"elseif match( l:cword, '\k$' ) > 0
+		"if match( l:cword, '\k$' ) > 0 || match( l:cword, '\k->$' ) > 0 || match( l:cword, '\k\.$' ) > 0
+		if match( l:cword, '\k$' ) > 0 || match( l:cword, '->$' ) > 0 || match( l:cword, '\.$' ) > 0
 		"if 1 
 			" Test the complete function before setting it.
-			let compl_res = call( &omnifunc, [1,''] )
-			if -1 != compl_res
-				let compl_list = call( &omnifunc, [0,s:getOmniWord(compl_res)] )
-				if ! empty(compl_list)
-					"let l:compl = "\<C-X>\<C-O>"
-					call complete( compl_res + 1, compl_list )
+			let l:compl_res = call( &omnifunc, [1,''] )
+			if -1 != l:compl_res
+
+				let l:compl_list = call( &omnifunc, [0,s:getOmniWord(l:compl_res)] )
+				if ! empty(l:compl_list)
+					let l:compl = ""
+					call complete( l:compl_res + 1, l:compl_list )
+
+					let b:NiceMenu_has_shown = 1
 					return "\<C-P>"
-					"echo compl_res
-					"return compl_res
+
+					"let l:compl = "\<C-X>\<C-O>"
 				endif
 			endif
 		endif
 	endif
+
+	"TODO: Make this optional
+	"Fail back to a spelling check.
+	"if &spell
+		"let l:spug = s:checkSpell( l:cword )
+		"if ! empty( l:spug )
+			"let l:compl = ""
+		
+			"if ! empty( l:spug )
+				"call complete( col('.') - strlen(l:cword), l:spug )
+			"endif
+		"endif
+	"endif	
 
 	 "If a <c-n> doesn't work, try the dictionary.
 		"let compl_res = call( &omnifunc, [1,''] )
@@ -300,16 +345,10 @@ function! NiceMenuAsyncCpl()
 	
 	" Select first(original typed text) option without inserting it's text 
 	" TODO: This should be a configurable option.
-	"set completeopt -= menu
-	"set completeopt += menuone
 	let l:compl .= "\<C-P>"
 
 	let b:NiceMenu_has_shown = 1
-	"call feedkeys( l:compl, 'n')
 	return l:compl
-
-	"echo
-	"redraw
 endfunction
 
 python << PEOF
