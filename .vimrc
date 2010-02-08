@@ -1,21 +1,18 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Maintainer: Jeff Buttars 
-"			jeffbuttars@gmail.com
-"           http://code.google.com/p/vimingwithbuttar/ 
-"
-" We start from the default example .vimrc
-" and then tweak from there.
-"
-" An example for a vimrc file.
-"
-" Maintainer:	Bram Moolenaar <Bram@vim.org>
-" Last change:	2008 Jul 02
+" jeffbuttars@gmail.com
+" http://code.google.com/p/vimingwithbuttar/ 
+" Last change:	2010 Feb 08
 "
 " To use it, copy it to
 "     for Unix and OS/2:  ~/.vimrc
 "	      for Amiga:  s:.vimrc
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "	    for OpenVMS:  sys$login:.vimrc
+
+" Original Maintainer:	Bram Moolenaar <Bram@vim.org>
+" Bram wrote/writes Vim, send money to his charity for Uganda. 
+" Find more info at http://www.vim.org
 
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
@@ -34,12 +31,12 @@ if has("vms")
 else
   set backup		" keep a backup file
 endif
-set history=500		" keep 500 lines of command line history
+set history=1000		" keep 1000 lines of command line history
 "set ruler		" show the cursor position all the time
 " Set up a custom status line. Like setting ruler, but we add the buffer number and filetype to the status
 set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
-"set statusline=%f\ %<%y\ b%n\ %2*%m\ %1*%h%r%=[%{&encoding}\ %{&fileformat}\ %{strlen(&ft)?&ft:'none'}\ %{getfperm(@%)}]\ 0x%B\ %12.(%c:%l/%L%)
 
+" last window will always have a status line
 set laststatus=2
 
 set showcmd		" display incomplete commands
@@ -159,31 +156,35 @@ autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 
 """ Snipmate 
 " Don't trigger snipmate when using completion
+" This option currently requires the buttars hacked version
+" of snipMate :( available from vimingwithbuttar at google code.
 let g:SnipeMateAllowOmniTab = 1
+
+" We're extra friendly for django 
 autocmd FileType python set ft=python.django 		" For SnipMate
 autocmd BufRead *.djml set ft=html.django_template 	" For SnipMate
 
-let g:NeoComplCache_EnableAtStartup = 0
+"let g:NeoComplCache_EnableAtStartup = 0
 
-if 1 == g:NeoComplCache_EnableAtStartup
+"if 1 == g:NeoComplCache_EnableAtStartup
 
-	let g:NeoComplCache_DisableAutoComplete = 1
+	"let g:NeoComplCache_DisableAutoComplete = 1
 
-	let g:NeoComplCache_IgnoreCase = 0
-	let g:NeoComplCache_MinKeywordLength = 0
-	"let g:NeoComplCache_SmartCase = 1
-	"let g:NeoComplCache_EnableQuickMatch = 0
-	let g:NeoDelay = '.7' 
-	"let g:NeoComplCache_DisableSelectModeMappings = 1
+	"let g:NeoComplCache_IgnoreCase = 0
+	"let g:NeoComplCache_MinKeywordLength = 0
+	""let g:NeoComplCache_SmartCase = 1
+	""let g:NeoComplCache_EnableQuickMatch = 0
+	"let g:NeoDelay = '.7' 
+	""let g:NeoComplCache_DisableSelectModeMappings = 1
 
-	" NeoComplCache	Plugin key-mappings.
-	"imap <C-m> <Plug>(neocomplcache_snippets_expand)
-	"smap <C-m> <Plug>(neocomplcache_snippets_expand)
-	inoremap <expr><C-h> pumvisible() ? "\<C-y>\<C-h>" : "\<C-h>"
-	inoremap <expr><C-g> neocomplcache#undo_completion()
-	"inoremap <expr><C-j> neocomplcache#manual_omni_complete()
-	"imap <C-O> <C-X><C-U> 
-endif
+	"" NeoComplCache	Plugin key-mappings.
+	""imap <C-m> <Plug>(neocomplcache_snippets_expand)
+	""smap <C-m> <Plug>(neocomplcache_snippets_expand)
+	"inoremap <expr><C-h> pumvisible() ? "\<C-y>\<C-h>" : "\<C-h>"
+	"inoremap <expr><C-g> neocomplcache#undo_completion()
+	""inoremap <expr><C-j> neocomplcache#manual_omni_complete()
+	""imap <C-O> <C-X><C-U> 
+"endif
 
 
 "End OmniCompletion settings
@@ -227,22 +228,32 @@ set showmatch
 " Quick blink when a match is made
 set mat=5
 
-" Keep our swap and backup files out of the way
+" Keep our swap and backup files out of the way 
+" and in a central palce.
 set directory=~/.vim/swapback
 set backupdir=~/.vim/swapback
 
 " C opts
 " Kernel style
 "set cinoptions=:0,(0,u0,W1s
+" I use  the default, you should
+" check out the help for cinoptions and
+" tune it to  match your prefered style.
+" :h cinoptions
 
 " Keep this many lines above/below the cursor while scrolling.
-"set scrolloff=5
-set so=3
+set scrolloff=3
 
+" The title of the window to titlestring
+" see :h title for better info.
 set title
 
 " Easy cycle through buffers using Ctrl-PgUp/PgDown 
 " similar to FireFox
+" This won't work in all terminal programs. some use
+" this same key sequence to cycley through tabs, so you
+" may need to disable this key shortcut in your terminal
+" program for this mapping to work as advertised.
 nmap <C-PageDown> :bnext<CR>
 nmap <C-PageUp> :bprevious<CR>
 
@@ -273,17 +284,21 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 " track up to 20,000 files.
 " store global marks.
 " no more than 500 lines per register are saved
-" a 1000 lines of history
+" 1000 lines of history
 " save the buffer list
 set viminfo='20000,f1,<500,:1000,@1000,/1000,%
 "set viminfo='1000,f1,<500,:100,@100,/100,%
 
+" HTML output options
+" Use more modern css
+let html_use_css = 1
 
 " wrap long lines
 set wrap
 set sidescroll=3
+
 " Some wordwrapp foo from
-"http://kmandla.wordpress.com/2009/07/27/proper-word-wrapping-in-vim/
+" http://kmandla.wordpress.com/2009/07/27/proper-word-wrapping-in-vim/
 set formatoptions+=l
 set lbr
 
@@ -296,14 +311,18 @@ set wildmode=list:longest
 set timeoutlen=300
 
 " I hate it when the cursorline is an underline
+" This is how I make the cursorline a hightlight
 "set cursorline
 "hi clear CursorLine 
 
 " CursorLine really slows down php files
+" There is something wrong with the PHP syntax
+" plugin, as a work around we disable cursorline
+" for PHP files. :(
 au FileType php set nocursorline 
 
 
-" Dark background schemes
+" color schemes I have liked.
 "colo elflord " a low color dark theme. Great for the real console.
 "colo evening " dark theme, low color console friendly
 "colo xoria256 " a nice dark theme for 256 color terms
@@ -311,7 +330,7 @@ au FileType php set nocursorline
 "colo pyte " A white theme
 "colo mySlate 
 "colo peaksea " A light theme
-"colo molokai " A dark pastelly theme
+"colo molokai " A dark pastelly theme, a little bisexual but very pleasing.
 
 " Explicitly say we want 256 colors when we find 256
 " in the TERM environmental variable.
@@ -323,13 +342,16 @@ au FileType php set nocursorline
 " Then we see if we can upgrade to a better theme
 " based on the environment.
 colo evening 
+" evening is a nice dark theme, usually available by a default install.
 
 if has( "gui_running" )
+	" I like a white based them in GVim
 	set cursorline
 	hi clear CursorLine 
 	colo vylight 
 elseif $TERM =~ '256' 
 	" Use a console friendly theme and turn off cursorline
+	" I  prefer a dark theme at the console..
 	set t_Co=256
 	set cursorline
 	hi clear CursorLine 
@@ -337,35 +359,44 @@ elseif $TERM =~ '256'
 	colo molokai 
 endif
 
-" set linenumbers on
+" set linenumbers on by default
 set number 
 
 " drupal rules
+" If you edit a lot of php-drupal you should
+" use these next few lines. If not, comment them
+" out and I doubt you'll miss them.
 augroup drupal_module
 	autocmd BufRead *.module,*.inc set filetype=php
 augroup END
 
 " autowrite: "on" saves a lot of trouble
-"set autowrite
+" set autowrite
 " be aggressive/paranoid and save often automatically.
 set autowriteall
 set	autoread
 
-
 "interactive spell check
 " works only in non-gui mode for now
 map #sp :w<CR>:!ispell %<CR>:e %<CR> 
-"au FileType text,mkd setlocal spell spelllang=en_us
-au FileType text setlocal spell spelllang=en_us
+
+" Use the next line to selectively enable spell
+" checking for certain filetypes.
+" I usually don't want spell checking when 
+" writting code, so only enable for thing with
+" a lot of real words like text and markdown files.
+au FileType text,mkd setlocal spell spelllang=en_us
+"set spell spelllang=en_us
+
+" Make right mouse button work in gvim
 set mousemodel=popup
 
-"     dictionary: english words first
+" dictionary: english words first
 " add any text based dictionaries to the list.
 " Also, you can use C-X,C-K to autocomplete a word
-" using the dictionary.
+" using the dictionary. Or, use C-X,C-S to check spelling
+" on a word, fun stuff.
 set dictionary+=/usr/share/dict/words,/usr/dict/words,/usr/dict/extra.words
-
-
 
 " http://vim.wikia.com/wiki/Improved_Hex_editing
 " ex command for toggling hex mode - define mapping if desired
@@ -409,51 +440,25 @@ function! ToggleHex()
   let &modifiable=l:oldmodifiable
 endfunction
 
-" autocmds to automatically enter hex mode and handle file writes properly
-"if has("autocmd")
-  "" vim -b : edit binary using xxd-format!
-  "augroup Binary
-    "au!
-    "au BufReadPre *.bin,*.hex setlocal binary
-    "au BufReadPost *
-          "\ if &binary | Hexmode | endif
-    "au BufWritePre *
-          "\ if exists("b:editHex") && b:editHex && &binary |
-          "\  let oldro=&ro | let &ro=0 |
-          "\  let oldma=&ma | let &ma=1 |
-          "\  exe "%!xxd -r" |
-          "\  let &ma=oldma | let &ro=oldro |
-          "\  unlet oldma | unlet oldro |
-          "\ endif
-    "au BufWritePost *
-          "\ if exists("b:editHex") && b:editHex && &binary |
-          "\  let oldro=&ro | let &ro=0 |
-          "\  let oldma=&ma | let &ma=1 |
-          "\  exe "%!xxd" |
-          "\  exe "set nomod" |
-          "\  let &ma=oldma | let &ro=oldro |
-          "\  unlet oldma | unlet oldro |
-          "\ endif
-  "augroup END
-"endif
-
 "http://plasticboy.com/markdown-vim-mode/
-"Markdown format options
+"Markdown format options, which I don't use 
+" but I'll include them here for your experimentation
 "augroup mkd
 	"autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:>
 "augroup END
 
 " I like to put system library tags in a different tag file that
 " is only generated once in a while.
-au FileType python set tags += "~/.tags/tags-python"
-au FileType c set tags += "~/.tags/tags-c
+au FileType python set tags +=~/.tags/tags-python
+au FileType c set tags +=~/.tags/tags-c
 
 " Remove menu bar from gvim
 set guioptions-=m
-
 " Remove toolbar from gvim
 set guioptions-=T
-" Set gvim font. I like the droid
+" Set gvim font. I like the Inconsolata font these days.
+" You'll need to install, do it, it's very much worth it.
+" A great font, and it's 100% free.
 set guifont=Inconsolata\ Medium\ 12
 
 " End More normal Vim tweaks.
@@ -467,16 +472,17 @@ set guifont=Inconsolata\ Medium\ 12
 " Think l as in 'list the buffers'
 nmap <silent> <c-l> <esc>:BufExplorer<CR>
 imap <silent> <c-l> <esc>:BufExplorer<CR>
+
 """ comments.vim
 "A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
 " This will detect file types and use oneline comments accordingle. Cool
 " because you visually select regions and comment/uncomment the whole region.
 " works with marked regions to.
 " Just put it in your plugin directory.
-"
 
 
-""" TagList
+
+""" TagList """"""""
 " Set taglist plugin options
 " Display function name in status bar:
 let g:ctags_statusline=1
@@ -519,8 +525,7 @@ imap <C-d> <ESC>:NERDTreeToggle<CR>
 let NERDChristmasTree=1
 let NERDTreeQuitOnOpen=1
 
-""" JSLint.vim plugin
-
+""" JSLint.vim plugin -- indespensable!
 " Turn off error highlighting. I like having just the
 " quickfix window.
 let g:JSLintHighlightErrorLine = 0
@@ -528,20 +533,27 @@ let g:JSLintIgnoreImpliedGlobals = 1
 au FileType javascript nmap <F5> <ESC>:JSLint<CR>
 au FileType javascript imap <F5> <ESC>:JSLint<CR>
 
+" run the current buffer as a python script 
+" or run it through PyFlakes command.
 au FileType python nmap <F1> <ESC>:w<CR>:!python %<CR>
 au FileType python imap <F1> <ESC>:w<CR>:!python %<CR>
 au FileType python nmap <F5> <ESC>:w<CR>:PyFlakes<CR>
 au FileType python imap <F5> <ESC>:w<CR>:PyFlakes<CR>
 
 " php synax check via 'php -l'
+" uses my plugin/phplint.vim
 au FileType php nmap <F5> <ESC>:w<CR>:PHPLint<CR>
 au FileType php imap <F5> <ESC>:w<CR>:PHPLint<CR>
 
 " use tidy
+" I don't use this much, so may be buggy
 au FileType html nmap <F5> <ESC>:w<CR>:HTMLTidyLint<CR>
 au FileType html imap <F5> <ESC>:w<CR>:HTMLTidyLint<CR>
 
 
+" My own custom plugin/bashrun.vim
+" Very simple, BashRun runs the buffer as a bash
+" script and outputs errors into a quick fix windowl
 au FileType sh,bash nmap <F1> <ESC>:w<CR>:!sh %<CR>
 au FileType sh,bash imap <F1> <ESC>:w<CR>:!sh %<CR>
 au FileType sh,bash nmap <F5> <ESC>:w<CR>:BashRun<CR>
@@ -565,9 +577,6 @@ source ~/.vim/plugin/autotag.vim
 let g:NiceMenuMin = 1
 imap <silent> <esc> <esc><esc>
 
-
-" We don't use this yet.
-"let g:rails_dbext = 0
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
