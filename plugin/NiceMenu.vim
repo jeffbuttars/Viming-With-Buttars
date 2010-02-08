@@ -1,5 +1,5 @@
 
-if exists('g:loaded_nice_menu')
+if exists('g:loaded_nice_menu') || !v:servername
   finish
 elseif v:version < 700
   echoerr 'NiceMenu does not support this version of vim (' . v:version . ').'
