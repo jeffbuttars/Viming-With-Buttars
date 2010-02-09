@@ -84,18 +84,39 @@ function! FindFilePath()
 
 	" Look for a leading '/', './' or '~' characters. 
 	let l:fchar = stridx( l:cline, '~' )
-	let l:cpos = getpos( '.' )[2] - 1
-	let l:fpath = strpart( l:cline, l:fchar, l:cpos )
-	let l:fpath = substitute( l:fpath, '\~', expand("$HOME"), "" )
+	if -1 == l:fchar
+		let l:cpos = getpos( '.' )[2] - 1
+		let l:fpath = strpart( l:cline, l:fchar, l:cpos )
+		let l:fpath = substitute( l:fpath, '\~', expand("$HOME"), "" )
 
-	" Now we have the full path string, which may be partial. So find
-	" a valid substring if necessary.
-	if s:filePathIsValid( l:fpath )
-		echo l:fpath
-		return 1
+		" Now we have the full path string, which may be partial. So find
+		" a valid substring if necessary.
+		if s:filePathIsValid( l:fpath )
+			"echo l:fpath
+			return 1
+		endif
 	endif
 	
-	echo "Shitt!!!"
+	let l:fchar = stridx( l:cline, './' )
+	if -1 == l:fchar
+		let l:cpos = getpos( '.' )[2] - 1
+		let l:fpath = strpart( l:cline, l:fchar, l:cpos )
+		if s:filePathIsValid( l:fpath )
+			"echo l:fpath
+			return 1
+		endif
+	endif
+
+	let l:fchar = stridx( l:cline, '/' )
+	if -1 == l:fchar
+		let l:cpos = getpos( '.' )[2] - 1
+		let l:fpath = strpart( l:cline, l:fchar, l:cpos )
+		if s:filePathIsValid( l:fpath )
+			"echo l:fpath
+			return 1
+		endif
+	endif
+	
 	return 0
 
 	"if -1 < l:fchar
@@ -350,6 +371,7 @@ function! NiceMenuAsyncCpl()
 		"return ""
 		"if NiceMenu_is_file_path(l:cword)
 		if FindFilePath()
+			return "\<C-X>\<C-F>\<C-P>"
 			let l:compl = "\<C-X>\<C-F>"
 		else
 			"elseif match( l:cword, '\k->$' ) > 0 || match( l:cword, '\k\.$' ) > 0
@@ -396,8 +418,8 @@ function! NiceMenuAsyncCpl()
 	" Select first(original typed text) option without inserting it's text 
 	" TODO: This should be a configurable option.
 	let l:compl .= "\<C-P>"
-
 	let b:NiceMenu_has_shown = 1
+
 	return l:compl
 endfunction
 
