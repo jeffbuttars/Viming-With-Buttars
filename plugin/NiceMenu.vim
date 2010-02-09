@@ -36,7 +36,7 @@ endif
 " perform a completion type performed by first matching class type and then
 " fail back on a default(<C-N). We should have a global catch all chain to handle
 " things like file path completions.
-let s:contextRegx = '[a-zA-Z0-9_<>:\-\.\$]' 
+let s:contextRegx = '[a-zA-Z0-9_<>:\-\.\$\/]' 
 
 au BufRead * let b:complPos = [0,0,0,0]
 
@@ -65,68 +65,118 @@ function! s:inString()
 	return 0
 endfunction
 "1}}}
+"
+" Private Helper:
+" s:filePathIsValid
+"{{{1
+function! s:filePathIsValid( fpath )
+	return filereadable( a:fpath ) || isdirectory( a:fpath )
+endfunction
 
+" Private Helper:
+" s:findFilePath
+"{{{1
 " THIS DOEN'T WORK
-function! NiceMenu_is_file_path(cur_text)
+"function! s:findFilePath(cur_text)
+function! FindFilePath()
 
-    let l:is_win = has('win32') || has('win64')
+	let l:cline = getline( '.' )
 
-    " Not Filename pattern.
-    if a:cur_text =~ '[/\\][/\\]\f*$\|[^[:print:]]\f*$\|/c\%[ygdrive/]$\|\\|$\|^\a:$'
-		echo "NiceMenu_is_file_path() nope 0"
-        return -1
-    endif
-    " Not Filename pattern.
-    "if a:cur_text =~ '[*/\\][/\\]\f*$\|[^[:print:]]\f*$\|/c\%[ygdrive/]$'
+	" Look for a leading '/', './' or '~' characters. 
+	let l:fchar = stridx( l:cline, '~' )
+	let l:cpos = getpos( '.' )[2] - 1
+	let l:fpath = strpart( l:cline, l:fchar, l:cpos )
+	let l:fpath = substitute( l:fpath, '\~', expand("$HOME"), "" )
+
+	" Now we have the full path string, which may be partial. So find
+	" a valid substring if necessary.
+	if s:filePathIsValid( l:fpath )
+		echo l:fpath
+		return 1
+	endif
+	
+	echo "Shitt!!!"
+	return 0
+
+	"if -1 < l:fchar
+
+	"endif
+
+	"if -1 == l:fchar
+		"let l:fchar = stridx( l:cline, './' )
+		"" look for a relative path
+	"endif
+	"if -1 == l:fchar
+		"let l:fchar = stridx( l:cline, '/' )
+		"" look for an absolute path
+	"endif
+	"if -1 == l:fchar
+		"return 0
+	"endif
+
+	" look for an absolute path from $HOME
+
+
+	return 0
+
+    "let l:is_win = has('win32') || has('win64')
+
+    "" Not Filename pattern.
+    "if a:cur_text =~ '[/\\][/\\]\f*$\|[^[:print:]]\f*$\|/c\%[ygdrive/]$\|\\|$\|^\a:$'
 		"echo "NiceMenu_is_file_path() nope 0"
         "return -1
     "endif
+    "" Not Filename pattern.
+    ""if a:cur_text =~ '[*/\\][/\\]\f*$\|[^[:print:]]\f*$\|/c\%[ygdrive/]$'
+		""echo "NiceMenu_is_file_path() nope 0"
+        ""return -1
+    ""endif
 
-    "let l:PATH_SEPARATOR = (has('win32') || has('win64')) ? '/\\' : '/'
-    " Filename pattern.
-    "let l:pattern = printf('[/~]\?\%%(\\.\|\f\)\+[%s]\%%(\\.\|\f\)*$', l:PATH_SEPARATOR)
-	let l:pattern = '[~]\?\%(\\[^[:alnum:].-]\|\f\|\*\)\+'
-
-    let l:cur_keyword_pos = match(a:cur_text, l:pattern)
-    let l:cur_keyword_str = a:cur_text[l:cur_keyword_pos :]
-    if len(l:cur_keyword_str) < s:getWordMin() 
-		echo "NiceMenu_is_file_path() nope 1 ".len(l:cur_keyword_str)
-        return -1
-    endif
-	
-    " Not Filename pattern.
-    if l:is_win && l:cur_keyword_str =~ '|\|^\a:[/\\]\@!\|\\[[:alnum:].-]'
-		echo "NiceMenu_is_file_path() nope win 0"
-        return -1
-    elseif l:is_win && &filetype == 'tex' && l:cur_keyword_str =~ '\\'
-		echo "NiceMenu_is_file_path() nope win 1"
-        return -1
-    elseif l:cur_keyword_str =~ '\*\*\|^{}'
-		echo "NiceMenu_is_file_path() nope 3"
-        return -1
-    endif
+    ""let l:PATH_SEPARATOR = (has('win32') || has('win64')) ? '/\\' : '/'
+    "" Filename pattern.
+    ""let l:pattern = printf('[/~]\?\%%(\\.\|\f\)\+[%s]\%%(\\.\|\f\)*$', l:PATH_SEPARATOR)
+	"let l:pattern = '[~]\?\%(\\[^[:alnum:].-]\|\f\|\*\)\+'
 
     "let l:cur_keyword_pos = match(a:cur_text, l:pattern)
-    "if len(matchstr(a:cur_text, l:pattern)) < s:getWordMin() 
-		"echo "NiceMenu_is_file_path() nope 1 ".len(matchstr(a:cur_text, l:pattern))
+    "let l:cur_keyword_str = a:cur_text[l:cur_keyword_pos :]
+    "if len(l:cur_keyword_str) < s:getWordMin() 
+		"echo "NiceMenu_is_file_path() nope 1 ".len(l:cur_keyword_str)
         "return -1
     "endif
-    "" Skip directory.
-    "if neocomplcache#is_auto_complete()
-        "let l:dir = matchstr(l:cur_keyword_str, '^/\|^\a\+:')
-        "if l:dir == ''
-            "let l:dir = getcwd()
-        "endif
-        
-        "if has_key(s:skip_dir, getcwd())
-            "return -1
-        "endif
+	
+    "" Not Filename pattern.
+    "if l:is_win && l:cur_keyword_str =~ '|\|^\a:[/\\]\@!\|\\[[:alnum:].-]'
+		"echo "NiceMenu_is_file_path() nope win 0"
+        "return -1
+    "elseif l:is_win && &filetype == 'tex' && l:cur_keyword_str =~ '\\'
+		"echo "NiceMenu_is_file_path() nope win 1"
+        "return -1
+    "elseif l:cur_keyword_str =~ '\*\*\|^{}'
+		"echo "NiceMenu_is_file_path() nope 3"
+        "return -1
     "endif
 
-	"echo "NiceMenu_is_file_path() yes ".len(l:cur_keyword_str)
-	"return len(l:cur_keyword_str)
-	echo "NiceMenu_is_file_path() yes ".l:cur_keyword_pos
-    return l:cur_keyword_pos
+    ""let l:cur_keyword_pos = match(a:cur_text, l:pattern)
+    ""if len(matchstr(a:cur_text, l:pattern)) < s:getWordMin() 
+		""echo "NiceMenu_is_file_path() nope 1 ".len(matchstr(a:cur_text, l:pattern))
+        ""return -1
+    ""endif
+    """ Skip directory.
+    ""if neocomplcache#is_auto_complete()
+        ""let l:dir = matchstr(l:cur_keyword_str, '^/\|^\a\+:')
+        ""if l:dir == ''
+            ""let l:dir = getcwd()
+        ""endif
+        
+        ""if has_key(s:skip_dir, getcwd())
+            ""return -1
+        ""endif
+    ""endif
+
+	""echo "NiceMenu_is_file_path() yes ".len(l:cur_keyword_str)
+	""return len(l:cur_keyword_str)
+	"echo "NiceMenu_is_file_path() yes ".l:cur_keyword_pos
+    "return l:cur_keyword_pos
 endfunction
 
 function! s:getWordMin()
@@ -299,11 +349,13 @@ function! NiceMenuAsyncCpl()
 		"echo "NiceMenu_is_file_path() ".NiceMenu_is_file_path(l:cword)
 		"return ""
 		"if NiceMenu_is_file_path(l:cword)
-			"let l:compl = "\<C-X>\<C-F>"
+		if FindFilePath()
+			let l:compl = "\<C-X>\<C-F>"
+		else
 			"elseif match( l:cword, '\k->$' ) > 0 || match( l:cword, '\k\.$' ) > 0
 			"if match( l:cword, '\k$' ) > 0
-		"elseif match( l:cword, '\k$' ) > 0
-		"if l:cword =~ '\k$' || l:cword =~ '\k->$' || l:cword =~ '\k\.$'
+			"elseif match( l:cword, '\k$' ) > 0
+			"if l:cword =~ '\k$' || l:cword =~ '\k->$' || l:cword =~ '\k\.$'
 			" Test the complete function before setting it.
 			let l:compl_res = call( &omnifunc, [1,''] )
 			if -1 != l:compl_res
@@ -313,11 +365,11 @@ function! NiceMenuAsyncCpl()
 					let l:compl = ""
 					call complete( l:compl_res + 1, l:compl_list )
 
-					let b:NiceMenu_has_shown = 1
-					return "\<C-P>"
-
+					"let b:NiceMenu_has_shown = 1
+					"return "\<C-P>"
 				endif
 			endif
+		endif
 	endif
 
 	"TODO: Make this optional
