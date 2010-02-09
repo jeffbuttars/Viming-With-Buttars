@@ -1,5 +1,8 @@
 
-if exists('g:loaded_nice_menu') || !v:servername
+
+
+"if exists('g:loaded_nice_menu') || v:servername == ""
+if exists('g:loaded_nice_menu')
   finish
 elseif v:version < 700
   echoerr 'NiceMenu does not support this version of vim (' . v:version . ').'
@@ -290,7 +293,6 @@ function! NiceMenuAsyncCpl()
 	endif
 	
 	let l:compl = s:getDefaultCompl() 
-
 	let cword = s:getCurrentWord()
 
 	if exists('&omnifunc') && &omnifunc != '' && (! s:inString())
@@ -301,9 +303,7 @@ function! NiceMenuAsyncCpl()
 			"elseif match( l:cword, '\k->$' ) > 0 || match( l:cword, '\k\.$' ) > 0
 			"if match( l:cword, '\k$' ) > 0
 		"elseif match( l:cword, '\k$' ) > 0
-		"if match( l:cword, '\k$' ) > 0 || match( l:cword, '\k->$' ) > 0 || match( l:cword, '\k\.$' ) > 0
-		if match( l:cword, '\k$' ) > 0 || match( l:cword, '->$' ) > 0 || match( l:cword, '\.$' ) > 0
-		"if 1 
+		"if l:cword =~ '\k$' || l:cword =~ '\k->$' || l:cword =~ '\k\.$'
 			" Test the complete function before setting it.
 			let l:compl_res = call( &omnifunc, [1,''] )
 			if -1 != l:compl_res
@@ -316,10 +316,8 @@ function! NiceMenuAsyncCpl()
 					let b:NiceMenu_has_shown = 1
 					return "\<C-P>"
 
-					"let l:compl = "\<C-X>\<C-O>"
 				endif
 			endif
-		endif
 	endif
 
 	"TODO: Make this optional
@@ -359,6 +357,7 @@ ptimer = None
 def NiceMenuShowMenu():
 
 	#print 'NiceMenuShowMenu' 
+	
 
 	if 'i' != vim.eval('mode()'):
 		#print 'NiceMenuShowMenu bad context' 
@@ -370,18 +369,14 @@ def NiceMenuShowMenu():
 		return
 
 	try:
-		#dnull = open( '/dev/null' , 'w' )
-		#subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-expr", "NiceMenuAsyncCpl()"],
-		#subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-send", '<C-R>=NiceMenuAsyncCpl()<CR>'],
-	  		#stdout=dnull, stderr=dnull )
 		subprocess.call( ["gvim", "--servername", "%s"%sname, "--remote-send", '<C-R>=NiceMenuAsyncCpl()<CR>'] )
 	except:
 		print 'NiceMenuShowMenu except' 
 		pass
 PEOF
 
-function! s:NiceMenuCancel()
-	"echo "s:NiceMenuCancel"
+function! NiceMenuCancel()
+	"echo "NiceMenuCancel"
 python << PEOF
 global ptimer
 if ptimer:
@@ -395,6 +390,12 @@ endfunction
 fun! s:NiceMenuCompl( need_i )
 	
 	"echo "s:NiceMenuCompl " s:getCurrentChar()
+	
+	"XXX We need to load this plugin after v:servername has been set!!
+	if v:servername == ''
+		"echoerr 'No servername found, cannot load NiceMenu'
+		return
+	endif
 
 	if pumvisible() || &paste || (('i' != mode()) && a:need_i )
 		return "" 
@@ -436,7 +437,7 @@ fun! s:NiceMenuCompl( need_i )
 	endif
 
 	let b:complPos = l:npos
-	call s:NiceMenuCancel()
+	call NiceMenuCancel()
 
 python << PEOF
 global ptimer
@@ -455,7 +456,7 @@ function NiceMenu_enable()
 	"call s:mapForMappingDriven()
 	autocmd CursorMovedI * call s:NiceMenuCompl(1)
 	autocmd InsertEnter  * call s:NiceMenuCompl(0)
-	autocmd InsertLeave  * call s:NiceMenuCancel()
+	autocmd InsertLeave  * call NiceMenuCancel()
 endfunction
 
 " This mapping is a work around for a race condition in
