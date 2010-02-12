@@ -3036,7 +3036,7 @@ function! s:activateNode(forceKeepWindowOpen)
             call treenode.open()
             if !a:forceKeepWindowOpen
                 call s:closeTreeIfQuitOnOpen()
-            end
+            endif
         endif
     else
         let bookmark = s:getSelectedBookmark()
@@ -3606,7 +3606,7 @@ function! s:previewNode(openNewWin)
         call s:openEntrySplit(a:openNewWin ==# 2,1)
     else
         call s:activateNode(1)
-    end
+    endif
     call s:exec(bufwinnr(currentBuf) . "wincmd w")
 endfunction
 
