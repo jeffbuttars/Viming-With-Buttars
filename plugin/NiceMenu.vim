@@ -36,9 +36,12 @@ endif
 " perform a completion type performed by first matching class type and then
 " fail back on a default(<C-N). We should have a global catch all chain to handle
 " things like file path completions.
-let s:contextRegx = '[a-zA-Z0-9_<>:\-\.\$\/]' 
+if ! exists( 'g:NiceMenuDefaultContextRegex' )
+	let g:NiceMenuDefaultContextRegex = '[a-zA-Z0-9_<>:\-\.\$\/]' 
+endif
+au BufNewFile,BufReadPre * if !exists('b:NiceMenuContextRegex') | let b:NiceMenuContextRegex = g:NiceMenuDefaultContextRegex | endif
 
-au BufRead * let b:complPos = [0,0,0,0]
+au BufNewFile,BufReadPre * let b:complPos = [0,0,0,0]
 
 " specify the minimum 'word' length the must be present
 " before we complete
@@ -233,8 +236,8 @@ function s:getNextChar()
 endfunction
 
 function s:getOmniWord( spoint )
-	"return strpart( getline('.'), a:spoint, col('.')-1)
-	return strpart( getline('.'), a:spoint, col('.'))
+	return strpart( getline('.'), a:spoint, col('.')-1)
+	"return strpart( getline('.'), a:spoint, col('.'))
 endfunction
 
 function s:getCurrentWord()
@@ -331,7 +334,7 @@ function! NiceMenuCheckContext()
 
 	let curChar = s:getCurrentChar() 
 	"echo "checking: " curChar
-	if curChar !~ s:contextRegx
+	if curChar !~ b:NiceMenuContextRegex
 		return 0
 	endif
 
