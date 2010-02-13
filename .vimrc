@@ -115,7 +115,7 @@ imap <c-y> <c-y><esc>
 " Show the info preview window.
 "set completeopt=menuone,preview,longest
 "set completeopt=menuone,preview
-set completeopt=menu,preview
+set completeopt=menuone,preview
 
 "(default: ".,w,b,u,t,i")
 "set complete=".,w,b,u,U,t,i,kspell,d,t"
@@ -386,6 +386,8 @@ map #sp :w<CR>:!ispell %<CR>:e %<CR>
 " writting code, so only enable for thing with
 " a lot of real words like text and markdown files.
 au FileType text,mkd setlocal spell spelllang=en_us
+au FileType text,mkd let b:NiceMenuContextRegex='[a-zA-Z0-9]' 
+
 "set spell spelllang=en_us
 
 " Make right mouse button work in gvim
@@ -573,7 +575,7 @@ source ~/.vim/plugin/autotag.vim
 
 " Set NiceMenu Delay
 "let g:loaded_nice_menu = 1
-"let g:NiceMenuDelay = '1'
+let g:NiceMenuDelay = '.6'
 let g:NiceMenuMin = 1
 imap <silent> <esc> <esc><esc>
 
