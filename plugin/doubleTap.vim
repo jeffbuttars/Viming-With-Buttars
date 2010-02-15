@@ -113,9 +113,18 @@ au BufRead * let b:lcharPos = [-1,-1,-1,-1]
 " Spacey
 " If you have a spacey stile, ( arg ) vs (arg)
 " Try setting this to 1, default is 0/off
-if !exists( "b:DoubleTapSpacey" )
-  let b:DoubleTapSpacey = 1
+if !exists( "g:DoubleTapSpacey" )
+  let g:DoubleTapSpacey = 1
 endif
+"au BufNewFile,BufReadPre * if !exists('b:DoubleTapSpacey') | let b:DoubleTapSpacey = g:DoubleTapSpacey | endif
+
+function! s:useSpacey()
+	if exists( 'b:DoubleTapSpacey' )
+		return b:DoubleTapSpacey
+	endif
+
+	return g:DoubleTapSpacey
+endfunction
 
 "[[
 " Enable default left bracket mapping
@@ -532,7 +541,7 @@ endfunction
 
 " Enable default left bracket mapping
 if 1 == b:DoubleTap_map_left_bracket
-	if b:DoubleTapSpacey
+	if s:useSpacey()
 		imap <silent><expr> [ DoubleTapInsert( "[", "]", "\<LEFT>\<SPACE>\<SPACE>\<LEFT>" )
 	else
 		imap <silent><expr> [ DoubleTapInsert( "[", "]", "\<LEFT>" )
@@ -545,7 +554,7 @@ endif
 
 " Enable default left curly brace mapping
 if 1 == b:DoubleTap_map_left_brace
-	if b:DoubleTapSpacey
+	if s:useSpacey()
 		imap <silent><expr> { DoubleTapInsert( "{", "}", "\<LEFT>\<SPACE>\<SPACE>\<LEFT>" )
 	else
 		imap <silent><expr> { DoubleTapInsert( "{", "}", "\<LEFT>" )
@@ -558,7 +567,7 @@ endif
 
 " Enable default left paren mapping
 if 1 == b:DoubleTap_map_left_paren
-	if b:DoubleTapSpacey
+	if s:useSpacey()
 		imap <silent><expr> ( DoubleTapInsert( "(", ")", "\<LEFT>\<SPACE>\<SPACE>\<LEFT>" )
 	else
 		imap <silent><expr> ( DoubleTapInsert( "(", ")", "\<LEFT>" )
