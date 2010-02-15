@@ -121,87 +121,78 @@ function! FindFilePath()
 	endif
 	
 	return 0
-
-	"if -1 < l:fchar
-
-	"endif
-
-	"if -1 == l:fchar
-		"let l:fchar = stridx( l:cline, './' )
-		"" look for a relative path
-	"endif
-	"if -1 == l:fchar
-		"let l:fchar = stridx( l:cline, '/' )
-		"" look for an absolute path
-	"endif
-	"if -1 == l:fchar
-		"return 0
-	"endif
-
-	" look for an absolute path from $HOME
-
-
-	return 0
-
-    "let l:is_win = has('win32') || has('win64')
-
-    "" Not Filename pattern.
-    "if a:cur_text =~ '[/\\][/\\]\f*$\|[^[:print:]]\f*$\|/c\%[ygdrive/]$\|\\|$\|^\a:$'
-		"echo "NiceMenu_is_file_path() nope 0"
-        "return -1
-    "endif
-    "" Not Filename pattern.
-    ""if a:cur_text =~ '[*/\\][/\\]\f*$\|[^[:print:]]\f*$\|/c\%[ygdrive/]$'
-		""echo "NiceMenu_is_file_path() nope 0"
-        ""return -1
-    ""endif
-
-    ""let l:PATH_SEPARATOR = (has('win32') || has('win64')) ? '/\\' : '/'
-    "" Filename pattern.
-    ""let l:pattern = printf('[/~]\?\%%(\\.\|\f\)\+[%s]\%%(\\.\|\f\)*$', l:PATH_SEPARATOR)
-	"let l:pattern = '[~]\?\%(\\[^[:alnum:].-]\|\f\|\*\)\+'
-
-    "let l:cur_keyword_pos = match(a:cur_text, l:pattern)
-    "let l:cur_keyword_str = a:cur_text[l:cur_keyword_pos :]
-    "if len(l:cur_keyword_str) < s:getWordMin() 
-		"echo "NiceMenu_is_file_path() nope 1 ".len(l:cur_keyword_str)
-        "return -1
-    "endif
-	
-    "" Not Filename pattern.
-    "if l:is_win && l:cur_keyword_str =~ '|\|^\a:[/\\]\@!\|\\[[:alnum:].-]'
-		"echo "NiceMenu_is_file_path() nope win 0"
-        "return -1
-    "elseif l:is_win && &filetype == 'tex' && l:cur_keyword_str =~ '\\'
-		"echo "NiceMenu_is_file_path() nope win 1"
-        "return -1
-    "elseif l:cur_keyword_str =~ '\*\*\|^{}'
-		"echo "NiceMenu_is_file_path() nope 3"
-        "return -1
-    "endif
-
-    ""let l:cur_keyword_pos = match(a:cur_text, l:pattern)
-    ""if len(matchstr(a:cur_text, l:pattern)) < s:getWordMin() 
-		""echo "NiceMenu_is_file_path() nope 1 ".len(matchstr(a:cur_text, l:pattern))
-        ""return -1
-    ""endif
-    """ Skip directory.
-    ""if neocomplcache#is_auto_complete()
-        ""let l:dir = matchstr(l:cur_keyword_str, '^/\|^\a\+:')
-        ""if l:dir == ''
-            ""let l:dir = getcwd()
-        ""endif
-        
-        ""if has_key(s:skip_dir, getcwd())
-            ""return -1
-        ""endif
-    ""endif
-
-	""echo "NiceMenu_is_file_path() yes ".len(l:cur_keyword_str)
-	""return len(l:cur_keyword_str)
-	"echo "NiceMenu_is_file_path() yes ".l:cur_keyword_pos
-    "return l:cur_keyword_pos
 endfunction
+
+"let b:completionList = []
+"let b:completionPos = -1 
+function! NiceMenuCompletefunc( startpos, base )
+	"echo "NiceMenuCompletefunc"
+	"sleep 1
+
+	if empty(b:completionList) || -1 == b:completionPos
+		return -1
+	endif
+
+	if 1 == a:startpos 
+		return b:completionPos
+	endif
+
+	if 0 == a:startpos 
+		"call complete( a:startpos, b:completionList )
+		return b:completionList
+	endif
+
+	return -1
+endfunction
+
+function! s:canComplete()
+
+	if (! exists('&omnifunc')) || (&omnifunc == '') || s:inString()
+		"echo "canComplete no omni"
+		"sleep 1
+		return "" 
+	endif
+
+
+	if exists('&omnifunc') && &omnifunc != '' && (! s:inString())
+		"echo "canComplete checking omni"
+		"sleep 1
+		"echo "NiceMenu_is_file_path() ".NiceMenu_is_file_path(l:cword)
+		"return ""
+		"if NiceMenu_is_file_path(l:cword)
+		if FindFilePath()
+			return "\<C-X>\<C-F>"
+		else
+			"let l:cword   = s:getCurrentWord()
+			"if l:cword =~ '\k$' || l:cword =~ '\k->$' || l:cword =~ '\k\.$'
+			" Test the complete function before setting it.
+			let b:completionPos = -1
+			let l:compl_res = call( &omnifunc, [1,''] )
+
+			if -1 != l:compl_res
+
+				let l:compl_list = call( &omnifunc, [0,s:getOmniWord(l:compl_res)] )
+				if ! empty(l:compl_list)
+
+					set completefunc=NiceMenuCompletefunc
+					let b:completionList = l:compl_list
+					let b:completionPos = l:compl_res
+
+					"echo "canComplete found " len( b:completionList ) " omni items \<C-X>\<C-U>"
+					"sleep 1
+					
+					return "\<C-X>\<C-U>"
+				endif
+			endif
+		endif
+	endif
+
+	"echo "canComplete found nothing"
+	"sleep 1
+	"let b:completionList = [] 
+	return "" 
+endfunction
+
 
 function! s:getWordMin()
 	if exists( 'b:NiceMenuMin' )
@@ -236,8 +227,8 @@ function s:getNextChar()
 endfunction
 
 function s:getOmniWord( spoint )
-	return strpart( getline('.'), a:spoint, col('.')-1)
-	"return strpart( getline('.'), a:spoint, col('.'))
+	"return strpart( getline('.'), a:spoint, col('.')-1)
+	return strpart( getline('.'), a:spoint, col('.'))
 endfunction
 
 function s:getCurrentWord()
@@ -366,36 +357,50 @@ function! NiceMenuAsyncCpl()
 		return ""
 	endif
 	
-	let l:compl = s:getDefaultCompl() 
-	let cword = s:getCurrentWord()
+	"let cword = s:getCurrentWord()
+	
+	let l:compl = "" 
+	let l:cancompl = s:canComplete()
+	if len( l:cancompl )
+		let l:compl = l:cancompl
+		"echo "got omni string " l:compl
+		"sleep 1
+	else 
+		let l:compl = s:getDefaultCompl() 
+	endif
 
-	if exists('&omnifunc') && &omnifunc != '' && (! s:inString())
+	"if exists('&omnifunc') && &omnifunc != '' && (! s:inString())
+
+		"let l:cancompl = s:canComplete()
+		"if 0 != l:cancompl
+			"let l:compl = l:cancompl
+		"endif
 		"echo "NiceMenu_is_file_path() ".NiceMenu_is_file_path(l:cword)
 		"return ""
 		"if NiceMenu_is_file_path(l:cword)
-		if FindFilePath()
-			return "\<C-X>\<C-F>\<C-P>"
-			let l:compl = "\<C-X>\<C-F>"
-		else
+		"if FindFilePath()
+			"return "\<C-X>\<C-F>\<C-P>"
+			"let l:compl = "\<C-X>\<C-F>"
+		"else
 			"elseif match( l:cword, '\k->$' ) > 0 || match( l:cword, '\k\.$' ) > 0
 			"if match( l:cword, '\k$' ) > 0
 			"elseif match( l:cword, '\k$' ) > 0
 			"if l:cword =~ '\k$' || l:cword =~ '\k->$' || l:cword =~ '\k\.$'
 			" Test the complete function before setting it.
-			let l:compl_res = call( &omnifunc, [1,''] )
-			if -1 != l:compl_res
+			"let l:compl_res = call( &omnifunc, [1,''] )
+			"if -1 != l:compl_res
 
-				let l:compl_list = call( &omnifunc, [0,s:getOmniWord(l:compl_res)] )
-				if ! empty(l:compl_list)
-					let l:compl = ""
-					call complete( l:compl_res + 1, l:compl_list )
+				"let l:compl_list = call( &omnifunc, [0,s:getOmniWord(l:compl_res)] )
+				"if ! empty(l:compl_list)
+					"let l:compl = ""
+					"call complete( l:compl_res + 1, l:compl_list )
 
-					"let b:NiceMenu_has_shown = 1
-					"return "\<C-P>"
-				endif
-			endif
-		endif
-	endif
+					""let b:NiceMenu_has_shown = 1
+					""return "\<C-P>"
+				"endif
+			"endif
+		"endif
+	"endif
 
 	"TODO: Make this optional
 	"Fail back to a spelling check.
@@ -423,6 +428,8 @@ function! NiceMenuAsyncCpl()
 	let l:compl .= "\<C-P>"
 	let b:NiceMenu_has_shown = 1
 
+	"echo "Completion string " l:compl
+	"sleep 1
 	return l:compl
 endfunction
 
