@@ -3,6 +3,7 @@
 " Maintainer:	Jeroen Ruigrok van der Werven <asmodai@in-nomine.org>
 " Last Change:	2009-06-16
 " Version:      0.4
+" URL: 		http://www.vim.org/scripts/script.php?script_id=1945
 " {{{1
 
 " Syntax setup {{{2
