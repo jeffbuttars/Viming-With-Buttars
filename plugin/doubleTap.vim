@@ -106,9 +106,9 @@ if !exists( "g:DoubleTapInsertTimer" )
 endif
 
 
-au BufRead * let b:lcharChar = ''
-au BufRead * let b:lcharTime = reltimestr( reltime() )
-au BufRead * let b:lcharPos = [-1,-1,-1,-1] 
+au BufNewFile,BufReadPre * let b:lcharChar = ''
+au BufNewFile,BufReadPre * let b:lcharTime = reltimestr( reltime() )
+au BufNewFile,BufReadPre * let b:lcharPos = [-1,-1,-1,-1] 
 
 " Spacey
 " If you have a spacey stile, ( arg ) vs (arg)
