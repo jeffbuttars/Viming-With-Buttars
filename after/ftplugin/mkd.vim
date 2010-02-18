@@ -9,9 +9,10 @@ hi clear CursorLine
 "Markdown format options
 setlocal ai formatoptions=tcroqn2 comments=n:>
 
-let b:NiceMenuMin = 3
-let b:NiceMenuDelay = '.3' 
-let b:NiceMenuDefaultCompl = "\<C-X>\<C-K>"
+let b:NiceMenuMin 			= 3
+let b:NiceMenuDelay 		= '.5' 
+let b:NiceMenuEnableOmni	= 0
+let b:NiceMenuDefaultCompl	= "\<C-X>\<C-K>"
 
 "Generate the markup and maybe open a browser
 let b:mdown = 'markdown2'
