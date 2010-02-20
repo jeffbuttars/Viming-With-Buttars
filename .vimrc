@@ -331,6 +331,7 @@ au FileType php set nocursorline
 "colo mySlate 
 "colo peaksea " A light theme
 "colo molokai " A dark pastelly theme, a little bisexual but very pleasing.
+"colo neutron " A very nice creamy light theme.
 
 " Explicitly say we want 256 colors when we find 256
 " in the TERM environmental variable.
@@ -356,7 +357,12 @@ elseif $TERM =~ '256'
 	set cursorline
 	hi clear CursorLine 
 	"colo jellybeans 
-	colo molokai 
+	
+	if $TERM_META =~ 'white'
+		colo github 
+	else
+		colo molokai 
+	endif
 endif
 
 " set linenumbers on by default
@@ -581,8 +587,6 @@ source ~/.vim/plugin/autotag.vim
 "let g:loaded_nice_menu = 1
 let g:NiceMenuDelay = '.6'
 let g:NiceMenuMin = 1
-imap <silent> <esc> <esc><esc>
-
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
