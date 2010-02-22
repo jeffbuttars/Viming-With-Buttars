@@ -28,6 +28,9 @@ if ! exists( 'g:NiceMenuDefaultCompl' )
 	let g:NiceMenuDefaultCompl = "\<C-X>\<C-N>" 
 endif
 
+if ! exists( 'g:NiceMenuEnableOmni' )
+	let g:NiceMenuEnableOmni = 1
+endif
 
 " only pop completion if one of these chars is to the
 " left of the cursor.
@@ -40,6 +43,7 @@ if ! exists( 'g:NiceMenuDefaultContextRegex' )
 	let g:NiceMenuDefaultContextRegex = '[a-zA-Z0-9_<>:\-\.\$\/]' 
 endif
 au BufNewFile,BufReadPre * if !exists('b:NiceMenuContextRegex') | let b:NiceMenuContextRegex = g:NiceMenuDefaultContextRegex | endif
+au BufNewFile,BufReadPre * if !exists('b:NiceMenuEnableOmni') | let b:NiceMenuEnableOmni = g:NiceMenuEnableOmni | endif
 
 au BufNewFile,BufReadPre * let b:complPos = [0,0,0,0]
 
@@ -360,7 +364,11 @@ function! NiceMenuAsyncCpl()
 	"let cword = s:getCurrentWord()
 	
 	let l:compl = "" 
-	let l:cancompl = s:canComplete()
+	let l:cancompl = ""
+	if b:NiceMenuEnableOmni
+		let l:cancompl = s:canComplete()
+	endif
+
 	if len( l:cancompl )
 		let l:compl = l:cancompl
 		"echo "got omni string " l:compl
