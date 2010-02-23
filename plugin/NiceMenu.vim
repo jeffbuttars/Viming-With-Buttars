@@ -25,7 +25,7 @@ if ! exists( 'g:NiceMenuMin' )
 endif
 
 if ! exists( 'g:NiceMenuDefaultCompl' )
-	let g:NiceMenuDefaultCompl = "\<C-X>\<C-N>" 
+	let g:NiceMenuDefaultCompl = "\<C-N>" 
 endif
 
 if ! exists( 'g:NiceMenuEnableOmni' )
