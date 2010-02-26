@@ -112,6 +112,17 @@ au BufNewFile,BufReadPre * let b:lcharPos = [-1,-1,-1,-1]
 au BufNewFile,BufReadPre * let b:doubleTap_match_ids = [] 
 au CursorHold,CursorHoldI,InsertLeave * call s:clearMatch()
 
+"" XXX TODO: this experimental shit to try and figure out how to make
+" the visual feedback behave properly.
+let s:doubleTabCharReg = "[\\[\\]\"'\\(\\){}\\+\\.]" 
+function! s:checkCurChar()
+	let l:char = strpart( getline('.'), col('.')-2, 1)
+	if l:char !~ s:doubleTabCharReg
+		call s:clearMatch()
+	endif	
+endfunction
+au CursorMovedI * call s:checkCurChar()
+
 
 " Spacey
 " If you have a spacey stile, ( arg ) vs (arg)
@@ -129,11 +140,17 @@ function! s:useSpacey()
 	return g:DoubleTapSpacey
 endfunction
 
+" Enable visual feedback
+if !exists( "g:DoubleTap_enable_visual_feedback" )
+  let g:DoubleTap_enable_visual_feedback = 1
+endif
+
 "[[
 " Enable default left bracket mapping
 if !exists( "b:DoubleTap_map_left_bracket" )
   let b:DoubleTap_map_left_bracket = 0
 endif
+
 " Enable default right bracket mapping
 "]]
 if !exists( "b:DoubleTap_map_right_bracket" )
@@ -320,6 +337,10 @@ endfunction
 
 function! s:setMatch( ... )
 
+	if ! g:DoubleTap_enable_visual_feedback
+		return
+	endif
+
 	if a:0 == 1
 		let l:positions = a:1
 	else
@@ -334,6 +355,10 @@ function! s:setMatch( ... )
 endfunction
 
 function! s:clearMatch()
+
+	if ! g:DoubleTap_enable_visual_feedback
+		return
+	endif
 
 	if empty(b:doubleTap_match_ids)
 		return
