@@ -105,23 +105,22 @@ if !exists( "g:DoubleTapInsertTimer" )
 	let g:DoubleTapInsertTimer = &timeout
 endif
 
-
 au BufNewFile,BufReadPre * let b:lcharChar = ''
 au BufNewFile,BufReadPre * let b:lcharTime = reltimestr( reltime() )
 au BufNewFile,BufReadPre * let b:lcharPos = [-1,-1,-1,-1] 
 au BufNewFile,BufReadPre * let b:doubleTap_match_ids = [] 
-au CursorHold,CursorHoldI,InsertLeave * call s:clearMatch()
+au CursorHold,CursorHoldI * call s:clearMatch()
 
 "" XXX TODO: this experimental shit to try and figure out how to make
 " the visual feedback behave properly.
-let s:doubleTabCharReg = "[\\[\\]\"'\\(\\){}\\+\\.]" 
+let s:doubleTabCharReg = "[;\\[\\]\"'\\(\\){}\\+\\.]" 
 function! s:checkCurChar()
 	let l:char = strpart( getline('.'), col('.')-2, 1)
 	if l:char !~ s:doubleTabCharReg
 		call s:clearMatch()
 	endif	
 endfunction
-au CursorMovedI * call s:checkCurChar()
+au CursorMovedI,CursorMoved * call s:checkCurChar()
 
 
 " Spacey
@@ -345,11 +344,11 @@ function! s:setMatch( ... )
 		let l:positions = a:1
 	else
 		let l:npos = getpos('.')
-		let l:positions = [ [ l:npos[1],l:npos[2] ] ] 
+		let l:positions = [ [ l:npos[1], l:npos[2] ] ] 
 	endif
 
 	for cord in l:positions
-		call add( b:doubleTap_match_ids, matchadd( 'Special', '\%'.cord[0].'l\%'.cord[1].'c'  ) )
+		call add( b:doubleTap_match_ids, matchadd( 'Special', '\%'.cord[0].'l\%'.cord[1].'c', 100  ) )
 	endfor
 
 endfunction
@@ -360,7 +359,7 @@ function! s:clearMatch()
 		return
 	endif
 
-	if empty(b:doubleTap_match_ids)
+	if ! exists( 'b:doubleTap_match_ids' ) || empty(b:doubleTap_match_ids)
 		return
 	endif
 
@@ -412,7 +411,7 @@ function! s:sliceChar()
 	let l:right_line = strpart( l:cline, l:cpos[2]-1 )
 	call setline( l:cpos[1], l:left_line . l:right_line )
 
-	let l:cpos[2] = l:cpos[2]-1
+	let l:cpos[2] -= 1
 	call setpos( '.', l:cpos )
 endfunction
 
@@ -439,13 +438,17 @@ endfunction
 "1
 
 
-" Public Interface:
-" DoubleTapFinishLine: Remove trailing whitespace, put the given character at the end of the line  
+" Access Public:
+" Name DoubleTapFinishLine: Remove trailing whitespace, put the given character at the end of the line  
 " Param: thechar the character to place at the end of the cleaned line.
 " 
 function! DoubleTapFinishLine( thechar )
 
-	if &paste || ! s:checkDoubleInsert( a:thechar )
+	if &paste
+		return a:thechar
+	endif
+
+	if ! s:checkDoubleInsert( a:thechar )
 		call s:setMatch()
 		return a:thechar
 	endif
@@ -453,21 +456,22 @@ function! DoubleTapFinishLine( thechar )
 	call s:sliceChar()
 
 	" If thechar already exists already, don't do anything.
-	let l:regex = a:thechar . '$'
+	let l:regex = a:thechar . '\s*$'
 	if getline(".") =~ l:regex 
-		return a:thechar
+		return "" 
 	endif
 
 	let l:cline = substitute( getline("."), '\s*$', '', 'g' )
-	"echo l:cline . a:thechar 
 	call setline( ".", l:cline . a:thechar )
 
-	let npos = getpos( '.' )
-	let npos[ 2 ] = npos[ 2 ] + 1
-	call setpos( '.', npos )
+	let l:npos = getpos( '.' )
+	let l:npos[ 2 ] += 1
+	call setpos( '.', l:npos )
 
-	if g:DoubleTap_finish_line_auto_save 
-		return "\<ESC>:w\<CR>" 
+	call s:setMatch( [ [ l:npos[1], strlen( getline('.') ) ] ] )
+
+	if g:DoubleTap_finish_line_auto_save
+		return "\<ESC>:w\<CR>"
 	endif
 
 	return "" 
@@ -477,7 +481,6 @@ endfunction
 " Public Interface:
 " DoubleTapFinishLineNormal: Remove trailing whitespace, put the given character at the end of the line  
 " Param: thechar the character to place at the end of the cleaned line.
-" 
 function! DoubleTapFinishLineNormal( thechar )
 
 	if &paste
@@ -485,16 +488,18 @@ function! DoubleTapFinishLineNormal( thechar )
 	endif
 
 	" If thechar already exists already, don't do anything.
-	let l:regex = a:thechar . '$'
+	let l:regex = a:thechar . '\s*$'
 	if getline(".") =~ l:regex 
 		return 0 
 	endif
 
 	let l:cline = substitute( getline("."), '\s*$', '', 'g' )
-	"echo l:cline . a:thechar 
 	call setline( ".", l:cline . a:thechar )
 
-	return 1 
+	let l:npos = getpos( '.' )
+	call s:setMatch( [  [ l:npos[1], strlen(getline('.')) ] ] )
+
+	return 1
 endfunction
 "1
 
@@ -505,7 +510,12 @@ endfunction
 " 
 function! DoubleTapJumpOut( thechar )
 
-	if &paste || ! s:checkDoubleInsert( a:thechar )
+	if &paste
+		return a:thechar
+	endif
+
+	if ! s:checkDoubleInsert( a:thechar )
+		call s:setMatch()
 		return a:thechar
 	endif
 
@@ -528,7 +538,7 @@ function! DoubleTapJumpOut( thechar )
 
 		"let l:cpos = getpos(".")
 
-		let l:cpos[2] = l:cpos[2]+2
+		let l:cpos[2] += 2
 		call setpos( '.', l:cpos )
 		return ""
 	endif
@@ -541,6 +551,7 @@ function! DoubleTapJumpOut( thechar )
 		let l:cpos[2] = l:npos[1]+1
 		call setpos( '.', l:cpos )
 
+		call s:setMatch( [ [ l:cpos[1], l:cpos[2]-1 ] ] )
 		return ""
 	endif
 
@@ -556,7 +567,11 @@ endfunction
 
 function! DoubleTapInsertJumpString( thechar )
 
-	if &paste || ! s:checkDoubleInsert( a:thechar )
+	if &paste
+		return a:thechar
+	endif
+
+	if ! s:checkDoubleInsert( a:thechar )
 		"return a:thechar.a:thechar
 		call s:setMatch()
 		return a:thechar
@@ -568,12 +583,11 @@ function! DoubleTapInsertJumpString( thechar )
 	" If we're in a string, jump out
 	" Otherwise, lay down a pair
 	if s:inString( a:thechar )
-
 		" jump out
 		" Make sure we're not sitting on the quote. 
 		" If we are, move the cursor to the left by one.
 		if strpart( getline("."), col('.')-1, 1) == a:thechar
-			let l:cpos[2] = l:cpos[2] - 1 
+			let l:cpos[2] -= 1 
 			call setpos( '.', l:cpos )
 		endif
 
@@ -583,7 +597,8 @@ function! DoubleTapInsertJumpString( thechar )
 			let l:cpos[1] = l:npos[0]
 			let l:cpos[2] = l:npos[1]+1
 			call setpos( '.', l:cpos )
-			return ""
+			call s:setMatch( [ [ l:cpos[1], l:cpos[2]-1 ] ] )
+			return ''
 		endif
 	endif
 
@@ -605,7 +620,11 @@ endfunction
 
 function! DoubleTapInsertJumpSimple( thechar )
 
-	if &paste || ! s:checkDoubleInsert( a:thechar )
+	if &paste
+		return a:thechar
+	endif
+
+	if ! s:checkDoubleInsert( a:thechar )
 		call s:setMatch()
 		return a:thechar
 	endif
@@ -628,6 +647,7 @@ function! DoubleTapInsertJumpSimple( thechar )
 			" Jump
 			let l:cpos[2] = l:nchar+2
 			call setpos( '.', l:cpos )
+			call s:setMatch( [ [ l:cpos[1], l:cpos[2]-1 ] ] )
 			return ""
 		else
 			call s:setMatch( [ [ l:cpos[1], l:cpos[2] ], [ l:cpos[1], l:cpos[2]+1 ] ] )
@@ -719,6 +739,7 @@ if 1 == b:DoubleTap_map_semicolon_finish_line
 	if &ft == 'python'
 		" NOTICE: This will insert a ':', not a semicolon.
 		imap ; <C-R>=DoubleTapFinishLine(':')<CR>
+
 		if g:DoubleTap_finish_line_auto_save 
 			nmap ;; <ESC>:call DoubleTapFinishLineNormal(':')<CR>:w<CR>o<ESC>
 		else
@@ -726,6 +747,7 @@ if 1 == b:DoubleTap_map_semicolon_finish_line
 		endif
 	else
 		imap ; <C-R>=DoubleTapFinishLine(';')<CR>
+
 		if g:DoubleTap_finish_line_auto_save 
 			nmap ;; <ESC>:call DoubleTapFinishLineNormal(';')<CR>:w<CR><ESC>
 		else
