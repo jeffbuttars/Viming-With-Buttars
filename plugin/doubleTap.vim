@@ -348,7 +348,7 @@ function! s:sliceChar()
 	let l:right_line = strpart( l:cline, l:cpos[2]-1 )
 	call setline( l:cpos[1], l:left_line . l:right_line )
 
-	let l:cpos[2] = l:cpos[2]-1 
+	let l:cpos[2] = l:cpos[2]-1
 	call setpos( '.', l:cpos )
 endfunction
 
@@ -379,6 +379,36 @@ endfunction
 " 
 function! DoubleTapFinishLine( thechar )
 
+	if &paste || ! s:checkDoubleInsert( a:thechar )
+		return a:thechar
+	endif
+
+	call s:sliceChar()
+
+	" If thechar already exists already, don't do anything.
+	let l:regex = a:thechar . '$'
+	if getline(".") =~ l:regex 
+		return a:thechar
+	endif
+
+	let l:cline = substitute( getline("."), '\s*$', '', 'g' )
+	"echo l:cline . a:thechar 
+	call setline( ".", l:cline . a:thechar )
+
+	let npos = getpos( '.' )
+	let npos[ 2 ] = npos[ 2 ] + 1
+	call setpos( '.', npos )
+
+	return "\<ESC>:w\<CR>" 
+endfunction
+"1
+
+" Public Interface:
+" DoubleTapFinishLineNormal: Remove trailing whitespace, put the given character at the end of the line  
+" Param: thechar the character to place at the end of the cleaned line.
+" 
+function! DoubleTapFinishLineNormal( thechar )
+
 	if &paste
 		return 0
 	endif
@@ -386,14 +416,14 @@ function! DoubleTapFinishLine( thechar )
 	" If thechar already exists already, don't do anything.
 	let l:regex = a:thechar . '$'
 	if getline(".") =~ l:regex 
-		return 0
+		return 0 
 	endif
 
 	let l:cline = substitute( getline("."), '\s*$', '', 'g' )
-	echo l:cline . a:thechar 
+	"echo l:cline . a:thechar 
 	call setline( ".", l:cline . a:thechar )
 
-	return 1
+	return 1 
 endfunction
 "1
 
@@ -610,30 +640,33 @@ endif
 
 " Enable default double tap semicolon finish line
 if 1 == b:DoubleTap_map_semicolon_finish_line
-  " we use a different mapping in Python.
-  if &ft == 'python'
-	" NOTICE: This will insert a ':', not a semicolon.
-	imap ;; <ESC>:call DoubleTapFinishLine(':')<CR>:w<CR>o<ESC>
-	nmap ;; <ESC>:call DoubleTapFinishLine(':')<CR>:w<CR>o<ESC>
-  else
-	imap ;; <ESC>:call DoubleTapFinishLine(';')<CR>:w<CR><ESC>
-	nmap ;; <ESC>:call DoubleTapFinishLine(';')<CR>:w<CR><ESC>
-  endif
+	" we use a different mapping in Python.
+	if &ft == 'python'
+		" NOTICE: This will insert a ':', not a semicolon.
+		imap ; <C-R>=DoubleTapFinishLine(':')<CR>
+		"nmap ; <C-R>=DoubleTapFinishLine(':')<CR>
+		nmap ;; <ESC>:call DoubleTapFinishLineNormal(':')<CR>:w<CR>o<ESC>
+	else
+		imap ; <C-R>=DoubleTapFinishLine(';')<CR>
+		"nmap ; <C-R>=DoubleTapFinishLine(';')<CR>
+		nmap ;; <ESC>:call DoubleTapFinishLineNormal(';')<CR>:w<CR><ESC>
+	endif
 
 endif
 
 " Enable default double tap colon finish line
 " Only for Python by default
 if 1 == b:DoubleTap_map_colon_finish_line
-  au FileType python nmap :: <ESC>:call DoubleTapFinishLine(':')<CR>:w<CR>
-  au FileType python imap :: <ESC>:call DoubleTapFinishLine(':')<CR>:w<CR>
+  au FileType python imap : <C-R>=DoubleTapFinishLine(':')<CR>
+  au FileType python nmap :: <ESC>:call DoubleTapFinishLineNormal(':')<CR>:w<CR>
 endif
 
 " Enable default double tap comma finish line
 " Only for javascript and php by default
 if 1 == b:DoubleTap_map_comma_finish_line
-  au FileType php,javascript,python nmap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>
-  au FileType php,javascript,python imap ,, <ESC>:call DoubleTapFinishLine(',')<CR>:w<CR>
+  au FileType php,javascript,python imap , <C-R>=DoubleTapFinishLine(',')<CR>
+  au FileType php,javascript,python nmap ,, <ESC>:call DoubleTapFinishLineNormal(',')<CR>:w<CR>
+  "au FileType php,javascript,python nmap , <C-R>=DoubleTapFinishLine(',')<CR>
 endif
 
 "1
