@@ -109,6 +109,9 @@ endif
 au BufNewFile,BufReadPre * let b:lcharChar = ''
 au BufNewFile,BufReadPre * let b:lcharTime = reltimestr( reltime() )
 au BufNewFile,BufReadPre * let b:lcharPos = [-1,-1,-1,-1] 
+au BufNewFile,BufReadPre * let b:doubleTap_match_ids = [] 
+au CursorHold,CursorHoldI,InsertLeave * call s:clearMatch()
+
 
 " Spacey
 " If you have a spacey stile, ( arg ) vs (arg)
@@ -315,10 +318,39 @@ function! s:inString( thechar )
 endfunction
 "1}}}
 
+function! s:setMatch( ... )
+
+	if a:0 == 1
+		let l:positions = a:1
+	else
+		let l:npos = getpos('.')
+		let l:positions = [ [ l:npos[1],l:npos[2] ] ] 
+	endif
+
+	for cord in l:positions
+		call add( b:doubleTap_match_ids, matchadd( 'Special', '\%'.cord[0].'l\%'.cord[1].'c'  ) )
+	endfor
+
+endfunction
+
+function! s:clearMatch()
+
+	if empty(b:doubleTap_match_ids)
+		return
+	endif
+
+	for id in b:doubleTap_match_ids
+		call matchdelete( id )
+	endfor
+
+	let b:doubleTap_match_ids = []
+endfunction
+
 function! s:checkDoubleInsert( thechar )
 
 	let l:ntime = reltimestr( reltime() )
 	let l:npos = getpos('.')
+	call s:clearMatch()
 
 	if (a:thechar != b:lcharChar) || (l:ntime - b:lcharTime > g:DoubleTapInsertTimer) || ( l:npos[1] != b:lcharPos[1] ) || ( (l:npos[2]-1) != b:lcharPos[2] )
 		let b:lcharTime = l:ntime
@@ -335,6 +367,7 @@ function! s:checkDoubleInsert( thechar )
 		if exists( 'NiceMenuCancel' )
 			call NiceMenuCancel()
 		endif
+
 		return 1
 	endif
 
@@ -365,16 +398,18 @@ endfunction
 function! DoubleTapInsert( thechar, mchar, ... )
 
 	if ! s:checkDoubleInsert( a:thechar )
+		call s:setMatch()
 		return a:thechar
 	endif
 
+	let l:cpos = getpos( '.' )
+	call s:setMatch( [ [ l:cpos[1], l:cpos[2] ], [ l:cpos[1], l:cpos[2]+1 ] ] )
+
 	if a:0 > 0 
 		return a:mchar . a:1 
-	else
-		return a:mchar . "\<LEFT>"
 	endif
 
-	return a:mchar
+	return a:mchar . "\<LEFT>"
 endfunction	
 "1
 
@@ -386,6 +421,7 @@ endfunction
 function! DoubleTapFinishLine( thechar )
 
 	if &paste || ! s:checkDoubleInsert( a:thechar )
+		call s:setMatch()
 		return a:thechar
 	endif
 
@@ -497,18 +533,18 @@ function! DoubleTapInsertJumpString( thechar )
 
 	if &paste || ! s:checkDoubleInsert( a:thechar )
 		"return a:thechar.a:thechar
+		call s:setMatch()
 		return a:thechar
 	endif
 
 	call s:sliceChar()
+	let l:cpos = getpos(".")
 
 	" If we're in a string, jump out
 	" Otherwise, lay down a pair
 	if s:inString( a:thechar )
 
 		" jump out
-
-		let l:cpos = getpos(".")
 		" Make sure we're not sitting on the quote. 
 		" If we are, move the cursor to the left by one.
 		if strpart( getline("."), col('.')-1, 1) == a:thechar
@@ -518,6 +554,7 @@ function! DoubleTapInsertJumpString( thechar )
 
 		let l:npos = searchpos( a:thechar, 'nW' )
  		if l:npos[0] >= l:cpos[1]
+			call s:clearMatch()
 			let l:cpos[1] = l:npos[0]
 			let l:cpos[2] = l:npos[1]+1
 			call setpos( '.', l:cpos )
@@ -525,6 +562,7 @@ function! DoubleTapInsertJumpString( thechar )
 		endif
 	endif
 
+	call s:setMatch( [ [ l:cpos[1], l:cpos[2] ], [ l:cpos[1], l:cpos[2]+1 ] ] )
 	return a:thechar.a:thechar."\<left>"
 endfunction
 "1
@@ -543,11 +581,12 @@ endfunction
 function! DoubleTapInsertJumpSimple( thechar )
 
 	if &paste || ! s:checkDoubleInsert( a:thechar )
+		call s:setMatch()
 		return a:thechar
 	endif
 
 	call s:sliceChar()
-	
+
 	" See if it's there.
 	let l:cpos = getpos(".")
 	let l:cline = getline(".")
@@ -556,18 +595,19 @@ function! DoubleTapInsertJumpSimple( thechar )
 	let l:nchar = stridx( l:cline, a:thechar, l:ccol )
 	echo l:nchar
 	if l:nchar < l:ccol
-		  "if the cursor is on or to left of thechar, jump out.
-		  let l:tchar = strpart( getline('.'), col('.')-2, 1)
-		  let l:rchar = strpart( getline('.'), col('.')-1, 1)
-		  if l:tchar == a:thechar || l:rchar == a:thechar
-			  let l:cpos[2] = l:nchar+2
-			  call setpos( '.', l:cpos )
-			  return ""
-		  else
-			  return a:thechar.a:thechar."\<left>"
-		  endif
 
-		return a:thechar.a:thechar
+		"if the cursor is on or to left of thechar, jump out.
+		let l:tchar = strpart( getline('.'), col('.')-2, 1)
+		let l:rchar = strpart( getline('.'), col('.')-1, 1)
+		if l:tchar == a:thechar || l:rchar == a:thechar
+			" Jump
+			let l:cpos[2] = l:nchar+2
+			call setpos( '.', l:cpos )
+			return ""
+		else
+			call s:setMatch( [ [ l:cpos[1], l:cpos[2] ], [ l:cpos[1], l:cpos[2]+1 ] ] )
+			return a:thechar.a:thechar."\<left>"
+		endif
 	endif
 
 	let l:cpos[2] = l:nchar+2
