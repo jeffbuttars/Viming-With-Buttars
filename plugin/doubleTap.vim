@@ -193,6 +193,12 @@ if !exists( "b:DoubleTap_map_period_insert_jump" )
   let b:DoubleTap_map_period_insert_jump = 0
 endif
 
+" Automatically save the file when you use finish line
+" When in Insert mode, this will leave you in normal mode.
+if !exists( "g:DoubleTap_finish_line_auto_save" )
+  let g:DoubleTap_finish_line_auto_save = 1
+endif
+
 " Enable default double semicolon finish line mapping 
 " ;;
 if !exists( "b:DoubleTap_map_semicolon_finish_line" )
@@ -399,7 +405,11 @@ function! DoubleTapFinishLine( thechar )
 	let npos[ 2 ] = npos[ 2 ] + 1
 	call setpos( '.', npos )
 
-	return "\<ESC>:w\<CR>" 
+	if g:DoubleTap_finish_line_auto_save 
+		return "\<ESC>:w\<CR>" 
+	endif
+
+	return "" 
 endfunction
 "1
 
@@ -644,12 +654,18 @@ if 1 == b:DoubleTap_map_semicolon_finish_line
 	if &ft == 'python'
 		" NOTICE: This will insert a ':', not a semicolon.
 		imap ; <C-R>=DoubleTapFinishLine(':')<CR>
-		"nmap ; <C-R>=DoubleTapFinishLine(':')<CR>
-		nmap ;; <ESC>:call DoubleTapFinishLineNormal(':')<CR>:w<CR>o<ESC>
+		if g:DoubleTap_finish_line_auto_save 
+			nmap ;; <ESC>:call DoubleTapFinishLineNormal(':')<CR>:w<CR>o<ESC>
+		else
+			nmap ;; <ESC>:call DoubleTapFinishLineNormal(':')<CR>o<ESC>
+		endif
 	else
 		imap ; <C-R>=DoubleTapFinishLine(';')<CR>
-		"nmap ; <C-R>=DoubleTapFinishLine(';')<CR>
-		nmap ;; <ESC>:call DoubleTapFinishLineNormal(';')<CR>:w<CR><ESC>
+		if g:DoubleTap_finish_line_auto_save 
+			nmap ;; <ESC>:call DoubleTapFinishLineNormal(';')<CR>:w<CR><ESC>
+		else
+			nmap ;; <ESC>:call DoubleTapFinishLineNormal(';')<CR>
+		endif
 	endif
 
 endif
@@ -657,16 +673,23 @@ endif
 " Enable default double tap colon finish line
 " Only for Python by default
 if 1 == b:DoubleTap_map_colon_finish_line
-  au FileType python imap : <C-R>=DoubleTapFinishLine(':')<CR>
-  au FileType python nmap :: <ESC>:call DoubleTapFinishLineNormal(':')<CR>:w<CR>
+	au FileType python imap : <C-R>=DoubleTapFinishLine(':')<CR>
+	if g:DoubleTap_finish_line_auto_save 
+		au FileType python nmap :: <ESC>:call DoubleTapFinishLineNormal(':')<CR>:w<CR>
+	else
+		au FileType python nmap :: <ESC>:call DoubleTapFinishLineNormal(':')<CR>
+	endif
 endif
 
 " Enable default double tap comma finish line
 " Only for javascript and php by default
 if 1 == b:DoubleTap_map_comma_finish_line
-  au FileType php,javascript,python imap , <C-R>=DoubleTapFinishLine(',')<CR>
-  au FileType php,javascript,python nmap ,, <ESC>:call DoubleTapFinishLineNormal(',')<CR>:w<CR>
-  "au FileType php,javascript,python nmap , <C-R>=DoubleTapFinishLine(',')<CR>
+	au FileType php,javascript,python imap , <C-R>=DoubleTapFinishLine(',')<CR>
+	if g:DoubleTap_finish_line_auto_save 
+		au FileType php,javascript,python nmap ,, <ESC>:call DoubleTapFinishLineNormal(',')<CR>:w<CR>
+	else
+		au FileType php,javascript,python nmap ,, <ESC>:call DoubleTapFinishLineNormal(',')<CR>
+	endif
 endif
 
 "1
