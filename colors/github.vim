@@ -25,7 +25,8 @@ hi Normal guifg=#000000 guibg=#F8F8FF
 " {{{ Cursor
 hi Cursor		guibg=#000000 guifg=#F8F8FF
 hi clear CursorLine
-hi CursorLine	gui=none guibg=#D8D8DD
+hi CursorLine	gui=bold guibg=#D8D8DD term=bold ctermbg=255
+hi LineNr		guibg=#D8D8DD term=bold ctermbg=255
 hi CursorColumn	guibg=#E8E8EE
 set cursorline
 " }}}
@@ -68,8 +69,8 @@ hi Directory	guifg=#990000
 " {{{ Search, Visual, etc
 hi Visual		guifg=#FFFFFF guibg=#3465a4 gui=none
 hi VisualNOS    guifg=#FFFFFF guibg=#204a87 gui=none
-hi IncSearch	guibg=#cdcdfd guifg=#000000 gui=italic
-hi Search		guibg=#cdcdfd guifg=#000000 gui=italic
+hi IncSearch	guibg=#cdcdfd guifg=#000000 gui=italic ctermbg=215
+hi Search		guibg=#cdcdfd guifg=#000000 gui=italic ctermbg=215
 " }}}
 
 " {{{ Syntax groups
