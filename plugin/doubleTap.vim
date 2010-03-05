@@ -93,7 +93,7 @@ let g:loaded_doubleTap = '1.0'
 " Check for Vim version 700 or greater 
 " {{{1
 if v:version < 700
-  echo "Sorry, doubleTap ".g:double_tap_version."\nONLY runs with Vim 7.0 and greater."
+  echo "Sorry, doubleTap ".g:double_tap_version."\nIs only known to run with Vim 7.0 and greater."
   finish
 endif
 "1}}}
@@ -138,6 +138,47 @@ function! s:useSpacey()
 
 	return g:DoubleTapSpacey
 endfunction
+
+
+let g:DoubleTapFinishLine_Map = [ 
+	\	{ 'ftype':'javascript,python,lua', 'trigger':",", 'finishChar':",", 'spacey':'' },
+	\	{ 'ftype':'*', 'trigger':";", 'finishChar':";", 'spacey':'' },
+	\	{ 'ftype':'python', 'trigger':":", 'finishChar':":", 'spacey':'' },
+	\	{ 'ftype':'python', 'trigger':";", 'finishChar':":", 'spacey':'' } ]
+
+let g:DoubleTapFinishLineNormal_Map = [ 
+	\	{ 'ftype':'php,javascript,python,lua', 'trigger':",,", 'finishChar':",", 'spacey':'', },
+	\	{ 'ftype':'*', 'trigger':";;", 'finishChar':';', 'spacey':'', },
+	\	{ 'ftype':'python', 'trigger':";;", 'finishChar':':', 'spacey':'', } ,
+	\	{ 'ftype':'python', 'trigger':"::", 'finishChar':':', 'spacey':'', } ]
+
+"DoubleTapInsertJumpSimple('+')
+"[ char, spaceystuff ]
+let g:DoubleTapInsertJumpSimple_Map = [ 
+	\	{ 'ftype':'*', 'triggerChar':'+', 'spacey':'' },
+	\	{ 'ftype':'*', 'triggerChar':'.', 'spacey':'' } ]
+
+"DoubleTapJumpOut(">")
+"[ char, spaceystuff ]
+let g:DoubleTapJumpOut_Map = [
+	\	{ 'ftype':'*', 'triggerChar':'>', 'spacey':'' },
+	\	{ 'ftype':'*', 'triggerChar':'}', 'spacey':'' },
+	\	{ 'ftype':'*', 'triggerChar':']', 'spacey':'' },
+	\	{ 'ftype':'*', 'triggerChar':')', 'spacey':'' } ]
+
+"DoubleTapInsert( "<", ">", "\<LEFT>" )
+"[ lchar, rchar, movement, spaceystuff ]
+let g:DoubleTapInsert_Map = [ 
+	\	{ 'ftype':'*', 'lChar':'<', 'rChar':'>', 'spacey':'' },
+	\	{ 'ftype':'*', 'lChar':'{', 'rChar':'}', 'spacey':'' },
+	\	{ 'ftype':'*', 'lChar':'[', 'rChar':'}', 'spacey':'' },
+	\	{ 'ftype':'*', 'lChar':'(', 'rChar':')', 'spacey':'' } ]
+
+"DoubleTapInsertJumpString("'")
+"[ char, spaceystuff ]
+let g:DoubleTapInsertJumpString_Map = [
+	\	{ 'ftype':'*', 'triggerChar':"'", 'spacey':'' },
+	\	{ 'ftype':'*', 'triggerChar':'"', 'spacey':'' } ]
 
 " Enable visual feedback
 if !exists( "g:DoubleTap_enable_visual_feedback" )
@@ -443,6 +484,7 @@ endfunction
 " Param: thechar the character to place at the end of the cleaned line.
 " 
 function! DoubleTapFinishLine( thechar )
+	echo "DoubleTapFinishLine" a:thechar
 
 	if &paste
 		return a:thechar
@@ -733,51 +775,19 @@ endif
   "au FileType php,perl,vim imap . <C-R>=DoubleTapInsertJumpSimple('.')<CR>
 "endif
 
-" Enable default double tap semicolon finish line
-if 1 == b:DoubleTap_map_semicolon_finish_line
-	" we use a different mapping in Python.
-	if &ft == 'python'
-		" NOTICE: This will insert a ':', not a semicolon.
-		imap ; <C-R>=DoubleTapFinishLine(':')<CR>
-
-		if g:DoubleTap_finish_line_auto_save 
-			nmap ;; <ESC>:call DoubleTapFinishLineNormal(':')<CR>:w<CR>o<ESC>
-		else
-			nmap ;; <ESC>:call DoubleTapFinishLineNormal(':')<CR>o<ESC>
-		endif
-	else
-		imap ; <C-R>=DoubleTapFinishLine(';')<CR>
-
-		if g:DoubleTap_finish_line_auto_save 
-			nmap ;; <ESC>:call DoubleTapFinishLineNormal(';')<CR>:w<CR><ESC>
-		else
-			nmap ;; <ESC>:call DoubleTapFinishLineNormal(';')<CR>
-		endif
-	endif
-
-endif
-
-" Enable default double tap colon finish line
-" Only for Python by default
-if 1 == b:DoubleTap_map_colon_finish_line
-	au FileType python imap : <C-R>=DoubleTapFinishLine(':')<CR>
+for item in g:DoubleTapFinishLineNormal_Map
 	if g:DoubleTap_finish_line_auto_save 
-		au FileType python nmap :: <ESC>:call DoubleTapFinishLineNormal(':')<CR>:w<CR>
-	else
-		au FileType python nmap :: <ESC>:call DoubleTapFinishLineNormal(':')<CR>
-	endif
-endif
+		execute printf("autocmd FileType %s nmap %s <ESC>:call DoubleTapFinishLineNormal( '%s' )<CR>:w<CR>", item[ 'ftype' ], item[ 'trigger' ], item[ 'finishChar' ])
+	else                                            
+		execute printf("autocmd FileType %s nmap %s <ESC>:call DoubleTapFinishLineNormal( '%s' )<CR>", item[ 'ftype' ], item[ 'trigger' ], item[ 'finishChar' ])
+	endif	
+endfor
 
-" Enable default double tap comma finish line
-" Only for javascript and php by default
-if 1 == b:DoubleTap_map_comma_finish_line
-	au FileType php,javascript,python imap , <C-R>=DoubleTapFinishLine(',')<CR>
-	if g:DoubleTap_finish_line_auto_save 
-		au FileType php,javascript,python nmap ,, <ESC>:call DoubleTapFinishLineNormal(',')<CR>:w<CR>
-	else
-		au FileType php,javascript,python nmap ,, <ESC>:call DoubleTapFinishLineNormal(',')<CR>
-	endif
-endif
+for item in g:DoubleTapFinishLine_Map
+	execute printf("autocmd FileType %s imap %s <C-R>=DoubleTapFinishLine( '%s' )<CR>", item[ 'ftype' ], item[ 'trigger' ], item[ 'finishChar' ])
+endfor
+
+
 
 "1
 
