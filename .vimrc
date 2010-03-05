@@ -164,29 +164,6 @@ let g:SnipeMateAllowOmniTab = 1
 autocmd FileType python set ft=python.django 		" For SnipMate
 autocmd BufRead *.djml set ft=html.django_template 	" For SnipMate
 
-"let g:NeoComplCache_EnableAtStartup = 0
-
-"if 1 == g:NeoComplCache_EnableAtStartup
-
-	"let g:NeoComplCache_DisableAutoComplete = 1
-
-	"let g:NeoComplCache_IgnoreCase = 0
-	"let g:NeoComplCache_MinKeywordLength = 0
-	""let g:NeoComplCache_SmartCase = 1
-	""let g:NeoComplCache_EnableQuickMatch = 0
-	"let g:NeoDelay = '.7' 
-	""let g:NeoComplCache_DisableSelectModeMappings = 1
-
-	"" NeoComplCache	Plugin key-mappings.
-	""imap <C-m> <Plug>(neocomplcache_snippets_expand)
-	""smap <C-m> <Plug>(neocomplcache_snippets_expand)
-	"inoremap <expr><C-h> pumvisible() ? "\<C-y>\<C-h>" : "\<C-h>"
-	"inoremap <expr><C-g> neocomplcache#undo_completion()
-	""inoremap <expr><C-j> neocomplcache#manual_omni_complete()
-	""imap <C-O> <C-X><C-U> 
-"endif
-
-
 "End OmniCompletion settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -248,14 +225,17 @@ set scrolloff=3
 " see :h title for better info.
 set title
 
-" Easy cycle through buffers using Ctrl-PgUp/PgDown 
+"set foldmethod=indent
+"set foldmethod=syntax
+
+" Easy cycle through tabs using Ctrl-PgUp/PgDown 
 " similar to FireFox
 " This won't work in all terminal programs. some use
 " this same key sequence to cycley through tabs, so you
 " may need to disable this key shortcut in your terminal
 " program for this mapping to work as advertised.
-nmap <C-PageDown> :bnext<CR>
-nmap <C-PageUp> :bprevious<CR>
+nmap <C-PageDown> :tabnext<CR>
+nmap <C-PageUp> :tabprevious<CR>
 
 "http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
 " The above URL also has good stuff for autoclosing matching pairs, like (). 
@@ -503,7 +483,7 @@ let Tlist_Use_Horiz_Window=0
 nnoremap TT :TlistOpen<CR>
 map <F4> :TlistToggle<CR>
 
-let Tlist_Use_Right_Window = 1
+let Tlist_Use_Right_Window = 0
 let Tlist_Exit_OnlyWindow = 1
 let Tlist_Enable_Fold_Column = 0
 let Tlist_Compact_Format = 1
@@ -571,9 +551,21 @@ au FileType sh,bash imap <F5> <ESC>:w<CR>:BashRun<CR>
 " json_reformat is at:
 " URL: http://lloyd.github.com/yajl/
 autocmd FileType json set equalprg=json_reformat
+autocmd FileType xml  set equalprg=xmllint\ --format\ -
 
 "Enable autotag.vim
 source ~/.vim/plugin/autotag.vim
+
+" Little something from http://www.ibm.com/developerworks/linux/library/l-vim-script-5/index.html 
+" Agressive auto saving
+function! Autosave()
+	if ! &modified
+		return
+	endif
+
+	write
+endfunction
+autocmd FocusLost,BufLeave,WinLeave * :call Autosave()
 
 " load the tag closer
 "au FileType html,xhtml let b:closetag_html_style=1
@@ -588,10 +580,44 @@ source ~/.vim/plugin/autotag.vim
 let g:NiceMenuDelay = '.6'
 let g:NiceMenuMin = 1
 
+" Syntax checking entire file
+" Usage: :make (check file)
+" :clist (view list of errors)
+" :cn, :cp (move around list of errors)
+"autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\
+"sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
+"autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\
+"%l%.%#,%Z%[%^\ ]%\\@=%m
+
+
+
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Misc People and places that I've gotten stuff from
 "http://dancingpenguinsoflight".com"/2009/02/code-navigation-completion-snippets-in-vim/
 "http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/
+
+" IBM Vim series, quite good.
+" Scripting the Vim editor, Part 1: Variables, values, and expressions
+" http://www.ibm.com/developerworks/linux/library/l-vim-script-1/index.html
+
+" Scripting the Vim editor, Part 2: User-defined functions
+" http://www.ibm.com/developerworks/linux/library/l-vim-script-2/index.html
+
+" Scripting the Vim editor, Part 3: Built-in lists
+" http://www.ibm.com/developerworks/linux/library/l-vim-script-3/index.html
+
+" Scripting the Vim editor, Part 4: Dictionaries
+" http://www.ibm.com/developerworks/linux/library/l-vim-script-4/index.html
+
+" Scripting the Vim editor, Part 5: Event-driven scripting and automation
+" http://www.ibm.com/developerworks/linux/library/l-vim-script-5/index.html
+
+" Some good python settings suggestions:
+" http://www.cmdln.org/2008/10/18/vim-customization-for-python/
+"
+" Good information on line wrapping:
+" http://blog.ezyang.com/2010/03/vim-textwidth/
+
 
