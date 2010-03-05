@@ -34,7 +34,8 @@ endif
 set history=1000		" keep 1000 lines of command line history
 "set ruler		" show the cursor position all the time
 " Set up a custom status line. Like setting ruler, but we add the buffer number and filetype to the status
-set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+"set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{&textwidth}\ %P
 
 " last window will always have a status line
 set laststatus=2
