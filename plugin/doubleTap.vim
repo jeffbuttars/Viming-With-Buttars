@@ -139,6 +139,9 @@ function! s:useSpacey()
 	return g:DoubleTapSpacey
 endfunction
 
+let g:DoubleTap_SpaceyBlock = '\<LEFT>\<CR>\<ESC>O\<Tab>'
+let g:DoubleTap_SpaceyInline = '\<LEFT>\<SPACE>\<SPACE>\<LEFT>'
+
 
 let g:DoubleTapFinishLine_Map = [ 
 	\	{ 'ftype':'javascript,python,lua', 'trigger':",", 'finishChar':",", 'spacey':'' },
@@ -156,21 +159,18 @@ let g:DoubleTapInsertJumpSimple_Map = [
 	\	{ 'ftype':'*', 'trigger':'+', "inChar":"+", 'spacey':'' },
 	\	{ 'ftype':'*', 'trigger':'.', "inChar":".", 'spacey':'' } ]
 
-"DoubleTapJumpOut(">")
-"[ char, spaceystuff ]
 let g:DoubleTapJumpOut_Map = [
-	\	{ 'ftype':'*', 'triggerChar':'>', 'spacey':'' },
-	\	{ 'ftype':'*', 'triggerChar':'}', 'spacey':'' },
-	\	{ 'ftype':'*', 'triggerChar':']', 'spacey':'' },
-	\	{ 'ftype':'*', 'triggerChar':')', 'spacey':'' } ]
+	\	{ 'ftype':'html,html.django_template,xml,xhtml,htmlcheetah,javascript,php', 'trigger':'>', 'findChar':'>' },
+	\	{ 'ftype':'*', 'trigger':'}', 'findChar':'}' },
+	\	{ 'ftype':'*', 'trigger':']', 'findChar':']' },
+	\	{ 'ftype':'*', 'trigger':')', 'findChar':')' } ]
 
-"DoubleTapInsert( "<", ">", "\<LEFT>" )
-"[ lchar, rchar, movement, spaceystuff ]
 let g:DoubleTapInsert_Map = [ 
+	\	{ 'ftype':'*', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':g:DoubleTap_SpaceyBlock },
+	\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':g:DoubleTap_SpaceyInline },
+	\	{ 'ftype':'*', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':g:DoubleTap_SpaceyInline },
 	\	{ 'ftype':'html,html.django_template,xml,xhtml,htmlcheetah,javascript,php', 'trigger':"<", 'lChar':'<', 'rChar':'>', 'spacey':'\<LEFT>' },
-	\	{ 'ftype':'*', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':'\<LEFT>\<SPACE>\<SPACE>\<LEFT>' },
-	\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':'\<LEFT>\<SPACE>\<SPACE>\<LEFT>' },
-	\	{ 'ftype':'*', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':'\<LEFT>\<SPACE>\<SPACE>\<LEFT>' } ]
+	\	{ 'ftype':'vim,python', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':g:DoubleTap_SpaceyInline }]
 
 let g:DoubleTapInsertJumpString_Map = [
 	\	{ 'ftype':"*", 'trigger':"'", 'inChar':"\"'\"", 'spacey':"" },
@@ -182,129 +182,12 @@ if !exists( "g:DoubleTap_enable_visual_feedback" )
   let g:DoubleTap_enable_visual_feedback = 1
 endif
 
-"[[
-" Enable default left bracket mapping
-if !exists( "b:DoubleTap_map_left_bracket" )
-  let b:DoubleTap_map_left_bracket = 0
-endif
-
-" Enable default right bracket mapping
-"]]
-if !exists( "b:DoubleTap_map_right_bracket" )
-  let b:DoubleTap_map_right_bracket = 0
-endif
-
-" Enable default left curly brace mapping
-" {{
-if !exists( "b:DoubleTap_map_left_brace" )
-  let b:DoubleTap_map_left_brace = 0
-endif
-" Enable default rightt curly brace mapping
-" }}
-if !exists( "b:DoubleTap_map_right_brace" )
-  let b:DoubleTap_map_right_brace = 0
-endif
-
-" Enable default left paren mapping
-" ((
-if !exists( "b:DoubleTap_map_left_paren" )
-  let b:DoubleTap_map_left_paren = 0
-endif
-" Enable default right paren mapping
-" ))
-if !exists( "b:DoubleTap_map_right_paren" )
-  let b:DoubleTap_map_right_paren = 0
-endif
-
-" Enable default left angle mapping
-" << 
-if !exists( "b:DoubleTap_map_left_angle" )
-	let b:DoubleTap_map_left_angle = 0
-endif
-" Enable default right angle mapping
-" >> 
-if !exists( "b:DoubleTap_map_right_angle" )
-	let b:DoubleTap_map_right_angle = 0
-endif
-
-" Enable default single quote insert/jump mapping
-" ''
-if !exists( "b:DoubleTap_map_single_quote_insert_jump" )
-  let b:DoubleTap_map_single_quote_insert_jump = 0
-endif
-
-" Enable default double quote insert/jump mapping
-if !exists( "b:DoubleTap_map_double_quote_insert_jump" )
-  let b:DoubleTap_map_double_quote_insert_jump = 0
-endif
-
-" Enable default double plus insert/jump mapping
-" ++
-if !exists( "b:DoubleTap_map_plus_insert_jump" )
-  let b:DoubleTap_map_plus_insert_jump = 0
-endif
-
-" Enable default double period insert/jump mapping
-" ..
-if !exists( "b:DoubleTap_map_period_insert_jump" )
-  let b:DoubleTap_map_period_insert_jump = 0
-endif
-
 " Automatically save the file when you use finish line
 " When in Insert mode, this will leave you in normal mode.
 if !exists( "g:DoubleTap_finish_line_auto_save" )
   let g:DoubleTap_finish_line_auto_save = 1
 endif
 
-" Enable default double semicolon finish line mapping 
-" ;;
-if !exists( "b:DoubleTap_map_semicolon_finish_line" )
-  let b:DoubleTap_map_semicolon_finish_line = 0
-endif
-
-" Enable default double colon finish line mapping 
-" ::
-if !exists( "b:DoubleTap_map_colon_finish_line" )
-  let b:DoubleTap_map_colon_finish_line = 0
-endif
-
-" Enable default double comma finish line mapping 
-" ,,
-if !exists( "b:DoubleTap_map_comma_finish_line" )
-  let b:DoubleTap_map_comma_finish_line = 0
-endif
-"
-"
-function! s:enableAllDefaults()
-	let b:DoubleTap_map_left_bracket = 1
-	let b:DoubleTap_map_right_bracket = 1
-	let b:DoubleTap_map_left_brace = 1
-	let b:DoubleTap_map_right_brace = 1
-	let b:DoubleTap_map_left_paren = 1
-	let b:DoubleTap_map_right_paren = 1
-	let b:DoubleTap_map_left_angle = 1
-	let b:DoubleTap_map_right_angle = 1
-	let b:DoubleTap_map_single_quote_insert_jump = 1
-	let b:DoubleTap_map_double_quote_insert_jump = 1
-	let b:DoubleTap_map_plus_insert_jump = 1
-	let b:DoubleTap_map_period_insert_jump = 1
-	let b:DoubleTap_map_semicolon_finish_line = 1
-	let b:DoubleTap_map_colon_finish_line = 1
-	let b:DoubleTap_map_comma_finish_line = 1
-endfunction
-
-
-"" We can enable/disable all doubleTap defaults
-" with one var.
-" By default, all defaults are enabled, of course.
-if !exists( "b:DoubleTap_enable_defaults" )
-	let b:DoubleTap_enable_defaults = 1
-endif
-
-if 1 == b:DoubleTap_enable_defaults 
-	call s:enableAllDefaults()
-endif
-"1}}}
 
 " Private Helper:
 " getSynName:
@@ -701,39 +584,24 @@ function! DoubleTapInsertJumpSimple( thechar )
 endfunction
 "1
  
-" Enable default right bracket mapping
-if 1 == b:DoubleTap_map_right_bracket
-  imap ] <C-R>=DoubleTapJumpOut("]")<CR>
-endif
-
-" Enable default right curly brace mapping
-if 1 == b:DoubleTap_map_right_brace
-  imap } <C-R>=DoubleTapJumpOut("}")<CR>
-endif
-
 for item in g:DoubleTapInsert_Map
 	execute printf("au FileType %s imap <silent><expr> %s DoubleTapInsert( \"%s\", \"%s\", \"%s\" )",
 	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'lChar' ], item[ 'rChar' ], item[ 'spacey' ] )
 endfor
 
-" Enable default right paren mapping
-if 1 == b:DoubleTap_map_right_paren
-  imap ) <C-R>=DoubleTapJumpOut(")")<CR>
-endif
-
-" Enable default right angle mapping
-if 1 == b:DoubleTap_map_right_angle
-	au FileType html,html.django_template,xml,xhtml,htmlcheetah,javascript,php imap > <C-R>=DoubleTapJumpOut(">")<CR>
-endif
+for item in g:DoubleTapJumpOut_Map
+	execute printf( "au FileType %s imap %s <C-R>=DoubleTapJumpOut('%s')<CR>",
+	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'findChar' ] )
+endfor
 
 for item in g:DoubleTapInsertJumpString_Map
-	execute printf("au FileType %s imap %s <C-R>=DoubleTapInsertJumpString(%s)<CR>",
-	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'inChar' ])
+	execute printf( "au FileType %s imap %s <C-R>=DoubleTapInsertJumpString(%s)<CR>",
+	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'inChar' ] )
 endfor
 
 for item in g:DoubleTapInsertJumpSimple_Map
-	execute printf("au FileType %s imap %s <C-R>=DoubleTapInsertJumpSimple('%s')<CR>", 
-	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'inChar' ])
+	execute printf( "au FileType %s imap %s <C-R>=DoubleTapInsertJumpSimple('%s')<CR>", 
+	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'inChar' ] )
 endfor
 
 for item in g:DoubleTapFinishLineNormal_Map
