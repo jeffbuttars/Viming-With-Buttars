@@ -152,11 +152,9 @@ let g:DoubleTapFinishLineNormal_Map = [
 	\	{ 'ftype':'python', 'trigger':";;", 'finishChar':':', 'spacey':'', } ,
 	\	{ 'ftype':'python', 'trigger':"::", 'finishChar':':', 'spacey':'', } ]
 
-"DoubleTapInsertJumpSimple('+')
-"[ char, spaceystuff ]
 let g:DoubleTapInsertJumpSimple_Map = [ 
-	\	{ 'ftype':'*', 'triggerChar':'+', 'spacey':'' },
-	\	{ 'ftype':'*', 'triggerChar':'.', 'spacey':'' } ]
+	\	{ 'ftype':'*', 'trigger':'+', "inChar":"+", 'spacey':'' },
+	\	{ 'ftype':'*', 'trigger':'.', "inChar":".", 'spacey':'' } ]
 
 "DoubleTapJumpOut(">")
 "[ char, spaceystuff ]
@@ -177,8 +175,8 @@ let g:DoubleTapInsert_Map = [
 "DoubleTapInsertJumpString("'")
 "[ char, spaceystuff ]
 let g:DoubleTapInsertJumpString_Map = [
-	\	{ 'ftype':'*', 'triggerChar':"'", 'spacey':'' },
-	\	{ 'ftype':'*', 'triggerChar':'"', 'spacey':'' } ]
+	\	{ 'ftype':"*", 'trigger':"'", 'inChar':"\"'\"", 'spacey':"" },
+	\	{ 'ftype':"*", 'trigger':'"', 'inChar':"'\"'", 'spacey':"" } ]
 
 " Enable visual feedback
 if !exists( "g:DoubleTap_enable_visual_feedback" )
@@ -755,39 +753,30 @@ if 1 == b:DoubleTap_map_right_angle
 	au FileType html,html.django_template,xml,xhtml,htmlcheetah,javascript,php imap > <C-R>=DoubleTapJumpOut(">")<CR>
 endif
 
-" Enable default single quote insert mapping
-if 1 == b:DoubleTap_map_single_quote_insert_jump
-  imap ' <C-R>=DoubleTapInsertJumpString("'")<CR>
-endif
+for item in g:DoubleTapInsertJumpString_Map
+	execute printf("au FileType %s imap %s <C-R>=DoubleTapInsertJumpString(%s)<CR>",
+	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'inChar' ])
+endfor
 
-" Enable default double quote insert mapping
-if 1 == b:DoubleTap_map_double_quote_insert_jump
-  imap " <C-R>=DoubleTapInsertJumpString('"')<CR>
-endif
-
-" Enable default double plus insert mapping
-if 1 == b:DoubleTap_map_plus_insert_jump
-  au FileType javascript,python imap + <C-R>=DoubleTapInsertJumpSimple('+')<CR>
-endif
-
-" Enable default double period insert mapping
-"if 1 == b:DoubleTap_map_period_insert_jump
-  "au FileType php,perl,vim imap . <C-R>=DoubleTapInsertJumpSimple('.')<CR>
-"endif
+for item in g:DoubleTapInsertJumpSimple_Map
+	execute printf("au FileType %s imap %s <C-R>=DoubleTapInsertJumpSimple('%s')<CR>", 
+	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'inChar' ])
+endfor
 
 for item in g:DoubleTapFinishLineNormal_Map
 	if g:DoubleTap_finish_line_auto_save 
-		execute printf("autocmd FileType %s nmap %s <ESC>:call DoubleTapFinishLineNormal( '%s' )<CR>:w<CR>", item[ 'ftype' ], item[ 'trigger' ], item[ 'finishChar' ])
+		execute printf("autocmd FileType %s nmap %s <ESC>:call DoubleTapFinishLineNormal( '%s' )<CR>:w<CR>",
+		\	item[ 'ftype' ], item[ 'trigger' ], item[ 'finishChar' ])
 	else                                            
-		execute printf("autocmd FileType %s nmap %s <ESC>:call DoubleTapFinishLineNormal( '%s' )<CR>", item[ 'ftype' ], item[ 'trigger' ], item[ 'finishChar' ])
+		execute printf("autocmd FileType %s nmap %s <ESC>:call DoubleTapFinishLineNormal( '%s' )<CR>",
+		\	item[ 'ftype' ], item[ 'trigger' ], item[ 'finishChar' ])
 	endif	
 endfor
 
 for item in g:DoubleTapFinishLine_Map
-	execute printf("autocmd FileType %s imap %s <C-R>=DoubleTapFinishLine( '%s' )<CR>", item[ 'ftype' ], item[ 'trigger' ], item[ 'finishChar' ])
+	execute printf("autocmd FileType %s imap %s <C-R>=DoubleTapFinishLine( '%s' )<CR>",
+	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'finishChar' ])
 endfor
-
-
 
 "1
 
