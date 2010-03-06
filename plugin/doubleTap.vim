@@ -167,16 +167,15 @@ let g:DoubleTapJumpOut_Map = [
 "DoubleTapInsert( "<", ">", "\<LEFT>" )
 "[ lchar, rchar, movement, spaceystuff ]
 let g:DoubleTapInsert_Map = [ 
-	\	{ 'ftype':'*', 'lChar':'<', 'rChar':'>', 'spacey':'' },
-	\	{ 'ftype':'*', 'lChar':'{', 'rChar':'}', 'spacey':'' },
-	\	{ 'ftype':'*', 'lChar':'[', 'rChar':'}', 'spacey':'' },
-	\	{ 'ftype':'*', 'lChar':'(', 'rChar':')', 'spacey':'' } ]
+	\	{ 'ftype':'html,html.django_template,xml,xhtml,htmlcheetah,javascript,php', 'trigger':"<", 'lChar':'<', 'rChar':'>', 'spacey':'\<LEFT>' },
+	\	{ 'ftype':'*', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':'\<LEFT>\<SPACE>\<SPACE>\<LEFT>' },
+	\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':'\<LEFT>\<SPACE>\<SPACE>\<LEFT>' },
+	\	{ 'ftype':'*', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':'\<LEFT>\<SPACE>\<SPACE>\<LEFT>' } ]
 
-"DoubleTapInsertJumpString("'")
-"[ char, spaceystuff ]
 let g:DoubleTapInsertJumpString_Map = [
 	\	{ 'ftype':"*", 'trigger':"'", 'inChar':"\"'\"", 'spacey':"" },
 	\	{ 'ftype':"*", 'trigger':'"', 'inChar':"'\"'", 'spacey':"" } ]
+
 
 " Enable visual feedback
 if !exists( "g:DoubleTap_enable_visual_feedback" )
@@ -702,52 +701,26 @@ function! DoubleTapInsertJumpSimple( thechar )
 endfunction
 "1
  
-"Set up key mappings 
-
-" Enable default left bracket mapping
-if 1 == b:DoubleTap_map_left_bracket
-	if s:useSpacey()
-		imap <silent><expr> [ DoubleTapInsert( "[", "]", "\<LEFT>\<SPACE>\<SPACE>\<LEFT>" )
-	else
-		imap <silent><expr> [ DoubleTapInsert( "[", "]", "\<LEFT>" )
-	endif
-endif
 " Enable default right bracket mapping
 if 1 == b:DoubleTap_map_right_bracket
   imap ] <C-R>=DoubleTapJumpOut("]")<CR>
 endif
 
-" Enable default left curly brace mapping
-if 1 == b:DoubleTap_map_left_brace
-	if s:useSpacey()
-		imap <silent><expr> { DoubleTapInsert( "{", "}", "\<LEFT>\<SPACE>\<SPACE>\<LEFT>" )
-	else
-		imap <silent><expr> { DoubleTapInsert( "{", "}", "\<LEFT>" )
-	endif
-endif
 " Enable default right curly brace mapping
 if 1 == b:DoubleTap_map_right_brace
   imap } <C-R>=DoubleTapJumpOut("}")<CR>
 endif
 
-" Enable default left paren mapping
-if 1 == b:DoubleTap_map_left_paren
-	if s:useSpacey()
-		imap <silent><expr> ( DoubleTapInsert( "(", ")", "\<LEFT>\<SPACE>\<SPACE>\<LEFT>" )
-	else
-		imap <silent><expr> ( DoubleTapInsert( "(", ")", "\<LEFT>" )
-	endif
-endif
+for item in g:DoubleTapInsert_Map
+	execute printf("au FileType %s imap <silent><expr> %s DoubleTapInsert( \"%s\", \"%s\", \"%s\" )",
+	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'lChar' ], item[ 'rChar' ], item[ 'spacey' ] )
+endfor
+
 " Enable default right paren mapping
 if 1 == b:DoubleTap_map_right_paren
   imap ) <C-R>=DoubleTapJumpOut(")")<CR>
 endif
 
-" Enable default left angle mapping
-if 1 == b:DoubleTap_map_left_angle
-	au Filetype html,html.django_template,xml,xhtml,htmlcheetah,javascript,php imap <silent><expr> < DoubleTapInsert( "<", ">", "\<LEFT>" )
-  
-endif
 " Enable default right angle mapping
 if 1 == b:DoubleTap_map_right_angle
 	au FileType html,html.django_template,xml,xhtml,htmlcheetah,javascript,php imap > <C-R>=DoubleTapJumpOut(">")<CR>
