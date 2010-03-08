@@ -105,6 +105,10 @@ if !exists( "g:DoubleTapInsertTimer" )
 	let g:DoubleTapInsertTimer = &timeout
 endif
 
+if !exists( "g:DoubleTapJumpPreferVimPair" )
+	let g:DoubleTapJumpPreferVimPair = 1
+endif
+
 au BufNewFile,BufReadPre * let b:lcharChar = ''
 au BufNewFile,BufReadPre * let b:lcharTime = reltimestr( reltime() )
 au BufNewFile,BufReadPre * let b:lcharPos = [-1,-1,-1,-1] 
@@ -160,10 +164,10 @@ let g:DoubleTapInsertJumpSimple_Map = [
 	\	{ 'ftype':'*', 'trigger':'.', "inChar":".", 'spacey':'' } ]
 
 let g:DoubleTapJumpOut_Map = [
-	\	{ 'ftype':'html,html.django_template,xml,xhtml,htmlcheetah,javascript,php', 'trigger':'>', 'findChar':'>' },
-	\	{ 'ftype':'*', 'trigger':'}', 'findChar':'}' },
-	\	{ 'ftype':'*', 'trigger':']', 'findChar':']' },
-	\	{ 'ftype':'*', 'trigger':')', 'findChar':')' } ]
+	\	{ 'ftype':'html,html.django_template,xml,xhtml,htmlcheetah,javascript,php', 'trigger':'>', 'leftChar':'<', 'rightChar':'>' },
+	\	{ 'ftype':'*', 'trigger':'}', 'leftChar':'{', 'rightChar':'}' },
+	\	{ 'ftype':'*', 'trigger':']', 'leftChar':'[', 'rightChar':']' },
+	\	{ 'ftype':'*', 'trigger':')', 'leftChar':'(', 'rightChar':')' } ]
 
 let g:DoubleTapInsert_Map = [ 
 	\	{ 'ftype':'*', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':g:DoubleTap_SpaceyBlock },
@@ -272,6 +276,16 @@ function! s:setMatch( ... )
 		call add( b:doubleTap_match_ids, matchadd( 'Special', '\%'.cord[0].'l\%'.cord[1].'c', 100  ) )
 	endfor
 
+endfunction
+
+function! s:advCursorAndMatch( adv, ... )
+
+	let l:cpos = getpos(".")
+	let l:cpos[ 2 ] += a:adv
+	call setpos( '.', l:cpos )
+
+	"call call( 's:setMatch', a:000 )
+	call call( 's:setMatch', [ [ l:cpos[1], l:cpos[2]-1 ] ] )
 endfunction
 
 function! s:clearMatch()
@@ -428,19 +442,18 @@ endfunction
 " Public Interface:
 " DoubleTapJumpOut: Find the next instance of thechar in the current
 " buffer and jump to it.
-" Param: thechar the character to jump too.
+" Param: a:right_char the character to jump too.
 " 
-function! DoubleTapJumpOut( thechar )
+function! DoubleTapJumpOut( left_char, right_char )
 
 	if &paste
-		return a:thechar
+		return a:right_char
 	endif
 
-	if ! s:checkDoubleInsert( a:thechar )
+	if ! s:checkDoubleInsert( a:right_char )
 		call s:setMatch()
-		return a:thechar
+		return a:right_char
 	endif
-
 
 	" First see if it's on the cursor. 
 	" If it is go right one and return.
@@ -455,18 +468,25 @@ function! DoubleTapJumpOut( thechar )
 	"if the cursor is to left of thechar, jump out.
 	let l:rchar = strpart( l:cline, col('.')-1, 1)
 
-	if l:rchar == a:thechar 
-
-
-		"let l:cpos = getpos(".")
-
-		let l:cpos[2] += 2
-		call setpos( '.', l:cpos )
+	if l:rchar == a:right_char 
+		call s:advCursorAndMatch( 2, [ [ l:cpos[1], l:cpos[2]-1 ] ] )
 		return ""
 	endif
 
+	if g:DoubleTapJumpPreferVimPair
+		" First try to use the searchpair() to jump.
+		let l:sres = searchpair( a:left_char, '', a:right_char, 'W' )
+		if l:sres > 0
+			" We jumped.
+			call s:advCursorAndMatch( 1, [ [ l:cpos[1], l:cpos[2]-1 ] ] )
+			return ""
+		endif
+	endif
+
+	" We're not in a pair, but jump anyway.
 	"find next position of this character in the buffer.
-	let l:npos = searchpos( a:thechar, 'nW' )
+	"let l:npos = searchpos( a:right_char, 'nW' )
+	let l:npos = searchpos( a:right_char, 'W' )
 	if l:npos[0] > 0 && l:npos[1] > 0 && l:npos[0] >= l:cpos[1]
 
 		let l:cpos[1] = l:npos[0]
@@ -477,7 +497,7 @@ function! DoubleTapJumpOut( thechar )
 		return ""
 	endif
 
-	return a:thechar.a:thechar
+	return a:right_char.a:right_char
 endfunction
 "1
 
@@ -590,8 +610,8 @@ for item in g:DoubleTapInsert_Map
 endfor
 
 for item in g:DoubleTapJumpOut_Map
-	execute printf( "au FileType %s imap %s <C-R>=DoubleTapJumpOut('%s')<CR>",
-	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'findChar' ] )
+	execute printf( "au FileType %s imap %s <C-R>=DoubleTapJumpOut('%s', '%s')<CR>",
+	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'leftChar' ], item[ 'rightChar' ] )
 endfor
 
 for item in g:DoubleTapInsertJumpString_Map
