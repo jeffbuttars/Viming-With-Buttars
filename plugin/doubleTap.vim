@@ -154,7 +154,7 @@ let g:DoubleTapFinishLine_Map = [
 	\	{ 'ftype':'python', 'trigger':";", 'finishChar':":", 'spacey':'' } ]
 
 let g:DoubleTapFinishLineNormal_Map = [ 
-	\	{ 'ftype':'php,javascript,python,lua', 'trigger':",,", 'finishChar':",", 'spacey':'', },
+	\	{ 'ftype':'php,javascript,python,lua,json', 'trigger':",,", 'finishChar':",", 'spacey':'', },
 	\	{ 'ftype':'*', 'trigger':";;", 'finishChar':';', 'spacey':'', },
 	\	{ 'ftype':'python', 'trigger':";;", 'finishChar':':', 'spacey':'', } ,
 	\	{ 'ftype':'python', 'trigger':"::", 'finishChar':':', 'spacey':'', } ]
@@ -171,10 +171,12 @@ let g:DoubleTapJumpOut_Map = [
 
 let g:DoubleTapInsert_Map = [ 
 	\	{ 'ftype':'*', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':g:DoubleTap_SpaceyBlock },
+	\	{ 'ftype':'vim,python,json', 'trigger':"{", 'lChar':"{", 'rChar':"}", 'spacey':g:DoubleTap_SpaceyInline },
 	\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':"" },
+	\	{ 'ftype':'json', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':g:DoubleTap_SpaceyInline },
 	\	{ 'ftype':'*', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':g:DoubleTap_SpaceyInline },
 	\	{ 'ftype':'html,html.django_template,xml,xhtml,htmlcheetah,javascript,php', 'trigger':"<", 'lChar':'<', 'rChar':'>', 'spacey':'\<LEFT>' },
-	\	{ 'ftype':'vim,python', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':g:DoubleTap_SpaceyInline }]
+	\]
 	"\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':g:DoubleTap_SpaceyInline },
 
 let g:DoubleTapInsertJumpString_Map = [
