@@ -171,10 +171,11 @@ let g:DoubleTapJumpOut_Map = [
 
 let g:DoubleTapInsert_Map = [ 
 	\	{ 'ftype':'*', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':g:DoubleTap_SpaceyBlock },
-	\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':g:DoubleTap_SpaceyInline },
+	\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':"" },
 	\	{ 'ftype':'*', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':g:DoubleTap_SpaceyInline },
 	\	{ 'ftype':'html,html.django_template,xml,xhtml,htmlcheetah,javascript,php', 'trigger':"<", 'lChar':'<', 'rChar':'>', 'spacey':'\<LEFT>' },
 	\	{ 'ftype':'vim,python', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':g:DoubleTap_SpaceyInline }]
+	"\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':g:DoubleTap_SpaceyInline },
 
 let g:DoubleTapInsertJumpString_Map = [
 	\	{ 'ftype':"*", 'trigger':"'", 'inChar':"\"'\"", 'spacey':"" },
@@ -364,7 +365,7 @@ function! DoubleTapInsert( thechar, mchar, ... )
 	let l:cpos = getpos( '.' )
 	call s:setMatch( [ [ l:cpos[1], l:cpos[2] ], [ l:cpos[1], l:cpos[2]+1 ] ] )
 
-	if a:0 > 0 
+	if a:0 > 0 && strlen( a:1 )
 		return a:mchar . a:1 
 	endif
 
