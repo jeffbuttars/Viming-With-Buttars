@@ -244,18 +244,19 @@ nmap <C-PageUp> :tabprevious<CR>
 "If you have something highlighted and type a, it replaces the text, like other editors. 
 "If you type (, however, it wraps the selected text in parentheses. 
 "This is enormously useful. Luckily, it's very easy to recreate in Vim:
-vnoremap (  <ESC>`>a)<ESC>`<i(<ESC>
-vnoremap )  <ESC>`>a)<ESC>`<i(<ESC>
-vnoremap {  <ESC>`>a}<ESC>`<i{<ESC>
-vnoremap }  <ESC>`>a}<ESC>`<i{<ESC>
+vnoremap ((  <ESC>`>a)<ESC>`<i(<ESC>
+vnoremap ))  <ESC>`>a)<ESC>`<i(<ESC>
+vnoremap {{  <ESC>`>a}<ESC>`<i{<ESC>
+vnoremap }}  <ESC>`>a}<ESC>`<i{<ESC>
 " If allow " here, it messes up register selection
 " So we use "" instead, and it works.
+" Move this into doubleTap?
 "vnoremap "  <ESC>`>a"<ESC>`<i"<ESC>
 vnoremap ""  <ESC>`>a"<ESC>`<i"<ESC>
-vnoremap '  <ESC>`>a'<ESC>`<i'<ESC>
-vnoremap `  <ESC>`>a`<ESC>`<i`<ESC>
-vnoremap [  <ESC>`>a]<ESC>`<i[<ESC>
-vnoremap ]  <ESC>`>a]<ESC>`<i[<ESC>
+vnoremap ''  <ESC>`>a'<ESC>`<i'<ESC>
+vnoremap ``  <ESC>`>a`<ESC>`<i`<ESC>
+vnoremap [[  <ESC>`>a]<ESC>`<i[<ESC>
+vnoremap ]]  <ESC>`>a]<ESC>`<i[<ESC>
 
 " When vimrc is edited, automatically reload it!
 autocmd! bufwritepost .vimrc source ~/.vimrc
