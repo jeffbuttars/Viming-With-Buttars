@@ -179,6 +179,9 @@ function! s:canComplete()
 
 				let l:cpos = getpos( '.' )
 				let l:compl_list = call( &omnifunc, [0,s:getOmniWord(l:compl_res)] )
+				" The second call to omnifunc can change our pos even though
+				" it doesn't have any work to do, so set it back.
+				call setpos( '.', l:cpos )
 
 				if ! empty(l:compl_list)
 
@@ -191,10 +194,6 @@ function! s:canComplete()
 					
 					return "\<C-X>\<C-U>"
 				endif
-
-				" The second call to omnifunc can change our pos even though
-				" it doesn't have any work to do, so set it back.
-				call setpos( '.', l:cpos )
 			endif
 		endif
 	endif
