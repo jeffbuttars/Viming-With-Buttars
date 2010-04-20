@@ -173,9 +173,10 @@ let g:DoubleTapInsert_Map = [
 	\	{ 'ftype':'*', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':g:DoubleTap_SpaceyBlock },
 	\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':"" },
 	\	{ 'ftype':'*', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':g:DoubleTap_SpaceyInline },
+	\	{ 'ftype':'make', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':"" },
 	\	{ 'ftype':'vim,python,json', 'trigger':"{", 'lChar':"{", 'rChar':"}", 'spacey':g:DoubleTap_SpaceyInline },
 	\	{ 'ftype':'json', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':g:DoubleTap_SpaceyInline },
-	\	{ 'ftype':'html,html.django_template,xml,xhtml,htmlcheetah,javascript,php', 'trigger':"<", 'lChar':'<', 'rChar':'>', 'spacey':'\<LEFT>' },
+	\	{ 'ftype':'html,html.django_template,xml,xhtml,htmlcheetah,javascript,php,cpp', 'trigger':"<", 'lChar':'<', 'rChar':'>', 'spacey':'\<LEFT>' },
 	\]
 	"\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':g:DoubleTap_SpaceyInline },
 
@@ -276,6 +277,10 @@ function! s:setMatch( ... )
 	endif
 
 	for cord in l:positions
+		if len( cord ) < 2
+			continue
+		endif
+
 		call add( b:doubleTap_match_ids, matchadd( 'Special', '\%'.cord[0].'l\%'.cord[1].'c', 100  ) )
 	endfor
 
