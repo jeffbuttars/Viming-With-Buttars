@@ -87,6 +87,7 @@ endfunction
 "function! s:findFilePath(cur_text)
 function! FindFilePath()
 
+
 	let l:cline = getline( '.' )
 
 	" Look for a leading '/', './' or '~' characters. 
@@ -173,9 +174,12 @@ function! s:canComplete()
 			let b:completionPos = -1
 			let l:compl_res = call( &omnifunc, [1,''] )
 
+
 			if -1 != l:compl_res
 
+				let l:cpos = getpos( '.' )
 				let l:compl_list = call( &omnifunc, [0,s:getOmniWord(l:compl_res)] )
+
 				if ! empty(l:compl_list)
 
 					set completefunc=NiceMenuCompletefunc
@@ -187,9 +191,14 @@ function! s:canComplete()
 					
 					return "\<C-X>\<C-U>"
 				endif
+
+				" The second call to omnifunc can change our pos even though
+				" it doesn't have any work to do, so set it back.
+				call setpos( '.', l:cpos )
 			endif
 		endif
 	endif
+
 
 	"echo "canComplete found nothing"
 	"sleep 1
@@ -361,8 +370,6 @@ function! NiceMenuAsyncCpl()
 		return ""
 	endif
 	
-	"let cword = s:getCurrentWord()
-	
 	let l:compl = "" 
 	let l:cancompl = ""
 	if b:NiceMenuEnableOmni
@@ -376,60 +383,6 @@ function! NiceMenuAsyncCpl()
 	else 
 		let l:compl = s:getDefaultCompl() 
 	endif
-
-	"if exists('&omnifunc') && &omnifunc != '' && (! s:inString())
-
-		"let l:cancompl = s:canComplete()
-		"if 0 != l:cancompl
-			"let l:compl = l:cancompl
-		"endif
-		"echo "NiceMenu_is_file_path() ".NiceMenu_is_file_path(l:cword)
-		"return ""
-		"if NiceMenu_is_file_path(l:cword)
-		"if FindFilePath()
-			"return "\<C-X>\<C-F>\<C-P>"
-			"let l:compl = "\<C-X>\<C-F>"
-		"else
-			"elseif match( l:cword, '\k->$' ) > 0 || match( l:cword, '\k\.$' ) > 0
-			"if match( l:cword, '\k$' ) > 0
-			"elseif match( l:cword, '\k$' ) > 0
-			"if l:cword =~ '\k$' || l:cword =~ '\k->$' || l:cword =~ '\k\.$'
-			" Test the complete function before setting it.
-			"let l:compl_res = call( &omnifunc, [1,''] )
-			"if -1 != l:compl_res
-
-				"let l:compl_list = call( &omnifunc, [0,s:getOmniWord(l:compl_res)] )
-				"if ! empty(l:compl_list)
-					"let l:compl = ""
-					"call complete( l:compl_res + 1, l:compl_list )
-
-					""let b:NiceMenu_has_shown = 1
-					""return "\<C-P>"
-				"endif
-			"endif
-		"endif
-	"endif
-
-	"TODO: Make this optional
-	"Fail back to a spelling check.
-	"if &spell
-		"let l:spug = s:checkSpell( l:cword )
-		"if ! empty( l:spug )
-			"let l:compl = ""
-		
-			"if ! empty( l:spug )
-				"call complete( col('.') - strlen(l:cword), l:spug )
-			"endif
-		"endif
-	"endif	
-
-	 "If a <c-n> doesn't work, try the dictionary.
-		"let compl_res = call( &omnifunc, [1,''] )
-		"if -1 != compl_res
-			"let compl_list = call( &omnifunc, [0,s:getOmniWord(compl_res)] )
-			"if ! empty(compl_list)
-				"let l:compl = "\<C-X>\<C-O>"
-		"endif
 	
 	" Select first(original typed text) option without inserting it's text 
 	" TODO: This should be a configurable option.
