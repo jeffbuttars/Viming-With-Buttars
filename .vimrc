@@ -441,6 +441,7 @@ endfunction
 " is only generated once in a while.
 au FileType python set tags +=~/.tags/tags-python
 au FileType c set tags +=~/.tags/tags-c
+au FileType cpp set tags +=~/.tags/tags-cpp
 
 " Remove menu bar from gvim
 set guioptions-=m
