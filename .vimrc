@@ -533,8 +533,8 @@ au FileType python imap <F5> <ESC>:w<CR>:PyFlakes<CR>
 
 " php synax check via 'php -l'
 " uses my plugin/phplint.vim
-au FileType php nmap <F5> <ESC>:w<CR>:PHPLint<CR>
-au FileType php imap <F5> <ESC>:w<CR>:PHPLint<CR>
+"au FileType php nmap <F5> <ESC>:w<CR>:PHPLint<CR>
+"au FileType php imap <F5> <ESC>:w<CR>:PHPLint<CR>
 
 " use tidy
 " I don't use this much, so may be buggy
