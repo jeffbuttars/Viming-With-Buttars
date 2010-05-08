@@ -568,7 +568,12 @@ function! Autosave()
 
 	write
 endfunction
-autocmd FocusLost,BufLeave,WinLeave * :call Autosave()
+autocmd FocusLost,BufLeave,WinLeave,CursorHold,CursorHoldI * :call Autosave()
+
+" Autosave and restore session/view information
+" From http://www.ll2t.cn/19469.html
+"au VimLeave * mksession! ~/.vim/session/%:t.session
+"au VimLeave * wviminfo! ~ / vim/session/%:t.viminfo
 
 " load the tag closer
 "au FileType html,xhtml let b:closetag_html_style=1
@@ -576,7 +581,7 @@ autocmd FocusLost,BufLeave,WinLeave * :call Autosave()
 
 " doubleTap
 "let g:loaded_doubleTap = 1
-"let g:DoubleTapInsertTimer = 0.8
+let g:DoubleTapInsertTimer = 0.2
 
 " Set NiceMenu Delay
 "let g:loaded_nice_menu = 1
