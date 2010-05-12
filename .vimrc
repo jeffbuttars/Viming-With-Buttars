@@ -581,7 +581,7 @@ autocmd FocusLost,BufLeave,WinLeave,CursorHold,CursorHoldI * :call Autosave()
 
 " doubleTap
 "let g:loaded_doubleTap = 1
-let g:DoubleTapInsertTimer = 0.2
+let g:DoubleTapInsertTimer = 0.25
 
 " Set NiceMenu Delay
 "let g:loaded_nice_menu = 1
