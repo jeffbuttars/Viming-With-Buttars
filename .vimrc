@@ -49,6 +49,9 @@ set incsearch		" do incremental searching
 " Don't use Ex mode, use Q for formatting
 map Q gq
 
+set undofile
+set undodir=~/.vim/undos
+
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
@@ -108,6 +111,8 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
+
+set autoread
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OmniCompletion settings
@@ -194,7 +199,9 @@ vnoremap <silent> # :call VisualSearch('b')<CR>
 " make a diff split vertical by default
 " ignore whitespace
 " show 10 lines of context
-set diffopt=filler,vertical,iwhite,context:10
+"set diffopt=filler,vertical,iwhite,context:10
+set diffopt=filler,vertical,context:10
+let g:html_diff_one_file = 1
 
 "Use real tabs, 4 spaces
 set tabstop=4
@@ -218,6 +225,7 @@ set backupdir=~/.vim/swapback
 " check out the help for cinoptions and
 " tune it to  match your prefered style.
 " :h cinoptions
+set cinoptions+=J
 
 " Keep this many lines above/below the cursor while scrolling.
 set scrolloff=3
@@ -568,7 +576,7 @@ function! Autosave()
 
 	write
 endfunction
-autocmd FocusLost,BufLeave,WinLeave * :call Autosave()
+autocmd FocusLost,BufLeave,WinLeave,CursorHold,CursorHoldI * :call Autosave()
 
 " load the tag closer
 "au FileType html,xhtml let b:closetag_html_style=1
