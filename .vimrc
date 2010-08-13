@@ -37,6 +37,8 @@ set history=1000		" keep 1000 lines of command line history
 "set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{&textwidth}\ %P
 
+set switchbuf=useopen
+
 " last window will always have a status line
 set laststatus=2
 
@@ -581,7 +583,7 @@ autocmd FocusLost,BufLeave,WinLeave,CursorHold,CursorHoldI * :call Autosave()
 
 " doubleTap
 "let g:loaded_doubleTap = 1
-let g:DoubleTapInsertTimer = 0.25
+let g:DoubleTapInsertTimer = 0.45
 
 " Set NiceMenu Delay
 "let g:loaded_nice_menu = 1
