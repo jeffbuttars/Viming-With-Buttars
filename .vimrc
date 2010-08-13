@@ -49,8 +49,10 @@ set incsearch		" do incremental searching
 " Don't use Ex mode, use Q for formatting
 map Q gq
 
-set undofile
-set undodir=~/.vim/undos
+if version > 702
+	set undofile
+	set undodir=~/.vim/undos
+endif
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
@@ -243,8 +245,12 @@ set title
 " this same key sequence to cycley through tabs, so you
 " may need to disable this key shortcut in your terminal
 " program for this mapping to work as advertised.
-nmap <C-PageDown> :tabnext<CR>
-nmap <C-PageUp> :tabprevious<CR>
+"nmap <C-PageDown> :tabnext<CR>
+"nmap <C-PageUp> :tabprevious<CR>
+nmap <C-PageDown> :bn<CR>
+nmap <C-PageUp> :bp<CR>
+imap <C-PageDown> <esc>:bn<CR>
+imap <C-PageUp> <esc>:bp<CR>
 
 "http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
 " The above URL also has good stuff for autoclosing matching pairs, like (). 
@@ -339,7 +345,8 @@ if has( "gui_running" )
 	" I like a white based them in GVim
 	set cursorline
 	hi clear CursorLine 
-	colo vylight 
+	"colo vylight 
+	colo wombat256 
 elseif $TERM =~ '256' 
 	" Use a console friendly theme and turn off cursorline
 	" I  prefer a dark theme at the console..
@@ -351,7 +358,8 @@ elseif $TERM =~ '256'
 	if $TERM_META =~ 'white'
 		colo github 
 	else
-		colo molokai 
+		"colo molokai 
+		colo wombat256 
 	endif
 endif
 
@@ -381,8 +389,8 @@ map #sp :w<CR>:!ispell %<CR>:e %<CR>
 " I usually don't want spell checking when 
 " writting code, so only enable for thing with
 " a lot of real words like text and markdown files.
-au FileType text,mkd setlocal spell spelllang=en_us
-au FileType text,mkd let b:NiceMenuContextRegex='[a-zA-Z0-9]' 
+au FileType text,mkd,rst setlocal spell spelllang=en_us
+au FileType text,mkd,rst let b:NiceMenuContextRegex='[a-zA-Z0-9]' 
 
 "set spell spelllang=en_us
 
