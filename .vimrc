@@ -172,6 +172,8 @@ let g:SnipeMateAllowOmniTab = 1
 autocmd FileType python set ft=python.django 		" For SnipMate
 autocmd BufRead *.djml set ft=html.django_template 	" For SnipMate
 
+autocmd BufRead *.go set ft=go 	" For SnipMate
+
 "End OmniCompletion settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -245,12 +247,14 @@ set title
 " this same key sequence to cycley through tabs, so you
 " may need to disable this key shortcut in your terminal
 " program for this mapping to work as advertised.
-"nmap <C-PageDown> :tabnext<CR>
-"nmap <C-PageUp> :tabprevious<CR>
-nmap <C-PageDown> :bn<CR>
-nmap <C-PageUp> :bp<CR>
-imap <C-PageDown> <esc>:bn<CR>
-imap <C-PageUp> <esc>:bp<CR>
+nmap <C-PageDown> :tabnext<CR>
+nmap <C-PageUp> :tabprevious<CR>
+imap <C-PageDown> :tabnext<CR>
+imap <C-PageUp> :tabprevious<CR>
+"nmap <C-PageDown> :bn<CR>
+"nmap <C-PageUp> :bp<CR>
+"imap <C-PageDown> <esc>:bn<CR>
+"imap <C-PageUp> <esc>:bp<CR>
 
 "http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
 " The above URL also has good stuff for autoclosing matching pairs, like (). 
