@@ -571,6 +571,9 @@ au FileType sh,bash nmap <F5> <ESC>:w<CR>:BashRun<CR>
 au FileType sh,bash imap <F5> <ESC>:w<CR>:BashRun<CR>
 "au FileType sh,bash setlocal errorformat=%f\ line\ %l:\ %m
 
+
+au FileType go setlocal errorformat=%f:%l:\ %m
+
 " json_reformat is at:
 " URL: http://lloyd.github.com/yajl/
 autocmd FileType json set equalprg=json_reformat
