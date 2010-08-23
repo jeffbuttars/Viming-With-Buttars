@@ -51,6 +51,11 @@ set incsearch		" do incremental searching
 " Don't use Ex mode, use Q for formatting
 map Q gq
 
+if version > 702
+	set undofile
+	set undodir=~/.vim/undos
+endif
+
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
@@ -111,6 +116,8 @@ if !exists(":DiffOrig")
 endif
 
 
+set autoread
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OmniCompletion settings
 " When c-y is used to select, enter normal mode.
@@ -167,6 +174,8 @@ let g:SnipeMateAllowOmniTab = 1
 autocmd FileType python set ft=python.django 		" For SnipMate
 autocmd BufRead *.djml set ft=html.django_template 	" For SnipMate
 
+autocmd BufRead *.go set ft=go 	" For SnipMate
+
 "End OmniCompletion settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -196,7 +205,9 @@ vnoremap <silent> # :call VisualSearch('b')<CR>
 " make a diff split vertical by default
 " ignore whitespace
 " show 10 lines of context
-set diffopt=filler,vertical,iwhite,context:10
+"set diffopt=filler,vertical,iwhite,context:10
+set diffopt=filler,vertical,context:10
+let g:html_diff_one_file = 1
 
 "Use real tabs, 4 spaces
 set tabstop=4
@@ -220,6 +231,7 @@ set backupdir=~/.vim/swapback
 " check out the help for cinoptions and
 " tune it to  match your prefered style.
 " :h cinoptions
+set cinoptions+=J1
 
 " Keep this many lines above/below the cursor while scrolling.
 set scrolloff=3
@@ -239,6 +251,12 @@ set title
 " program for this mapping to work as advertised.
 nmap <C-PageDown> :tabnext<CR>
 nmap <C-PageUp> :tabprevious<CR>
+imap <C-PageDown> :tabnext<CR>
+imap <C-PageUp> :tabprevious<CR>
+"nmap <C-PageDown> :bn<CR>
+"nmap <C-PageUp> :bp<CR>
+"imap <C-PageDown> <esc>:bn<CR>
+"imap <C-PageUp> <esc>:bp<CR>
 
 "http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
 " The above URL also has good stuff for autoclosing matching pairs, like (). 
@@ -333,7 +351,8 @@ if has( "gui_running" )
 	" I like a white based them in GVim
 	set cursorline
 	hi clear CursorLine 
-	colo vylight 
+	"colo vylight 
+	colo wombat256 
 elseif $TERM =~ '256' 
 	" Use a console friendly theme and turn off cursorline
 	" I  prefer a dark theme at the console..
@@ -345,7 +364,8 @@ elseif $TERM =~ '256'
 	if $TERM_META =~ 'white'
 		colo github 
 	else
-		colo molokai 
+		"colo molokai 
+		colo wombat256 
 	endif
 endif
 
@@ -375,8 +395,8 @@ map #sp :w<CR>:!ispell %<CR>:e %<CR>
 " I usually don't want spell checking when 
 " writting code, so only enable for thing with
 " a lot of real words like text and markdown files.
-au FileType text,mkd setlocal spell spelllang=en_us
-au FileType text,mkd let b:NiceMenuContextRegex='[a-zA-Z0-9]' 
+au FileType text,mkd,rst setlocal spell spelllang=en_us
+au FileType text,mkd,rst let b:NiceMenuContextRegex='[a-zA-Z0-9]' 
 
 "set spell spelllang=en_us
 
@@ -572,18 +592,13 @@ function! Autosave()
 endfunction
 autocmd FocusLost,BufLeave,WinLeave,CursorHold,CursorHoldI * :call Autosave()
 
-" Autosave and restore session/view information
-" From http://www.ll2t.cn/19469.html
-"au VimLeave * mksession! ~/.vim/session/%:t.session
-"au VimLeave * wviminfo! ~ / vim/session/%:t.viminfo
-
 " load the tag closer
 "au FileType html,xhtml let b:closetag_html_style=1
 "au FileType html,xml,xhtml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
 
 " doubleTap
 "let g:loaded_doubleTap = 1
-let g:DoubleTapInsertTimer = 0.45
+"let g:DoubleTapInsertTimer = 0.8
 
 " Set NiceMenu Delay
 "let g:loaded_nice_menu = 1
