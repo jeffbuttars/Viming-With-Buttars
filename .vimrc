@@ -253,10 +253,6 @@ nmap <C-PageDown> :tabnext<CR>
 nmap <C-PageUp> :tabprevious<CR>
 imap <C-PageDown> :tabnext<CR>
 imap <C-PageUp> :tabprevious<CR>
-"nmap <C-PageDown> :bn<CR>
-"nmap <C-PageUp> :bp<CR>
-"imap <C-PageDown> <esc>:bn<CR>
-"imap <C-PageUp> <esc>:bp<CR>
 
 "http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
 " The above URL also has good stuff for autoclosing matching pairs, like (). 
