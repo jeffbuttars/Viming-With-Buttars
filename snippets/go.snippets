@@ -1,0 +1,45 @@
+
+# Function
+snippet func
+	func ${1:function_name}(${2}) ${3:rtype} {
+		${4:/* code */}
+	}//$1()
+snippet meth 
+	func (${1:owner_obj}) ${2:function_name}(${3:params}) ${4:rtype} {
+		${5:/* code */}
+	}//$2()
+snippet if
+	if ${1:/* condition */} {
+		${2:/* code */}
+	}${3}
+snippet pkg
+	package ${1:pkgname}
+snippet imp
+	import "${1:pkgname}"
+snippet imps
+	import (
+		"${1:pkg1name}"
+		"${2:pkg2name}"${3}
+	)
+snippet var 
+	var	${1:vname} ${2:vtype} ${3}
+snippet vars
+	var (
+		"${1:pkg1name}"
+		"${2:pkg2name}"${3}
+	)
+snippet const
+	const ${1:cname} = ${2:cval}
+snippet consts
+	const (
+		${1:cname} = ${2:cval}
+		${3:cname} = ${4:cval}${5}
+	)
+snippet map
+	map[${1:keytype}] ${2:valtype}
+snippet ifok
+	if ${1:_}, ok := ${2:thing_to_check}; ok {
+		${3}
+	}
+snippet spf
+	fmt.Sprintf("", args)
