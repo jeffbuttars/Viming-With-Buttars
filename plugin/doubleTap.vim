@@ -173,7 +173,7 @@ let g:DoubleTapInsert_Map = [
 	\	{ 'ftype':'*', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':g:DoubleTap_SpaceyBlock },
 	\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':"" },
 	\	{ 'ftype':'*', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':g:DoubleTap_SpaceyInline },
-	\	{ 'ftype':'make', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':"" },
+	\	{ 'ftype':'make,go', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':"" },
 	\	{ 'ftype':'vim,python,json', 'trigger':"{", 'lChar':"{", 'rChar':"}", 'spacey':g:DoubleTap_SpaceyInline },
 	\	{ 'ftype':'json', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':g:DoubleTap_SpaceyInline },
 	\	{ 'ftype':'html,html.django_template,xml,xhtml,htmlcheetah,javascript,php,cpp', 'trigger':"<", 'lChar':'<', 'rChar':'>', 'spacey':'\<LEFT>' },
