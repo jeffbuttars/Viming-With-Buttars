@@ -202,6 +202,13 @@ nnoremap ; :
 nnoremap j gj
 nnoremap k gk
 
+" Easier window navigation when you split up your buffers.
+" Use J instead of CTRL-W j, etc.
+nnoremap <S-j> <c-w>j
+nnoremap <S-h> <c-w>h
+nnoremap <S-k> <c-w>k
+nnoremap <S-l> <c-w>l
+
 
 " Auto close the preview window
 "autocmd CursorHold * if pumvisible() == 0|pclose|endif
