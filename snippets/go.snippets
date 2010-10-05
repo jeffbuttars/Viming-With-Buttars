@@ -31,3 +31,9 @@ snippet consts
 		${1:cname} = ${2:cval}
 		${3:cname} = ${4:cval}${5}
 	)
+snippet pf
+	fmt.Printf(${1:fmt}, ${2:args})
+snippet spf
+	fmt.Sprintf(${1:fmt}, ${2:args})
+snippet vspf
+	${1:vname} = fmt.Sprintf(${2:fmt}, ${3:args})
