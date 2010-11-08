@@ -2,10 +2,11 @@ if exists("b:myfind_plugin_loaded")
   finish
 endif
 
-fun! s:Find( ... )
+fun! g:Find( firstarg, ... )
 
-	let l:find_args = join(a:000, " ")
-	echo "Be patient, running find " l:find_args
+	let l:find_args = a:firstarg . " " . join(a:000, " ")
+	echo "Be patient, running find" l:find_args
+
 	let b:find_results = system("find ".l:find_args)
 	let b:has_results = 0
 
@@ -24,6 +25,6 @@ fun! s:Find( ... )
 	endif
 
 endfun
-command! -nargs=* Find call s:Find()
+command! -nargs=* Find call g:Find( '<args>' )
 
 let b:myfind_plugin_loaded = 1
