@@ -5,6 +5,7 @@ endif
 fun! s:Find( ... )
 
 	let l:find_args = join(a:000, " ")
+	echo "Be patient, running find " l:find_args
 	let b:find_results = system("find ".l:find_args)
 	let b:has_results = 0
 
@@ -15,15 +16,13 @@ fun! s:Find( ... )
 		for result in split( b:find_results,"\n" )
 			"Match {message} in {file} on line {line}
 			let b:has_results = 1
-			caddexpr result . ":0:" . result
+			caddexpr result . ":0: "
 		endfor
-	endif
-
-	if b:has_results
 		copen
 	else
 		echo "Found nothing"
 	endif
+
 endfun
 command! -nargs=* Find call s:Find()
 
