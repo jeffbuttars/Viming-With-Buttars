@@ -1,0 +1,18 @@
+snippet com
+	{* ${1} *}
+snippet {
+	{${1}}
+snippet {f
+	{${1:funcname} ${2:attrs}}
+snippet {i
+	{include ${1:file='filename'}}
+snippet if
+	{if ${1:clause}}
+		${2:{*code*}}
+	{/if}
+snippet ifel
+	{if ${1:clause}}
+		${2:{*code*}}
+	{else}
+		${3:{*code*}}
+	{/if}
