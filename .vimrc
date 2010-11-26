@@ -180,7 +180,7 @@ function! ToggleRNU()
 		set number 
 	endif
 endfunction
-nmap <F3> <ESC>:call ToggleRNU()<CR>
+nmap <silent> <F3> <ESC>:call ToggleRNU()<CR>
 
 
 "For example, to save a file, you type :w normally, which means:
@@ -204,10 +204,10 @@ nnoremap k gk
 
 " Easier window navigation when you split up your buffers.
 " Use J instead of CTRL-W j, etc.
-nnoremap <S-j> <c-w>j
-nnoremap <S-h> <c-w>h
-nnoremap <S-k> <c-w>k
-nnoremap <S-l> <c-w>l
+nnoremap <C-j> <c-w>j
+nnoremap <C-h> <c-w>h
+nnoremap <C-k> <c-w>k
+nnoremap <C-l> <c-w>l
 
 
 " Auto close the preview window
@@ -221,10 +221,12 @@ nnoremap <S-l> <c-w>l
 let g:SnipeMateAllowOmniTab = 1
 
 " We're extra friendly for django 
-autocmd FileType python set ft=python.django 		" For SnipMate
+" autocmd FileType python set ft=python.django 		" For SnipMate
 autocmd BufRead *.djml set ft=html.django_template 	" For SnipMate
 
-autocmd BufRead *.go set ft=go 	" For SnipMate
+autocmd FileType mkd set ft=mkd.html 	" For SnipMate, I want to use HTML
+										" snippets with my markdown
+" autocmd BufRead *.go set ft=go 	" For SnipMate and syntax, n
 
 "End OmniCompletion settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -251,6 +253,11 @@ vnoremap <silent> # :call VisualSearch('b')<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" reselect visual block after in/dedent so we can in/dedent more
+"vnoremap < <gv
+"vnoremap > >gv
+
 " More normal Vim tweaks.
 " make a diff split vertical by default
 " ignore whitespace
@@ -413,13 +420,14 @@ elseif $TERM =~ '256'
 	set t_Co=256
 	set cursorline
 	hi clear CursorLine 
-	"colo jellybeans 
 	
 	if $TERM_META =~ 'white'
 		colo github 
 	else
 		"colo molokai 
-		colo wombat256 
+		"colo wombat256 
+		"colo jellybeans 
+		colo mywombat256 
 	endif
 endif
 
@@ -457,8 +465,6 @@ au FileType text,markdown,rst let b:NiceMenuContextRegex='[a-zA-Z0-9]'
 " Make right mouse button work in gvim
 set mousemodel=popup
 
-" Allow toggling of paste/nopaste via F2
-set pastetoggle=<F2>
 
 " Don't acutally close buffers, just hide them.
 set hidden
@@ -511,6 +517,21 @@ function! ToggleHex()
   let &readonly=l:oldreadonly
   let &modifiable=l:oldmodifiable
 endfunction
+
+" A more verbose pastetoggle
+function! TogglePaste()
+	if	&paste == 0
+		set paste
+		echo "Paste is ON!"
+	else
+		set nopaste
+		echo "Paste is OFF!"
+	endif
+endfunction
+" Allow toggling of paste/nopaste via F2
+"set pastetoggle=<F2>
+nmap <F2> <ESC>:call TogglePaste()<CR>
+imap <F2> <ESC>:call TogglePaste()<CR>i
 
 "http://plasticboy.com/markdown-vim-mode/
 "Markdown format options, which I don't use 
