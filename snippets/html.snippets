@@ -217,3 +217,8 @@ snippet paget # full page template for starting a new file. No doctype.
 		<body>
 		</body>
 	</html>
+snippet <t # generic open/close tag
+	<${1:tagname} ${2}>
+		${3}
+	</$1>${4}
+
