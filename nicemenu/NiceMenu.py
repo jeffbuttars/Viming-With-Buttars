@@ -159,11 +159,13 @@ class CmdThread( threading.Thread ):
 			# test if we have a completion at this cursor position
 			# returns -1 if no completion can be made.
 			res = self.remoteExp( "%s(1,'')" % omnifunc )
+
 			nmlog( "NiceMenu.CmdThread.processCMD, cmd:NMCMD_KEY_TOUT, checking omnifunc. remote_exp:%s(1,''), res:%s" % ( omnifunc, res ), 'debug' )
 			if res == -1:
 				nmlog( "NiceMenu.CmdThread.processCMD, cmd:NMCMD_KEY_TOUT, no omnicompletion available" )
 				return
 
+			vim.command('let b:completionPos = %s' % (res) )
 			#clist = self.remoteExp("%s(0,'%s')" % (omnifunc, self.getOmniWord( res )))
 			#nmlog( "NiceMenu.CmdThread.processCMD, cmd:NMCMD_KEY_TOUT, omnicompletion results: %s" % (clist) )
 			#compl = vim.command( "let b:NiceMenuCompRes = %s(%s,'%s')" % (
@@ -171,7 +173,6 @@ class CmdThread( threading.Thread ):
 			#return
 
 			# Drop our completion function onto the Q
-			#res = self.remoteExp( "%s(0,'%s')" % ( omnifunc, self.getOmniWord( res ) ) )
 			nmlog( "NiceMenu.CmdThread.processCMD, cmd:NMCMD_KEY_TOUT, omnicompletion available, queueing command." )
 			NiceMenu_ActionQ.put_nowait( {'curPos':self.curPos, 'type':'omnifunc', 
 				'func':omnifunc, 'arg1':0, 'arg2':self.getOmniWord( res ) } )
@@ -260,21 +261,52 @@ def NiceMenuAction():
 		item = None
 		nmlog( "NiceMenuAction: nothing on the action q", 'debug' )
 
+	# Check for spelling suggestions
+
+	win = vim.current.window
+	cpos = win.cursor
+	npos = (cpos[0], cpos[1]-1)
+	win.cursor = npos
+	cword = vim.eval( "expand('<cword>')" )
+	win.cursor = cpos
+
+	#vim.command('set spell')
+	#spell_list = vim.command( "let b:nm_spelllist = spellsuggest('%s')" % (cword) )
+	#spell_list = vim.eval( "spellsuggest('%s')" % (cword) )
+	#vim.command('set nospell')
+	#vim.command('let b:completionPos = %s' % (cpos[1]+1))
+	#nmlog( "NiceMenuAction: cword:%s, spell list:%s" % (cword, spell_list), 'debug' )
+
+
+	servername = vim.eval( "v:servername" )
+
 	if item and item['type'] == 'omnifunc':
-			nmlog( "NiceMenuAction: trying: let b:completionList=%s(%s,'%s')" % (  item['func'], item['arg1'], item['arg2'] ), 'debug' )
-			vim.command( "let b:completionList=%s(%s,'%s')" % ( item['func'], item['arg1'], item['arg2']) )
-			if vim.eval('b:completionList'):
-				vim.command( "set completefunc=NiceMenuCompletefunc" )
-				nmlog( "NiceMenuAction: displaying completion..." )
-				servername = vim.eval( "v:servername" )
-				#vim.command( "call remote_send( \"%s\", '<C-X><C-U>' )" % ( servername ) )
-				#vim.command( "call remote_expr( \"%s\", feedkeys(\"\<C-X>\<C-U>\") )" % ( servername ) )
-				#vim.command( 'call feedkeys( "\<C-X>\<C-U>" )' )
-				# Use a subprocess server call because for reasons
-				# I don't know about calling feedkeys or remote_send/expr 
-				# has a huge and un acceptable delay.
-				subprocess.call( ["gvim", "--servername", "%s"%servername, "--remote-send", '<C-X><C-U>'] )
-				nmlog( "NiceMenuAction: sent keys", 'debug' )
+		nmlog( "NiceMenuAction: trying: let b:completionList=%s(%s,'%s')" % (  item['func'], item['arg1'], item['arg2'] ), 'debug' )
+		vim.command( "let b:completionList=%s(%s,'%s')" % ( item['func'], item['arg1'], item['arg2']) )
+		#vim.command('let b:completionPos = %s' % (item['arg1']))
+		#vim.command( "call sort(b:completionList)"  )
+
+
+		if vim.eval('b:completionList'):
+
+			#vim.command( "let b:completionList+=b:nm_spelllist"  )
+
+			vim.command( "set completefunc=NiceMenuCompletefunc" )
+			nmlog( "NiceMenuAction: displaying completion..." )
+			#vim.command( "call remote_send( \"%s\", '<C-X><C-U>' )" % ( servername ) )
+			#vim.command( "call remote_expr( \"%s\", feedkeys(\"\<C-X>\<C-U>\") )" % ( servername ) )
+			#vim.command( 'call feedkeys( "\<C-X>\<C-U>" )' )
+			# Use a subprocess server call because for reasons
+			# I don't know about calling feedkeys or remote_send/expr 
+			# has a huge and un acceptable delay.
+			subprocess.call( ["gvim", "--servername", "%s"%servername, "--remote-send", '<C-X><C-U>'] )
+			nmlog( "NiceMenuAction: sent keys", 'debug' )
+		else:
+			nmlog( "NiceMenuAction: falling back easy completion", 'debug' )
+			subprocess.call( ["gvim", "--servername", "%s"%servername, "--remote-send", '<C-X><C-N>'] )
+	else:
+		nmlog( "NiceMenuAction: falling back easy completion", 'debug' )
+		subprocess.call( ["gvim", "--servername", "%s"%servername, "--remote-send", '<C-X><C-N>'] )
 #NiceMenuAction()
 
 def NiceMenuShutdown():
