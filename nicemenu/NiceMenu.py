@@ -6,45 +6,57 @@ NiceMenu.py
 # System Imports
 import threading
 import vim
-#import subprocess
-from Queue import Queue
+import subprocess
+from Queue import Queue, Empty
 
 # Regional Imports
 
+compl_res = None
 
-class logThread( threading.Thread ):
+class LogThread( threading.Thread ):
 	""""""
 
 	def run( self ):
 		"""docstring for run"""
+		self.alive = True
 		fd = open( '/tmp/vim.log', 'w' )
-		while True:
+		while self.alive:
 			# try forever until we get some data
 			logEntry = NiceMenu_logQ.get(True)
 			fd.write( "%s\n" % logEntry )
 			fd.flush()
+
+		nmlog( "LogThread stopping", 'debug')
+		fd.close()
 	#run()
 		
-#logThread
+#LogThread
 
-class cmdThread( threading.Thread ):
+class CmdThread( threading.Thread ):
 
 	def run( self ):
-		nmlog( "cmdThread.run()", 'debug'  )
+		nmlog( "CmdThread.run()", 'debug'  )
+		self.alive = True
 		self.curPos = None
-		while True:
-			# try forever until we get some data
-			item = NiceMenu_cmdQ.get(True)
+		while self.alive:
 			try:
-				self.processCMD( item['cmd'], item['args'] )
-			except Exception as e:
-				nmlog( "cmdThread.run() caught exception:%s" % e, 'debug'  )
+				# try forever until we get some data
+				item = NiceMenu_cmdQ.get(True)
+				nmlog( "CmdThread.run() item:%s" % item, 'debug'  )
+				try:
+					self.processCMD( item['cmd'], item['args'] )
+				except Exception as e:
+					nmlog( "CmdThread.run() caught exception:%s" % e, 'debug'  )
+			except Exception:
+				pass
 
+
+		nmlog( "CmdThread.run() stopping", 'debug'  )
 	#run()
 
 	def getCurWord( self, line, pos ):
 		"""docstring for getCurWord"""
-		nmlog( "NiceMenu.cmdThread.getCurWord (line:%s,pos:%s)" % (line, pos), 'debug' )
+		nmlog( "NiceMenu.CmdThread.getCurWord (line:%s,pos:%s)" % (line, pos), 'debug' )
 		line = vim.current.line
 		wlist = line[0:int(pos[2],10)].split()
 
@@ -53,7 +65,7 @@ class cmdThread( threading.Thread ):
 		else:
 			cw = wlist[-1]
 
-		nmlog( "NiceMenu.cmdThread.getCurWord %s" % cw, 'debug' )
+		nmlog( "NiceMenu.CmdThread.getCurWord %s" % cw, 'debug' )
 		return cw
 	#getCurWord()
 
@@ -75,13 +87,12 @@ class cmdThread( threading.Thread ):
 		line = self.curPos['line']
 		pos = self.curPos['pos']
 
-		nmlog( "NiceMenu.cmdThread.getOmniWord line:%s, pos:%s, spoint:%s" % (line,pos,spoint), 'debug' )
+		nmlog( "NiceMenu.CmdThread.getOmniWord line:'%s', pos:%s, spoint:%s" % (line,pos,spoint), 'debug' )
 		ol = line[int(spoint,10):int(pos[2],10)-1]
 
-		nmlog( "NiceMenu.cmdThread.getOmniWord %s" % ol, 'debug' )
+		nmlog( "NiceMenu.CmdThread.getOmniWord '%s'" % ol, 'debug' )
 		return ol
 	#getOmniWord()
-
 
 	def procKeyPress( self, args ):
 		"""docstring for procKeyPress"""
@@ -89,30 +100,30 @@ class cmdThread( threading.Thread ):
 		npos = args['pos']
 
 		# to see what npos looks like, see help: getpos()
-		nmlog( "NiceMenu.cmdThread.processCMD, cmd:NMCMD_KEY_PRESS, pos%s" % npos, 'debug' )
+		nmlog( "NiceMenu.CmdThread.processCMD, cmd:NMCMD_KEY_PRESS, pos%s" % npos, 'debug' )
 
 		if self.curPos:
 			curPos = self.curPos['pos']
 			if curPos and npos[1] == curPos[1] and npos[2] == curPos[2] and npos[3] == curPos[3]:
-				nmlog( "NiceMenu.cmdThread.processCMD bad pos, npos:%s, curPos:%s" % ( npos, curPos ), 'debug' )
+				nmlog( "NiceMenu.CmdThread.processCMD bad pos, npos:%s, curPos:%s" % ( npos, curPos ), 'debug' )
 				return False
 		
 		cword = self.getCurWord( line, npos )
 		if len(cword) < self.getWordMin():
-			nmlog( "NiceMenu.cmdThread.processCMD word to short, %s" % ( self.getWordMin() ), 'debug' )
+			nmlog( "NiceMenu.CmdThread.processCMD word to short, %s" % ( self.getWordMin() ), 'debug' )
 			return False 
 
 		# If it's just a number, don't deal with it.
 		# TODO: make optional
 		if cword.isdigit():
-			nmlog( "NiceMenu.cmdThread.processCMD %s is a digit, no complete" % ( cword ), 'debug' )
+			nmlog( "NiceMenu.CmdThread.processCMD %s is a digit, no complete" % ( cword ), 'debug' )
 			return False 
 
 		#TODO: make optional
 		#If we're inside a string, not at the end, don't try to complete
 		space_idx = int(npos[2],10)
 		if len(line) >= space_idx and not line[space_idx-1].isspace():
-			nmlog( "NiceMenu.cmdThread.processCMD %s:%s is in a string, no complete" % ( cword,npos ), 'debug' )
+			nmlog( "NiceMenu.CmdThread.processCMD %s:%s is in a string, no complete" % ( cword,npos ), 'debug' )
 			return False
 
 		# remember what we want to complete
@@ -126,7 +137,7 @@ class cmdThread( threading.Thread ):
 		delay = None
 		if not delay:
 			delay = '.8'
-		nmlog( "NiceMenu.cmdThread.processCMD starting key timer, %s" % ( delay ), 'debug' )
+		nmlog( "NiceMenu.CmdThread.procKeyPress starting key timer, %s" % ( delay ), 'debug' )
 		NiceMenu_ptimer = threading.Timer( float(delay), keyTimer )
 		NiceMenu_ptimer.start()
 
@@ -136,48 +147,69 @@ class cmdThread( threading.Thread ):
 
 	def processCMD( self, cmd, args=None ):
 		"""docstring for processCMD"""
-		nmlog( "NiceMenu.cmdThread.processCMD, cmd:%s, args:%s" % ( cmd, args ), 'debug' )
+		nmlog( "NiceMenu.CmdThread.processCMD, cmd:%s, args:%s" % ( cmd, args ), 'debug' )
 
 		if cmd == NMCMD_KEY_PRESS:
 			return self.procKeyPress( args )
 		elif cmd == NMCMD_KEY_TOUT:
-			nmlog( "NiceMenu.cmdThread.processCMD, cmd:NMCMD_KEY_TOUT", 'debug' )
+			nmlog( "NiceMenu.CmdThread.processCMD, cmd:NMCMD_KEY_TOUT", 'debug' )
 
 			omnifunc = self.remoteExp( "&omnifunc" )
 
+			# test if we have a completion at this cursor position
+			# returns -1 if no completion can be made.
 			res = self.remoteExp( "%s(1,'')" % omnifunc )
-			nmlog( "NiceMenu.cmdThread.processCMD, cmd:NMCMD_KEY_TOUT, remote_exp:%s" % ( res ), 'debug' )
+			nmlog( "NiceMenu.CmdThread.processCMD, cmd:NMCMD_KEY_TOUT, checking omnifunc. remote_exp:%s(1,''), res:%s" % ( omnifunc, res ), 'debug' )
+			if res == -1:
+				nmlog( "NiceMenu.CmdThread.processCMD, cmd:NMCMD_KEY_TOUT, no omnicompletion available" )
+				return
 
+			#clist = self.remoteExp("%s(0,'%s')" % (omnifunc, self.getOmniWord( res )))
+			#nmlog( "NiceMenu.CmdThread.processCMD, cmd:NMCMD_KEY_TOUT, omnicompletion results: %s" % (clist) )
+			#compl = vim.command( "let b:NiceMenuCompRes = %s(%s,'%s')" % (
+					#item['func'], item['arg1'], item['arg2']) )
+			#return
+
+			# Drop our completion function onto the Q
 			#res = self.remoteExp( "%s(0,'%s')" % ( omnifunc, self.getOmniWord( res ) ) )
+			nmlog( "NiceMenu.CmdThread.processCMD, cmd:NMCMD_KEY_TOUT, omnicompletion available, queueing command." )
 			NiceMenu_ActionQ.put_nowait( {'curPos':self.curPos, 'type':'omnifunc', 
 				'func':omnifunc, 'arg1':0, 'arg2':self.getOmniWord( res ) } )
 
+			# Calling back to the main vim process via NiceMenuAction()
+			# It will pull the fist item off the action queu and run it for us.
 			#NiceMenu_ActionQ.put( {'curPos':self.curPos, 'type':'omni', 'data':res } )
-			res = self.remoteExp( "NiceMenuAction()"  )
+
+			#res = self.remoteExp( "NiceMenuAction()" )
+			NiceMenuAction()
+			#servername = vim.eval( "v:servername" )
+			#vim.command( 'call remote_expr("%s", "NiceMenuAction()")' % ( servername ) )
+			#nmlog( "NiceMenu.CmdThread.processCMD, cmd:NMCMD_KEY_TOUT, dumping omnicompletion results: %s" % (compl_res) )
 
 		elif cmd == NMCMD_LEFT_INSERT:
-			nmlog( "NiceMenu.cmdThread.processCMD, cmd:NMCMD_LEFT_INSERT", 'debug' )
+			nmlog( "NiceMenu.CmdThread.processCMD, cmd:NMCMD_LEFT_INSERT", 'debug' )
 			self.curPos = None
 			cancel()
 
 	def remoteExp( self, exp ):
 		"""docstring for remoteExp"""
-		nmlog( "NiceMenu.cmdThread.remoteExp %s" % exp, 'debug' )
+		nmlog( "NiceMenu.CmdThread.remoteExp %s" % exp, 'debug' )
 		servername = vim.eval( "v:servername" )
 		if not servername:
-			nmlog( "NiceMenu.cmdThread.remoteExp no servername, unable to process remote expr ", 'error' )
+			nmlog( "NiceMenu.CmdThread.remoteExp no servername, unable to process remote expr ", 'error' )
 		res = vim.eval( "remote_expr(\"%s\", \"%s\")" % ( servername, exp ) )
-		#nmlog( "NiceMenu.cmdThread.remoteExp %s,  %s returned:%s" % (servername,exp,res), 'debug' )
+		#nmlog( "NiceMenu.CmdThread.remoteExp %s,  %s returned:%s" % (servername,exp,res), 'debug' )
 		return res
 	#remoteExp()
 
+
 #processCMD()
 
-# cmdThread
+# CmdThread
 
 def keyTimer():
 	"""docstring for keyTimer"""
-	nmlog( "NiceMenu.keyTimer()", 'debug' )
+	nmlog( "NiceMenu.keyTimer() expired", 'debug' )
 	sendCmd( NMCMD_KEY_TOUT )
 #keyTimer()
 
@@ -217,9 +249,48 @@ def showMenu():
 
 # showMenu()
 
+def NiceMenuAction():
+	"""docstring for NiceMenuAction"""
+
+	item = None
+	try:
+		item = NiceMenu_ActionQ.get_nowait()
+	except Exception:
+		#print( "NiceMenuAction: nothing on the action q" )
+		item = None
+		nmlog( "NiceMenuAction: nothing on the action q", 'debug' )
+
+	if item and item['type'] == 'omnifunc':
+			nmlog( "NiceMenuAction: trying: let b:completionList=%s(%s,'%s')" % (  item['func'], item['arg1'], item['arg2'] ), 'debug' )
+			vim.command( "let b:completionList=%s(%s,'%s')" % ( item['func'], item['arg1'], item['arg2']) )
+			if vim.eval('b:completionList'):
+				vim.command( "set completefunc=NiceMenuCompletefunc" )
+				nmlog( "NiceMenuAction: displaying completion..." )
+				servername = vim.eval( "v:servername" )
+				#vim.command( "call remote_send( \"%s\", '<C-X><C-U>' )" % ( servername ) )
+				#vim.command( "call remote_expr( \"%s\", feedkeys(\"\<C-X>\<C-U>\") )" % ( servername ) )
+				#vim.command( 'call feedkeys( "\<C-X>\<C-U>" )' )
+				# Use a subprocess server call because for reasons
+				# I don't know about calling feedkeys or remote_send/expr 
+				# has a huge and un acceptable delay.
+				subprocess.call( ["gvim", "--servername", "%s"%servername, "--remote-send", '<C-X><C-U>'] )
+				nmlog( "NiceMenuAction: sent keys", 'debug' )
+#NiceMenuAction()
+
+def NiceMenuShutdown():
+	"""docstring for NiceMenuShutdown"""
+	nmlog("NiceMenuShutdown", 'debug')
+	logThread.alive = False
+	cmdThread.alive = False
+	
+	if NiceMenu_ptimer:
+		NiceMenu_ptimer.cancel()
+	# pump the queues so the threads will shutdown.
+	NiceMenu_cmdQ.put_nowait( "shutdown" )
+	NiceMenu_logQ.put_nowait( "shutdown" )
+#NiceMenuShutdown()
+
 # Initialize the global environment
-
-
 NMCMD_KEY_PRESS = 1
 NMCMD_KEY_TOUT = 2
 NMCMD_LEFT_INSERT = 4
@@ -231,5 +302,10 @@ NiceMenu_ActionQ = Queue()
 NiceMenu_logQ = Queue()
 NiceMenu_ptimer = None
 
-(logThread()).start()
-(cmdThread()).start()
+cmdThread = CmdThread()
+cmdThread.start()
+
+logThread = LogThread()
+logThread.start()
+
+
