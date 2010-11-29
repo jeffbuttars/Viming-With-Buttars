@@ -1,7 +1,7 @@
 " Vim color file
-" Maintainer: Datila Carvalho <datila@saci.homeip.net>
-" Last Change: November, 3, 2003
-" Version: 0.1
+" Maintainer: Datila Carvalho <datila@hotmail.com>
+" Last Change: May, 19, 2005
+" Version: 0.2
 
 " This is a VIM's version of the emacs color theme
 " _Dark Blue2_ created by Chris McMahan.
@@ -32,7 +32,7 @@ hi VertSplit            gui=bold guifg=NONE guibg=gray80
 "hi Folded
 "hi FoldColumn
 "hi IncSearch
-"hi LineNr
+hi LineNr				gui=bold guifg=lightsteelblue guibg=#132b4a
 hi ModeMsg              gui=bold
 "hi MoreMsg
 "hi NonText
@@ -40,13 +40,19 @@ hi Normal               guibg=#233b5a guifg=#fff8dc
 "hi Question
 hi Search               gui=bold guifg=#233b5a guibg=lightgoldenrod
 "hi SpecialKey
-hi StatusLine           guifg=aquamarine
-hi StatusLineNC         guifg=steelblue3
+hi StatusLine           guifg=steelblue4 guibg=lightgray 
+hi StatusLineNC         guifg=royalblue4 guibg=lightsteelblue
 "hi Title
 hi Visual               guifg=steelblue guibg=fg
 hi VisualNOS            gui=bold guifg=steelblue guibg=fg
 hi WarningMsg           guifg=White guibg=Tomato
 "hi WildMenu
+
+hi User2				guifg=lightskyblue guibg=#021a39 gui=bold
+
+" If using Motif/Athena
+hi Menu                 guibg=#233b5a guifg=#fff8dc
+hi Scrollbar            guibg=bg
 
 " Colors for syntax highlighting
 hi Comment              gui=italic guifg=mediumaquamarine

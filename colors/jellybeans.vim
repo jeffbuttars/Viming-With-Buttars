@@ -341,7 +341,6 @@ call s:X("Type","ffb964","","","Yellow","")
 call s:X("NonText","808080","151515","","","")
 
 call s:X("SpecialKey","808080","000000","italic","","black")
-"call s:X("SpecialKey","808080","343434","italic","","")
 "call s:X("Search","f0a0c0","302028","underline","Magenta","")
 "call s:X("Search","fF0000","302028","underline","Red","")
 "No underline
@@ -415,8 +414,6 @@ call s:X("rubyRegexpDelimiter","540063","","","Magenta","")
 call s:X("rubyRegexp","dd0093","","","DarkMagenta","")
 call s:X("rubyRegexpSpecial","a40073","","","Magenta","")
 
-
-
 call s:X("rubyPredefinedIdentifier","de5577","","","Red","")
 
 " JavaScript
@@ -425,7 +422,6 @@ hi link javaScriptRegexpString rubyRegexp
 
 " Tag list
 hi link TagListFileName Directory
-
 " delete functions {{{
 delf s:X
 delf s:rgb
