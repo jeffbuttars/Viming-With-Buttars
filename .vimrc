@@ -685,7 +685,10 @@ function! Autosave()
 		return
 	endif
 
-	write
+	if expand('%') != ""
+		write
+	endif
+
 endfunction
 autocmd FocusLost,BufLeave,WinLeave,CursorHold,CursorHoldI * :call Autosave()
 
