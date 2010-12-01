@@ -3,11 +3,7 @@
 snippet func
 	func ${1:function_name}(${2}) ${3:rtype} {
 		${4:/* code */}
-	}//$1()
-snippet meth 
-	func (${1:owner_obj}) ${2:function_name}(${3:params}) ${4:rtype} {
-		${5:/* code */}
-	}//$2()
+	}${5}
 snippet if
 	if ${1:/* condition */} {
 		${2:/* code */}
@@ -35,8 +31,6 @@ snippet consts
 		${1:cname} = ${2:cval}
 		${3:cname} = ${4:cval}${5}
 	)
-snippet map
-	map[${1:keytype}] ${2:valtype}
 snippet pf
 	fmt.Printf(${1:fmt}, ${2:args})
 snippet spf

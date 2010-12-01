@@ -26,24 +26,23 @@ set nocompatible
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
-else
-  set backup		" keep a backup file
-endif
+"if has("vms")
+  "set nobackup		" do not keep a backup file, use versions instead
+"else
+  "set backup		" keep a backup file
+"endif
+set nobackup		" do not keep a backup file, use versions instead
+
 set history=1000		" keep 1000 lines of command line history
 "set ruler		" show the cursor position all the time
 " Set up a custom status line. Like setting ruler, but we add the buffer number and filetype to the status
 "set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{&textwidth}\ %P
 
-set switchbuf=useopen
-
 " last window will always have a status line
 set laststatus=2
 
 set showcmd		" display incomplete commands
-set incsearch		" do incremental searching
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
@@ -71,6 +70,21 @@ if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
 endif
+
+set incsearch		" do incremental searching
+
+"This line will make Vim set out tab characters, trailing whitespace and
+"invisible spaces visually, and additionally use the # sign at the end of lines
+"to mark lines that extend off-screen. For more info, see :h listchars
+"set list
+"set listchars=tab:\|.,trail:.,extends:#,nbsp:.
+
+"In some files, like HTML and XML files, tabs are fine and showing them is
+"really annoying, you can disable them easily using an autocmd declaration:
+"autocmd filetype html,xml set listchars-=tab:>.
+
+set ttyfast
+set laststatus=2
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -159,10 +173,46 @@ function! CleverCR()
 endfunction
 inoremap <CR> <C-R>=CleverCR()<CR>
 
+function! ToggleRNU()
+	if 0 == &rnu
+		set rnu
+	else
+		set number 
+	endif
+endfunction
+nmap <silent> <F3> <ESC>:call ToggleRNU()<CR>
+
+
+"For example, to save a file, you type :w normally, which means:
+
+"    Press and hold Shift
+"    Press ;
+"    Release the Shift key
+"    Press w
+"    Press Return
+" This trick strips off steps 1 and 3 for each Vim command. It takes some times
+" for your muscle memory to get used to this new ;w command, but once you use
+" it, you don’t want to go back!
+nnoremap ; :
+
+"If you like long lines with line wrapping enabled, this solves the problem
+"that pressing down jumpes your cursor “over” the current line to the next
+"line. It changes behaviour so that it jumps to the next row in the editor
+"(much more natural):
+nnoremap j gj
+nnoremap k gk
+
+" Easier window navigation when you split up your buffers.
+" Use J instead of CTRL-W j, etc.
+nnoremap <C-j> <c-w>j
+nnoremap <C-h> <c-w>h
+nnoremap <C-k> <c-w>k
+nnoremap <C-l> <c-w>l
+
 
 " Auto close the preview window
-autocmd CursorHold * if pumvisible() == 0|pclose|endif
-autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+"autocmd CursorHold * if pumvisible() == 0|pclose|endif
+"autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 
 """ Snipmate 
 " Don't trigger snipmate when using completion
@@ -171,10 +221,12 @@ autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 let g:SnipeMateAllowOmniTab = 1
 
 " We're extra friendly for django 
-autocmd FileType python set ft=python.django 		" For SnipMate
+" autocmd FileType python set ft=python.django 		" For SnipMate
 autocmd BufRead *.djml set ft=html.django_template 	" For SnipMate
 
-autocmd BufRead *.go set ft=go 	" For SnipMate
+autocmd FileType mkd set ft=mkd.html 	" For SnipMate, I want to use HTML
+										" snippets with my markdown
+" autocmd BufRead *.go set ft=go 	" For SnipMate and syntax, n
 
 "End OmniCompletion settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -201,6 +253,11 @@ vnoremap <silent> # :call VisualSearch('b')<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" reselect visual block after in/dedent so we can in/dedent more
+"vnoremap < <gv
+"vnoremap > >gv
+
 " More normal Vim tweaks.
 " make a diff split vertical by default
 " ignore whitespace
@@ -212,6 +269,7 @@ let g:html_diff_one_file = 1
 "Use real tabs, 4 spaces
 set tabstop=4
 set shiftwidth=4
+set shiftround	" use multiple of shiftwidth when indenting with '<' and '>'
 set smarttab
 
 " Show matching braces
@@ -221,8 +279,10 @@ set mat=5
 
 " Keep our swap and backup files out of the way 
 " and in a central palce.
-set directory=~/.vim/swapback
-set backupdir=~/.vim/swapback
+"set directory=~/.vim/swapback
+"set backupdir=~/.vim/swapback
+" Screw the swap file
+set noswapfile
 
 " C opts
 " Kernel style
@@ -231,7 +291,7 @@ set backupdir=~/.vim/swapback
 " check out the help for cinoptions and
 " tune it to  match your prefered style.
 " :h cinoptions
-set cinoptions+=J1
+set cinoptions+=J
 
 " Keep this many lines above/below the cursor while scrolling.
 set scrolloff=3
@@ -253,6 +313,10 @@ nmap <C-PageDown> :tabnext<CR>
 nmap <C-PageUp> :tabprevious<CR>
 imap <C-PageDown> :tabnext<CR>
 imap <C-PageUp> :tabprevious<CR>
+"nmap <C-PageDown> :bn<CR>
+"nmap <C-PageUp> :bp<CR>
+"imap <C-PageDown> <esc>:bn<CR>
+"imap <C-PageUp> <esc>:bp<CR>
 
 "http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
 " The above URL also has good stuff for autoclosing matching pairs, like (). 
@@ -261,9 +325,9 @@ imap <C-PageUp> :tabprevious<CR>
 "If you type (, however, it wraps the selected text in parentheses. 
 "This is enormously useful. Luckily, it's very easy to recreate in Vim:
 vnoremap ((  <ESC>`>a)<ESC>`<i(<ESC>
-vnoremap ))  <ESC>`>a)<ESC>`<i(<ESC>
+vnoremap ))  <ESC>`<i(<ESC>`>a)<ESC>
 vnoremap {{  <ESC>`>a}<ESC>`<i{<ESC>
-vnoremap }}  <ESC>`>a}<ESC>`<i{<ESC>
+vnoremap }}  <ESC>`<i{<ESC>`>a}<ESC>
 " If allow " here, it messes up register selection
 " So we use "" instead, and it works.
 " Move this into doubleTap?
@@ -272,7 +336,7 @@ vnoremap ""  <ESC>`>a"<ESC>`<i"<ESC>
 vnoremap ''  <ESC>`>a'<ESC>`<i'<ESC>
 vnoremap ``  <ESC>`>a`<ESC>`<i`<ESC>
 vnoremap [[  <ESC>`>a]<ESC>`<i[<ESC>
-vnoremap ]]  <ESC>`>a]<ESC>`<i[<ESC>
+vnoremap ]]  <ESC>`<i[<ESC>`>a]<ESC>
 
 " When vimrc is edited, automatically reload it!
 autocmd! bufwritepost .vimrc source ~/.vimrc
@@ -304,6 +368,7 @@ set selection=inclusive
 set shortmess=atI
 set wildmenu
 set wildmode=list:longest
+set wildignore=*.swp,*.bak,*.pyc,*.pyo,*.class,*.6
 
 " set key timeout, good for remaps
 set timeoutlen=300
@@ -355,13 +420,14 @@ elseif $TERM =~ '256'
 	set t_Co=256
 	set cursorline
 	hi clear CursorLine 
-	"colo jellybeans 
 	
 	if $TERM_META =~ 'white'
 		colo github 
 	else
 		"colo molokai 
-		colo wombat256 
+		"colo wombat256 
+		"colo jellybeans 
+		colo mywombat256 
 	endif
 endif
 
@@ -391,13 +457,17 @@ map #sp :w<CR>:!ispell %<CR>:e %<CR>
 " I usually don't want spell checking when 
 " writting code, so only enable for thing with
 " a lot of real words like text and markdown files.
-au FileType text,mkd,rst setlocal spell spelllang=en_us
-au FileType text,mkd,rst let b:NiceMenuContextRegex='[a-zA-Z0-9]' 
+au FileType text,markdown,rst setlocal spell spelllang=en_us
+au FileType text,markdown,rst let b:NiceMenuContextRegex='[a-zA-Z0-9]' 
 
 "set spell spelllang=en_us
 
 " Make right mouse button work in gvim
 set mousemodel=popup
+
+
+" Don't acutally close buffers, just hide them.
+set hidden
 
 " dictionary: english words first
 " add any text based dictionaries to the list.
@@ -448,6 +518,21 @@ function! ToggleHex()
   let &modifiable=l:oldmodifiable
 endfunction
 
+" A more verbose pastetoggle
+function! TogglePaste()
+	if	&paste == 0
+		set paste
+		echo "Paste is ON!"
+	else
+		set nopaste
+		echo "Paste is OFF!"
+	endif
+endfunction
+" Allow toggling of paste/nopaste via F2
+"set pastetoggle=<F2>
+nmap <F2> <ESC>:call TogglePaste()<CR>
+imap <F2> <ESC>:call TogglePaste()<CR>i
+
 "http://plasticboy.com/markdown-vim-mode/
 "Markdown format options, which I don't use 
 " but I'll include them here for your experimentation
@@ -462,13 +547,14 @@ au FileType c set tags +=~/.tags/tags-c
 au FileType cpp set tags +=~/.tags/tags-cpp
 
 " Remove menu bar from gvim
-set guioptions-=m
+"set guioptions-=m
 " Remove toolbar from gvim
 set guioptions-=T
 " Set gvim font. I like the Inconsolata font these days.
 " You'll need to install, do it, it's very much worth it.
 " A great font, and it's 100% free.
 set guifont=Inconsolata\ Medium\ 12
+"set guifont=Anonymous\ Pro\ 12
 
 " End More normal Vim tweaks.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -526,6 +612,9 @@ let Tlist_Close_On_Select = 1
 let Tlist_Display_Prototype = 1
 """ End TagList
 
+""" netrw
+" Tree Style listing
+let g:netrw_liststyle = 3
 
 """ NERDTree
 " Use Ctrl-d to open/close the NERDTree.
@@ -533,6 +622,8 @@ nmap <C-d> <ESC>:NERDTreeToggle<CR>
 imap <C-d> <ESC>:NERDTreeToggle<CR>
 let NERDChristmasTree=1
 let NERDTreeQuitOnOpen=1
+
+
 
 """ JSLint.vim plugin -- indespensable!
 " Turn off error highlighting. I like having just the
@@ -569,6 +660,9 @@ au FileType sh,bash nmap <F5> <ESC>:w<CR>:BashRun<CR>
 au FileType sh,bash imap <F5> <ESC>:w<CR>:BashRun<CR>
 "au FileType sh,bash setlocal errorformat=%f\ line\ %l:\ %m
 
+
+au FileType go setlocal errorformat=%f:%l:\ %m
+
 " json_reformat is at:
 " URL: http://lloyd.github.com/yajl/
 autocmd FileType json set equalprg=json_reformat
@@ -580,6 +674,13 @@ source ~/.vim/plugin/autotag.vim
 " Little something from http://www.ibm.com/developerworks/linux/library/l-vim-script-5/index.html 
 " Agressive auto saving
 function! Autosave()
+
+	" close the preview window if it's visible
+	" and the pop up menu is not visible
+	if pumvisible() == 0
+		pclose
+	endif
+
 	if ! &modified
 		return
 	endif
@@ -610,6 +711,9 @@ let g:NiceMenuMin = 1
 "autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\
 "%l%.%#,%Z%[%^\ ]%\\@=%m
 
+if $CPBSDSRCDIR != "" && getcwd() =~ "^".$CPBSDSRCDIR
+	set makeprg=cpmake
+endif
 
 
  "End Plugins and external addons

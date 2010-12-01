@@ -164,7 +164,7 @@ let g:DoubleTapInsertJumpSimple_Map = [
 	\	{ 'ftype':'php,perl', 'trigger':'.', "inChar":".", 'spacey':'' } ]
 
 let g:DoubleTapJumpOut_Map = [
-	\	{ 'ftype':'html,html.django_template,xml,xhtml,htmlcheetah,javascript,php', 'trigger':'>', 'leftChar':'<', 'rightChar':'>' },
+	\	{ 'ftype':'html,xhtml,html.django_template,xml,xhtml,htmlcheetah,javascript,php', 'trigger':'>', 'leftChar':'<', 'rightChar':'>' },
 	\	{ 'ftype':'*', 'trigger':'}', 'leftChar':'{', 'rightChar':'}' },
 	\	{ 'ftype':'*', 'trigger':']', 'leftChar':'[', 'rightChar':']' },
 	\	{ 'ftype':'*', 'trigger':')', 'leftChar':'(', 'rightChar':')' } ]
@@ -176,7 +176,7 @@ let g:DoubleTapInsert_Map = [
 	\	{ 'ftype':'make,go', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':"" },
 	\	{ 'ftype':'vim,python,json', 'trigger':"{", 'lChar':"{", 'rChar':"}", 'spacey':g:DoubleTap_SpaceyInline },
 	\	{ 'ftype':'json', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':g:DoubleTap_SpaceyInline },
-	\	{ 'ftype':'html,html.django_template,xml,xhtml,htmlcheetah,javascript,php,cpp', 'trigger':"<", 'lChar':'<', 'rChar':'>', 'spacey':'\<LEFT>' },
+	\	{ 'ftype':'html,xhtml,html.django_template,xml,xhtml,htmlcheetah,javascript,php,cpp', 'trigger':"<", 'lChar':'<', 'rChar':'>', 'spacey':'\<LEFT>' },
 	\]
 	"\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':g:DoubleTap_SpaceyInline },
 

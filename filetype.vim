@@ -7,7 +7,7 @@ endif
 
 augroup markdown
 	au!
-	au BufRead,BufNewFile *.mkd,*.markdown setfiletype mkd
+	au BufRead,BufNewFile *.md,*.mkd,*.markdown setfiletype mkd
 augroup END
 
 augroup json
