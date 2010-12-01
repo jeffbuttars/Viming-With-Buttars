@@ -454,7 +454,7 @@ fun! s:NiceMenuCompl( need_i )
 	" If we're in the same spot as the last trigger, don't show the menu
 	" again.
 	let l:npos = getpos(".")
-	if l:npos[1] == b:complPos[1] && l:npos[2] == b:complPos[2] && l:npos[3] == b:complPos[3]
+	if exists( 'b:complPos' ) && l:npos[1] == b:complPos[1] && l:npos[2] == b:complPos[2] && l:npos[3] == b:complPos[3]
 		"echo "NiceMenuCheckContext bad pos " l:npos ":" b:complPos
 		return "" 
 	endif
