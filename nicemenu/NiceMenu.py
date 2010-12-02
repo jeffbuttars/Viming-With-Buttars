@@ -299,14 +299,14 @@ def NiceMenuAction():
 			# Use a subprocess server call because for reasons
 			# I don't know about calling feedkeys or remote_send/expr 
 			# has a huge and un acceptable delay.
-			subprocess.call( ["gvim", "--servername", "%s"%servername, "--remote-send", '<C-X><C-U>'] )
+			subprocess.call( ["gvim", "--servername", "%s"%servername, "--remote-send", '<C-X><C-U><C-P>'] )
 			nmlog( "NiceMenuAction: sent keys", 'debug' )
 		else:
 			nmlog( "NiceMenuAction: falling back easy completion", 'debug' )
-			subprocess.call( ["gvim", "--servername", "%s"%servername, "--remote-send", '<C-X><C-N>'] )
+			subprocess.call( ["gvim", "--servername", "%s"%servername, "--remote-send", '<C-X><C-N><C-P>'] )
 	else:
 		nmlog( "NiceMenuAction: falling back easy completion", 'debug' )
-		subprocess.call( ["gvim", "--servername", "%s"%servername, "--remote-send", '<C-X><C-N>'] )
+		subprocess.call( ["gvim", "--servername", "%s"%servername, "--remote-send", '<C-X><C-N><C-P>'] )
 #NiceMenuAction()
 
 def NiceMenuShutdown():

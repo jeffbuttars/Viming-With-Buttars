@@ -1,11 +1,11 @@
 
 # Function
 snippet func
-	func ${1:function_name}(${2}) ${3:rtype} {
+	func ${1:function_name}(${2}) ${3:} {
 		${4:/* code */}
 	}//$1()
 snippet meth 
-	func (${1:owner_obj}) ${2:function_name}(${3:params}) ${4:rtype} {
+	func (${1:owner_obj}) ${2:function_name}(${3:params}) ${4:} {
 		${5:/* code */}
 	}//$2()
 snippet if
@@ -41,5 +41,26 @@ snippet ifok
 	if ${1:_}, ok := ${2:thing_to_check}; ok {
 		${3}
 	}
+snippet pf
+	fmt.Printf("${1:fmt}\n", ${2:args})
+snippet fpf
+	fmt.Fprintf(${1:stream}, "${2:fmt}\n", ${3:args})
 snippet spf
-	fmt.Sprintf("", args)
+	fmt.Sprintf("${1:fmt}\n", ${2:args})
+snippet vspf
+	${1:vname} = fmt.Sprintf("${2:fmt}\n", ${3:args})
+snippet iface
+	type ${1:name} interface {
+		${2:/* code */}
+	}//interface:$1
+snippet for
+	for ${1:init;} ${2:cond;} ${3:post;} {
+	}
+snippet struct
+	type ${1:struct_name} struct {
+		${2}
+	}
+snippet enum
+	const (
+		${1:vname} = iota
+	)
