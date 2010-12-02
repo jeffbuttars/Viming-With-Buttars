@@ -671,26 +671,6 @@ autocmd FileType xml  set equalprg=xmllint\ --format\ -
 "Enable autotag.vim
 source ~/.vim/plugin/autotag.vim
 
-" Little something from http://www.ibm.com/developerworks/linux/library/l-vim-script-5/index.html 
-" Agressive auto saving
-function! Autosave()
-
-	" close the preview window if it's visible
-	" and the pop up menu is not visible
-	if pumvisible() == 0
-		pclose
-	endif
-
-	if ! &modified
-		return
-	endif
-
-	if expand('%') != ""
-		write
-	endif
-
-endfunction
-autocmd FocusLost,BufLeave,WinLeave,CursorHold,CursorHoldI * :call Autosave()
 
 " load the tag closer
 "au FileType html,xhtml let b:closetag_html_style=1
@@ -713,11 +693,6 @@ let g:NiceMenuMin = 1
 "sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
 "autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\
 "%l%.%#,%Z%[%^\ ]%\\@=%m
-
-if $CPBSDSRCDIR != "" && getcwd() =~ "^".$CPBSDSRCDIR
-	set makeprg=cpmake
-endif
-
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -749,3 +724,4 @@ endif
 " http://blog.ezyang.com/2010/03/vim-textwidth/
 
 
+runtime hacks.vim 
