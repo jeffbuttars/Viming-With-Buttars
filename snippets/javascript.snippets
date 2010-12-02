@@ -127,3 +127,9 @@ snippet al
 	alert( ${1} );
 snippet di #Object item snippet
 	${1:name}:${2:val}${3:, }${4:}
+snippet meth
+	var ${1:method_name} = function( ${2:method_args} ) {
+		${3:console.log( '$1()' );}
+		${4://code}
+	};//$1()
+	pubIface.$1 = $1;
