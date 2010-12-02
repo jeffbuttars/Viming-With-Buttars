@@ -2,6 +2,8 @@
 "Set 'textwidth' to 78 characters.
 setlocal textwidth=78
 setlocal spell spelllang=en_us
+set guifont=Courier\ 12
+
 " I prefer the CursorLine off when editing text
 hi clear CursorLine
 

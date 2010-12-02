@@ -37,6 +37,12 @@ snippet consts
 	)
 snippet map
 	map[${1:keytype}] ${2:valtype}
+snippet pf
+	fmt.Printf(${1:fmt}, ${2:args})
+snippet spf
+	fmt.Sprintf(${1:fmt}, ${2:args})
+snippet vspf
+	${1:vname} = fmt.Sprintf(${2:fmt}, ${3:args})
 snippet ifok
 	if ${1:_}, ok := ${2:thing_to_check}; ok {
 		${3}
