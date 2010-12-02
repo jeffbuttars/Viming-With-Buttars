@@ -156,7 +156,7 @@ let g:DoubleTapFinishLine_Map = [
 let g:DoubleTapFinishLineNormal_Map = [ 
 	\	{ 'ftype':'*', 'trigger':";;", 'finishChar':';', 'spacey':'', },
 	\	{ 'ftype':'php,javascript,python,lua,json', 'trigger':",,", 'finishChar':",", 'spacey':'', },
-	\	{ 'ftype':'python', 'trigger':";;", 'finishChar':':', 'spacey':'', } ,
+	\	{ 'ftype':'python,go', 'trigger':";;", 'finishChar':':', 'spacey':'', } ,
 	\	{ 'ftype':'python', 'trigger':"::", 'finishChar':':', 'spacey':'', } ]
 
 let g:DoubleTapInsertJumpSimple_Map = [ 
