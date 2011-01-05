@@ -21,13 +21,17 @@ let b:mdown = 'markdown2'
 function! b:generateMkd( viewit )
 
 	let l:fpath = expand( '%' )
-	let l:fhtml = system( 'name=$(basename '.l:fpath.' .mkd); echo "$name.html"' )
+	echo "l:fpath" l:fpath
+	let l:fhtml = system( "name=$(basename '".l:fpath."' .mkd); echo -n \"$name.html\"" )
+	echo l:fhtml
 
-	let l:cmd = b:mdown.' '.l:fpath.' > '.l:fhtml
+	let l:cmd = b:mdown." '".l:fpath."' > '".l:fhtml."'"
+	echo l:cmd
+	
 	call system( l:cmd )
 
 	if 1 == a:viewit
-		let l:cmd = 'htmlview '.l:fhtml
+		let l:cmd = "htmlview '".l:fhtml."'"
 		call system( l:cmd  )
 	endif
 
