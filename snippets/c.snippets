@@ -26,6 +26,12 @@ snippet #if
 	#if ${1:FOO}
 		${2}
 	#endif
+snippet #ifel
+	#if ${1:FOO}
+		${2}
+	#else
+		${3}
+	#endif
 # Header Include-Guard
 # (the randomizer code is taken directly from TextMate; it could probably be
 # cleaner, I don't know how to do it in vim script)

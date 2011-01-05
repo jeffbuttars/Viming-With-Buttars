@@ -41,5 +41,7 @@ snippet ifok
 	if ${1:_}, ok := ${2:thing_to_check}; ok {
 		${3}
 	}
+snippet pf
+	fmt.Printf("${1}"${2:args})
 snippet spf
-	fmt.Sprintf("", args)
+	fmt.Sprintf("${1}"${2:args})
