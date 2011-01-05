@@ -31,7 +31,7 @@ function! b:generateMkd( viewit )
 	call system( l:cmd )
 
 	if 1 == a:viewit
-		let l:cmd = "htmlview '".l:fhtml."'"
+		let l:cmd = "xdg-open '".l:fhtml."'"
 		call system( l:cmd  )
 	endif
 
