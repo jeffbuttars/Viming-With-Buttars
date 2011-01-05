@@ -85,6 +85,8 @@ set incsearch		" do incremental searching
 "really annoying, you can disable them easily using an autocmd declaration:
 "autocmd filetype html,xml set listchars-=tab:>.
 
+set ttyfast
+set laststatus=2
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -173,6 +175,16 @@ function! CleverCR()
 endfunction
 inoremap <CR> <C-R>=CleverCR()<CR>
 
+function! ToggleRNU()
+	if 0 == &rnu
+		set rnu
+	else
+		set number 
+	endif
+endfunction
+nmap <silent> <F3> <ESC>:call ToggleRNU()<CR>
+
+
 "For example, to save a file, you type :w normally, which means:
 
 "    Press and hold Shift
@@ -192,6 +204,13 @@ nnoremap ; :
 nnoremap j gj
 nnoremap k gk
 
+" Easier window navigation when you split up your buffers.
+" Use J instead of CTRL-W j, etc.
+nnoremap <C-j> <c-w>j
+nnoremap <C-h> <c-w>h
+nnoremap <C-k> <c-w>k
+nnoremap <C-l> <c-w>l
+
 
 " Auto close the preview window
 "autocmd CursorHold * if pumvisible() == 0|pclose|endif
@@ -207,6 +226,8 @@ let g:SnipeMateAllowOmniTab = 1
 autocmd FileType python set ft=python.django 		" For SnipMate
 autocmd BufRead *.djml set ft=html.django_template 	" For SnipMate
 
+autocmd FileType mkd set ft=mkd.html 	" For SnipMate, I want to use HTML
+										" snippets with my markdown
 autocmd BufRead *.go set ft=go 	" For SnipMate
 
 "End OmniCompletion settings
@@ -402,7 +423,9 @@ elseif $TERM =~ '256'
 		colo github 
 	else
 		"colo molokai 
-		colo wombat256 
+		"colo wombat256 
+		"colo jellybeans 
+		colo mywombat256 
 	endif
 endif
 
@@ -495,6 +518,21 @@ function! ToggleHex()
   let &modifiable=l:oldmodifiable
 endfunction
 
+" A more verbose pastetoggle
+function! TogglePaste()
+	if	&paste == 0
+		set paste
+		echo "Paste is ON!"
+	else
+		set nopaste
+		echo "Paste is OFF!"
+	endif
+endfunction
+" Allow toggling of paste/nopaste via F2
+"set pastetoggle=<F2>
+nmap <F2> <ESC>:call TogglePaste()<CR>
+imap <F2> <ESC>:call TogglePaste()<CR>i
+
 "http://plasticboy.com/markdown-vim-mode/
 "Markdown format options, which I don't use 
 " but I'll include them here for your experimentation
@@ -574,6 +612,9 @@ let Tlist_Close_On_Select = 1
 let Tlist_Display_Prototype = 1
 """ End TagList
 
+""" netrw
+" Tree Style listing
+let g:netrw_liststyle = 3
 
 """ NERDTree
 " Use Ctrl-d to open/close the NERDTree.
@@ -581,6 +622,8 @@ nmap <C-d> <ESC>:NERDTreeToggle<CR>
 imap <C-d> <ESC>:NERDTreeToggle<CR>
 let NERDChristmasTree=1
 let NERDTreeQuitOnOpen=1
+
+
 
 """ JSLint.vim plugin -- indespensable!
 " Turn off error highlighting. I like having just the
@@ -706,3 +749,4 @@ endif
 au WinEnter * setlocal number
 au WinLeave * setlocal nonumber
 
+runtime hacks.vim 
