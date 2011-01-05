@@ -36,7 +36,7 @@ function! PythonGrep(tool)
         \ execute 'resize +'.l:mod_total                                                   
   " Open cwindow                                                                           
   execute 'belowright cw '.l:mod_total                                                     
-  nnoremap   c :cclose                                                 
+  "nnoremap   c :cclose                                                 
   set nolazyredraw                                                                         
   redraw!                                                                                  
 endfunction

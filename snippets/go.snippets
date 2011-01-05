@@ -37,11 +37,36 @@ snippet consts
 	)
 snippet map
 	map[${1:keytype}] ${2:valtype}
+snippet pf
+	fmt.Printf(${1:fmt}, ${2:args})
+snippet spf
+	fmt.Sprintf(${1:fmt}, ${2:args})
+snippet vspf
+	${1:vname} = fmt.Sprintf(${2:fmt}, ${3:args})
 snippet ifok
 	if ${1:_}, ok := ${2:thing_to_check}; ok {
 		${3}
 	}
 snippet pf
-	fmt.Printf("${1}"${2:args})
+	fmt.Printf("${1:fmt}\n", ${2:args})
+snippet fpf
+	fmt.Fprintf(${1:stream}, "${2:fmt}\n", ${3:args})
 snippet spf
-	fmt.Sprintf("${1}"${2:args})
+	fmt.Sprintf("${1:fmt}\n", ${2:args})
+snippet vspf
+	${1:vname} = fmt.Sprintf("${2:fmt}\n", ${3:args})
+snippet iface
+	type ${1:name} interface {
+		${2:/* code */}
+	}//interface:$1
+snippet for
+	for ${1:init;} ${2:cond;} ${3:post;} {
+	}
+snippet struct
+	type ${1:struct_name} struct {
+		${2}
+	}
+snippet enum
+	const (
+		${1:vname} = iota
+	)

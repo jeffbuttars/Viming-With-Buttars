@@ -225,6 +225,10 @@ snippet T
 	TRUE${1}
 snippet F
 	FALSE${1}
+snippet vs # Variable String $vname = "string"
+	$${1} = "${2}"${3}
+snippet vr # Var misc $vname = val
+	$${1} = ${2}
 
 #drupal snips
 snippet dsm
@@ -235,3 +239,5 @@ snippet dssm
 	drupal_set_message( ${1}, 'status' )
 snippet t(
 	t( "${1}" )${2}
+snippet th
+	$this->${1}
