@@ -3,6 +3,13 @@
 " to be cpmake
 if $CPBSDSRCDIR != "" && getcwd() =~ "^".$CPBSDSRCDIR
 	set makeprg=cpmake
+
+	let tstr = $CPBSDSRCDIR."/tags" 
+	if filereadable( tstr )
+		"" make sure our big ass bsd tags file
+		"" is used in subdirs as well.
+		set tags+=tstr 
+	endif
 endif
 
 
