@@ -711,7 +711,8 @@ let g:NiceMenuMin = 1
 "autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\
 "%l%.%#,%Z%[%^\ ]%\\@=%m
 
-if $CPBSDSRCDIR != "" && getcwd() =~ "^".$CPBSDSRCDIR
+if $CPBSDSRCDIR != "" && $PWD =~ "^".$CPBSDSRCDIR
+	echo "Changing makeprg command to cpmake"
 	set makeprg=cpmake
 endif
 
