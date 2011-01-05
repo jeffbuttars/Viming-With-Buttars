@@ -668,7 +668,7 @@ let g:NiceMenuMin = 1
 "autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\
 "%l%.%#,%Z%[%^\ ]%\\@=%m
 
-if getcwd() =~ "^".$CPBSDSRCDIR
+if $CPBSDSRCDIR != "" && getcwd() =~ "^".$CPBSDSRCDIR
 	set makeprg=cpmake
 endif
 
@@ -702,4 +702,7 @@ endif
 " Good information on line wrapping:
 " http://blog.ezyang.com/2010/03/vim-textwidth/
 
+"au FileType php set nocursorline 
+au WinEnter * setlocal number
+au WinLeave * setlocal nonumber
 
