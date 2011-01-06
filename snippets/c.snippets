@@ -74,7 +74,7 @@ snippet fun
 	${1:void} ${2:function_name}(${3})
 	{
 		${4:/* code */}
-	}
+	}//$1
 # Function Declaration
 snippet fund
 	${1:void} ${2:function_name}(${3});${4}
@@ -101,6 +101,8 @@ snippet tde
 # dynamic `...`
 snippet pr
 	printf("${1:%s}\n"${2});${3}
+snippet dpr
+	printf("%s()${1}", __FUNCTION__);
 # fprintf (again, this isn't as nice as TextMate's version, but it works)
 snippet fpr
 	fprintf(${1:stderr}, "${2:%s}\n"${3});${4}
