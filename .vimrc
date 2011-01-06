@@ -671,6 +671,9 @@ autocmd FileType xml  set equalprg=xmllint\ --format\ -
 "Enable autotag.vim
 source ~/.vim/plugin/autotag.vim
 
+au BufWinLeave * mkview
+au BufWinEnter * silent loadview
+
 
 " load the tag closer
 "au FileType html,xhtml let b:closetag_html_style=1
