@@ -1,4 +1,5 @@
 
+let g:loaded_nice_menu = 1
 if exists('g:loaded_nice_menu')
   finish
 elseif v:version < 700
@@ -486,20 +487,15 @@ endfunction
 fun! s:NiceMenuCompl( need_i )
         "echo "s:NiceMenuCompl " s:getCurrentChar()
 
-python << PEOF
-#nmq_key_trigger.put_nowait( "key trigger: %s" % vim.eval( 's:getCurrentChar()' ) )
-PEOF
-        "return ""
-
-
         "XXX We need to load this plugin after v:servername has been set!!
         if v:servername == ''
                 echoerr 'No servername found, cannot load NiceMenu'
-				autocmd! CursorMovedI * call s:NiceMenuCompl(1)
-				autocmd! InsertEnter  * call s:NiceMenuCompl(0)
-				autocmd! InsertLeave  * call NiceMenuCancel()
-				autocmd! VimLeave  * call NiceMenuShutdown()
-                return
+				au! nicemenuau
+				"autocmd! CursorMovedI * call s:NiceMenuCompl(1)
+				"autocmd! InsertEnter  * call s:NiceMenuCompl(0)
+				"autocmd! InsertLeave  * call NiceMenuCancel()
+				"autocmd! VimLeave  * call NiceMenuShutdown()
+				return
         endif
 
         " If the pop up menu is already showing or
@@ -580,11 +576,13 @@ endfun
 
 function NiceMenu_enable()
         "call s:mapForMappingDriven()
-        autocmd CursorMovedI * call s:NiceMenuCompl(1)
-        autocmd InsertEnter  * call s:NiceMenuCompl(0)
-        autocmd InsertLeave  * call NiceMenuCancel()
-
-        autocmd VimLeave  * call NiceMenuShutdown()
+		augroup nicemenuau
+			au!
+			autocmd CursorMovedI * call s:NiceMenuCompl(1)
+			autocmd InsertEnter  * call s:NiceMenuCompl(0)
+			autocmd InsertLeave  * call NiceMenuCancel()
+			autocmd VimLeave  * call NiceMenuShutdown()
+		augroup END
 endfunction
 
 function NiceMenuWrapper()
