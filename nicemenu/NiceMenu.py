@@ -48,6 +48,7 @@ class CmdThread( threading.Thread ):
 				except Exception as e:
 					nmlog( "CmdThread.run() caught exception:%s" % e, 'debug'  )
 			except Exception:
+				nmlog( "CmdThread.run() caught exception:%s" % e, 'debug'  )
 				pass
 
 
@@ -153,6 +154,8 @@ class CmdThread( threading.Thread ):
 			return self.procKeyPress( args )
 		elif cmd == NMCMD_KEY_TOUT:
 			nmlog( "NiceMenu.CmdThread.processCMD, cmd:NMCMD_KEY_TOUT", 'debug' )
+
+			# Check if we're inside a comment
 
 			omnifunc = self.remoteExp( "&omnifunc" )
 
@@ -282,7 +285,8 @@ def NiceMenuAction():
 
 	if item and item['type'] == 'omnifunc':
 		nmlog( "NiceMenuAction: trying: let b:completionList=%s(%s,'%s')" % (  item['func'], item['arg1'], item['arg2'] ), 'debug' )
-		vim.command( "let b:completionList=%s(%s,'%s')" % ( item['func'], item['arg1'], item['arg2']) )
+		#vim.command( "let b:completionList=[]" )
+		#vim.command( "let b:completionList=%s(%s,'%s')" % ( item['func'], item['arg1'], item['arg2']) )
 		#vim.command('let b:completionPos = %s' % (item['arg1']))
 		#vim.command( "call sort(b:completionList)"  )
 
