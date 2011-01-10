@@ -34,3 +34,19 @@ function! Autosave()
 endfunction
 autocmd FocusLost,BufLeave,WinLeave,CursorHold,CursorHoldI * :call Autosave()
 
+function! SaveView( save )
+
+	if &buftype == "quickfix" || expand('%') == ''
+		return
+	endif
+
+	if 1 == a:save
+		silent mkview
+	else
+		silent loadview
+	endif
+
+endfunction
+au BufWinLeave * :call SaveView(1)
+au BufWinEnter * :call SaveView(0)
+
