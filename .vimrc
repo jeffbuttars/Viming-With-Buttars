@@ -39,6 +39,8 @@ set history=1000		" keep 1000 lines of command line history
 "set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{&textwidth}\ %P
 
+set switchbuf=useopen
+
 " last window will always have a status line
 set laststatus=2
 
@@ -221,12 +223,12 @@ nnoremap <C-l> <c-w>l
 let g:SnipeMateAllowOmniTab = 1
 
 " We're extra friendly for django 
-" autocmd FileType python set ft=python.django 		" For SnipMate
+autocmd FileType python set ft=python.django 		" For SnipMate
 autocmd BufRead *.djml set ft=html.django_template 	" For SnipMate
 
 autocmd FileType mkd set ft=mkd.html 	" For SnipMate, I want to use HTML
 										" snippets with my markdown
-" autocmd BufRead *.go set ft=go 	" For SnipMate and syntax, n
+autocmd BufRead *.go set ft=go 	" For SnipMate
 
 "End OmniCompletion settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -253,11 +255,6 @@ vnoremap <silent> # :call VisualSearch('b')<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" reselect visual block after in/dedent so we can in/dedent more
-"vnoremap < <gv
-"vnoremap > >gv
-
 " More normal Vim tweaks.
 " make a diff split vertical by default
 " ignore whitespace
@@ -414,12 +411,13 @@ if has( "gui_running" )
 	hi clear CursorLine 
 	"colo vylight 
 	colo wombat256 
-elseif $TERM =~ '256' 
+elseif $TERM =~ '256'
 	" Use a console friendly theme and turn off cursorline
 	" I  prefer a dark theme at the console..
 	set t_Co=256
 	set cursorline
 	hi clear CursorLine 
+	"colo jellybeans 
 	
 	if $TERM_META =~ 'white'
 		colo github 
@@ -465,6 +463,8 @@ au FileType text,markdown,rst let b:NiceMenuContextRegex='[a-zA-Z0-9]'
 " Make right mouse button work in gvim
 set mousemodel=popup
 
+" Allow toggling of paste/nopaste via F2
+set pastetoggle=<F2>
 
 " Don't acutally close buffers, just hide them.
 set hidden
@@ -671,6 +671,23 @@ autocmd FileType xml  set equalprg=xmllint\ --format\ -
 "Enable autotag.vim
 source ~/.vim/plugin/autotag.vim
 
+" Little something from http://www.ibm.com/developerworks/linux/library/l-vim-script-5/index.html 
+" Agressive auto saving
+function! Autosave()
+
+	" close the preview window if it's visible
+	" and the pop up menu is not visible
+	if pumvisible() == 0
+		pclose
+	endif
+
+	if ! &modified
+		return
+	endif
+
+	write
+endfunction
+autocmd FocusLost,BufLeave,WinLeave,CursorHold,CursorHoldI * :call Autosave()
 
 " load the tag closer
 "au FileType html,xhtml let b:closetag_html_style=1
@@ -681,7 +698,7 @@ source ~/.vim/plugin/autotag.vim
 "let g:DoubleTapInsertTimer = 0.8
 
 " Set NiceMenu Delay
-"let g:loaded_nice_menu = 1
+let g:loaded_nice_menu = 1
 let g:NiceMenuDelay = '.6'
 let g:NiceMenuMin = 1
 
@@ -693,6 +710,12 @@ let g:NiceMenuMin = 1
 "sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
 "autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\
 "%l%.%#,%Z%[%^\ ]%\\@=%m
+
+if $CPBSDSRCDIR != "" && $PWD =~ "^".$CPBSDSRCDIR
+	echo "Changing makeprg command to cpmake"
+	set makeprg=cpmake
+endif
+
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -723,5 +746,8 @@ let g:NiceMenuMin = 1
 " Good information on line wrapping:
 " http://blog.ezyang.com/2010/03/vim-textwidth/
 
+"au FileType php set nocursorline 
+au WinEnter * setlocal number
+au WinLeave * setlocal nonumber
 
 runtime hacks.vim 
