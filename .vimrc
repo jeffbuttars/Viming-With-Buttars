@@ -425,7 +425,8 @@ elseif $TERM =~ '256'
 		"colo molokai 
 		"colo wombat256 
 		"colo jellybeans 
-		colo mywombat256 
+		"colo mywombat256 
+		colo 256-grayvim
 	endif
 endif
 
