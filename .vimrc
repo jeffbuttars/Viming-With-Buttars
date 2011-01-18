@@ -591,12 +591,12 @@ let Tlist_Use_Horiz_Window=0
 nnoremap TT :TlistOpen<CR>
 map <F4> :TlistToggle<CR>
 
-let Tlist_Use_Right_Window = 0
-let Tlist_Exit_OnlyWindow = 1
-let Tlist_Enable_Fold_Column = 0
-let Tlist_Compact_Format = 1
+let Tlist_Use_Right_Window     = 0
+let Tlist_Exit_OnlyWindow      = 1
+let Tlist_Enable_Fold_Column   = 0
+let Tlist_Compact_Format       = 1
 let Tlist_File_Fold_Auto_Close = 1
-let Tlist_Auto_Highlight_Tag = 1
+let Tlist_Auto_Highlight_Tag   = 1
 
 "Tlist_WinWidth~
 "The default width of the vertically split taglist window is 30. This can be
@@ -686,7 +686,9 @@ function! Autosave()
 		return
 	endif
 
-	write
+	if expand('%') != ""
+		write
+	endif
 endfunction
 autocmd FocusLost,BufLeave,WinLeave,CursorHold,CursorHoldI * :call Autosave()
 
