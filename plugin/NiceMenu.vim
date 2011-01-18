@@ -1,4 +1,5 @@
 
+let g:loaded_nice_menu = 1
 if exists('g:loaded_nice_menu')
   finish
 elseif v:version < 700
