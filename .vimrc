@@ -567,8 +567,8 @@ set guifont=Inconsolata\ Medium\ 12
 """ Bufexplorer
 " Use Ctrl-l to cut to the buf browser from bufexplorer plugin
 " Think l as in 'list the buffers'
-nmap <silent> <c-l> <esc>:BufExplorerHorizontalSplit<CR>
-imap <silent> <c-l> <esc>:BufExplorerHorizontalSplit<CR>
+nmap <silent> <c-l> <esc>:BufExplorer<CR>
+imap <silent> <c-l> <esc>:BufExplorer<CR>
 
 """ comments.vim
 "A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
