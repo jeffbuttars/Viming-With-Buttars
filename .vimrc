@@ -322,9 +322,9 @@ imap <C-PageUp> :tabprevious<CR>
 "If you type (, however, it wraps the selected text in parentheses. 
 "This is enormously useful. Luckily, it's very easy to recreate in Vim:
 vnoremap ((  <ESC>`>a)<ESC>`<i(<ESC>
-vnoremap ))  <ESC>`<i(<ESC>`>a)<ESC>
+vnoremap ))  <ESC>`<i(<ESC>`><right>a)<ESC>
 vnoremap {{  <ESC>`>a}<ESC>`<i{<ESC>
-vnoremap }}  <ESC>`<i{<ESC>`>a}<ESC>
+vnoremap }}  <ESC>`<i{<ESC>`><right>a}<ESC>
 " If allow " here, it messes up register selection
 " So we use "" instead, and it works.
 " Move this into doubleTap?
@@ -333,7 +333,7 @@ vnoremap ""  <ESC>`>a"<ESC>`<i"<ESC>
 vnoremap ''  <ESC>`>a'<ESC>`<i'<ESC>
 vnoremap ``  <ESC>`>a`<ESC>`<i`<ESC>
 vnoremap [[  <ESC>`>a]<ESC>`<i[<ESC>
-vnoremap ]]  <ESC>`<i[<ESC>`>a]<ESC>
+vnoremap ]]  <ESC>`<i[<ESC>`><right>a]<ESC>
 
 " When vimrc is edited, automatically reload it!
 autocmd! bufwritepost .vimrc source ~/.vimrc
@@ -425,8 +425,8 @@ elseif $TERM =~ '256'
 		"colo molokai 
 		"colo wombat256 
 		"colo jellybeans 
-		"colo mywombat256 
-		colo 256-grayvim
+		"colo 256-grayvim
+		colo mywombat256 
 	endif
 endif
 
@@ -543,6 +543,7 @@ imap <F2> <ESC>:call TogglePaste()<CR>i
 
 " I like to put system library tags in a different tag file that
 " is only generated once in a while.
+set tags=tags;/
 au FileType python set tags +=~/.tags/tags-python
 au FileType c set tags +=~/.tags/tags-c
 au FileType cpp set tags +=~/.tags/tags-cpp
@@ -566,8 +567,8 @@ set guifont=Inconsolata\ Medium\ 12
 """ Bufexplorer
 " Use Ctrl-l to cut to the buf browser from bufexplorer plugin
 " Think l as in 'list the buffers'
-nmap <silent> <c-l> <esc>:BufExplorer<CR>
-imap <silent> <c-l> <esc>:BufExplorer<CR>
+nmap <silent> <c-l> <esc>:BufExplorerHorizontalSplit<CR>
+imap <silent> <c-l> <esc>:BufExplorerHorizontalSplit<CR>
 
 """ comments.vim
 "A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
