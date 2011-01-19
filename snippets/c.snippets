@@ -80,7 +80,7 @@ snippet fun
 	${1:void} ${2:function_name}(${3})
 	{
 		${4:/* code */}
-	}//$1
+	}//$2()
 # Function Declaration
 snippet fund
 	${1:void} ${2:function_name}(${3});${4}
@@ -124,3 +124,20 @@ snippet DW
 	DEBUG_WARN( "%s()${1}", __FUNCTION__ )
 snippet DI
 	DEBUG_INFO( "%s()${1}", __FUNCTION__ )
+snippet apv
+	aprint_verbose( "%s()${1}\n", __FUNCTION__ )
+snippet apn
+	aprint_normal( "%s()${1}\n", __FUNCTION__ )
+snippet switch
+	switch (${1}) {
+		case ${2}:
+			break;
+		${3}
+		default:
+			break;
+	}
+snippet case
+	case ${1}:
+		${2}
+		break;
+	${3}
