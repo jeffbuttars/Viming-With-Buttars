@@ -10,6 +10,15 @@ if $CPBSDSRCDIR != "" && getcwd() =~ "^".$CPBSDSRCDIR
 		"" is used in subdirs as well.
 		set tags+=tstr 
 	endif
+
+	nmap <F9> <ESC>:make all<CR>
+	imap <F9> <ESC>:make all<CR>
+	nmap <F8> <ESC>:make build<CR>
+	imap <F8> <ESC>:make build<CR>
+	nmap <F7> <ESC>:make image<CR>
+	imap <F7> <ESC>:make image<CR>
+	nmap <F6> <ESC>:make kernel<CR>
+	imap <F6> <ESC>:make kernel<CR>
 endif
 
 
