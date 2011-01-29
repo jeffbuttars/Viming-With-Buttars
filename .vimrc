@@ -148,6 +148,13 @@ set completeopt=menuone,preview
 "set complete=".,w,b,u,t,i,kspell"
 " Map omnicomplete to Control-o
 imap <C-O> <C-X><C-O> 
+
+" Mapping for the a.vim plugin
+" quickly switch between source
+" and header files with <C-H>
+imap <silent> <C-S> <ESC>:A<CR>
+nmap <silent> <C-S> <ESC>:A<CR>
+
 " When the completion window is open, shift will cycle
 " forward through the menu.
 " This does not work with snipmate, so I have a hack
@@ -569,6 +576,8 @@ set guifont=Inconsolata\ Medium\ 12
 " Think l as in 'list the buffers'
 nmap <silent> <c-l> <esc>:BufExplorer<CR>
 imap <silent> <c-l> <esc>:BufExplorer<CR>
+let g:bufExplorerSortBy='mru' " Sort by most recently used.
+let g:bufExplorerFindActive=1
 
 """ comments.vim
 "A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
