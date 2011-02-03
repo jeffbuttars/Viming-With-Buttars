@@ -1,5 +1,5 @@
 *vcscommand.txt*	vcscommand
-Copyright (c) 2007 Bob Hiestand
+Copyright (c) Bob Hiestand
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to
@@ -149,9 +149,8 @@ will cause the above behavior to change.  Instead of annotating the version on
 the current line, the parent revision is used instead, crossing branches if
 necessary.
 
-The filetype of the vcscommand scratch buffer is set to one of 'CVSAnnotate',
-'SVNAnnotate', 'SVKAnnotate' or 'gitAnnotate' as appropriate, to take advantage of the
-bundled syntax files.
+With no arguments the cursor will jump to the line in the annotated buffer
+corresponding to the current line in the source buffer.
 
 :VCSBlame[!]						*:VCSBlame*
 
@@ -433,10 +432,13 @@ The following variables are available:
 |VCSCommandDisableAll|
 |VCSCommandDisableMappings|
 |VCSCommandDisableExtensionMappings|
+|VCSCommandDisableMenu|
 |VCSCommandEdit|
 |VCSCommandEnableBufferSetup|
 |VCSCommandMappings|
 |VCSCommandMapPrefix|
+|VCSCommandMenuPriority|
+|VCSCommandMenuRoot|
 |VCSCommandResultBufferNameExtension|
 |VCSCommandResultBufferNameFunction|
 |VCSCommandSplit|
@@ -495,6 +497,11 @@ VCSCommandEdit					*VCSCommandEdit*
 This variable controls whether the original buffer is replaced ('edit') or
 split ('split').  If not set, it defaults to 'split'.
 
+VCSCommandDisableMenu				*VCSCommandDisableMenu*
+
+This variable, if set to a non-zero value, prevents the default command menu
+from being set.
+
 VCSCommandEnableBufferSetup			*VCSCommandEnableBufferSetup*
 
 This variable, if set to a non-zero value, activates VCS buffer management
@@ -515,6 +522,14 @@ VCSCommandMapPrefix				*VCSCommandMapPrefix*
 This variable, if set, overrides the default mapping prefix ('<Leader>c').
 This allows customization of the mapping space used by the vcscommand
 shortcuts.
+
+VCSCommandMenuPriority				*VCSCommandMenuPriority*
+
+This variable, if set, overrides the default menu priority '' (empty)
+
+VCSCommandMenuRoot				*VCSCommandMenuRoot*
+
+This variable, if set, overrides the default menu root 'Plugin.VCS'
 
 VCSCommandResultBufferNameExtension	*VCSCommandResultBufferNameExtension*
 

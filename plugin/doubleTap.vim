@@ -172,7 +172,7 @@ let g:DoubleTapJumpOut_Map = [
 let g:DoubleTapInsert_Map = [ 
 	\	{ 'ftype':'*', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':g:DoubleTap_SpaceyBlock },
 	\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':"" },
-	\	{ 'ftype':'*', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':g:DoubleTap_SpaceyInline },
+	\	{ 'ftype':'*', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':"" },
 	\	{ 'ftype':'make,go', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':"" },
 	\	{ 'ftype':'vim,python,json', 'trigger':"{", 'lChar':"{", 'rChar':"}", 'spacey':'' },
 	\	{ 'ftype':'json', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':'' },
@@ -180,6 +180,7 @@ let g:DoubleTapInsert_Map = [
 	\]
 	"\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':g:DoubleTap_SpaceyInline },
 	"\	{ 'ftype':'vim,python,json', 'trigger':"{", 'lChar':"{", 'rChar':"}", 'spacey':g:DoubleTap_SpaceyInline },
+	"\	{ 'ftype':'*', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':g:DoubleTap_SpaceyInline },
 
 let g:DoubleTapInsertJumpString_Map = [
 	\	{ 'ftype':"*", 'trigger':"'", 'inChar':"\"'\"", 'spacey':"" },
