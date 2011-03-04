@@ -11,14 +11,16 @@ if $CPBSDSRCDIR != "" && getcwd() =~ "^".$CPBSDSRCDIR
 		set tags+=tstr 
 	endif
 
-	nmap <F9> <ESC>:make all<CR>
-	imap <F9> <ESC>:make all<CR>
-	nmap <F8> <ESC>:make build<CR>
-	imap <F8> <ESC>:make build<CR>
-	nmap <F7> <ESC>:make image<CR>
-	imap <F7> <ESC>:make image<CR>
-	nmap <F6> <ESC>:make kernel<CR>
-	imap <F6> <ESC>:make kernel<CR>
+	nmap <F10> <ESC>:w<CR><ESC>:make -j10 kernel<CR><ESC>make -10 build<CR><ESC>:make imageclean<CR><ESC>make image<CR>
+	imap <F10> <ESC>:w<CR><ESC>:make -j10 kernel<CR><ESC>make -10 build<CR><ESC>:make imageclean<CR><ESC>make image<CR>
+	nmap <F9>  <ESC>:w<CR><ESC>:make all<CR>
+	imap <F9>  <ESC>:w<CR><ESC>:make all<CR>
+	nmap <F8>  <ESC>:w<CR><ESC>:make -j10 build<CR>
+	imap <F8>  <ESC>:w<CR><ESC>:make -j10 build<CR>
+	nmap <F7>  <ESC>:w<CR><ESC>:make imageclean<CR><ESC>:make image<CR>
+	imap <F7>  <ESC>:w<CR><ESC>:make imageclean<CR><ESC>:make image<CR>
+	nmap <F6>  <ESC>:w<CR><ESC>:make kernel<CR>
+	imap <F6>  <ESC>:w<CR><ESC>:make kernel<CR>
 endif
 
 
@@ -32,7 +34,7 @@ function! Autosave()
 		pclose
 	endif
 
-	if ! &modified
+	if ! &modified || ! &modifiable || &readonly
 		return
 	endif
 
@@ -45,7 +47,10 @@ autocmd FocusLost,BufLeave,WinLeave,CursorHold,CursorHoldI * :call Autosave()
 
 function! SaveView( save )
 
-	if &buftype == "quickfix" || expand('%') == ''
+	"if &buftype == "quickfix" || &buftype == "nofile" || expand('%') == ''
+		"return
+	"endif
+	if &buftype != "" || expand('%') == ''
 		return
 	endif
 
@@ -58,4 +63,75 @@ function! SaveView( save )
 endfunction
 au BufWinLeave * :call SaveView(1)
 au BufWinEnter * :call SaveView(0)
+
+highlight OverColLimit term=inverse,bold cterm=bold ctermbg=red ctermfg=white gui=bold guibg=red guifg=white 
+function! SetColorColumn( ccol )
+	if ! exists("b:LongLineMatchID")
+		let b:LongLineMatchID = 0
+	endif
+	echo "SetColorColumn " b:LongLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
+
+	if &buftype != "" || expand('%') == ''
+		echo "SetColorColumn reset"
+		if b:LongLineMatchID > 0
+			matchdelete( b:LongLineMatchID )
+		endif
+		set colorcolumn=0
+		return
+	endif
+
+	"match ErrorMsg '\%>80v.\+'
+	if b:LongLineMatchID == 0 || &colorcolumn != (a:ccol+1)
+		echo "SetColorColumn applying" b:LongLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
+		let &colorcolumn = (a:ccol+1)
+		let b:LongLineMatchID=matchadd( "OverColLimit", '\%>'.a:ccol.'v.\+', -1 )
+	endif
+endfunction
+if ! exists("g:maxLineLength")
+	let g:maxLineLength=80
+endif
+au BufWinEnter * :call SetColorColumn(g:maxLineLength)
+
+""""""""""""""""""""""""""""""""""""""
+" Indent Python in the Google way.
+""""""""""""""""""""""""""""""""""""""
+autocmd FileType python setlocal indentexpr=GetGooglePythonIndent(v:lnum)
+
+let s:maxoff = 100 " maximum number of lines to look backwards.
+function! GetGooglePythonIndent(lnum)
+
+  " Indent inside parens.
+  " Align with the open paren unless it is at the end of the line.
+  " E.g.
+  "   open_paren_not_at_EOL(100,
+  "                         (200,
+  "                          300),
+  "                         400)
+  "   open_paren_at_EOL(
+  "       100, 200, 300, 400)
+  call cursor(a:lnum, 1)
+  let [par_line, par_col] = searchpairpos('(\|{\|\[', '', ')\|}\|\]', 'bW',
+        \ "line('.') < " . (a:lnum - s:maxoff) . " ? dummy :"
+        \ . " synIDattr(synID(line('.'), col('.'), 1), 'name')"
+        \ . " =~ '\\(Comment\\|String\\)$'")
+  if par_line > 0
+    call cursor(par_line, 1)
+    if par_col != col("$") - 1
+      return par_col
+    endif
+  endif
+
+  " Delegate the rest to the original function.
+  return GetPythonIndent(a:lnum)
+
+endfunction
+
+let pyindent_nested_paren="&sw*2"
+let pyindent_open_paren="&sw*2"
+
+autocmd FileType python let pyindent_nested_paren="&sw*2"
+autocmd FileType python let pyindent_open_paren="&sw*2"
+""""""""""""""""""""""""""""""""""""""
+" END -- Indent Python in the Google way.
+""""""""""""""""""""""""""""""""""""""
 
