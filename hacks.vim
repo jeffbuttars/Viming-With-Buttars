@@ -64,27 +64,35 @@ endfunction
 au BufWinLeave * :call SaveView(1)
 au BufWinEnter * :call SaveView(0)
 
-highlight OverColLimit term=inverse,bold cterm=bold ctermbg=red ctermfg=white gui=bold guibg=red guifg=white 
+highlight OverColLimit term=inverse,bold cterm=bold ctermbg=red ctermfg=black gui=bold guibg=red guifg=black 
 function! SetColorColumn( ccol )
-	if ! exists("b:LongLineMatchID")
-		let b:LongLineMatchID = 0
+	if ! exists("b:longLineMatchID")
+		let b:longLineMatchID = 0
 	endif
-	echo "SetColorColumn " b:LongLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
+
+	"echo "SetColorColumn " b:longLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
 
 	if &buftype != "" || expand('%') == ''
-		echo "SetColorColumn reset"
-		if b:LongLineMatchID > 0
-			matchdelete( b:LongLineMatchID )
+		if b:longLineMatchID > 0 
+			let l:mlist = getmatches()
+			if len(l:mlist) > 0
+				for item in l:mlist
+					if item['id'] == b:longLineMatchID
+						call matchdelete( b:longLineMatchID )
+						break
+					endif
+				endfor
+
+			endif
 		endif
 		set colorcolumn=0
 		return
 	endif
 
-	"match ErrorMsg '\%>80v.\+'
-	if b:LongLineMatchID == 0 || &colorcolumn != (a:ccol+1)
-		echo "SetColorColumn applying" b:LongLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
+	if b:longLineMatchID == 0 || &colorcolumn != (a:ccol+1)
+		"echo "SetColorColumn applying" b:longLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
 		let &colorcolumn = (a:ccol+1)
-		let b:LongLineMatchID=matchadd( "OverColLimit", '\%>'.a:ccol.'v.\+', -1 )
+		let b:longLineMatchID=matchadd( "OverColLimit", '\%>'.a:ccol.'v.\+', -1 )
 	endif
 endfunction
 if ! exists("g:maxLineLength")
