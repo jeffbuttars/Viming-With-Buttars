@@ -17,7 +17,7 @@ fun! g:Find( firstarg, ... )
 		for result in split( b:find_results,"\n" )
 			"Match {message} in {file} on line {line}
 			let b:has_results = 1
-			caddexpr result . ":0: "
+			caddexpr "myfind:".result
 		endfor
 		copen
 	else
@@ -27,4 +27,5 @@ fun! g:Find( firstarg, ... )
 endfun
 command! -nargs=* Find call g:Find( '<args>' )
 
+set errorformat+=myfind:%f
 let b:myfind_plugin_loaded = 1

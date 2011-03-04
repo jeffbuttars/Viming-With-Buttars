@@ -263,11 +263,11 @@ vnoremap <silent> # :call VisualSearch('b')<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " More normal Vim tweaks.
-" make a diff split vertical by default
-" ignore whitespace
-" show 10 lines of context
+" vertical: make a diff split vertical by default
+" iwhite: ignore whitespace
+" context: show 10 lines of context
 "set diffopt=filler,vertical,iwhite,context:10
-set diffopt=filler,vertical,context:10
+set diffopt=filler,vertical,context:15
 let g:html_diff_one_file = 1
 
 "Use real tabs, 4 spaces
@@ -306,6 +306,7 @@ set title
 
 "set foldmethod=indent
 "set foldmethod=syntax
+set foldmethod=manual
 
 " Easy cycle through tabs using Ctrl-PgUp/PgDown 
 " similar to FireFox
@@ -577,7 +578,8 @@ set guifont=Inconsolata\ Medium\ 12
 nmap <silent> <c-l> <esc>:BufExplorer<CR>
 imap <silent> <c-l> <esc>:BufExplorer<CR>
 let g:bufExplorerSortBy='mru' " Sort by most recently used.
-let g:bufExplorerFindActive=1
+"let g:bufExplorerFindActive=1
+"let g:bufExplorerShowUnlisted=0
 
 """ comments.vim
 "A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
@@ -682,26 +684,6 @@ autocmd FileType xml  set equalprg=xmllint\ --format\ -
 "Enable autotag.vim
 source ~/.vim/plugin/autotag.vim
 
-" Little something from http://www.ibm.com/developerworks/linux/library/l-vim-script-5/index.html 
-" Agressive auto saving
-function! Autosave()
-
-	" close the preview window if it's visible
-	" and the pop up menu is not visible
-	if pumvisible() == 0
-		pclose
-	endif
-
-	if ! &modified
-		return
-	endif
-
-	if expand('%') != ""
-		write
-	endif
-endfunction
-autocmd FocusLost,BufLeave,WinLeave,CursorHold,CursorHoldI * :call Autosave()
-
 " load the tag closer
 "au FileType html,xhtml let b:closetag_html_style=1
 "au FileType html,xml,xhtml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
@@ -725,10 +707,11 @@ let g:NiceMenuMin = 1
 "%l%.%#,%Z%[%^\ ]%\\@=%m
 
 if $CPBSDSRCDIR != "" && $PWD =~ "^".$CPBSDSRCDIR
-	echo "Changing makeprg command to cpmake"
+	"echo "Changing makeprg command to cpmake"
 	set makeprg=cpmake
 endif
 
+let g:maxLineLength=90
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -760,7 +743,7 @@ endif
 " http://blog.ezyang.com/2010/03/vim-textwidth/
 
 "au FileType php set nocursorline 
-au WinEnter * setlocal number
-au WinLeave * setlocal nonumber
+"au WinEnter * setlocal number
+"au WinLeave * setlocal nonumber
 
 runtime hacks.vim 
