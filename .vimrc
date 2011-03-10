@@ -427,15 +427,19 @@ elseif $TERM =~ '256'
 	hi clear CursorLine 
 	"colo jellybeans 
 	
+	let g:lucius_style = "dark"
 	if $TERM_META =~ 'white'
-		colo github 
-	else
+		"colo github 
+		let g:lucius_style = "light"
+	endif
+	"else
 		"colo molokai 
 		"colo wombat256 
 		"colo jellybeans 
 		"colo 256-grayvim
-		colo mywombat256 
-	endif
+		"colo mywombat256 
+	"endif
+	colo lucius 
 endif
 
 " set linenumbers on by default
@@ -565,6 +569,10 @@ set guioptions-=T
 " A great font, and it's 100% free.
 set guifont=Inconsolata\ Medium\ 12
 "set guifont=Anonymous\ Pro\ 12
+
+" I don't want variables and options saved in my views
+" so remove the 'options' option from the default viewoptions setting.
+set viewoptions-=options
 
 " End More normal Vim tweaks.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -712,6 +720,7 @@ if $CPBSDSRCDIR != "" && $PWD =~ "^".$CPBSDSRCDIR
 endif
 
 let g:maxLineLength=90
+
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
