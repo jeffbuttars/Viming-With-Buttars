@@ -387,17 +387,24 @@ endfunction
 " Name DoubleTapFinishLine: Remove trailing whitespace, put the given character at the end of the line  
 " Param: thechar the character to place at the end of the cleaned line.
 " 
-function! DoubleTapFinishLine( thechar )
-	echo "DoubleTapFinishLine" a:thechar
+function! DoubleTapFinishLine( thechar, trigger )
+	"echo "DoubleTapFinishLine" a:thechar
 
 	if &paste
 		return a:thechar
+	endif
+
+	" If we're in a string, don't do it.
+	" XXX need to make this optional
+	if s:getSynName() =~? 'String'
+		return a:trigger
 	endif
 
 	if ! s:checkDoubleInsert( a:thechar )
 		call s:setMatch()
 		return a:thechar
 	endif
+
 
 	call s:sliceChar()
 
@@ -430,6 +437,13 @@ endfunction
 function! DoubleTapFinishLineNormal( thechar )
 
 	if &paste
+		return 0
+	endif
+
+	" If we're in a string, don't do it.
+	" XXX need to make this optional
+	let l:synstr = s:getSynName()
+	if l:synstr =~? 'String'
 		return 0
 	endif
 
@@ -645,8 +659,8 @@ for item in g:DoubleTapFinishLineNormal_Map
 endfor
 
 for item in g:DoubleTapFinishLine_Map
-	execute printf("autocmd FileType %s imap %s <C-R>=DoubleTapFinishLine( '%s' )<CR>",
-	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'finishChar' ])
+	execute printf("autocmd FileType %s imap %s <C-R>=DoubleTapFinishLine( '%s', '%s' )<CR>",
+	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'finishChar' ], item[ 'trigger' ])
 endfor
 
 "1
