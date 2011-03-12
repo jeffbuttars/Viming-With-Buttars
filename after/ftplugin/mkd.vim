@@ -1,6 +1,11 @@
 
-"Set 'textwidth' to 78 characters.
-setlocal textwidth=78
+"Set 'textwidth'
+if ! exists("g:maxLineLength")
+	let g:maxLineLength=80
+endif
+
+let &textwidth=g:maxLineLength
+
 setlocal spell spelllang=en_us
 set guifont=Courier\ 12
 
@@ -37,9 +42,9 @@ function! b:generateMkd( viewit )
 
 endfunction
 
-nmap <buffer> <F1> <ESC>:w<CR>:call b:generateMkd(0)<CR>
-imap <buffer> <F1> <ESC>:w<CR>:call b:generateMkd(0)<CR>
-nmap <buffer> <F5> <ESC>:w<CR>:call b:generateMkd(1)<CR>
-imap <buffer> <F5> <ESC>:w<CR>:call b:generateMkd(1)<CR>
+nmap <buffer> <F1> <ESC>:w<CR>:call b:generateMkd(0)<CR><CR>
+imap <buffer> <F1> <ESC>:w<CR>:call b:generateMkd(0)<CR><CR>
+nmap <buffer> <F5> <ESC>:w<CR>:call b:generateMkd(1)<CR><CR>
+imap <buffer> <F5> <ESC>:w<CR>:call b:generateMkd(1)<CR><CR>
 
 

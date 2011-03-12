@@ -126,10 +126,10 @@ endif " has("autocmd")
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
 " Only define it when not defined already.
-if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
-endif
+"if !exists(":DiffOrig")
+  "command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+		  "\ | wincmd p | diffthis
+"endif
 
 
 set autoread
@@ -263,11 +263,11 @@ vnoremap <silent> # :call VisualSearch('b')<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " More normal Vim tweaks.
-" make a diff split vertical by default
-" ignore whitespace
-" show 10 lines of context
+" vertical: make a diff split vertical by default
+" iwhite: ignore whitespace
+" context: show 10 lines of context
 "set diffopt=filler,vertical,iwhite,context:10
-set diffopt=filler,vertical,context:10
+set diffopt=filler,vertical,context:15
 let g:html_diff_one_file = 1
 
 "Use real tabs, 4 spaces
@@ -306,6 +306,7 @@ set title
 
 "set foldmethod=indent
 "set foldmethod=syntax
+set foldmethod=manual
 
 " Easy cycle through tabs using Ctrl-PgUp/PgDown 
 " similar to FireFox
@@ -426,15 +427,19 @@ elseif $TERM =~ '256'
 	hi clear CursorLine 
 	"colo jellybeans 
 	
+	let g:lucius_style = "dark"
 	if $TERM_META =~ 'white'
-		colo github 
-	else
+		"colo github 
+		let g:lucius_style = "light"
+	endif
+	"else
 		"colo molokai 
 		"colo wombat256 
 		"colo jellybeans 
 		"colo 256-grayvim
-		colo mywombat256 
-	endif
+		"colo mywombat256 
+	"endif
+	colo lucius 
 endif
 
 " set linenumbers on by default
@@ -565,6 +570,10 @@ set guioptions-=T
 set guifont=Inconsolata\ Medium\ 12
 "set guifont=Anonymous\ Pro\ 12
 
+" I don't want variables and options saved in my views
+" so remove the 'options' option from the default viewoptions setting.
+set viewoptions-=options
+
 " End More normal Vim tweaks.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -577,7 +586,8 @@ set guifont=Inconsolata\ Medium\ 12
 nmap <silent> <c-l> <esc>:BufExplorer<CR>
 imap <silent> <c-l> <esc>:BufExplorer<CR>
 let g:bufExplorerSortBy='mru' " Sort by most recently used.
-let g:bufExplorerFindActive=1
+"let g:bufExplorerFindActive=1
+"let g:bufExplorerShowUnlisted=0
 
 """ comments.vim
 "A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
@@ -683,26 +693,6 @@ autocmd FileType xml  set equalprg=xmllint\ --format\ -
 "Enable autotag.vim
 "source ~/.vim/plugin/autotag.vim
 
-" Little something from http://www.ibm.com/developerworks/linux/library/l-vim-script-5/index.html 
-" Agressive auto saving
-function! Autosave()
-
-	" close the preview window if it's visible
-	" and the pop up menu is not visible
-	if pumvisible() == 0
-		pclose
-	endif
-
-	if ! &modified
-		return
-	endif
-
-	if expand('%') != ""
-		write
-	endif
-endfunction
-autocmd FocusLost,BufLeave,WinLeave,CursorHold,CursorHoldI * :call Autosave()
-
 " load the tag closer
 "au FileType html,xhtml let b:closetag_html_style=1
 "au FileType html,xml,xhtml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
@@ -726,9 +716,11 @@ let g:NiceMenuMin = 1
 "%l%.%#,%Z%[%^\ ]%\\@=%m
 
 if $CPBSDSRCDIR != "" && $PWD =~ "^".$CPBSDSRCDIR
-	echo "Changing makeprg command to cpmake"
+	"echo "Changing makeprg command to cpmake"
 	set makeprg=cpmake
 endif
+
+let g:maxLineLength=90
 
 
  "End Plugins and external addons
@@ -761,7 +753,7 @@ endif
 " http://blog.ezyang.com/2010/03/vim-textwidth/
 
 "au FileType php set nocursorline 
-au WinEnter * setlocal number
-au WinLeave * setlocal nonumber
+"au WinEnter * setlocal number
+"au WinLeave * setlocal nonumber
 
 runtime hacks.vim 
