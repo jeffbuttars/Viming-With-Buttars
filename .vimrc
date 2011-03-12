@@ -594,6 +594,7 @@ let g:bufExplorerFindActive=1
 let g:ctags_statusline=1
 " Automatically start script
 let generate_tags=1
+
 " Displays taglist results in a vertical window:
 let Tlist_Use_Horiz_Window=0
 " Shorter commands to toggle Taglist display
@@ -680,7 +681,7 @@ autocmd FileType json set equalprg=json_reformat
 autocmd FileType xml  set equalprg=xmllint\ --format\ -
 
 "Enable autotag.vim
-source ~/.vim/plugin/autotag.vim
+"source ~/.vim/plugin/autotag.vim
 
 " Little something from http://www.ibm.com/developerworks/linux/library/l-vim-script-5/index.html 
 " Agressive auto saving
