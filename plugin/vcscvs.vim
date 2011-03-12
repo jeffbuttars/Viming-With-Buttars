@@ -2,10 +2,9 @@
 "
 " CVS extension for VCSCommand.
 "
-" Version:       VCS development
 " Maintainer:    Bob Hiestand <bob.hiestand@gmail.com>
 " License:
-" Copyright (c) 2007 Bob Hiestand
+" Copyright (c) Bob Hiestand
 "
 " Permission is hereby granted, free of charge, to any person obtaining a copy
 " of this software and associated documentation files (the "Software"), to
@@ -181,7 +180,7 @@ endfunction
 " Function: s:cvsFunctions.Annotate(argList) {{{2
 function! s:cvsFunctions.Annotate(argList)
 	if len(a:argList) == 0
-		if &filetype == 'CVSAnnotate'
+		if &filetype == 'CVSannotate'
 			" This is a CVSAnnotate buffer.  Perform annotation of the version
 			" indicated by the current line.
 			let caption = matchstr(getline('.'),'\v^[0-9.]+')
@@ -216,7 +215,6 @@ function! s:cvsFunctions.Annotate(argList)
 
 	let resultBuffer = s:DoCommand(join(['-q', 'annotate'] + options), 'annotate', caption, {})
 	if resultBuffer > 0
-		set filetype=CVSAnnotate
 		" Remove header lines from standard error
 		silent v/^\d\+\%(\.\d\+\)\+/d
 	endif
@@ -266,13 +264,7 @@ function! s:cvsFunctions.Diff(argList)
 		let diffOptions = ['-' . cvsDiffOpt]
 	endif
 
-	let resultBuffer = s:DoCommand(join(['diff'] + diffOptions + revOptions), 'diff', caption, {'allowNonZeroExit': 1})
-	if resultBuffer > 0
-		set filetype=diff
-	else
-		echomsg 'No differences found'
-	endif
-	return resultBuffer
+	return s:DoCommand(join(['diff'] + diffOptions + revOptions), 'diff', caption, {'allowNonZeroExit': 1})
 endfunction
 
 " Function: s:cvsFunctions.GetBufferInfo() {{{2
@@ -338,11 +330,7 @@ function! s:cvsFunctions.Log(argList)
 		let caption = join(a:argList, ' ')
 	endif
 
-	let resultBuffer=s:DoCommand(join(['log'] + options), 'log', caption, {})
-	if resultBuffer > 0
-		set filetype=rcslog
-	endif
-	return resultBuffer
+	return s:DoCommand(join(['log'] + options), 'log', caption, {})
 endfunction
 
 " Function: s:cvsFunctions.Revert(argList) {{{2
@@ -360,11 +348,7 @@ function! s:cvsFunctions.Review(argList)
 		let versionOption = ' -r ' . versiontag . ' '
 	endif
 
-	let resultBuffer = s:DoCommand('-q update -p' . versionOption, 'review', versiontag, {})
-	if resultBuffer > 0
-		let &filetype=getbufvar(b:VCSCommandOriginalBuffer, '&filetype')
-	endif
-	return resultBuffer
+	return s:DoCommand('-q update -p' . versionOption, 'review', versiontag, {})
 endfunction
 
 " Function: s:cvsFunctions.Status(argList) {{{2
@@ -444,17 +428,22 @@ for [pluginName, commandText, shortCut] in mappingInfo
 	endif
 endfor
 
-" Section: Menu items {{{1
-amenu <silent> &Plugin.VCS.CVS.&Edit       <Plug>CVSEdit
-amenu <silent> &Plugin.VCS.CVS.Ed&itors    <Plug>CVSEditors
-amenu <silent> &Plugin.VCS.CVS.Unedi&t     <Plug>CVSUnedit
-amenu <silent> &Plugin.VCS.CVS.&Watchers   <Plug>CVSWatchers
-amenu <silent> &Plugin.VCS.CVS.WatchAdd    <Plug>CVSWatchAdd
-amenu <silent> &Plugin.VCS.CVS.WatchOn     <Plug>CVSWatchOn
-amenu <silent> &Plugin.VCS.CVS.WatchOff    <Plug>CVSWatchOff
-amenu <silent> &Plugin.VCS.CVS.WatchRemove <Plug>CVSWatchRemove
-
 " Section: Plugin Registration {{{1
 let s:VCSCommandUtility = VCSCommandRegisterModule('CVS', expand('<sfile>'), s:cvsFunctions, s:cvsExtensionMappings)
+
+" Section: Menu items {{{1
+for [s:shortcut, s:command] in [
+			\['CVS.&Edit', '<Plug>CVSEdit'],
+			\['CVS.Ed&itors', '<Plug>CVSEditors'],
+			\['CVS.Unedi&t', '<Plug>CVSUnedit'],
+			\['CVS.&Watchers', '<Plug>CVSWatchers'],
+			\['CVS.WatchAdd', '<Plug>CVSWatchAdd'],
+			\['CVS.WatchOn', '<Plug>CVSWatchOn'],
+			\['CVS.WatchOff', '<Plug>CVSWatchOff'],
+			\['CVS.WatchRemove', '<Plug>CVSWatchRemove']
+			\]
+	call s:VCSCommandUtility.addMenuItem(s:shortcut, s:command)
+endfor
+unlet s:shortcut s:command
 
 let &cpo = s:save_cpo

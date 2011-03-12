@@ -21,6 +21,7 @@ let colors_name = "wombat256"
 if version >= 700
 	hi CursorLine							ctermbg=236		cterm=none
 	hi CursorColumn						ctermbg=236
+	hi ColorColumn							ctermbg=236		cterm=none
 	hi MatchParen		ctermfg=7		ctermbg=243		cterm=bold
 	hi Pmenu				ctermfg=7		ctermbg=238
 	hi PmenuSel			ctermfg=0		ctermbg=186
