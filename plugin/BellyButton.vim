@@ -109,20 +109,10 @@ fun! s:BellyButtonExec()
 	echo get(l:e_out, 'sysout', "")
 endf
 
-"fun! s:BellyButtonLintExec()
-	"try
-		"if s:BellyButtonLint()
-			"call s:BellyButtonExec()
-		"endif
-	"catch /E117:/
-	"endtry
-"endf
-
 command! BellyButtonExtra call s:BellyButtonExtra()
 command! BellyButtonLint call s:BellyButtonLint()
 command! BellyButtonLintRaw call s:BellyButtonLintRaw()
 command! BellyButtonExec call s:BellyButtonExec()
-"command! BellyButtonLintExec call s:BellyButtonLintExec()
 
 au FileType * nmap <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
 au FileType * imap <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
@@ -130,5 +120,3 @@ au FileType * nmap <F4> <ESC>:w<CR>:BellyButtonLint<CR>
 au FileType * imap <F4> <ESC>:w<CR>:BellyButtonLint<CR>
 au FileType * nmap <F5> <ESC>:w<CR>:BellyButtonExec<CR>
 au FileType * imap <F5> <ESC>:w<CR>:BellyButtonExec<CR>
-"au FileType * nmap <F5> <ESC>:w<CR>:BellyButtonLintExec<CR>
-"au FileType * imap <F5> <ESC>:w<CR>:BellyButtonLintExec<CR>
