@@ -109,6 +109,16 @@ fun! s:BellyButtonExec()
 	echo get(l:e_out, 'sysout', "")
 endf
 
+function! BellyButtonModuleBase()
+	let s:plugin_path = expand("~/")
+	if has("win32")
+		let s:plugin_path = s:plugin_path . "vimfiles"
+	else
+		let s:plugin_path = s:plugin_path . ".vim"
+	endif
+	return s:plugin_path . "/autoload/bellybutton/"
+endfunction
+
 command! BellyButtonExtra call s:BellyButtonExtra()
 command! BellyButtonLint call s:BellyButtonLint()
 command! BellyButtonLintRaw call s:BellyButtonLintRaw()
