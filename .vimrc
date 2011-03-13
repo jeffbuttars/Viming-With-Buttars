@@ -418,7 +418,9 @@ if has( "gui_running" )
 	set cursorline
 	hi clear CursorLine 
 	"colo vylight 
-	colo wombat256 
+	"colo wombat256 
+	let g:lucius_style = "light"
+	colo lucius 
 elseif $TERM =~ '256'
 	" Use a console friendly theme and turn off cursorline
 	" I  prefer a dark theme at the console..
@@ -427,7 +429,7 @@ elseif $TERM =~ '256'
 	hi clear CursorLine 
 	"colo jellybeans 
 	
-	let g:lucius_style = "dark"
+	let g:lucius_style = "light"
 	if $TERM_META =~ 'white'
 		"colo github 
 		let g:lucius_style = "light"
@@ -567,7 +569,7 @@ set guioptions-=T
 " Set gvim font. I like the Inconsolata font these days.
 " You'll need to install, do it, it's very much worth it.
 " A great font, and it's 100% free.
-set guifont=Inconsolata\ Medium\ 12
+set guifont=Inconsolata\ Medium\ 10
 "set guifont=Anonymous\ Pro\ 12
 
 " I don't want variables and options saved in my views
@@ -720,7 +722,7 @@ if $CPBSDSRCDIR != "" && $PWD =~ "^".$CPBSDSRCDIR
 	set makeprg=cpmake
 endif
 
-let g:maxLineLength=90
+let g:maxLineLength=100
 
 
  "End Plugins and external addons
