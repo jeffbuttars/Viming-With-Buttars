@@ -1,3 +1,5 @@
+
+
 function! s:JSLint(args) range
   cclose " Close quickfix window
   cexpr [] " Create empty quickfix list
@@ -36,17 +38,33 @@ function! s:JSLint(args) range
               \ "\n") . "\n")
 
   let b:errors = []
+  let b:impliedGlobals = 0
   let b:has_errors = 0
   let b:error_under_cursor = 'No error on current line' "default
+  "let b:global_err_list = []
 
   for error in split(b:jslint_output, "\n")
+
     " Match {line}:{char}:{message}
     let b:parts = matchlist(error, "\\(\\d\\+\\):\\(\\d\\+\\):\\(.*\\)")
     if !empty(b:parts)
-      let b:has_errors = 1
       let l:line = b:parts[1] + (b:firstline - 1) " Get line relative to selection
+
+	  " Implied global errors can be overwhelming. Let the user
+	  " squash that error if they wish.
+	  if g:JSLintIgnoreImpliedGlobals && b:parts[3] =~ '^Implied global'
+			let b:impliedGlobals = 1
+			"let b:parts[1] = l:line
+			"call add(b:global_err_list, b:parts )
+			continue
+	  endif
+
+      let b:has_errors = 1
+
       " Add line to match list
-      call add(b:errors, matchadd('Error', '\%' . l:line . 'l'))
+	  if g:JSLintHighlightErrorLine == 1
+		  call add(b:errors, matchadd('Error', '\%' . l:line . 'l'))
+	  endif
 
       " Store the error for an error under the cursor
       if l:line == line('.')
@@ -58,6 +76,14 @@ function! s:JSLint(args) range
     endif
   endfor
 
+  if g:JSLintIgnoreImpliedGlobals && b:impliedGlobals
+      "caddexpr expand("%") . ":0:0:" . "Implied global errors were found"
+      echo "Implied global errors were found"
+	  "for error in b:global_err_list
+		  "caddexpr expand("%") . ":" . error[1] . ":" . error[2] . ":" . error[3]
+	  "endfor
+  endif
+
   " Open the quickfix window if errors are present
   if b:has_errors == 1
     if a:args == "qf"
@@ -66,6 +92,7 @@ function! s:JSLint(args) range
       echo b:error_under_cursor
     endif
   else
+	cclose " Close quickfix window
     echo "JSLint: All good."
   endif
 endfunction
@@ -74,4 +101,6 @@ endfunction
 command! -range JSLintLight <line1>,<line2>call s:JSLint("echo")
 " Highlight errors and open quick fix window
 command! -range JSLint <line1>,<line2>call s:JSLint("qf")
+" Un Highlight errors
+command! JSLintClear call s:JSLintClear()
 
