@@ -45,7 +45,12 @@ fun! s:showErrors( estr, parseFunc )
 
 			if !empty(l:eparts) && len(l:eparts) > 2
 				let l:has_errors = 1
-				caddexpr l:eparts['filename'] . ":" . l:eparts['lnum'] . ":" . l:eparts['errmsg']
+				if get(l:eparts, 'char')
+					caddexpr l:eparts['filename'].":".l:eparts['lnum']
+								\.":".l:eparts['char'].":".l:eparts['errmsg']
+				else
+					caddexpr l:eparts['filename'].":".l:eparts['lnum'].":".l:eparts['errmsg']
+				endif
 			endif
 		endfor
 	endif
