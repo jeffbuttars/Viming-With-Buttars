@@ -69,6 +69,7 @@ function! SetColorColumn( ccol )
 	if ! exists("b:longLineMatchID")
 		let b:longLineMatchID = 0
 	endif
+	set cursorcolumn
 
 	"echo "SetColorColumn " b:longLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
 
