@@ -605,6 +605,7 @@ let g:bufExplorerSortBy='mru' " Sort by most recently used.
 let g:ctags_statusline=1
 " Automatically start script
 let generate_tags=1
+
 " Displays taglist results in a vertical window:
 let Tlist_Use_Horiz_Window=0
 " Shorter commands to toggle Taglist display
@@ -691,7 +692,7 @@ autocmd FileType json set equalprg=json_reformat
 autocmd FileType xml  set equalprg=xmllint\ --format\ -
 
 "Enable autotag.vim
-source ~/.vim/plugin/autotag.vim
+"source ~/.vim/plugin/autotag.vim
 
 " load the tag closer
 "au FileType html,xhtml let b:closetag_html_style=1
@@ -721,6 +722,7 @@ if $CPBSDSRCDIR != "" && $PWD =~ "^".$CPBSDSRCDIR
 endif
 
 let g:maxLineLength=100
+
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

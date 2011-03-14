@@ -1,4 +1,4 @@
 syntax:glob
 swapback
 undos
-view
+view/*
