@@ -102,16 +102,37 @@ function! s:getJSExec()
 endfunction
 
 function! s:getOptions()
-
 	" verify any given options also exist
 	" in our default options array, ignore
 	" any that aren't.
 	let l:jsl_opts = {}
 
 	for key in keys(g:BBJSLint_Options)
+		if get( s:jslint_options_defaults, key )
+			if 1 != g:BBJSLint_Options[key]
+				let g:BBJSLint_Options[key] = 0
+			endif
+			let l:jsl_opts[key] = g:BBJSLint_Options[key]
+		endif
 	endfor
-g:BBJSLint_Options
-s:jslint_options_defaults
+
+	return l:jsl_opts
+endfunction
+
+function! s:writeOptionFile( jsl_opts )
+	if !a:jsl_opts || empty(a:jsl_opts)
+		return 0
+	endif
+
+	let l:jsl_str = "var BBJSLINT_OPTS = {};\n"
+	for key in keys(a:jsl_opts)
+		let l:jsl_str .= "BBJSLINT_OPTS['".key."'] = ".a:jsl_opts[key].";\n"
+	endfor
+
+	let l:fname = tempname()
+	writefile(l:jsl_str, l:fname)
+
+	return l:fname
 endfunction
 
 
@@ -151,6 +172,8 @@ function bellybutton#javascript#lintRaw()
 	else
 		let s:runjslint_ext = 'js'
 	endif
+
+	let l:opt_file = s:writeOptionFile(s:getOptions())
 
 	"echo l:bbase
 	let l:cmd = "cd " . l:bbase . " && " . l:jslint . " "
