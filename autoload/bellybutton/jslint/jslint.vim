@@ -1,5 +1,3 @@
-
-
 function! s:JSLint(args) range
   cclose " Close quickfix window
   cexpr [] " Create empty quickfix list
