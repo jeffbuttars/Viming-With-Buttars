@@ -427,7 +427,8 @@ elseif $TERM =~ '256'
 	hi clear CursorLine 
 	"colo jellybeans 
 	
-	let g:lucius_style = "dark"
+	"let g:lucius_style = "dark"
+	let g:lucius_style = "light"
 	if $TERM_META =~ 'white'
 		"colo github 
 		let g:lucius_style = "light"
@@ -719,8 +720,7 @@ if $CPBSDSRCDIR != "" && $PWD =~ "^".$CPBSDSRCDIR
 	set makeprg=cpmake
 endif
 
-let g:maxLineLength=90
-
+let g:maxLineLength=100
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
