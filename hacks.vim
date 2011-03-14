@@ -11,16 +11,16 @@ if $CPBSDSRCDIR != "" && getcwd() =~ "^".$CPBSDSRCDIR
 		set tags+=tstr 
 	endif
 
-	nmap <F10> <ESC>:w<CR><ESC>:make -j10 kernel<CR><ESC>make -10 build<CR><ESC>:make imageclean<CR><ESC>make image<CR>
-	imap <F10> <ESC>:w<CR><ESC>:make -j10 kernel<CR><ESC>make -10 build<CR><ESC>:make imageclean<CR><ESC>make image<CR>
-	nmap <F9>  <ESC>:w<CR><ESC>:make all<CR>
-	imap <F9>  <ESC>:w<CR><ESC>:make all<CR>
-	nmap <F8>  <ESC>:w<CR><ESC>:make -j10 build<CR>
-	imap <F8>  <ESC>:w<CR><ESC>:make -j10 build<CR>
-	nmap <F7>  <ESC>:w<CR><ESC>:make imageclean<CR><ESC>:make image<CR>
-	imap <F7>  <ESC>:w<CR><ESC>:make imageclean<CR><ESC>:make image<CR>
-	nmap <F6>  <ESC>:w<CR><ESC>:make kernel<CR>
-	imap <F6>  <ESC>:w<CR><ESC>:make kernel<CR>
+	nmap <silent> <F10> <ESC>:w<CR><ESC>:make -j10 kernel<CR><ESC>make -10 build<CR><ESC>:make imageclean<CR><ESC>make image<CR>
+	imap <silent> <F10> <ESC>:w<CR><ESC>:make -j10 kernel<CR><ESC>make -10 build<CR><ESC>:make imageclean<CR><ESC>make image<CR>
+	nmap <silent> <F9>  <ESC>:w<CR><ESC>:make all<CR>
+	imap <silent> <F9>  <ESC>:w<CR><ESC>:make all<CR>
+	nmap <silent> <F8>  <ESC>:w<CR><ESC>:make -j10 build<CR>
+	imap <silent> <F8>  <ESC>:w<CR><ESC>:make -j10 build<CR>
+	nmap <silent> <F7>  <ESC>:w<CR><ESC>:make imageclean<CR><ESC>:make image<CR>
+	imap <silent> <F7>  <ESC>:w<CR><ESC>:make imageclean<CR><ESC>:make image<CR>
+	nmap <silent> <F6>  <ESC>:w<CR><ESC>:make kernel<CR>
+	imap <silent> <F6>  <ESC>:w<CR><ESC>:make kernel<CR>
 endif
 
 
