@@ -15,9 +15,9 @@ fun! g:Find( firstarg, ... )
 
 	if strlen(b:find_results) > 0
 		for result in split( b:find_results,"\n" )
-			"Match {message} in {file} on line {line}
+			"Match {filename}:{linenumber}:{message} 
 			let b:has_results = 1
-			caddexpr "myfind:".result
+			caddexpr result.":0:F"
 		endfor
 		copen
 	else
