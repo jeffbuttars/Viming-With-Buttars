@@ -63,7 +63,7 @@ if !exists('g:BBJSLint_Options')
 	" regexp    : the . should not be allowed in regexp literals
 	" plusplus  : increment/decrement should not be allowed
 	" bitwise   : bitwise operators should not be allowed
-	g:BBJSLint_Options = { 'white':1, 'onevar':1,
+	let g:BBJSLint_Options = { 'white':1, 'onevar':1,
 		\'undef':1, 'newcap':1, 'nomen':1,
 		\'regexp':1, 'plusplus':1, 'bitwise':1 }
 endif
@@ -120,7 +120,7 @@ function! s:getOptions()
 endfunction
 
 function! s:writeOptionFile( jsl_opts )
-	if !a:jsl_opts || empty(a:jsl_opts)
+	if empty(a:jsl_opts)
 		return 0
 	endif
 
