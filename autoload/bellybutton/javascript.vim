@@ -126,9 +126,9 @@ function! s:writeOptionFile( jsl_opts )
 		return "" 
 	endif
 
-	let l:jsl_str = ["var BBJSLINT_OPTS = {};\n"]
+	let l:jsl_str = ["var BBJSLINT_OPTS = {};"]
 	for key in keys(a:jsl_opts)
-		let l:jsl_str += ["BBJSLINT_OPTS['".key."'] = ".a:jsl_opts[key].";\n"]
+		let l:jsl_str += ["BBJSLINT_OPTS['".key."'] = ".a:jsl_opts[key].";"]
 	endfor
 
 	let l:fname = tempname().".js"
@@ -167,6 +167,10 @@ function bellybutton#javascript#lintRaw()
 	let l:jslint = s:getJSExec()
 
 	"echo "Using jslint:" l:jslint
+	let l:pre_arg = ""
+	if l:jslint == 'js'
+		let l:pre_arg = "-f "
+	endif
 
 	" Set up command and parameters
 	let l:bbase = BellyButtonModuleBase()."jslint/"
@@ -181,9 +185,9 @@ function bellybutton#javascript#lintRaw()
 	echo l:opt_file
 	let l:cmd = "cd " . l:bbase . " && " . l:jslint . " "
 	if len(l:opt_file) > 0
-		let l:cmd .= l:opt_file." "
+		let l:cmd .= l:pre_arg.l:opt_file." "
 	endif
-	let l:cmd .= "runjslint." . s:runjslint_ext
+	let l:cmd .= l:pre_arg."runjslint." . s:runjslint_ext
 
 	echo l:cmd
 	let b:jslint_output = system(l:cmd, join(getline(1, '$'), "\n")."\n")
