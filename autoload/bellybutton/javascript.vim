@@ -39,17 +39,9 @@
 "sub        true, if all forms of subscript notation are tolerated
 "white      true, if strict whitespace rules apply
 "widget     true  if the Yahoo Widgets globals should be predefined
-let s:jslint_options_defaults = { 'adsafe':0,
-			\'bitwise':0, 'browser':0, 'cap':0,
-			\'continue':0, 'css':0, 'debug':0,
-			\'devel':0, 'es5':0, 'evil':0,
-			\'forin':0, 'fragment':0, 'indent':0,
-			\'maxerr':0, 'maxlen':0, 'newcap':0,
-			\'nomen':0, 'on':0, 'onevar':0,
-			\'passfail':0, 'plusplus':0, 'regexp':0,
-			\'rhino':0, 'undef':0, 'safe':0,
-			\'windows':0, 'strict':0, 'sub':0,
-			\'white':0, 'widget':0 }
+"
+" XXXXXXXXXXXXXXXXXXXXXXXX This is one is very handy!!! XXXXXXXXXXXXXXXX
+"predef		[] an array of globals for jslint to not rais an error on
 
 
 if !exists('g:BBJSLint_Options')
@@ -63,9 +55,9 @@ if !exists('g:BBJSLint_Options')
 	" regexp    : the . should not be allowed in regexp literals
 	" plusplus  : increment/decrement should not be allowed
 	" bitwise   : bitwise operators should not be allowed
-	let g:BBJSLint_Options = { 'white':1, 'onevar':1,
-		\'undef':1, 'newcap':1, 'nomen':1,
-		\'regexp':1, 'plusplus':1, 'bitwise':1 }
+	let g:BBJSLint_Options = { 'white':'true', 'onevar':'true',
+		\'undef':'true', 'newcap':'true', 'nomen':'true',
+		\'regexp':'true', 'plusplus':'true', 'bitwise':'true' }
 endif
 
 
@@ -77,13 +69,14 @@ if !exists("g:JSLintIgnoreImpliedGlobals")
 endif
 
 if !exists("g:JSLintExecutable")
-	let g:JSLintExecutable = ""
+	let g:JSLintExecutable = {} 
 endif
-let s:jslint_execs = ['js', 'd8'] 
+
+let s:jslint_execs = [ {'exec':'d8'},{'exec':'js','pre_opt':'-f '}] 
 
 function! s:getJSExec()
 
-	if len(g:JSLintExecutable) > 0 && executable(g:JSLintExecutable)
+	if !empty(g:JSLintExecutable) && 0 != get(g:JSLintExecutable, 'exec') && executable(g:JSLintExecutable['exec'])
 		return g:JSLintExecutable
 	endif
 
@@ -92,43 +85,26 @@ function! s:getJSExec()
 	endif
 
 	for ext in s:jslint_execs
-		if executable(ext)
+		if executable(ext['exec'])
 			return ext
 		endif
 	endfor
 
 	echoerr "No javascript executable found."
-	return "" 
+	return {} 
 endfunction
 
-function! s:getOptions()
-	" verify any given options also exist
-	" in our default options array, ignore
-	" any that aren't.
-	let l:jsl_opts = {}
 
-	for key in keys(g:BBJSLint_Options)
-		if -1 != get( s:jslint_options_defaults, key, -1 )
-			echo key
-			if 1 != g:BBJSLint_Options[key]
-				let g:BBJSLint_Options[key] = 0
-			endif
-			let l:jsl_opts[key] = g:BBJSLint_Options[key]
-		endif
-	endfor
-
-	return l:jsl_opts
-endfunction
-
-function! s:writeOptionFile( jsl_opts )
-	if empty(a:jsl_opts)
+function! s:writeOptionFile()
+	if !exists('g:BBJSLint_Options') || empty(g:BBJSLint_Options)
 		echo "s:writeOptionFile() empty options"
 		return "" 
 	endif
-
+	
 	let l:jsl_str = ["var BBJSLINT_OPTS = {};"]
-	for key in keys(a:jsl_opts)
-		let l:jsl_str += ["BBJSLINT_OPTS['".key."'] = ".a:jsl_opts[key].";"]
+	for key in keys(g:BBJSLint_Options)
+		echo key.":".g:BBJSLint_Options[key]
+		let l:jsl_str += ["BBJSLINT_OPTS['".key."'] = ".g:BBJSLint_Options[key].";"]
 	endfor
 
 	let l:fname = tempname().".js"
@@ -138,38 +114,14 @@ function! s:writeOptionFile( jsl_opts )
 	return l:fname
 endfunction
 
-
-
-"function bellybutton#javascript#exec()
-	" If we find errors, return the matchlist.
-	" If we don't find errors, or don't care about finding
-	" errors, it's best to just print the results out.
-	"let sysout = system( "php ".shellescape(expand('%')))
-
-	" sysout: the raw output from the command
-	" ecode:  exit code of the command
-	" good_ecode: what is a good exit code for the comand, any other exit code
-	" is considered an error.
-	" parse_error: if a bad exit code is found should bellybutton parse the
-	" output and put error lines in the quickfix buffer
-	"
-	" If you just want to dump the output to the screen you only need to
-	" provide sysout
-	"return {'sysout':l:sysout, 'ecode':v:shell_error, 'good_ecode':0, 'parse_error':1}
-"endfunction
-
-"function bellybutton#javascript#execParseError( e_line )
-	"return bellybutton#php#parseLintErrorLine( a:e_line )
-"endfunction
-
 function bellybutton#javascript#lintRaw()
 
 	let l:jslint = s:getJSExec()
 
 	"echo "Using jslint:" l:jslint
 	let l:pre_arg = ""
-	if l:jslint == 'js'
-		let l:pre_arg = "-f "
+	if '0' != "".get(l:jslint, 'pre_opt' )
+		let l:pre_arg = l:jslint['pre_opt'] 
 	endif
 
 	" Set up command and parameters
@@ -180,10 +132,10 @@ function bellybutton#javascript#lintRaw()
 		let s:runjslint_ext = 'js'
 	endif
 
-	let l:opt_file = s:writeOptionFile(s:getOptions())
+	let l:opt_file = s:writeOptionFile()
 
 	echo l:opt_file
-	let l:cmd = "cd " . l:bbase . " && " . l:jslint . " "
+	let l:cmd = "cd " . l:bbase . " && " . l:jslint['exec']. " "
 	if len(l:opt_file) > 0
 		let l:cmd .= l:pre_arg.l:opt_file." "
 	endif
