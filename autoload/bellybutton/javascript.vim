@@ -108,7 +108,8 @@ function! s:getOptions()
 	let l:jsl_opts = {}
 
 	for key in keys(g:BBJSLint_Options)
-		if get( s:jslint_options_defaults, key )
+		if -1 != get( s:jslint_options_defaults, key, -1 )
+			echo key
 			if 1 != g:BBJSLint_Options[key]
 				let g:BBJSLint_Options[key] = 0
 			endif
@@ -121,17 +122,19 @@ endfunction
 
 function! s:writeOptionFile( jsl_opts )
 	if empty(a:jsl_opts)
-		return 0
+		echo "s:writeOptionFile() empty options"
+		return "" 
 	endif
 
-	let l:jsl_str = "var BBJSLINT_OPTS = {};\n"
+	let l:jsl_str = ["var BBJSLINT_OPTS = {};\n"]
 	for key in keys(a:jsl_opts)
-		let l:jsl_str .= "BBJSLINT_OPTS['".key."'] = ".a:jsl_opts[key].";\n"
+		let l:jsl_str += ["BBJSLINT_OPTS['".key."'] = ".a:jsl_opts[key].";\n"]
 	endfor
 
-	let l:fname = tempname()
-	writefile(l:jsl_str, l:fname)
+	let l:fname = tempname().".js"
+	call writefile(l:jsl_str, l:fname)
 
+	"echo "option file ".l:fname
 	return l:fname
 endfunction
 
@@ -175,11 +178,14 @@ function bellybutton#javascript#lintRaw()
 
 	let l:opt_file = s:writeOptionFile(s:getOptions())
 
-	"echo l:bbase
+	echo l:opt_file
 	let l:cmd = "cd " . l:bbase . " && " . l:jslint . " "
-				\ . "runjslint." . s:runjslint_ext
+	if len(l:opt_file) > 0
+		let l:cmd .= l:opt_file." "
+	endif
+	let l:cmd .= "runjslint." . s:runjslint_ext
 
-	"echo l:cmd
+	echo l:cmd
 	let b:jslint_output = system(l:cmd, join(getline(1, '$'), "\n")."\n")
 	return b:jslint_output
 endfunction
