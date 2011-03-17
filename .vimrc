@@ -418,7 +418,9 @@ if has( "gui_running" )
 	set cursorline
 	hi clear CursorLine 
 	"colo vylight 
-	colo wombat256 
+	"colo wombat256 
+	let g:lucius_style = "light"
+	colo lucius 
 elseif $TERM =~ '256'
 	" Use a console friendly theme and turn off cursorline
 	" I  prefer a dark theme at the console..
@@ -427,20 +429,19 @@ elseif $TERM =~ '256'
 	hi clear CursorLine 
 	"colo jellybeans 
 	
-	"let g:lucius_style = "dark"
-	let g:lucius_style = "light"
 	if $TERM_META =~ 'white'
 		"colo github 
 		let g:lucius_style = "light"
-	endif
-	"else
+		colo lucius 
+	else
 		"colo molokai 
 		"colo wombat256 
 		"colo jellybeans 
 		"colo 256-grayvim
 		"colo mywombat256 
-	"endif
-	colo lucius 
+		let g:lucius_style = "dark"
+		colo lucius 
+	endif
 endif
 
 " set linenumbers on by default
