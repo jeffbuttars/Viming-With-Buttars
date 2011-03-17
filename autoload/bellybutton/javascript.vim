@@ -1,23 +1,47 @@
 " Global Options
-
+"
 " Enable/Disable highlighting of errors in source.
 " Default is Enable
 " To disable the highlighting put the line
 " let g:JSLintHighlightErrorLine = 0 
 " in your .vimrc
 
-let s:jslint_execs = ['js', 'd8'] 
-let s:jslint_options_defaults = { 'adsafe':0,
-			\'bitwise':0, 'browser':0, 'cap':0,
-			\'continue':0, 'css':0, 'debug':0,
-			\'devel':0, 'es5':0, 'evil':0,
-			\'forin':0, 'fragment':0, 'indent':0,
-			\'maxerr':0, 'maxlen':0, 'newcap':0,
-			\'nomen':0, 'on':0, 'onevar':0,
-			\'passfail':0, 'plusplus':0, 'regexp':0,
-			\'rhino':0, 'undef':0, 'safe':0,
-			\'windows':0, 'strict':0, 'sub':0,
-			\'white':0, 'widget':0 }
+" Available JSLint options, override the defaults
+" with the var g:BBJSLint_Options = {}
+"adsafe     true, if ADsafe rules should be enforced
+"bitwise    true, if bitwise operators should not be allowed
+"browser    true, if the standard browser globals should be predefined
+"cap        true, if upper case HTML should be allowed
+"'continue' true, if the continuation statement should be tolerated
+"css        true, if CSS workarounds should be tolerated
+"debug      true, if debugger statements should be allowed
+"devel      true, if logging should be allowed (console, alert, etc.)
+"es5        true, if ES5 syntax should be allowed
+"evil       true, if eval should be allowed
+"forin      true, if for in statements need not filter
+"fragment   true, if HTML fragments should be allowed
+"indent     the indentation factor
+"maxerr     the maximum number of errors to allow
+"maxlen     the maximum length of a source line
+"newcap     true, if constructor names must be capitalized
+"nomen      true, if names should be checked
+"on         true, if HTML event handlers should be allowed
+"onevar     true, if only one var statement per function should be allowed
+"passfail   true, if the scan should stop on first error
+"plusplus   true, if increment/decrement should not be allowed
+"regexp     true, if the . should not be allowed in regexp literals
+"rhino      true, if the Rhino environment globals should be predefined
+"undef      true, if variables should be declared before used
+"safe       true, if use of some browser features should be restricted
+"windows    true, if MS Windows-specigic globals should be predefined
+"strict     true, require the "use strict"; pragma
+"sub        true, if all forms of subscript notation are tolerated
+"white      true, if strict whitespace rules apply
+"widget     true  if the Yahoo Widgets globals should be predefined
+"
+" XXXXXXXXXXXXXXXXXXXXXXXX This is one is very handy!!! XXXXXXXXXXXXXXXX
+"predef		[] an array of globals for jslint to not rais an error on
+
 
 function! bellybutton#javascript#init()
 	echo "bellybutton#javascript#init()"
@@ -27,51 +51,7 @@ function! bellybutton#javascript#init()
 		return
 	endif
 
-	" Available JSLint options, override the defaults
-	" with the var g:BBJSLint_Options = {}
-	"adsafe     true, if ADsafe rules should be enforced
-	"bitwise    true, if bitwise operators should not be allowed
-	"browser    true, if the standard browser globals should be predefined
-	"cap        true, if upper case HTML should be allowed
-	"'continue' true, if the continuation statement should be tolerated
-	"css        true, if CSS workarounds should be tolerated
-	"debug      true, if debugger statements should be allowed
-	"devel      true, if logging should be allowed (console, alert, etc.)
-	"es5        true, if ES5 syntax should be allowed
-	"evil       true, if eval should be allowed
-	"forin      true, if for in statements need not filter
-	"fragment   true, if HTML fragments should be allowed
-	"indent     the indentation factor
-	"maxerr     the maximum number of errors to allow
-	"maxlen     the maximum length of a source line
-	"newcap     true, if constructor names must be capitalized
-	"nomen      true, if names should be checked
-	"on         true, if HTML event handlers should be allowed
-	"onevar     true, if only one var statement per function should be allowed
-	"passfail   true, if the scan should stop on first error
-	"plusplus   true, if increment/decrement should not be allowed
-	"regexp     true, if the . should not be allowed in regexp literals
-	"rhino      true, if the Rhino environment globals should be predefined
-	"undef      true, if variables should be declared before used
-	"safe       true, if use of some browser features should be restricted
-	"windows    true, if MS Windows-specigic globals should be predefined
-	"strict     true, require the "use strict"; pragma
-	"sub        true, if all forms of subscript notation are tolerated
-	"white      true, if strict whitespace rules apply
-	"widget     true  if the Yahoo Widgets globals should be predefined
-	if !exists('s:jslint_options_defaults')
-		let s:jslint_options_defaults = { 'adsafe':0,
-					\'bitwise':0, 'browser':0, 'cap':0,
-					\'continue':0, 'css':0, 'debug':0,
-					\'devel':0, 'es5':0, 'evil':0,
-					\'forin':0, 'fragment':0, 'indent':0,
-					\'maxerr':0, 'maxlen':0, 'newcap':0,
-					\'nomen':0, 'on':0, 'onevar':0,
-					\'passfail':0, 'plusplus':0, 'regexp':0,
-					\'rhino':0, 'undef':0, 'safe':0,
-					\'windows':0, 'strict':0, 'sub':0,
-					\'white':0, 'widget':0 }
-	endif
+	let s:jslint_execs = [ {'exec':'d8'},{'exec':'js','pre_opt':'-f '}] 
 
 	if ! exists('g:BBJSLint_Options')
 		echo "bellybutton#javascript#init() initial g:BBJSLint_Options"
@@ -103,7 +83,7 @@ endfunction
 
 function! s:getJSExec()
 
-	if exists('g:JSLintExecutable') && len(g:JSLintExecutable) > 0 && executable(g:JSLintExecutable)
+	if !empty(g:JSLintExecutable) && 0 != get(g:JSLintExecutable, 'exec') && executable(g:JSLintExecutable['exec'])
 		return g:JSLintExecutable
 	endif
 
@@ -112,49 +92,32 @@ function! s:getJSExec()
 	endif
 
 	for ext in s:jslint_execs
-		if executable(ext)
+		if executable(ext['exec'])
 			return ext
 		endif
 	endfor
 
 	echoerr "No javascript executable found."
-	return "" 
+	return {} 
 endfunction
 
-function! s:getOptions()
-	" verify any given options also exist
-	" in our default options array, ignore
-	" any that aren't.
-	let l:jsl_opts = {}
 
-	for key in keys(g:BBJSLint_Options)
-		if 'nope' != get( s:jslint_options_defaults, key, 'nope' ).""
-			"echo "s:getOptions() ".key
-			if 1 != g:BBJSLint_Options[key]
-				let g:BBJSLint_Options[key] = 0
-			endif
-			let l:jsl_opts[key] = g:BBJSLint_Options[key]
-		endif
-	endfor
-
-	echo "getOptions(): " l:jsl_opts
-	return l:jsl_opts
-endfunction
-
-function! s:writeOptionFile( jsl_opts )
-	if empty(a:jsl_opts)
-		echo "s:writeOptionFile() handed empty options"
-		return 0
+function! s:writeOptionFile()
+	if !exists('g:BBJSLint_Options') || empty(g:BBJSLint_Options)
+		echo "s:writeOptionFile() empty options"
+		return "" 
 	endif
-
-	let l:jsl_str = "var BBJSLINT_OPTS = {};\n"
-	for key in keys(a:jsl_opts)
-		let l:jsl_str .= "BBJSLINT_OPTS['".key."'] = ".a:jsl_opts[key].";\n"
+	
+	let l:jsl_str = ["var BBJSLINT_OPTS = {};"]
+	for key in keys(g:BBJSLint_Options)
+		echo key.":".g:BBJSLint_Options[key]
+		let l:jsl_str += ["BBJSLINT_OPTS['".key."'] = ".g:BBJSLint_Options[key].";"]
 	endfor
 
-	let l:fname = tempname()
-	writefile(l:jsl_str, l:fname)
+	let l:fname = tempname().".js"
+	call writefile(l:jsl_str, l:fname)
 
+	"echo "option file ".l:fname
 	return l:fname
 endfunction
 
@@ -187,6 +150,10 @@ function bellybutton#javascript#lintRaw()
 	let l:jslint = s:getJSExec()
 
 	"echo "Using jslint:" l:jslint
+	let l:pre_arg = ""
+	if '0' != "".get(l:jslint, 'pre_opt' )
+		let l:pre_arg = l:jslint['pre_opt'] 
+	endif
 
 	" Set up command and parameters
 	let l:bbase = BellyButtonModuleBase()."jslint/"
@@ -196,21 +163,14 @@ function bellybutton#javascript#lintRaw()
 		let s:runjslint_ext = 'js'
 	endif
 
-	let l:opt_file = s:writeOptionFile(s:getOptions())
-	echo "bellybutton#javascript#lintRaw::opt_file: ".l:opt_file
-	if l:opt_file
-		echo readfile(l:opt_file)
-	endif
+	let l:opt_file = s:writeOptionFile()
 
-	"echo l:bbase
-	let l:cmd = "cd " . l:bbase . " && " . l:jslint . " "
-				\ . "runjslint." . s:runjslint_ext
-
-	let l:cmd = "cd " . l:bbase . " && " . l:jslint
-	if l:opt_file
-		let l:cmd .= " ".l:opt_file 
+	echo l:opt_file
+	let l:cmd = "cd " . l:bbase . " && " . l:jslint['exec']. " "
+	if len(l:opt_file) > 0
+		let l:cmd .= l:pre_arg.l:opt_file." "
 	endif
-	let l:cmd .= " runjslint." . s:runjslint_ext
+	let l:cmd .= l:pre_arg."runjslint." . s:runjslint_ext
 
 	echo l:cmd
 	let b:jslint_output = system(l:cmd, join(getline(1, '$'), "\n")."\n")
