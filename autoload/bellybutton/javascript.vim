@@ -3,7 +3,6 @@
 " Enable/Disable highlighting of errors in source.
 " Default is Enable
 " To disable the highlighting put the line
-" let g:JSLintHighlightErrorLine = 0 
 " in your .vimrc
 
 " Available JSLint options, override the defaults
@@ -47,43 +46,68 @@ function! bellybutton#javascript#init()
 	echo "bellybutton#javascript#init()"
 
 	if exists('s:bbjslint_initialized') && 0 != s:bbjslint_initialized
-		echo "bellybutton#javascript#init() already initialized"
+		"echo "bellybutton#javascript#init() already initialized"
 		return
 	endif
 
-	let s:jslint_execs = [ {'exec':'d8'},{'exec':'js','pre_opt':'-f '}] 
-
-	if ! exists('g:BBJSLint_Options')
-		echo "bellybutton#javascript#init() initial g:BBJSLint_Options"
-		" Set up some defaults, use the same defaults
-		" from Crawkfords web version of jslint:
-		" white 	: strict whitespace rules apply
-		" onevar	: only one var statement per function should be allowed
-		" undef     : variables should be declared before used
-		" newcap    : constructor names must be capitalized
-		" nomen     : names should be checked
-		" regexp    : the . should not be allowed in regexp literals
-		" plusplus  : increment/decrement should not be allowed
-		" bitwise   : bitwise operators should not be allowed
-		let g:BBJSLint_Options = { 'white':1, 'onevar':1,
-			\'undef':1, 'newcap':1, 'nomen':1,
-			\'regexp':1, 'plusplus':1, 'bitwise':1 }
-	endif
-
-	if !exists("g:JSLintHighlightErrorLine")
-		let g:JSLintHighlightErrorLine = 1 
-	endif
-	if !exists("g:JSLintIgnoreImpliedGlobals")
-		let g:JSLintIgnoreImpliedGlobals = 0 
-	endif
+	let s:js_execs = [ {'exec':'d8'},{'exec':'js','pre_opt':'-f '}]
+	" Set up some defaults, use the same defaults
+	" from Crawkfords web version of jslint:
+	" white 	: strict whitespace rules apply
+	" onevar	: only one var statement per function should be allowed
+	" undef     : variables should be declared before used
+	" newcap    : constructor names must be capitalized
+	" nomen     : names should be checked
+	" regexp    : the . should not be allowed in regexp literals
+	" plusplus  : increment/decrement should not be allowed
+	" bitwise   : bitwise operators should not be allowed
+	"
+	" Here set up default options. The defaults
+	" are taken from the default options enabled
+	" on the jslint webpage with the excption
+	" of 'adsafe'
+	let s:jsl_options = { 'white':'true', 'onevar':'true',
+			\'undef':'true', 'newcap':'true', 'nomen':'true',
+			\'regexp':'true', 'plusplus':'true', 'bitwise':'true' }
 
 
 	let s:bbjslint_initialized = 1
 endfunction
 
+function! s:getOptions()
+
+	let l:opts = copy(s:jsl_options)
+
+	"merge the users global options over the default 
+	"options
+	if exists('g:BBJSLint_Options')
+		echo "bellybutton#javascript#init() initial g:BBJSLint_Options"
+		for key in keys(g:BBJSLint_Options)
+			if '' != get(g:BBJSLint_Options, key, '')
+				let l:opts[key] = g:BBJSLint_Options[key]
+			endif
+		endfor
+	endif
+
+	" merge any buffer local options
+	" over the current options
+	if exists('b:BBJSLint_Options')
+		for key in keys(b:BBJSLint_Options)
+			if '' != get(b:BBJSLint_Options, key, '')
+				let l:opts[key] = b:BBJSLint_Options[key]
+			endif
+		endfor
+	endif
+
+	return l:opts
+endfunction
+
 function! s:getJSExec()
 
-	if !empty(g:JSLintExecutable) && 0 != get(g:JSLintExecutable, 'exec') && executable(g:JSLintExecutable['exec'])
+	if exists('g:JSLintExecutable') && 
+				\!empty(g:JSLintExecutable) && 
+				\0 != get(g:JSLintExecutable, 'exec') && 
+				\executable(g:JSLintExecutable['exec'])
 		return g:JSLintExecutable
 	endif
 
@@ -91,7 +115,7 @@ function! s:getJSExec()
 		return 'cscript /NoLogo '
 	endif
 
-	for ext in s:jslint_execs
+	for ext in s:js_execs
 		if executable(ext['exec'])
 			return ext
 		endif
@@ -103,15 +127,17 @@ endfunction
 
 
 function! s:writeOptionFile()
-	if !exists('g:BBJSLint_Options') || empty(g:BBJSLint_Options)
-		echo "s:writeOptionFile() empty options"
+
+ 	let l:opts = s:getOptions()	
+	if empty(l:opts)
+		echo "s:writeOptionFile() no options"
 		return "" 
 	endif
 	
 	let l:jsl_str = ["var BBJSLINT_OPTS = {};"]
-	for key in keys(g:BBJSLint_Options)
-		echo key.":".g:BBJSLint_Options[key]
-		let l:jsl_str += ["BBJSLINT_OPTS['".key."'] = ".g:BBJSLint_Options[key].";"]
+	for key in keys(l:opts)
+		echo key.":".l:opts[key]
+		let l:jsl_str += ["BBJSLINT_OPTS['".key."'] = ".l:opts[key].";"]
 	endfor
 
 	let l:fname = tempname().".js"
@@ -146,6 +172,8 @@ endfunction
 "endfunction
 
 function bellybutton#javascript#lintRaw()
+
+
 
 	let l:jslint = s:getJSExec()
 
@@ -182,12 +210,6 @@ function bellybutton#javascript#parseLintErrorLine( e_line )
 	" Match {line}:{char}:{message}
 	let b:parts = matchlist(a:e_line, "\\(\\d\\+\\):\\(\\d\\+\\):\\(.*\\)")
 	if empty(b:parts) || len(b:parts) < 3
-		return {}
-	endif
-
-	" Implied global errors can be overwhelming. Let the user
-	" squash that error if they wish.
-	if g:JSLintIgnoreImpliedGlobals && b:parts[3] =~ '^Implied global'
 		return {}
 	endif
 
