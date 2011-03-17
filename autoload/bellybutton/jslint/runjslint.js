@@ -24,7 +24,7 @@ var readSTDIN = function() {
 };
 
 var body = readSTDIN() || arguments[0],
-    ok = JSLINT(body),
+    ok = JSLINT(body, BBJSLINT_OPTS || {} ),
     i,
     error,
     errorCount;

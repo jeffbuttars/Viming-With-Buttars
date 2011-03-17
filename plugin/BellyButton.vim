@@ -73,6 +73,12 @@ endf
 
 fun! s:BellyButtonLint()
 	let l:ft = s:sanitizeFT()
+
+	try
+		call bellybutton#{l:ft}#init()
+	catch /E117:/
+	endtry
+
 	try
 		let l:raw = bellybutton#{l:ft}#lintRaw()
 		return s:showErrors( l:raw, "bellybutton#".l:ft."#parseLintErrorLine" )
