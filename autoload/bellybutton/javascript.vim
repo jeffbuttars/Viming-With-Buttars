@@ -150,7 +150,7 @@ endfunction
 "function bellybutton#javascript#execParseError( e_line )
 "endfunction
 
-function bellybutton#javascript#lintRaw()
+function! bellybutton#javascript#lintRaw()
 
 	let l:jslint = s:getJSExec()
 

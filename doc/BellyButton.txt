@@ -21,11 +21,19 @@
 	6.6 report_________________________________|BellyButton_filetype_report|
 	6.7 credits________________________________|BellyButton_filetype_credits|
 	6.8 Info___________________________________|BellyButton_filetype_info|
+    7. File types_____________________________|BellyButtonFiletypes|
+	7.1 PHP____________________________________|BellyButtonFiletypesPHP|
+	7.2 JAVASCRIPT_____________________________|BellyButtonFiletypesJavascript|
+	7.3 PYTHON_________________________________|BellyButtonFiletypesPython|
+	7.4 C______________________________________|BellyButtonFiletypesC|
+	7.5 HTML___________________________________|BellyButtonFiletypesHTML|
+	7.6 CSS____________________________________|BellyButtonFiletypesCSS|
+	7.7 MARKDOW________________________________|BellyButtonFiletypesMarkdown|
 
-    7. TODO list_______________________________|BellyButtonTodo|
-    8. Maintainer______________________________|BellyButtonMaintainer|
-    9. Credits_________________________________|BellyButtonCredits|
-    10. History________________________________|BellyButtonHistory|
+    8. TODO list_______________________________|BellyButtonTodo|
+    9. Maintainer______________________________|BellyButtonMaintainer|
+    10. Credits________________________________|BellyButtonCredits|
+    11. History________________________________|BellyButtonHistory|
 
 ==============================================================================
 
@@ -54,13 +62,23 @@ as efficient as possible.
 
  6.- API						*BellyButtonAPI*
 
-    6.1.- extra						*BellyButton_filetype_extra*
-    6.2.- init 						*BellyButton_filetype_init*
-    6.3.- lintRaw					*BellyButton_filetype_lintRaw*
-    6.4.- exec						*BellyButton_filetype_exec*
-    6.5.- execParseError				*BellyButton_filetype_execParseError*
-    6.6.- report					*BellyButton_filetype_report*
-    6.7.- credits					*BellyButton_filetype_credits*
-    6.8.- Info						*BellyButton_filetype_info*
+    6.1- extra						*BellyButton_filetype_extra*
+    6.2- init 						*BellyButton_filetype_init*
+    6.3- lintRaw					*BellyButton_filetype_lintRaw*
+    6.4- exec						*BellyButton_filetype_exec*
+    6.5- execParseError				*BellyButton_filetype_execParseError*
+    6.6- report					*BellyButton_filetype_report*
+    6.7- credits					*BellyButton_filetype_credits*
+    6.8- Info						*BellyButton_filetype_info*
+
+ 7.- FILE TYPES						*BellyButtonFiletypes*
+
+    7.1- PHP						*BellyButtonFiletypesPHP*
+    7.2- JAVASCRIPT					*BellyButtonFiletypesJavascript*
+    7.3- PYTHON						*BellyButtonFiletypesPython*
+    7.4- C						*BellyButtonFiletypesC*
+    7.5- HTML						*BellyButtonFiletypesHTML*
+    7.6- CSS						*BellyButtonFiletypesCSS*
+    7.7- MARKDOW					*BellyButtonFiletypesMarkdown*
 
 vim:tw=78:ts=8:ft=help:norl:formatoptions+=tcroqn:autoindent:
