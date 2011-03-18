@@ -6,7 +6,7 @@
 " in your .vimrc
 
 " Available JSLint options, override the defaults
-" with the var g:BBJSLint_Options = {}
+" with the var g:BellyButton_javascript_jslint_options = {}
 "adsafe     true, if ADsafe rules should be enforced
 "bitwise    true, if bitwise operators should not be allowed
 "browser    true, if the standard browser globals should be predefined
@@ -43,63 +43,62 @@
 
 
 function! bellybutton#javascript#init()
-	echo "bellybutton#javascript#init()"
 
-	if exists('s:bbjslint_initialized') && 0 != s:bbjslint_initialized
-		"echo "bellybutton#javascript#init() already initialized"
-		return
+	if !exists('s:bbjslint_initialized')
+		let s:js_execs = [{'exec':'js','pre_opt':'-f '}, {'exec':'d8'}]
+		"let s:js_execs = [ {'exec':'d8'}, {'exec':'js','pre_opt':'-f '}]
+
+		" Set up some defaults, use the same defaults
+		" from Crawkfords web version of jslint:
+		" white 	: strict whitespace rules apply
+		" onevar	: only one var statement per function should be allowed
+		" undef     : variables should be declared before used
+		" newcap    : constructor names must be capitalized
+		" nomen     : names should be checked
+		" regexp    : the . should not be allowed in regexp literals
+		" plusplus  : increment/decrement should not be allowed
+		" bitwise   : bitwise operators should not be allowed
+		"
+		" Here set up default options. The defaults
+		" are taken from the default options enabled
+		" on the jslint webpage with the excption
+		" of 'adsafe'
+		let s:jsl_default_options = { 'white':'true', 'onevar':'true',
+				\'undef':'true', 'newcap':'true', 'nomen':'true',
+				\'regexp':'true', 'plusplus':'true', 'bitwise':'true' }
+
+		let s:bbjslint_initialized = 1
 	endif
 
-	let s:js_execs = [ {'exec':'d8'},{'exec':'js','pre_opt':'-f '}]
-	" Set up some defaults, use the same defaults
-	" from Crawkfords web version of jslint:
-	" white 	: strict whitespace rules apply
-	" onevar	: only one var statement per function should be allowed
-	" undef     : variables should be declared before used
-	" newcap    : constructor names must be capitalized
-	" nomen     : names should be checked
-	" regexp    : the . should not be allowed in regexp literals
-	" plusplus  : increment/decrement should not be allowed
-	" bitwise   : bitwise operators should not be allowed
-	"
-	" Here set up default options. The defaults
-	" are taken from the default options enabled
-	" on the jslint webpage with the excption
-	" of 'adsafe'
-	let s:jsl_options = { 'white':'true', 'onevar':'true',
-			\'undef':'true', 'newcap':'true', 'nomen':'true',
-			\'regexp':'true', 'plusplus':'true', 'bitwise':'true' }
-
-
-	let s:bbjslint_initialized = 1
-endfunction
-
-function! s:getOptions()
-
-	let l:opts = copy(s:jsl_options)
+	" Rebuild the options everytime.
+	" This makes things more responsive
+	" and immediate for the user when they change options
+	" without restarting, because they don't have to 
+	" restart. They adjust options mid hack and keep 
+	" rocking.
+	let s:jsl_options = copy(s:jsl_default_options)
 
 	"merge the users global options over the default 
 	"options
-	if exists('g:BBJSLint_Options')
-		echo "bellybutton#javascript#init() initial g:BBJSLint_Options"
-		for key in keys(g:BBJSLint_Options)
-			if '' != get(g:BBJSLint_Options, key, '')
-				let l:opts[key] = g:BBJSLint_Options[key]
+	if exists('g:BellyButton_javascript_jslint_options')
+		"echo "bellybutton#javascript#init() initial g:BellyButton_javascript_jslint_options"
+		for key in keys(g:BellyButton_javascript_jslint_options)
+			if '' != get(g:BellyButton_javascript_jslint_options, key, '')
+				let s:jsl_options[key] = g:BellyButton_javascript_jslint_options[key]
 			endif
 		endfor
 	endif
 
 	" merge any buffer local options
 	" over the current options
-	if exists('b:BBJSLint_Options')
-		for key in keys(b:BBJSLint_Options)
-			if '' != get(b:BBJSLint_Options, key, '')
-				let l:opts[key] = b:BBJSLint_Options[key]
+	if exists('b:BellyButton_javascript_jslint_options')
+		for key in keys(b:BellyButton_javascript_jslint_options)
+			if '' != get(b:BellyButton_javascript_jslint_options, key, '')
+				let s:jsl_options[key] = b:BellyButton_javascript_jslint_options[key]
 			endif
 		endfor
 	endif
 
-	return l:opts
 endfunction
 
 function! s:getJSExec()
@@ -125,19 +124,17 @@ function! s:getJSExec()
 	return {} 
 endfunction
 
-
 function! s:writeOptionFile()
 
- 	let l:opts = s:getOptions()	
-	if empty(l:opts)
-		echo "s:writeOptionFile() no options"
+	if empty(s:jsl_options)
+		"echo "s:writeOptionFile() no options"
 		return "" 
 	endif
 	
 	let l:jsl_str = ["var BBJSLINT_OPTS = {};"]
-	for key in keys(l:opts)
-		echo key.":".l:opts[key]
-		let l:jsl_str += ["BBJSLINT_OPTS['".key."'] = ".l:opts[key].";"]
+	for key in keys(s:jsl_options)
+		"echo key.":".s:jsl_options[key]
+		let l:jsl_str += ["BBJSLINT_OPTS['".key."'] = ".s:jsl_options[key].";"]
 	endfor
 
 	let l:fname = tempname().".js"
@@ -147,37 +144,17 @@ function! s:writeOptionFile()
 	return l:fname
 endfunction
 
-
-
 "function bellybutton#javascript#exec()
-	" If we find errors, return the matchlist.
-	" If we don't find errors, or don't care about finding
-	" errors, it's best to just print the results out.
-	"let sysout = system( "php ".shellescape(expand('%')))
-
-	" sysout: the raw output from the command
-	" ecode:  exit code of the command
-	" good_ecode: what is a good exit code for the comand, any other exit code
-	" is considered an error.
-	" parse_error: if a bad exit code is found should bellybutton parse the
-	" output and put error lines in the quickfix buffer
-	"
-	" If you just want to dump the output to the screen you only need to
-	" provide sysout
-	"return {'sysout':l:sysout, 'ecode':v:shell_error, 'good_ecode':0, 'parse_error':1}
 "endfunction
 
 "function bellybutton#javascript#execParseError( e_line )
-	"return bellybutton#php#parseLintErrorLine( a:e_line )
 "endfunction
 
 function bellybutton#javascript#lintRaw()
 
-
-
 	let l:jslint = s:getJSExec()
 
-	"echo "Using jslint:" l:jslint
+	""echo "Using jslint:" l:jslint
 	let l:pre_arg = ""
 	if '0' != "".get(l:jslint, 'pre_opt' )
 		let l:pre_arg = l:jslint['pre_opt'] 
@@ -193,15 +170,20 @@ function bellybutton#javascript#lintRaw()
 
 	let l:opt_file = s:writeOptionFile()
 
-	echo l:opt_file
+	"echo l:opt_file
 	let l:cmd = "cd " . l:bbase . " && " . l:jslint['exec']. " "
 	if len(l:opt_file) > 0
 		let l:cmd .= l:pre_arg.l:opt_file." "
 	endif
 	let l:cmd .= l:pre_arg."runjslint." . s:runjslint_ext
 
-	echo l:cmd
+	"echo l:cmd
 	let b:jslint_output = system(l:cmd, join(getline(1, '$'), "\n")."\n")
+	if v:shell_error != 0 
+		echoerr("Non zero return code from ".l:jslint['exec'])
+		return ""
+	endif
+	"echo b:jslint_output
 	return b:jslint_output
 endfunction
 
