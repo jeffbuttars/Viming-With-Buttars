@@ -1,4 +1,4 @@
-*BellyButton.txt*	For Vim version 7.3	Last change: 2011 March 17	v.1.6
+*BellyButton.txt*	For Vim version 7.3	Last change: 2011 March 17
 
 
                               REFERENCE MANUAL *BellyButton*
@@ -10,17 +10,22 @@
     1. Introduction____________________________|BellyButtonIntro|
     2. Functionality___________________________|BellyButtonFunctionality|
     3. Customization___________________________|BellyButtonOptions|
-        3.1 Option summary_____________________|BellyButtonOptionSummary|
-        3.2 Options details____________________|BellyButtonOptionDetails|
-    4. Commands________________________________|BellyButtonCommands|
-	4.1 DoubleTapFinishLine________________|DoubleTapFinishLine()|
-	4.2 DoubleTapJumpOut___________________|DoubleTapJumpOut()|
-	4.3 DoubleTapInsertJumpString__________|DoubleTapInsertJumpString()|
-	4.4 DoubleTapInsertJumpSimple__________|DoubleTapInsertJumpSimple()|
-    5. TODO list_______________________________|BellyButtonTodo|
-    6. Maintainer______________________________|BellyButtonMaintainer|
-    7. Credits_________________________________|BellyButtonCredits|
-    8. History_________________________________|BellyButtonHistory|
+        3.1 Option summary_________________________|BellyButtonOptionSummary|
+        3.2 Options details________________________|BellyButtonOptionDetails|
+    6. API_____________________________________|BellyButtonAPI|
+	6.1 extra__________________________________|BellyButton_filetype_extra|
+	6.2 init___________________________________|BellyButton_filetype_init|
+	6.3 lintRaw________________________________|BellyButton_filetype_lintRaw|
+	6.4 exec___________________________________|BellyButton_filetype_exec|
+	6.5 execParseError_________________________|BellyButton_filetype_execParseError|
+	6.6 report_________________________________|BellyButton_filetype_report|
+	6.7 credits________________________________|BellyButton_filetype_credits|
+	6.8 Info___________________________________|BellyButton_filetype_info|
+
+    7. TODO list_______________________________|BellyButtonTodo|
+    8. Maintainer______________________________|BellyButtonMaintainer|
+    9. Credits_________________________________|BellyButtonCredits|
+    10. History________________________________|BellyButtonHistory|
 
 ==============================================================================
 
@@ -43,5 +48,19 @@ as efficient as possible.
 
 
  2.- FUNCTIONALITY					*BellyButtonFunctionality*
+
+ A core feature of BellyButton is to make it easy to implement Lint and Exec
+ commands on a per filetype basis.
+
+ 6.- API						*BellyButtonAPI*
+
+    6.1.- extra						*BellyButton_filetype_extra*
+    6.2.- init 						*BellyButton_filetype_init*
+    6.3.- lintRaw					*BellyButton_filetype_lintRaw*
+    6.4.- exec						*BellyButton_filetype_exec*
+    6.5.- execParseError				*BellyButton_filetype_execParseError*
+    6.6.- report					*BellyButton_filetype_report*
+    6.7.- credits					*BellyButton_filetype_credits*
+    6.8.- Info						*BellyButton_filetype_info*
 
 vim:tw=78:ts=8:ft=help:norl:formatoptions+=tcroqn:autoindent:
