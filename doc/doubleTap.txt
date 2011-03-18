@@ -1,4 +1,4 @@
-*doubleTap.txt* Trying to keep those beasts at bay! v.1.6
+*doubleTap.txt* Trying to keep those beasts at bay! v.2.0
 
 
                               REFERENCE MANUAL *doubleTap*
