@@ -98,6 +98,11 @@ endf
 fun! s:BellyButtonExec()
 
 	try
+		call bellybutton#{l:ft}#init()
+	catch /E117:/
+	endtry
+
+	try
 		let l:e_out = bellybutton#{s:sanitizeFT()}#exec()
 	catch /E117:/
 		return
