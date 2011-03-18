@@ -1,0 +1,47 @@
+*BellyButton.txt*	For Vim version 7.3	Last change: 2011 March 17	v.1.6
+
+
+                              REFERENCE MANUAL *BellyButton*
+
+
+==============================================================================
+ 0.- CONTENTS                                           *BellyButton-contents*
+
+    1. Introduction____________________________|BellyButtonIntro|
+    2. Functionality___________________________|BellyButtonFunctionality|
+    3. Customization___________________________|BellyButtonOptions|
+        3.1 Option summary_____________________|BellyButtonOptionSummary|
+        3.2 Options details____________________|BellyButtonOptionDetails|
+    4. Commands________________________________|BellyButtonCommands|
+	4.1 DoubleTapFinishLine________________|DoubleTapFinishLine()|
+	4.2 DoubleTapJumpOut___________________|DoubleTapJumpOut()|
+	4.3 DoubleTapInsertJumpString__________|DoubleTapInsertJumpString()|
+	4.4 DoubleTapInsertJumpSimple__________|DoubleTapInsertJumpSimple()|
+    5. TODO list_______________________________|BellyButtonTodo|
+    6. Maintainer______________________________|BellyButtonMaintainer|
+    7. Credits_________________________________|BellyButtonCredits|
+    8. History_________________________________|BellyButtonHistory|
+
+==============================================================================
+
+ 1.- INTRODUCTION                                           *BellyButtonIntro*
+
+ BellyButton is a plugin to make syntax checking and, in some cases, execution
+ or building of the contents of a buffer easy and consistent. The user interface of
+ BellyButton consists of three commands, Lint, Exec, and Extra. Lint will do
+ the syntax check. Exec will run the buffer as a program, script, etc. or even
+ attempt to build if appropriate. And Extra will vary by filetype. By default 
+ these functions are mapped as:
+    Extra --> F3
+    Lint  --> F4
+    Exec  --> F5
+Of course, the user can map those commands however they wish. In addition to
+the three basic commands BellyButton will manage the error output of these
+commands in a friendly Vim way by displaying the error output into Vim's
+quickfix window so users can easily navigate through errors to make debugging
+as efficient as possible. 
+
+
+ 2.- FUNCTIONALITY					*BellyButtonFunctionality*
+
+vim:tw=78:ts=8:ft=help:norl:formatoptions+=tcroqn:autoindent:
