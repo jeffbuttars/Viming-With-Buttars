@@ -123,8 +123,17 @@ BellyButton	BellyButton.txt	/*BellyButton*
 BellyButton-contents	BellyButton.txt	/*BellyButton-contents*
 BellyButton.txt	BellyButton.txt	/*BellyButton.txt*
 BellyButtonAPI	BellyButton.txt	/*BellyButtonAPI*
+BellyButtonFiletypes	BellyButton.txt	/*BellyButtonFiletypes*
+BellyButtonFiletypesC	BellyButton.txt	/*BellyButtonFiletypesC*
+BellyButtonFiletypesCSS	BellyButton.txt	/*BellyButtonFiletypesCSS*
+BellyButtonFiletypesHTML	BellyButton.txt	/*BellyButtonFiletypesHTML*
+BellyButtonFiletypesJavascript	BellyButton.txt	/*BellyButtonFiletypesJavascript*
+BellyButtonFiletypesMarkdown	BellyButton.txt	/*BellyButtonFiletypesMarkdown*
+BellyButtonFiletypesPHP	BellyButton.txt	/*BellyButtonFiletypesPHP*
+BellyButtonFiletypesPython	BellyButton.txt	/*BellyButtonFiletypesPython*
 BellyButtonFunctionality	BellyButton.txt	/*BellyButtonFunctionality*
 BellyButtonIntro	BellyButton.txt	/*BellyButtonIntro*
+BellyButton_filetype_clean	BellyButton.txt	/*BellyButton_filetype_clean*
 BellyButton_filetype_credits	BellyButton.txt	/*BellyButton_filetype_credits*
 BellyButton_filetype_exec	BellyButton.txt	/*BellyButton_filetype_exec*
 BellyButton_filetype_execParseError	BellyButton.txt	/*BellyButton_filetype_execParseError*

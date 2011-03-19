@@ -198,6 +198,12 @@ function BellyButton#javascript#parseLintErrorLine( e_line )
 	return { 'filename':expand('%'), 'lnum':b:parts[1], 'char':b:parts[2], 'errmsg':b:parts[3] }
 endfunction
 
-function BellyButton#javascript#Info()
-	return "A helpful message"
+function! BellyButton#javascript#info()
+	return {'lint':"Uses jslint to analyze code",
+		\'author':"Jeff Buttars",
+		\'authro_email':"jeffbuttars@gmail.com",
+		\'externals':["JSlint 2011-03-07 by Douglas Crockford http://www.jslint.com/",
+		\"SpiderMonkey  http://www.mozilla.org/js/spidermonkey/",
+		\"V8 http://code.google.com/p/v8/"],
+		\'desc':"A description"	}
 endfunction
