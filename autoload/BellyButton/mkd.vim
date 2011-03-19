@@ -88,23 +88,23 @@ endfunction
 
 " We don't really run a lint over markdown
 " so we just render and show the out put
-function! bellybutton#mkd#lintRaw()
+function! BellyButton#mkd#lintRaw()
 	let l:paths = s:getPaths()
 	call s:renderHTML( l:paths['src'], l:paths['dst'] )
 	call s:showHTML(l:paths['dst'])
 endfunction
 
-function! bellybutton#mkd#extra()
+function! BellyButton#mkd#extra()
 	let l:paths = s:getPaths()
 	call s:renderPDF( l:paths['src'], l:paths['dst'] )
 	call s:showPDF(l:paths['dst'])
 endfunction
 
-function! bellybutton#mkd#parseLintErrorLine( eline )
+function! BellyButton#mkd#parseLintErrorLine( eline )
 	return {}
 endfunction
 
-function! bellybutton#mkd#exec()
+function! BellyButton#mkd#exec()
 
 	let sysout = ""
 	
@@ -115,7 +115,7 @@ function! bellybutton#mkd#exec()
 	return {'sysout':sysout, 'ecode':v:shell_error, 'good_ecode':0, 'parse_error':0}
 endfunction
 
-function! bellybutton#mkd#Info()
+function! BellyButton#mkd#Info()
 	return "A helpful message"
 endfunction
 

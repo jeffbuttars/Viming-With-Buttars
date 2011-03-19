@@ -42,7 +42,7 @@
 "predef		[] an array of globals for jslint to not rais an error on
 
 
-function! bellybutton#javascript#init()
+function! BellyButton#javascript#init()
 
 	if !exists('s:bbjslint_initialized')
 		let s:js_execs = [{'exec':'js','pre_opt':'-f '}, {'exec':'d8'}]
@@ -81,7 +81,7 @@ function! bellybutton#javascript#init()
 	"merge the users global options over the default 
 	"options
 	if exists('g:BellyButton_javascript_jslint_options')
-		"echo "bellybutton#javascript#init() initial g:BellyButton_javascript_jslint_options"
+		"echo "BellyButton#javascript#init() initial g:BellyButton_javascript_jslint_options"
 		for key in keys(g:BellyButton_javascript_jslint_options)
 			if '' != get(g:BellyButton_javascript_jslint_options, key, '')
 				let s:jsl_options[key] = g:BellyButton_javascript_jslint_options[key]
@@ -144,13 +144,13 @@ function! s:writeOptionFile()
 	return l:fname
 endfunction
 
-"function bellybutton#javascript#exec()
+"function BellyButton#javascript#exec()
 "endfunction
 
-"function bellybutton#javascript#execParseError( e_line )
+"function BellyButton#javascript#execParseError( e_line )
 "endfunction
 
-function! bellybutton#javascript#lintRaw()
+function! BellyButton#javascript#lintRaw()
 
 	let l:jslint = s:getJSExec()
 
@@ -187,7 +187,7 @@ function! bellybutton#javascript#lintRaw()
 	return b:jslint_output
 endfunction
 
-function bellybutton#javascript#parseLintErrorLine( e_line )
+function BellyButton#javascript#parseLintErrorLine( e_line )
 	"
 	" Match {line}:{char}:{message}
 	let b:parts = matchlist(a:e_line, "\\(\\d\\+\\):\\(\\d\\+\\):\\(.*\\)")
@@ -198,6 +198,6 @@ function bellybutton#javascript#parseLintErrorLine( e_line )
 	return { 'filename':expand('%'), 'lnum':b:parts[1], 'char':b:parts[2], 'errmsg':b:parts[3] }
 endfunction
 
-function bellybutton#javascript#Info()
+function BellyButton#javascript#Info()
 	return "A helpful message"
 endfunction
