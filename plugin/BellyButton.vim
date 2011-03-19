@@ -21,9 +21,11 @@
 "=============================================================================
 
 
-if exists('loaded_bellybutton') || &cp || version < 700
+if exists('loaded_BellyButton') || &cp || version < 700
 	finish
 endif
+
+let s:bbLocalOptFname = '.BellyButton_local_options.vim'
 
 fun! s:sanitizeFT()
 	return split(&ft, '\.')[0]
@@ -66,7 +68,33 @@ endfunction
 
 fun! s:BellyButtonExtra()
 	try
-		call bellybutton#{s:sanitizeFT()}#extra()
+		call BellyButton#{s:sanitizeFT()}#extra()
+	catch /E117:/
+	endtry
+endf
+
+" Called before a filetypes Exec or Raw is called
+" to give them a chance to setup options and any other
+" initialization before the work starts.
+" This will also source the .BellyButton_local_options.vim
+" file it's present to allow per directory option overrides.
+fun! s:bbInit( bbft )
+
+	"echo "s:bbInit(".a:bbft."): ".s:bbLocalOptFname.":".filereadable(s:bbLocalOptFname)
+	if filereadable(s:bbLocalOptFname) > 0
+		"echo "s:bbInit(".a:bbft.") sourcing:".s:bbLocalOptFname
+		exec "source ".s:bbLocalOptFname
+	endif
+
+	try
+		call BellyButton#{a:bbft}#init()
+	catch /E117:/
+	endtry
+endf
+
+fun! s:bbClean( bbft )
+	try
+		call BellyButton#{a:bbft}#clean()
 	catch /E117:/
 	endtry
 endf
@@ -74,22 +102,22 @@ endf
 fun! s:BellyButtonLint()
 	let l:ft = s:sanitizeFT()
 
-	try
-		call bellybutton#{s:sanitizeFT()}#init()
-	catch /E117:/
-	endtry
+	call s:bbInit( l:ft )
 
 	try
-		let l:raw = bellybutton#{s:sanitizeFT()}#lintRaw()
-		return s:showErrors( l:raw, "bellybutton#".l:ft."#parseLintErrorLine" )
+		let l:raw = BellyButton#{l:ft}#lintRaw()
+		let l:res = s:showErrors( l:raw, "BellyButton#".l:ft."#parseLintErrorLine" )
 	catch /E117:/
-		return 0
+		let l:res = 0
 	endtry
+
+	return l:res 
+	call s:bbClean( l:ft )
 endf
 
 fun! s:BellyButtonLintRaw()
 	try
-		echo bellybutton#{s:sanitizeFT()}#lintRaw()
+		echo BellyButton#{s:sanitizeFT()}#lintRaw()
 	catch /E117:/
 		return
 	endtry
@@ -98,12 +126,12 @@ endf
 fun! s:BellyButtonExec()
 
 	try
-		call bellybutton#{s:sanitizeFT()}#init()
+		call s:bbInit(s:sanitizeFT())
 	catch /E117:/
 	endtry
 
 	try
-		let l:e_out = bellybutton#{s:sanitizeFT()}#exec()
+		let l:e_out = BellyButton#{s:sanitizeFT()}#exec()
 	catch /E117:/
 		return
 	endtry
@@ -117,12 +145,14 @@ fun! s:BellyButtonExec()
 
 	if l:parse_error && (l:ecode != l:good_ecode)
 		try
-			call s:showErrors( get(l:e_out, 'sysout', ""), "bellybutton#".s:sanitizeFT()."#execParseError")
+			call s:showErrors( get(l:e_out, 'sysout', ""), "BellyButton#".s:sanitizeFT()."#execParseError")
 		catch /E117:/
 		endtry
 	endif
 
 	echo get(l:e_out, 'sysout', "")
+
+	call s:bbClean( s:sanitizeFT() )
 endf
 
 function! BellyButtonModuleBase()
@@ -132,7 +162,7 @@ function! BellyButtonModuleBase()
 	else
 		let s:plugin_path = s:plugin_path . ".vim"
 	endif
-	return s:plugin_path . "/autoload/bellybutton/"
+	return s:plugin_path . "/autoload/BellyButton/"
 endfunction
 
 command! BellyButtonExtra call s:BellyButtonExtra()

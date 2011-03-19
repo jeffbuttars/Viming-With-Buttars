@@ -725,8 +725,9 @@ endif
 let g:maxLineLength=100
 
 " BellyButton settings
-let g:BellyButton_javascript_jslint_options = {'white':'false', 'onevar':'false',
-			\'predef':"['console','window', 'Ext', '$', 'cp']"}
+"let g:BellyButton_javascript_jslint_options = {'white':'false', 'onevar':'false',
+			"\'predef':"['console','window', 'Ext', '$', 'cp']"}
+let g:BellyButton_javascript_jslint_options = {'white':'false', 'onevar':'false' }
 
 
  "End Plugins and external addons
