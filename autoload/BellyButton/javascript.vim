@@ -205,5 +205,9 @@ function! BellyButton#javascript#info()
 		\'externals':["JSlint 2011-03-07 by Douglas Crockford http://www.jslint.com/",
 		\"SpiderMonkey  http://www.mozilla.org/js/spidermonkey/",
 		\"V8 http://code.google.com/p/v8/"],
-		\'desc':"A description"	}
+		\'desc':"Checks your Javascript using the jslint tool from Douglas Crockford. Jslint itself
+		\ is included with this plugin but you will need to have a Javascript interpreter
+		\ installed on your system for this plugin to work. Currently only the Spidermonkey
+		\ and V8 Javascript interpreters have been
+		\ tested and used with this plugin. You only need to have one of them installed."}
 endfunction
