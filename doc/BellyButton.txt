@@ -13,14 +13,14 @@
         3.1 Option summary_________________________|BellyButtonOptionSummary|
         3.2 Options details________________________|BellyButtonOptionDetails|
     6. API_____________________________________|BellyButtonAPI|
-	6.1 extra__________________________________|BellyButton_filetype_extra|
-	6.2 init___________________________________|BellyButton_filetype_init|
+	6.1 init___________________________________|BellyButton_filetype_init|
+	6.2 clean__________________________________|BellyButton_filetype_clean|
 	6.3 lintRaw________________________________|BellyButton_filetype_lintRaw|
-	6.4 exec___________________________________|BellyButton_filetype_exec|
-	6.5 execParseError_________________________|BellyButton_filetype_execParseError|
-	6.6 report_________________________________|BellyButton_filetype_report|
-	6.7 credits________________________________|BellyButton_filetype_credits|
-	6.8 Info___________________________________|BellyButton_filetype_info|
+	6.4 parseLintErrorLine_______________|BellyButton_filetype_parseLintErrorLine|
+	6.5 exec___________________________________|BellyButton_filetype_exec|
+	6.6 execParseError_________________________|BellyButton_filetype_execParseError|
+	6.7 extra__________________________________|BellyButton_filetype_extra|
+	6.8 info___________________________________|BellyButton_filetype_info|
     7. File types_____________________________|BellyButtonFiletypes|
 	7.1 PHP____________________________________|BellyButtonFiletypesPHP|
 	7.2 JAVASCRIPT_____________________________|BellyButtonFiletypesJavascript|
@@ -58,18 +58,67 @@ as efficient as possible.
  2.- FUNCTIONALITY					*BellyButtonFunctionality*
 
  A core feature of BellyButton is to make it easy to implement Lint and Exec
- commands on a per filetype basis.
+ commands on a per filetype basis. Where an Exec function doesn't make sense a
+ make or build function often does instead. In those cases BellyButton will
+ try to provide the appropriate build command functionality for the filetype. 
 
  6.- API						*BellyButtonAPI*
 
-    6.1- extra						*BellyButton_filetype_extra*
-    6.2- init 						*BellyButton_filetype_init*
+    6.1- init 						*BellyButton_filetype_init*
+	BellyButton#<filetype>#init()
+    6.2- clean 						*BellyButton_filetype_clean*
+	BellyButton#<filetype>#clean()
     6.3- lintRaw					*BellyButton_filetype_lintRaw*
-    6.4- exec						*BellyButton_filetype_exec*
-    6.5- execParseError				*BellyButton_filetype_execParseError*
-    6.6- report					*BellyButton_filetype_report*
-    6.7- credits					*BellyButton_filetype_credits*
-    6.8- Info						*BellyButton_filetype_info*
+	BellyButton#<filetype>#lintRaw()
+    6.4 parseLintErrorLine				*BellyButton_filetype_parseLintErrorLine*
+	BellyButton#<filetype>#parseLintErrorLine( eline )
+    6.5- exec						*BellyButton_filetype_exec*
+	BellyButton#<filetype>#exec()
+    6.6- execParseError					*BellyButton_filetype_execParseError*
+	BellyButton#<filetype>#execParseError( eline )
+    6.7- extra						*BellyButton_filetype_extra*
+	BellyButton#<filetype>#extra()
+    6.8- info						*BellyButton_filetype_info*
+
+	BellyButton#<filetype>#info()
+
+	Display information about the filetype plugin. This function is
+	expected to create and return a dictionary witht the plugin's
+	information in it, indexed by the type of information. Below is a
+	description of each field of information.
+>
+	lint: if lint is provided, give a brief description of how it is
+	implemented.
+
+	exec: if an exec function is provided, give a brief description of how
+	it is implemented.
+
+	extra: if any extra function is provided, give a brief description of
+	what it does and how it is implemented.
+
+	author: "Author's Name"
+
+	author_email: "Author's e-mail address"
+
+	externals: A list of of external tools used by this plugin. Include a
+	URL to the tool if possible.
+<
+	Here is an example from the javascript fileytype plugin. Information
+	fields that don't apply to the plugin are simply left blank. In this
+	case the javascript plugin does not provide an exec or extra command
+	so those dictionary entries are simply left out.
+
+>
+    function! BellyButton#javascript#info()
+	    return {'lint':"Lint: Uses jslint to analyze code",
+		    \'author':"Jeff Buttars",
+		    \'authro_email':"jeffbuttars@gmail.com",
+		    \'externals':["JSlint 2011-03-07 by Douglas Crockford:http://www.jslint.com/",
+		    \"SpiderMonkey: http://www.mozilla.org/js/spidermonkey/",
+		    \"V8:http://code.google.com/p/v8/"]
+	    }
+    endfunction
+<
 
  7.- FILE TYPES						*BellyButtonFiletypes*
 

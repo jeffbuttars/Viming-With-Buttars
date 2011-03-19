@@ -21,9 +21,10 @@
 "=============================================================================
 
 
-if exists('loaded_BellyButton') || &cp || version < 700
+if exists('g:BellyButtonVersion') || &cp || version < 700
 	finish
 endif
+let g:BellyButtonVersion = 1.0
 
 let s:bbLocalOptFname = '.BellyButton_local_options.vim'
 
@@ -165,10 +166,50 @@ function! BellyButtonModuleBase()
 	return s:plugin_path . "/autoload/BellyButton/"
 endfunction
 
+fun! s:BellyButtonInfo()
+	try
+		let l:infod =  BellyButton#{s:sanitizeFT()}#info()
+	catch /E117:/
+		let l:infod = {}
+	endtry
+	"return {'lint':"Lint: Uses jslint to analyze code",
+		"\'author':"Jeff Buttars",
+		"\'authro_email':"jeffbuttars@gmail.com",
+		"\'externals':["JSlint 2011-03-07 by Douglas Crockford:http://www.jslint.com/",
+		"\"SpiderMonkey: http://www.mozilla.org/js/spidermonkey/",
+		"\"V8:http://code.google.com/p/v8/"]
+	"}
+	let l:istr = "BellyButton ".printf('%.1f',g:BellyButtonVersion).", ft=".s:sanitizeFT()."\n\n"
+
+	if empty(l:infod)
+		let l:ist .= "No further information for this filetype plugin\n"
+		echo l:istr
+		return
+	endif
+
+	for [key,value] in [['desc','Description'],['lint','Lint'],['exec','Exec'], ['extra','Extra'],
+				\['author','Author'],['author_email','Author Email']]
+		if '' != get(l:infod, key, '')
+			let l:istr .= printf('%-11s',value).": ".l:infod[key]."\n"
+		endif
+	endfor
+
+	if [] != get(l:infod, 'externals', [])
+		let l:istr .= "Externals:\n"
+		for ext in l:infod['externals']
+			let l:istr .= printf("%11s%s",' ',ext)."\n"
+		endfor
+	endif
+
+
+	echo l:istr
+endf
+
 command! BellyButtonExtra call s:BellyButtonExtra()
 command! BellyButtonLint call s:BellyButtonLint()
 command! BellyButtonLintRaw call s:BellyButtonLintRaw()
 command! BellyButtonExec call s:BellyButtonExec()
+command! BellyButtonInfo call s:BellyButtonInfo()
 
 au FileType * nmap <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
 au FileType * imap <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
