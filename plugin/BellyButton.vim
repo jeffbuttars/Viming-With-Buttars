@@ -68,10 +68,14 @@ fun! s:showErrors( estr, parseFunc )
 endfunction
 
 fun! s:BellyButtonExtra()
+	call s:bbInit(s:sanitizeFT())
+
 	try
 		call BellyButton#{s:sanitizeFT()}#extra()
 	catch /E117:/
 	endtry
+
+	call s:bbClean(s:sanitizeFT())
 endf
 
 " Called before a filetypes Exec or Raw is called
@@ -103,7 +107,7 @@ endf
 fun! s:BellyButtonLint()
 	let l:ft = s:sanitizeFT()
 
-	call s:bbInit( l:ft )
+	call s:bbInit(l:ft)
 
 	try
 		let l:raw = BellyButton#{l:ft}#lintRaw()
@@ -113,7 +117,7 @@ fun! s:BellyButtonLint()
 	endtry
 
 	return l:res 
-	call s:bbClean( l:ft )
+	call s:bbClean(l:ft)
 endf
 
 fun! s:BellyButtonLintRaw()
@@ -153,7 +157,7 @@ fun! s:BellyButtonExec()
 
 	echo get(l:e_out, 'sysout', "")
 
-	call s:bbClean( s:sanitizeFT() )
+	call s:bbClean(s:sanitizeFT())
 endf
 
 function! BellyButtonModuleBase()
@@ -205,11 +209,27 @@ fun! s:BellyButtonInfo()
 	echo l:istr
 endf
 
+" This will retrieve the filetype of a BellyButton script that follows the
+" naming scheme of <filetype>.vim. This enables very easy templating/boiler
+" plate for plugin writers. 
+"function! BellyButtonScriptFT()
+
+	"let l:myft = expand('%')
+	"let l:idx = strridx(l:myft, '.')
+	"if -1 == l:idx
+		"return "" 
+	"endif
+
+	"return strpart(l:myft, 0, l:idx)
+"endfunction!
+
+
 command! BellyButtonExtra call s:BellyButtonExtra()
 command! BellyButtonLint call s:BellyButtonLint()
 command! BellyButtonLintRaw call s:BellyButtonLintRaw()
 command! BellyButtonExec call s:BellyButtonExec()
 command! BellyButtonInfo call s:BellyButtonInfo()
+
 
 au FileType * nmap <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
 au FileType * imap <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
