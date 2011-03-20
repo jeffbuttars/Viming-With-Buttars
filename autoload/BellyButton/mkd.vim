@@ -100,7 +100,7 @@ function! BellyButton#mkd#extra()
 	call s:showPDF(l:paths['dst'])
 endfunction
 
-function! BellyButton#mkd#parseLintErrorLine( eline )
+function! BellyButton#mkd#parseLintError( eline )
 	return {}
 endfunction
 

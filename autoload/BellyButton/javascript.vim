@@ -187,7 +187,7 @@ function! BellyButton#javascript#lintRaw()
 	return b:jslint_output
 endfunction
 
-function BellyButton#javascript#parseLintErrorLine( e_line )
+function BellyButton#javascript#parseLintError( e_line )
 	"
 	" Match {line}:{char}:{message}
 	let b:parts = matchlist(a:e_line, "\\(\\d\\+\\):\\(\\d\\+\\):\\(.*\\)")
