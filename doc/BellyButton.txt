@@ -17,9 +17,9 @@
 	6.1 init___________________________________|BellyButton_filetype_init|
 	6.2 clean__________________________________|BellyButton_filetype_clean|
 	6.3 lintRaw________________________________|BellyButton_filetype_lintRaw|
-	6.4 parseLintErrorLine_______________|BellyButton_filetype_parseLintErrorLine|
+	6.4 parseLintError_______________|BellyButton_filetype_parseLintError|
 	6.5 exec___________________________________|BellyButton_filetype_exec|
-	6.6 execParseError_________________________|BellyButton_filetype_execParseError|
+	6.6 parseExecError_________________________|BellyButton_filetype_parseExecError|
 	6.7 extra__________________________________|BellyButton_filetype_extra|
 	6.8 info___________________________________|BellyButton_filetype_info|
     7. File types_____________________________|BellyButtonFiletypes|
@@ -99,11 +99,11 @@ as efficient as possible.
 	" checing on the buffer. 
     endfunction
 
-    function BellyButton#<filetype>#parseLintErrorLine( e_line )
+    function BellyButton#<filetype>#parseLintError( e_line )
 
 	" BellyButton will break the error string produced by the #lintRaw
 	" hook and ierate over the results for you. Each line in that error
-	" string will then be given as the parameter to the #parseLintErrorLine
+	" string will then be given as the parameter to the #parseLintError
 	" hook.
 
 	if no_errors
@@ -114,6 +114,19 @@ as efficient as possible.
 	    \'lnum':'line number the error was found on',
 	    \'char':'char column number the error is found at, optional',
 	    \'errmsg':'the error message to display in the quickfix window' }
+    endfunction
+
+    function! BellyButton#<filetype>#exec()
+	" This is where you put the code to execute or possible make the
+	" the current buffer. If the #exec hook doesn't make sense for your
+	" plugin, simple don't include it. If you implement the #exec hook
+	" you'll need to return a Dictionary as the result. See the API
+	" documentation BellyButton_filetype_exec for more details
+
+	return {'sysout':sysout, 
+	    \'ecode':v:shell_error, 
+	    \'good_ecode':0, 
+	    \'parse_error':0}
     endfunction
 <
 
@@ -148,10 +161,10 @@ as efficient as possible.
 	one string, '\n' delimited. A simple example of an error string:
 	"error1\nerro2\nsome comment about something\nerror3\n"
 
-    6.4 parseLintErrorLine				*BellyButton_filetype_parseLintErrorLine*
-	BellyButton#<filetype>#parseLintErrorLine( eline )
+    6.4 parseLintError				*BellyButton_filetype_parseLintError*
+	BellyButton#<filetype>#parseLintError( eline )
 	Params : String eline
-	Returns: Dictionary
+	Returns: |Dictionary|
 
 	This is where you will parse an error line that came from the #lintRaw
 	hook. The #lintRaw returned one string that possibly contained one or
@@ -195,10 +208,58 @@ as efficient as possible.
 
     6.5- exec						*BellyButton_filetype_exec*
 	BellyButton#<filetype>#exec()
+	Takes no parameters.
+	Returns: |Dictionary|
 
-	The #exec() hook 
-    6.6- execParseError					*BellyButton_filetype_execParseError*
-	BellyButton#<filetype>#execParseError( eline )
+	This is where you put the code to execute or possible make the
+	the current buffer. If the #exec hook doesn't make sense for your
+	plugin, simple don't include it. If you implement the #exec hook
+	you'll need to return a Dictionary as the result. The data in the
+	returned |Dictionary| is used to tell BellyButton if an error occured
+	while executing/building the buffer and if so what to do about it. You
+	can safely return an empty |Dictionary| and BellyButton will assume
+	everything went fine. The return |Dictionary| should include four keys
+	with data. All of the keys are optional.
+	Key explanation:
+	    'sysout': The raw output of the exec or build command.
+	    'ecode' : The exit code of teh exec or build command.
+	    'good_ecode': The value of a good exit code. Exit codes that are
+		not the same value as 'good_ecode' will be considered an error
+		code. 
+	    'parse_error': If the an error is detected, 'ecode' does not match
+		'good_ecode', then parse each line of 'sysout' with the
+		#parseExecError hook and display the error results in the
+		</filetype>quickfix window.
+
+>
+	sysout = system('exec_command '.expand('%'))
+	return {'sysout':sysout, 
+	    \'ecode':v:shell_error, 
+	    \'good_ecode':0, 
+	    \'parse_error':1}
+<
+
+    6.6- parseExecError					*BellyButton_filetype_parseExecError*
+	BellyButton#<filetype>#parseExecError( eline )
+	Params : String eline
+	Returns: |Dictionary|
+
+	The function of this hook is nearly identical to the #parseLintError
+	hook. The only difference is this hook is used to parse error data as
+	result of executing or building a buffer instead of running a syntax
+	anaylysis tool. See |BellyButton_filetype_parseLintError| for
+	further explanation on how to implement this hook.
+
+	In some cases, the error output of executing or building a buffer is
+	the same format as produced by a lint tool. In that case, as is with
+	using php as both a lint tool and executable, you can simply run an
+	implemented #parseLintError hook and return it's results:
+>
+	function BellyButton#<filetype>#parseExecError( e_line )
+	    return BellyButton#<filetype>#parseLintError( a:e_line )
+	endfunction
+<
+
     6.7- extra						*BellyButton_filetype_extra*
 	BellyButton#<filetype>#extra()
 
