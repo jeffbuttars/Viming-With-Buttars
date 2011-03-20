@@ -16,15 +16,15 @@ function BellyButton#php#exec()
 	return {'sysout':l:sysout, 'ecode':v:shell_error, 'good_ecode':0, 'parse_error':1}
 endfunction
 
-function BellyButton#php#execParseError( e_line )
-	return BellyButton#php#parseLintErrorLine( a:e_line )
+function BellyButton#php#parseExecError( e_line )
+	return BellyButton#php#parseLintError( a:e_line )
 endfunction
 
 function BellyButton#php#lintRaw()
 	return system( "php -ql ".shellescape(expand('%')))
 endfunction
 
-function BellyButton#php#parseLintErrorLine( e_line )
+function BellyButton#php#parseLintError( e_line )
 	"Match {message} in {file} on line {line}
 	let l:eparts = matchlist( a:e_line, "^.*:\\(.*\\)\ in\ \\(.*\\)\ on\ line\ \\(\\d\\+\\)" )
 	if !empty(l:eparts) && len(l:eparts) > 2

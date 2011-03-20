@@ -111,7 +111,7 @@ fun! s:BellyButtonLint()
 
 	try
 		let l:raw = BellyButton#{l:ft}#lintRaw()
-		let l:res = s:showErrors( l:raw, "BellyButton#".l:ft."#parseLintErrorLine" )
+		let l:res = s:showErrors( l:raw, "BellyButton#".l:ft."#parseLintError" )
 	catch /E117:/
 		let l:res = 0
 	endtry
@@ -150,7 +150,7 @@ fun! s:BellyButtonExec()
 
 	if l:parse_error && (l:ecode != l:good_ecode)
 		try
-			call s:showErrors( get(l:e_out, 'sysout', ""), "BellyButton#".s:sanitizeFT()."#execParseError")
+			call s:showErrors( get(l:e_out, 'sysout', ""), "BellyButton#".s:sanitizeFT()."#parseExecError")
 		catch /E117:/
 		endtry
 	endif
@@ -209,27 +209,11 @@ fun! s:BellyButtonInfo()
 	echo l:istr
 endf
 
-" This will retrieve the filetype of a BellyButton script that follows the
-" naming scheme of <filetype>.vim. This enables very easy templating/boiler
-" plate for plugin writers. 
-"function! BellyButtonScriptFT()
-
-	"let l:myft = expand('%')
-	"let l:idx = strridx(l:myft, '.')
-	"if -1 == l:idx
-		"return "" 
-	"endif
-
-	"return strpart(l:myft, 0, l:idx)
-"endfunction!
-
-
 command! BellyButtonExtra call s:BellyButtonExtra()
 command! BellyButtonLint call s:BellyButtonLint()
 command! BellyButtonLintRaw call s:BellyButtonLintRaw()
 command! BellyButtonExec call s:BellyButtonExec()
 command! BellyButtonInfo call s:BellyButtonInfo()
-
 
 au FileType * nmap <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
 au FileType * imap <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
