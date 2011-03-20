@@ -13,6 +13,7 @@
         3.1 Option summary_________________________|BellyButtonOptionSummary|
         3.2 Options details________________________|BellyButtonOptionDetails|
     6. API_____________________________________|BellyButtonAPI|
+	6.0 TEMPLATE_______________________________|BellyButton_filetype_template|
 	6.1 init___________________________________|BellyButton_filetype_init|
 	6.2 clean__________________________________|BellyButton_filetype_clean|
 	6.3 lintRaw________________________________|BellyButton_filetype_lintRaw|
@@ -28,7 +29,7 @@
 	7.4 C______________________________________|BellyButtonFiletypesC|
 	7.5 HTML___________________________________|BellyButtonFiletypesHTML|
 	7.6 CSS____________________________________|BellyButtonFiletypesCSS|
-	7.7 MARKDOW________________________________|BellyButtonFiletypesMarkdown|
+	7.7 MARKDOWN_______________________________|BellyButtonFiletypesMarkdown|
 
     8. TODO list_______________________________|BellyButtonTodo|
     9. Maintainer______________________________|BellyButtonMaintainer|
@@ -64,20 +65,151 @@ as efficient as possible.
 
  6.- API						*BellyButtonAPI*
 
+    6.0 TEMPLATE					*BellyButton_filetype_template*
+	Here is a template you can use to get started on on a BellyButton
+	filetype plugin. You don't have to use all of the functions in the
+	template. In fact you don't have to use any of them! But that would be
+	silly. It is important however, that if you don't implement a function
+	that you comment it out, or delete it all together. For further
+	explanation of each functions expected behavior, parameters, and
+	return value. Read the API details in the following sections. 
+>
+    function! BellyButton#<filetype>#init()
+
+	if !exists('s:bb<filetype>_initialized')
+	    let s:bb<filetype>_initialized = 1
+	    " Add any additional 'firs time, one time' initializtion code here. 
+	endif
+
+	" put any code down here that you want to run every time the
+	" #lintRaw, #exec, and #extra hooks are called, but right before they
+	" are caled. This can be a good place to setup options for external
+	" tools.
+    endfunction
+
+    function! BellyButton#<filetype>#clean()
+	" put any code down here that you want to run every time the
+	" #lintRaw, #exec, and #extra hooks are called, but right _after_ they
+	" are caled. This hook is generally not needed. But for those that
+	" want or need it, it's available.
+    endfunction
+
+    function! BellyButton#<filetype>#lintRaw()
+	" This is where you impliment what's needed to perform the syntax
+	" checing on the buffer. 
+    endfunction
+
+    function BellyButton#<filetype>#parseLintErrorLine( e_line )
+
+	" BellyButton will break the error string produced by the #lintRaw
+	" hook and ierate over the results for you. Each line in that error
+	" string will then be given as the parameter to the #parseLintErrorLine
+	" hook.
+
+	if no_errors
+	    return {}
+	endif
+	
+	return { 'filename':'name of file the error came from',
+	    \'lnum':'line number the error was found on',
+	    \'char':'char column number the error is found at, optional',
+	    \'errmsg':'the error message to display in the quickfix window' }
+    endfunction
+<
+
     6.1- init 						*BellyButton_filetype_init*
 	BellyButton#<filetype>#init()
+	Takes no parameters, returns nothing. 
+
+	This will be called, if it
+	exists, right before the the #lintRaw, #exec, and #extra hooks are
+	called. If you want any code that is only ran once, the first time the
+	script is used, you will want to put in the #lintRaw hook and use your
+	own logic to determine it's the first time its been called or not. The template
+	|BellyButton_filetype_template| has an example of that.
+
     6.2- clean 						*BellyButton_filetype_clean*
 	BellyButton#<filetype>#clean()
+	Takes no parameters, returns nothing. 
+
+	Very similiar to the #init hook, except this is called _after_
+	#lintRaw, #exec, and #extra hooks have completed.
+
     6.3- lintRaw					*BellyButton_filetype_lintRaw*
 	BellyButton#<filetype>#lintRaw()
+	Takes no parameters.
+	Returns: String
+
+	This is where you implement the syntax analysis of the current buffer.
+	Usually this means calling an external program to do the analysis of
+	the buffer for you. The string you return is expected to be the output
+	of the syntax analysis. Any errors are expected to be on one line and
+	be '\n' delimited within the string returned. All output must be in
+	one string, '\n' delimited. A simple example of an error string:
+	"error1\nerro2\nsome comment about something\nerror3\n"
+
     6.4 parseLintErrorLine				*BellyButton_filetype_parseLintErrorLine*
 	BellyButton#<filetype>#parseLintErrorLine( eline )
+	Params : String eline
+	Returns: Dictionary
+
+	This is where you will parse an error line that came from the #lintRaw
+	hook. The #lintRaw returned one string that possibly contained one or
+	more error lines from the syntax analysis tool that are newline, '\n',
+	delimited. This hook is where you analyze each piece of that string
+	and determine if it's an error string, and if so parse the error
+	string and return the error data in a |Dictionary. 
+
+	The no error case is easy, simply return an empty |Dictionary|
+>
+	if no_error
+	    return {}
+	endif
+<
+	If the line is an error line, return the error information in a |Dictionary|
+	that contains the keys 'filename', 'lnum', 'char', and 'errmsg'. The
+	'char' is optional, but the other keys are required.
+	Key explanation:
+	    'filename': The name of the file the error occurred in. Usually
+		this is the file that is open in the current buffer which easily
+		accessed with expand('%')
+	    'lnum': The line number the error occured on.
+	    'errmsg': The human readable, hopefully, error message text that
+		will be the main body of the error line in the quickfix
+		window.
+	    'char': Optional. The column number the error occured on. Some
+		tools will provide a character number for the offset in the
+		line the error happended at. If you have this information
+		please provide it. This will allow the user to easily jump not
+		only to the line the error is one, but also the column.
+>
+	if error
+	    return {'filename':expand('%'), 'lnum':69,
+		\'errmsg':'Your code exploded!'}
+	    if charnum
+		return {'filename':expand('%'), 'lnum':69,
+		    \'errmsg':'Your code exploded!', 'char':charnum}
+	    endif
+	endif
+<
+
     6.5- exec						*BellyButton_filetype_exec*
 	BellyButton#<filetype>#exec()
+
+	The #exec() hook 
     6.6- execParseError					*BellyButton_filetype_execParseError*
 	BellyButton#<filetype>#execParseError( eline )
     6.7- extra						*BellyButton_filetype_extra*
 	BellyButton#<filetype>#extra()
+
+	This is simple an easy way to add more filetype specific functionality
+	to a plugin. Certainly not required, but if there is an additionall
+	command you think would help in the lint/exec/build process of a
+	filetype, feel free to impliment the #extra() function hook. For
+	example, in the markdown(mkd) plugin the #extra() hook is used to
+	enable a one button render of the current buffer's markdown to a PDF
+	document.
+
     6.8- info						*BellyButton_filetype_info*
 
 	BellyButton#<filetype>#info()
@@ -128,6 +260,6 @@ as efficient as possible.
     7.4- C						*BellyButtonFiletypesC*
     7.5- HTML						*BellyButtonFiletypesHTML*
     7.6- CSS						*BellyButtonFiletypesCSS*
-    7.7- MARKDOW					*BellyButtonFiletypesMarkdown*
+    7.7- MARKDOWN					*BellyButtonFiletypesMarkdown*
 
 vim:tw=78:ts=8:ft=help:norl:formatoptions+=tcroqn:autoindent:
