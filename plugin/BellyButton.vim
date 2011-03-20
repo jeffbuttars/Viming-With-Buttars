@@ -3,7 +3,7 @@
 "               Permission is hereby granted to use and distribute this code,
 "               with or without modifications, provided that this copyright
 "               notice is copied with it. Like anything else that's free,
-"               doubleTap.vim is provided *as is* and comes with no
+"               BellyButton.vim is provided *as is* and comes with no
 "               warranty of any kind, either expressed or implied. In no
 "               event will the copyright holder be liable for any damages
 "               resulting from the use of this software.
@@ -13,8 +13,8 @@
 "     Examples: Go Examples!
  "
 "   Maintainer: Jeff Buttars (jeffbuttars at gmail dot com)
-" Last Changed: Sunday, 28 March 2010
-"      Version: See g:belly_button_version for version number.
+" Last Changed: Sunday, 28 March 2011
+"      Version: See g:BellyButtonVersion for version number.
 "        Usage: This file should reside in the plugin directory and be
 "               automatically sourced.
 "
@@ -26,7 +26,10 @@ if exists('g:BellyButtonVersion') || &cp || version < 700
 endif
 let g:BellyButtonVersion = 1.0
 
-let s:bbLocalOptFname = '.BellyButton_local_options.vim'
+if !exists('g:BellyButton_local_option_file')
+	let g:BellyButton_local_option_file = '.BellyButton_local_options.vim'
+endif
+let s:bbLocalOptFname = g:BellyButton_local_option_file
 
 fun! s:sanitizeFT()
 	return split(&ft, '\.')[0]
@@ -87,7 +90,6 @@ fun! s:bbInit( bbft )
 
 	"echo "s:bbInit(".a:bbft."): ".s:bbLocalOptFname.":".filereadable(s:bbLocalOptFname)
 	if filereadable(s:bbLocalOptFname) > 0
-		"echo "s:bbInit(".a:bbft.") sourcing:".s:bbLocalOptFname
 		exec "source ".s:bbLocalOptFname
 	endif
 
