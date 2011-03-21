@@ -317,6 +317,51 @@ as efficient as possible.
 
     7.1- PHP						*BellyButtonFiletypesPHP*
     7.2- JAVASCRIPT					*BellyButtonFiletypesJavascript*
+
+     Global Options
+    
+     Enable/Disable highlighting of errors in source.
+     Default is Enable
+     To disable the highlighting put the line
+     in your .vimrc
+
+     Available JSLint options, override the defaults
+     with the var g:BellyButton_javascript_jslint_options = {}
+    adsafe     true, if ADsafe rules should be enforced
+    bitwise    true, if bitwise operators should not be allowed
+    browser    true, if the standard browser globals should be predefined
+    cap        true, if upper case HTML should be allowed
+    continue   true, if the continuation statement should be tolerated
+    css        true, if CSS workarounds should be tolerated
+    debug      true, if debugger statements should be allowed
+    devel      true, if logging should be allowed (console, alert, etc.)
+    es5        true, if ES5 syntax should be allowed
+    evil       true, if eval should be allowed
+    forin      true, if for in statements need not filter
+    fragment   true, if HTML fragments should be allowed
+    indent     the indentation factor
+    maxerr     the maximum number of errors to allow
+    maxlen     the maximum length of a source line
+    newcap     true, if constructor names must be capitalized
+    nomen      true, if names should be checked
+    on         true, if HTML event handlers should be allowed
+    onevar     true, if only one var statement per function should be allowed
+    passfail   true, if the scan should stop on first error
+    plusplus   true, if increment/decrement should not be allowed
+    regexp     true, if the . should not be allowed in regexp literals
+    rhino      true, if the Rhino environment globals should be predefined
+    undef      true, if variables should be declared before used
+    safe       true, if use of some browser features should be restricted
+    windows    true, if MS Windows-specigic globals should be predefined
+    strict     true, require the "use strict"; pragma
+    sub        true, if all forms of subscript notation are tolerated
+    white      true, if strict whitespace rules apply
+    widget     true  if the Yahoo Widgets globals should be predefined
+    
+     XXXXXXXXXXXXXXXXXXXXXXXX This is one is very handy!!! XXXXXXXXXXXXXXXX
+    predef		[] an array of globals for jslint to not rais an error on
+
+
     7.3- PYTHON						*BellyButtonFiletypesPython*
     7.4- C						*BellyButtonFiletypesC*
     7.5- HTML						*BellyButtonFiletypesHTML*
