@@ -14,6 +14,7 @@
     3.- CUSTOMIZATION___________________________|BellyButtonOptions|
         3.1 Option summary_________________________|BellyButtonOptionSummary|
         3.2 Options details________________________|BellyButtonOptionDetails|
+        3.2.1 Option file__________________________|BellyButtonOptionFile|
 
     4.- API_____________________________________|BellyButtonAPI|
 	4.0 TEMPLATE_______________________________|BellyButton_filetype_template|
@@ -75,7 +76,22 @@ as efficient as possible.
 
  3.- CUSTOMIZATION				*BellyButtonOptions*
     3.1 Option summary				*BellyButtonOptionSummary*
+
     3.2 Options details				*BellyButtonOptionDetails*
+    3.2.1 Option file				*BellyButtonOptionFile*
+	Some of the external tools used by |BellyButton| have a very large array
+	of options available to them. It's also the case that you will often
+	want to set these options on a per project basis. This is where the
+	the |BellyButtonOptionFile| come into play. Every time you use a
+	|BellyButton| command |BellyButton| will first look in the current
+	directory for a file named .BellyButton_local_options.vim . If that
+	file exists it will be sourced into the current Vim session. 
+	
+	
+	The Javascript
+	plugin is a great example of this. It uses jslint to analyze
+	javascript source code. Jslint is _very_ customizable and you'll
+	probably want some of the options to change on a per project level. 
 
 g:BellyButton_local_option_file
 
