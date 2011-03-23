@@ -396,9 +396,9 @@ function! DoubleTapFinishLine( thechar, trigger )
 
 	" If we're in a string, don't do it.
 	" XXX need to make this optional
-	if s:getSynName() =~? 'String'
-		return a:trigger
-	endif
+	"if s:getSynName() =~? 'String'
+		"return a:trigger
+	"endif
 
 	if ! s:checkDoubleInsert( a:thechar )
 		call s:setMatch()
@@ -442,10 +442,10 @@ function! DoubleTapFinishLineNormal( thechar )
 
 	" If we're in a string, don't do it.
 	" XXX need to make this optional
-	let l:synstr = s:getSynName()
-	if l:synstr =~? 'String'
-		return 0
-	endif
+	"let l:synstr = s:getSynName()
+	"if l:synstr =~? 'String'
+		"return 0
+	"endif
 
 	" If thechar already exists already, don't do anything.
 	let l:regex = a:thechar . '\s*$'
