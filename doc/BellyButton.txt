@@ -424,6 +424,21 @@ g:BellyButton_local_option_file
 
     6.- TODO list					*BellyButtonTodo*
 
+	- Add exec output support. 
+	  Add the ability to display the raw output
+	  of a command in a seperate or split buffer. Also, the output buffer
+	  should support "realtime" updating as well as not causing vim to
+	  wait for the execution to finish before returning control to the
+	  user. The execution should happen as a seperate process.
+
+	- Add preprocessor support.
+	  Make it easy for a user or plugin writer run a buffer through a
+	  preprocess program before running a lint tool or executing the
+	  buffer. We need to be able to analyze and execute buffers that have
+	  been pre-processed in as easy a way as possible.
+	    
+	
+
 ================================================================================
 
     7.- Maintainer					*BellyButtonMaintainer*
