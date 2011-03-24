@@ -40,6 +40,6 @@ function! BellyButton#php#parseLintError( e_line )
 	return {} 
 endfunction
 
-function! BellyButton#php#Info()
+function! BellyButton#php#info()
 	return "A helpful message"
 endfunction

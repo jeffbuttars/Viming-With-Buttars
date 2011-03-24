@@ -56,3 +56,7 @@ function! BellyButton#sh#extra()
 	" Anything code you wish! See the API for further explanation of this
 	" hook 
 endfunction
+
+function! BellyButton#sh#info()
+	return {}
+endfunction
