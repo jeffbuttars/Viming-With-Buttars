@@ -32,7 +32,12 @@ endif
 let s:bbLocalOptFname = g:BellyButton_local_option_file
 
 fun! s:sanitizeFT()
-	return split(&ft, '\.')[0]
+	let l:ft = split(&ft, '\.')
+	if 0 < len(l:ft)
+		return l:ft[0]
+	endif
+
+	return &ft
 endf
 
 fun! s:showErrors( estr, parseFunc )
@@ -64,7 +69,9 @@ fun! s:showErrors( estr, parseFunc )
 	if l:has_errors
 		copen
 	else
+		"call clearmatches()
 		echo "Belly Button is clean." 
+		exec "redraw"
 	endif
 
 	return l:has_errors
@@ -207,19 +214,34 @@ fun! s:BellyButtonInfo()
 		endfor
 	endif
 
-
 	echo l:istr
 endf
 
-command! BellyButtonExtra call s:BellyButtonExtra()
-command! BellyButtonLint call s:BellyButtonLint()
-command! BellyButtonLintRaw call s:BellyButtonLintRaw()
-command! BellyButtonExec call s:BellyButtonExec()
-command! BellyButtonInfo call s:BellyButtonInfo()
+function! BellyButtonBufferEnter()
+	let l:ftype = s:sanitizeFT()
 
-au FileType * nmap <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
-au FileType * imap <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
-au FileType * nmap <F4> <ESC>:w<CR>:BellyButtonLint<CR>
-au FileType * imap <F4> <ESC>:w<CR>:BellyButtonLint<CR>
-au FileType * nmap <F5> <ESC>:w<CR>:BellyButtonExec<CR>
-au FileType * imap <F5> <ESC>:w<CR>:BellyButtonExec<CR>
+	try
+		call BellyButton#{l:ftype}#info()
+		echo "extra"
+		nmap <buffer> <silent> <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
+		imap <buffer> <silent> <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
+		echo "lintRaw"
+		nmap <buffer> <silent> <F4> <ESC>:w<CR>:BellyButtonLint<CR>
+		imap <buffer> <silent> <F4> <ESC>:w<CR>:BellyButtonLint<CR>
+		echo "exec"
+		nmap <buffer> <silent> <F5> <ESC>:w<CR>:BellyButtonExec<CR>
+		imap <buffer> <silent> <F5> <ESC>:w<CR>:BellyButtonExec<CR>
+	catch /E117:/
+	endtry
+endfunction
+
+command! BellyButtonExtra   call s:BellyButtonExtra()
+command! BellyButtonLint    call s:BellyButtonLint()
+command! BellyButtonExec    call s:BellyButtonExec()
+command! BellyButtonLintRaw call s:BellyButtonLintRaw()
+command! BellyButtonInfo    call s:BellyButtonInfo()
+
+
+" This is the dynamic gold!
+au BufWinEnter * :call BellyButtonBufferEnter()
+
