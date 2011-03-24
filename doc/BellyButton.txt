@@ -7,34 +7,41 @@
 ==============================================================================
  0.- CONTENTS                                           *BellyButton-contents*
 
-    1. Introduction____________________________|BellyButtonIntro|
-    2. Functionality___________________________|BellyButtonFunctionality|
-    3. Customization___________________________|BellyButtonOptions|
-        3.1 Option summary_________________________|BellyButtonOptionSummary|
-        3.2 Options details________________________|BellyButtonOptionDetails|
-    6. API_____________________________________|BellyButtonAPI|
-	6.0 TEMPLATE_______________________________|BellyButton_filetype_template|
-	6.1 init___________________________________|BellyButton_filetype_init|
-	6.2 clean__________________________________|BellyButton_filetype_clean|
-	6.3 lintRaw________________________________|BellyButton_filetype_lintRaw|
-	6.4 parseLintError_______________|BellyButton_filetype_parseLintError|
-	6.5 exec___________________________________|BellyButton_filetype_exec|
-	6.6 parseExecError_________________________|BellyButton_filetype_parseExecError|
-	6.7 extra__________________________________|BellyButton_filetype_extra|
-	6.8 info___________________________________|BellyButton_filetype_info|
-    7. File types_____________________________|BellyButtonFiletypes|
-	7.1 PHP____________________________________|BellyButtonFiletypesPHP|
-	7.2 JAVASCRIPT_____________________________|BellyButtonFiletypesJavascript|
-	7.3 PYTHON_________________________________|BellyButtonFiletypesPython|
-	7.4 C______________________________________|BellyButtonFiletypesC|
-	7.5 HTML___________________________________|BellyButtonFiletypesHTML|
-	7.6 CSS____________________________________|BellyButtonFiletypesCSS|
-	7.7 MARKDOWN_______________________________|BellyButtonFiletypesMarkdown|
+    1.- Introduction____________________________|BellyButtonIntro|
 
-    8. TODO list_______________________________|BellyButtonTodo|
-    9. Maintainer______________________________|BellyButtonMaintainer|
-    10. Credits________________________________|BellyButtonCredits|
-    11. History________________________________|BellyButtonHistory|
+    2.- Functionality___________________________|BellyButtonFunctionality|
+
+    3.- CUSTOMIZATION___________________________|BellyButtonOptions|
+        3.1 Configuration options______________________________|BellyButtonOptionConfigOpts|
+        3.2 Configuration option file__________________________|BellyButtonOptionFile|
+
+    4.- API_____________________________________|BellyButtonAPI|
+	4.0 TEMPLATE_______________________________|BellyButton_filetype_template|
+	4.1 init___________________________________|BellyButton_filetype_init|
+	4.2 clean__________________________________|BellyButton_filetype_clean|
+	4.3 lintRaw________________________________|BellyButton_filetype_lintRaw|
+	4.4 parseLintError_________________________|BellyButton_filetype_parseLintError|
+	4.5 exec___________________________________|BellyButton_filetype_exec|
+	4.6 parseExecError_________________________|BellyButton_filetype_parseExecError|
+	4.7 extra__________________________________|BellyButton_filetype_extra|
+	4.8 info___________________________________|BellyButton_filetype_info|
+
+    5.- File types_____________________________|BellyButtonFiletypes|
+	5.1 PHP____________________________________|BellyButtonFiletypesPHP|
+	5.2 JAVASCRIPT_____________________________|BellyButtonFiletypesJavascript|
+	5.3 PYTHON_________________________________|BellyButtonFiletypesPython|
+	5.4 C______________________________________|BellyButtonFiletypesC|
+	5.5 HTML___________________________________|BellyButtonFiletypesHTML|
+	5.6 CSS____________________________________|BellyButtonFiletypesCSS|
+	5.7 MARKDOWN_______________________________|BellyButtonFiletypesMarkdown|
+
+    6.- TODO list_______________________________|BellyButtonTodo|
+
+    7.- Maintainer______________________________|BellyButtonMaintainer|
+
+    9.- Credits_________________________________|BellyButtonCredits|
+
+   10.- History_________________________________|BellyButtonHistory|
 
 ==============================================================================
 
@@ -42,32 +49,68 @@
 
  BellyButton is a plugin to make syntax checking and, in some cases, execution
  or building of the contents of a buffer easy and consistent. The user interface of
- BellyButton consists of three commands, Lint, Exec, and Extra. Lint will do
+ BellyButton consists of three |commands|, Lint, Exec, and Extra. Lint will do
  the syntax check. Exec will run the buffer as a program, script, etc. or even
- attempt to build if appropriate. And Extra will vary by filetype. By default 
+ attempt to build if appropriate. And Extra will vary by |filetype|. By default 
  these functions are mapped as:
     Extra --> F3
     Lint  --> F4
     Exec  --> F5
-Of course, the user can map those commands however they wish. In addition to
-the three basic commands BellyButton will manage the error output of these
-commands in a friendly Vim way by displaying the error output into Vim's
-quickfix window so users can easily navigate through errors to make debugging
+Of course, the user can map those |commands| however they wish. In addition to
+the three basic |commands| BellyButton will manage the error output of these
+|commands| in a friendly Vim way by displaying the error output into Vim's
+|quickfix| |window| so users can easily navigate through errors to make debugging
 as efficient as possible. 
 
+================================================================================
 
  2.- FUNCTIONALITY					*BellyButtonFunctionality*
 
  A core feature of BellyButton is to make it easy to implement Lint and Exec
- commands on a per filetype basis. Where an Exec function doesn't make sense a
+ |commands| on a per |filetype| basis. Where an Exec function doesn't make sense a
  make or build function often does instead. In those cases BellyButton will
- try to provide the appropriate build command functionality for the filetype. 
+ try to provide the appropriate build command functionality for the |filetype|. 
 
- 6.- API						*BellyButtonAPI*
+================================================================================
 
-    6.0 TEMPLATE					*BellyButton_filetype_template*
+ 3.- CUSTOMIZATION				*BellyButtonOptions*
+    3.1 Configuration options				*BellyButtonOptionConfigOpts*
+
+	|Command| mappings. By default the |BellyButton| |commands| are mapped as
+	such:
+	    <F3> |BellyButtonExtra|
+	    <F4> |BellyButtonLint|
+	    <F5> |BellyButtonExec|
+
+    3.2 Configuration option file			*BellyButtonOptionFile*
+	Some of the external tools used by |BellyButton| have a very large array
+	of options available to them. It's also the case that you will often
+	want to set these options on a per project basis. This is where the
+	the |BellyButtonOptionFile| come into play. Every time you use a
+	|BellyButton| command |BellyButton| will first look in the current
+	directory for a file named .BellyButton_local_options.vim . If that
+	file exists it will be sourced into the current Vim session. 
+	
+	
+	The Javascript BellyButton plugin is a great example of this. It uses jslint to analyze
+	javascript source code. Jslint is _very_ customizable and you'll
+	probably want some of the options to change on a per project level. 
+
+g:BellyButton_local_option_file
+
+================================================================================
+
+ 4.- API						*BellyButtonAPI*
+    
+    Make sure your hook implementation functions are declared with the bang!
+>
+    function! funname
+    endfunction
+<	
+
+    4.0 TEMPLATE					*BellyButton_filetype_template*
 	Here is a template you can use to get started on on a BellyButton
-	filetype plugin. You don't have to use all of the functions in the
+	|filetype| plugin. You don't have to use all of the functions in the
 	template. In fact you don't have to use any of them! But that would be
 	silly. It is important however, that if you don't implement a function
 	that you comment it out, or delete it all together. For further
@@ -95,14 +138,14 @@ as efficient as possible.
     endfunction
 
     function! BellyButton#<filetype>#lintRaw()
-	" This is where you impliment what's needed to perform the syntax
+	" This is where you implement what's needed to perform the syntax
 	" checing on the buffer. 
     endfunction
 
-    function BellyButton#<filetype>#parseLintError( e_line )
+    function! BellyButton#<filetype>#parseLintError( e_line )
 
 	" BellyButton will break the error string produced by the #lintRaw
-	" hook and ierate over the results for you. Each line in that error
+	" hook and iterate over the results for you. Each line in that error
 	" string will then be given as the parameter to the #parseLintError
 	" hook.
 
@@ -113,11 +156,11 @@ as efficient as possible.
 	return { 'filename':'name of file the error came from',
 	    \'lnum':'line number the error was found on',
 	    \'char':'char column number the error is found at, optional',
-	    \'errmsg':'the error message to display in the quickfix window' }
+	    \'errmsg':'the error message to display in the |quickfix| window' }
     endfunction
 
     function! BellyButton#<filetype>#exec()
-	" This is where you put the code to execute or possible make the
+	" This is where you put the code to execute or possible make
 	" the current buffer. If the #exec hook doesn't make sense for your
 	" plugin, simple don't include it. If you implement the #exec hook
 	" you'll need to return a Dictionary as the result. See the API
@@ -128,27 +171,36 @@ as efficient as possible.
 	    \'good_ecode':0, 
 	    \'parse_error':0}
     endfunction
+
+    function! BellyButton#<filetype>#parseExecError( e_line )
+
+    endfunction
+
+    function! BellyButton#<filetype>#extra()
+	" Anything code you wish! See the API for further explanation of this
+	" hook 
+    endfunction
 <
 
-    6.1- init 						*BellyButton_filetype_init*
+    4.1- init 						*BellyButton_filetype_init*
 	BellyButton#<filetype>#init()
 	Takes no parameters, returns nothing. 
 
 	This will be called, if it
-	exists, right before the the #lintRaw, #exec, and #extra hooks are
+	exists, right before the #lintRaw, #exec, and #extra hooks are
 	called. If you want any code that is only ran once, the first time the
 	script is used, you will want to put in the #lintRaw hook and use your
 	own logic to determine it's the first time its been called or not. The template
 	|BellyButton_filetype_template| has an example of that.
 
-    6.2- clean 						*BellyButton_filetype_clean*
+    4.2- clean 						*BellyButton_filetype_clean*
 	BellyButton#<filetype>#clean()
 	Takes no parameters, returns nothing. 
 
-	Very similiar to the #init hook, except this is called _after_
+	Very similar to the #init hook, except this is called _after_
 	#lintRaw, #exec, and #extra hooks have completed.
 
-    6.3- lintRaw					*BellyButton_filetype_lintRaw*
+    4.3- lintRaw					*BellyButton_filetype_lintRaw*
 	BellyButton#<filetype>#lintRaw()
 	Takes no parameters.
 	Returns: String
@@ -161,7 +213,7 @@ as efficient as possible.
 	one string, '\n' delimited. A simple example of an error string:
 	"error1\nerro2\nsome comment about something\nerror3\n"
 
-    6.4 parseLintError				*BellyButton_filetype_parseLintError*
+    4.4 parseLintError				*BellyButton_filetype_parseLintError*
 	BellyButton#<filetype>#parseLintError( eline )
 	Params : String eline
 	Returns: |Dictionary|
@@ -186,13 +238,13 @@ as efficient as possible.
 	    'filename': The name of the file the error occurred in. Usually
 		this is the file that is open in the current buffer which easily
 		accessed with expand('%')
-	    'lnum': The line number the error occured on.
+	    'lnum': The line number the error occurred on.
 	    'errmsg': The human readable, hopefully, error message text that
-		will be the main body of the error line in the quickfix
+		will be the main body of the error line in the |quickfix|
 		window.
-	    'char': Optional. The column number the error occured on. Some
+	    'char': Optional. The column number the error occurred on. Some
 		tools will provide a character number for the offset in the
-		line the error happended at. If you have this information
+		line the error happened at. If you have this information
 		please provide it. This will allow the user to easily jump not
 		only to the line the error is one, but also the column.
 >
@@ -206,16 +258,16 @@ as efficient as possible.
 	endif
 <
 
-    6.5- exec						*BellyButton_filetype_exec*
+    4.5- exec						*BellyButton_filetype_exec*
 	BellyButton#<filetype>#exec()
 	Takes no parameters.
 	Returns: |Dictionary|
 
-	This is where you put the code to execute or possible make the
+	This is where you put the code to execute or possible make
 	the current buffer. If the #exec hook doesn't make sense for your
 	plugin, simple don't include it. If you implement the #exec hook
 	you'll need to return a Dictionary as the result. The data in the
-	returned |Dictionary| is used to tell BellyButton if an error occured
+	returned |Dictionary| is used to tell BellyButton if an error occurred
 	while executing/building the buffer and if so what to do about it. You
 	can safely return an empty |Dictionary| and BellyButton will assume
 	everything went fine. The return |Dictionary| should include four keys
@@ -239,7 +291,7 @@ as efficient as possible.
 	    \'parse_error':1}
 <
 
-    6.6- parseExecError					*BellyButton_filetype_parseExecError*
+    4.6- parseExecError					*BellyButton_filetype_parseExecError*
 	BellyButton#<filetype>#parseExecError( eline )
 	Params : String eline
 	Returns: |Dictionary|
@@ -247,7 +299,7 @@ as efficient as possible.
 	The function of this hook is nearly identical to the #parseLintError
 	hook. The only difference is this hook is used to parse error data as
 	result of executing or building a buffer instead of running a syntax
-	anaylysis tool. See |BellyButton_filetype_parseLintError| for
+	analysis tool. See |BellyButton_filetype_parseLintError| for
 	further explanation on how to implement this hook.
 
 	In some cases, the error output of executing or building a buffer is
@@ -260,23 +312,25 @@ as efficient as possible.
 	endfunction
 <
 
-    6.7- extra						*BellyButton_filetype_extra*
+    4.7- extra						*BellyButton_filetype_extra*
 	BellyButton#<filetype>#extra()
+	Takes no parameters.
+	Returns nothing.
 
-	This is simple an easy way to add more filetype specific functionality
-	to a plugin. Certainly not required, but if there is an additionall
+	This is simple an easy way to add more |filetype| specific functionality
+	to a plugin. Certainly not required, but if there is an additional
 	command you think would help in the lint/exec/build process of a
-	filetype, feel free to impliment the #extra() function hook. For
+	|filetype|, feel free to implement the #extra() function hook. For
 	example, in the markdown(mkd) plugin the #extra() hook is used to
 	enable a one button render of the current buffer's markdown to a PDF
 	document.
 
-    6.8- info						*BellyButton_filetype_info*
+    4.8- info						*BellyButton_filetype_info*
 
 	BellyButton#<filetype>#info()
 
-	Display information about the filetype plugin. This function is
-	expected to create and return a dictionary witht the plugin's
+	Display information about the |filetype| plugin. This function is
+	expected to create and return a dictionary with the plugin's
 	information in it, indexed by the type of information. Below is a
 	description of each field of information.
 >
@@ -286,8 +340,8 @@ as efficient as possible.
 	exec: if an exec function is provided, give a brief description of how
 	it is implemented.
 
-	extra: if any extra function is provided, give a brief description of
-	what it does and how it is implemented.
+	extra: if a #extra hook is implemented, give a brief description of
+	what it does.
 
 	author: "Author's Name"
 
@@ -296,7 +350,7 @@ as efficient as possible.
 	externals: A list of of external tools used by this plugin. Include a
 	URL to the tool if possible.
 <
-	Here is an example from the javascript fileytype plugin. Information
+	Here is an example from the javascript |fileytype| plugin. Information
 	fields that don't apply to the plugin are simply left blank. In this
 	case the javascript plugin does not provide an exec or extra command
 	so those dictionary entries are simply left out.
@@ -312,15 +366,109 @@ as efficient as possible.
 	    }
     endfunction
 <
+================================================================================
 
- 7.- FILE TYPES						*BellyButtonFiletypes*
+ 5.- FILE TYPES						*BellyButtonFiletypes*
 
-    7.1- PHP						*BellyButtonFiletypesPHP*
-    7.2- JAVASCRIPT					*BellyButtonFiletypesJavascript*
-    7.3- PYTHON						*BellyButtonFiletypesPython*
-    7.4- C						*BellyButtonFiletypesC*
-    7.5- HTML						*BellyButtonFiletypesHTML*
-    7.6- CSS						*BellyButtonFiletypesCSS*
-    7.7- MARKDOWN					*BellyButtonFiletypesMarkdown*
+    5.1- PHP						*BellyButtonFiletypesPHP*
+    5.2- JAVASCRIPT					*BellyButtonFiletypesJavascript*
+
+    Global Options
+    
+    Enable/Disable highlighting of errors in source.
+    Default is Enable
+    To disable the highlighting put the line
+    in your .vimrc
+
+    Available JSLint options, override the defaults
+    with the var g:BellyButton_javascript_jslint_options = {}
+
+    adsafe     true, if ADsafe rules should be enforced
+    bitwise    true, if bitwise operators should not be allowed
+    browser    true, if the standard browser globals should be predefined
+    cap        true, if upper case HTML should be allowed
+    continue   true, if the continuation statement should be tolerated
+    css        true, if CSS workarounds should be tolerated
+    debug      true, if debugger statements should be allowed
+    devel      true, if logging should be allowed (console, alert, etc.)
+    es5        true, if ES5 syntax should be allowed
+    evil       true, if eval should be allowed
+    forin      true, if for in statements need not filter
+    fragment   true, if HTML fragments should be allowed
+    indent     the indentation factor
+    maxerr     the maximum number of errors to allow
+    maxlen     the maximum length of a source line
+    newcap     true, if constructor names must be capitalized
+    nomen      true, if names should be checked
+    on         true, if HTML event handlers should be allowed
+    onevar     true, if only one var statement per function should be allowed
+    passfail   true, if the scan should stop on first error
+    plusplus   true, if increment/decrement should not be allowed
+    regexp     true, if the . should not be allowed in regexp literals
+    rhino      true, if the Rhino environment globals should be predefined
+    undef      true, if variables should be declared before used
+    safe       true, if use of some browser features should be restricted
+    windows    true, if MS Windows-specific globals should be predefined
+    strict     true, require the "use strict"; pragma
+    sub        true, if all forms of subscript notation are tolerated
+    white      true, if strict whitespace rules apply
+    widget     true  if the Yahoo Widgets globals should be predefined
+    
+    NOTE: This option is very handy!!!
+    predef	[] an array of globals for jslint to not raise an error on
+	if it is not already defined. The value must be expressed as Javascript array
+	in a Vim string.
+	Example:
+	    'predef':"['$', 'Ext', 'window', 'console', 'alert', 'confirm']"
+
+    5.3- PYTHON						*BellyButtonFiletypesPython*
+    5.4- C						*BellyButtonFiletypesC*
+    5.5- HTML						*BellyButtonFiletypesHTML*
+    5.6- CSS						*BellyButtonFiletypesCSS*
+    5.7- MARKDOWN					*BellyButtonFiletypesMarkdown*
+    5.8- BASH 						*BellyButtonFiletypesBash*
+
+================================================================================
+
+    6.- TODO list					*BellyButtonTodo*
+
+	- Add exec output support. 
+	  Add the ability to display the raw output
+	  of a |command| in a separate or split |buffer|. Also, the output |buffer|
+	  should support "real-time" updating as well as not causing vim to
+	  wait for the execution to finish before returning control to the
+	  user. The execution should happen as a separate process.
+
+	- Add preprocessor support.
+	  Make it easy for a user or |plugin| writer run a |buffer| through a
+	  pre-process program before running a lint tool or executing the
+	  |buffer|. We need to be able to analyze and execute buffers that have
+	  been pre-processed in as easy a way as possible.
+
+	- Only map the |commands| if the current |buffer| supports it!
+
+	- Support for complex filetypes.
+	  Example, a simple |filetype| is "javascript" but a complex filetype
+	  could be "html.javascript" or even "html.javascript.css" 
+	    
+	
+
+================================================================================
+
+    7.- Maintainer					*BellyButtonMaintainer*
+
+	Jeff Buttars <jeffbuttars@gmail.com>
+
+================================================================================
+
+    9.- Credits						*BellyButtonCredits*
+
+	Jeff Buttars <jeffbuttars@gmail.com> Original u
+
+================================================================================
+
+   10.- History						*BellyButtonHistory*
+
+	Oh so young...
 
 vim:tw=78:ts=8:ft=help:norl:formatoptions+=tcroqn:autoindent:
