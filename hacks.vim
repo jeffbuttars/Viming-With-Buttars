@@ -66,10 +66,15 @@ au BufWinEnter * :call SaveView(0)
 
 "highlight OverColLimit term=inverse,bold cterm=bold ctermbg=red ctermfg=black gui=bold guibg=red guifg=black 
 function! SetColorColumn( ccol )
+
 	if ! exists("b:longLineMatchID")
 		let b:longLineMatchID = 0
 	endif
 	set cursorcolumn
+
+	if !exists('&colorcolumn')
+		return
+	endif
 
 	"echo "SetColorColumn " b:longLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
 
