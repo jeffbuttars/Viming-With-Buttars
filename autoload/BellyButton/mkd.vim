@@ -1,11 +1,40 @@
 
-" XXX TODO make these user configurable so they can easily
-" be set in the .vimrc
-" Also make the rendering of HTML,PDF and whatever else
-" configurable.
-let s:mexecutables = ['markdown2', 'markdown']
-let s:bexecutables = ['xdg-open', 'google-chrome', 'firefox', 'konqueror', 'opera', 'safari']
-let s:pexecutables = ['okular',  'evince', 'acroread', 'xpdf', ]
+
+function! BellyButton#mkd#init()
+	if !exists('s:bbmkd_initialized')
+		" XXX TODO make these user configurable so they can easily
+		" be set in the .vimrc
+		" Also make the rendering of HTML,PDF and whatever else
+		" configurable.
+		let s:bbmkd_initialized = 1
+		let s:BellyButton_mkd_markdown_exec_list = ['markdown2', 'markdown']
+		let s:BellyButton_mkd_browser_list = ['xdg-open', 'google-chrome', 'firefox',
+					\'konqueror', 'opera', 'safari']
+		let s:BellyButton_mkd_pdf_list = ['okular',  'evince', 'acroread', 'xpdf', ]
+	endif
+
+	if exists('g:BellyButton_mkd_markdown_exec_list')
+		let s:BellyButton_mkd_markdown_exec_list = g:BellyButton_mkd_markdown_exec_list
+	endif
+	if exists('b:BellyButton_mkd_markdown_exec_list')
+		let s:BellyButton_mkd_markdown_exec_list = b:BellyButton_mkd_markdown_exec_list
+	endif
+
+	if exists('g:BellyButton_mkd_browser_list')
+		let s:BellyButton_mkd_browser_list = g:BellyButton_mkd_browser_list
+	endif
+	if exists('b:BellyButton_mkd_browser_list')
+		let s:BellyButton_mkd_browser_list = b:BellyButton_mkd_browser_list
+	endif
+
+	if exists('g:BellyButton_pdf_browser_list')
+		let s:BellyButton_pdf_browser_list = g:BellyButton_pdf_browser_list
+	endif
+	if exists('b:BellyButton_pdf_browser_list')
+		let s:BellyButton_pdf_browser_list = b:BellyButton_pdf_browser_list
+	endif
+
+endfunction
 
 function! s:getPaths()
 	let l:fpath = expand( '%' )
@@ -17,7 +46,7 @@ endfunction
 
 function! s:showHTML( target )
 	let l:bopen = "" 
-	for ext in s:bexecutables
+	for ext in s:BellyButton_mkd_browser_list
 		if executable(ext)
 			let l:bopen = ext
 			break
@@ -30,7 +59,7 @@ endfunction
 
 function! s:showPDF( target )
 	let l:bopen = "" 
-	for ext in s:pexecutables
+	for ext in s:BellyButton_mkd_pdf_list
 		if executable(ext)
 			let l:bopen = ext
 			break
@@ -44,7 +73,7 @@ endfunction
 function! s:renderHTML( src, target )
 	" Find a markdown executable
 	let b:mdown = "" 
-	for ext in s:mexecutables
+	for ext in s:BellyButton_mkd_markdown_exec_list
 		if executable(ext)
 			let b:mdown = ext
 			break
@@ -63,7 +92,7 @@ endfunction
 
 function! s:renderPDF( src, target )
 	let b:mdown = "" 
-	for ext in s:mexecutables
+	for ext in s:BellyButton_mkd_markdown_exec_list
 		if executable(ext)
 			let b:mdown = ext
 			break
@@ -115,7 +144,7 @@ function! BellyButton#mkd#exec()
 	return {'sysout':sysout, 'ecode':v:shell_error, 'good_ecode':0, 'parse_error':0}
 endfunction
 
-function! BellyButton#mkd#Info()
-	return "A helpful message"
+function! BellyButton#mkd#info()
+	return {}
 endfunction
 

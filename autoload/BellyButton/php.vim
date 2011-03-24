@@ -1,4 +1,10 @@
-function BellyButton#php#exec()
+"function! BellyButton#php#init()
+	"if !exists('s:bbphp_initialized')
+		"let s:bbphp_initialized = 1
+	"endif
+"endfunction
+
+function! BellyButton#php#exec()
 	" If we find errors, return the matchlist.
 	" If we don't find errors, or don't care about finding
 	" errors, it's best to just print the results out.
@@ -16,15 +22,15 @@ function BellyButton#php#exec()
 	return {'sysout':l:sysout, 'ecode':v:shell_error, 'good_ecode':0, 'parse_error':1}
 endfunction
 
-function BellyButton#php#parseExecError( e_line )
+function! BellyButton#php#parseExecError( e_line )
 	return BellyButton#php#parseLintError( a:e_line )
 endfunction
 
-function BellyButton#php#lintRaw()
+function! BellyButton#php#lintRaw()
 	return system( "php -ql ".shellescape(expand('%')))
 endfunction
 
-function BellyButton#php#parseLintError( e_line )
+function! BellyButton#php#parseLintError( e_line )
 	"Match {message} in {file} on line {line}
 	let l:eparts = matchlist( a:e_line, "^.*:\\(.*\\)\ in\ \\(.*\\)\ on\ line\ \\(\\d\\+\\)" )
 	if !empty(l:eparts) && len(l:eparts) > 2
@@ -34,6 +40,6 @@ function BellyButton#php#parseLintError( e_line )
 	return {} 
 endfunction
 
-function BellyButton#php#Info()
+function! BellyButton#php#info()
 	return "A helpful message"
 endfunction

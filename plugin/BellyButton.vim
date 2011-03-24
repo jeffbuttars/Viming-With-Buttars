@@ -3,7 +3,7 @@
 "               Permission is hereby granted to use and distribute this code,
 "               with or without modifications, provided that this copyright
 "               notice is copied with it. Like anything else that's free,
-"               doubleTap.vim is provided *as is* and comes with no
+"               BellyButton.vim is provided *as is* and comes with no
 "               warranty of any kind, either expressed or implied. In no
 "               event will the copyright holder be liable for any damages
 "               resulting from the use of this software.
@@ -13,8 +13,8 @@
 "     Examples: Go Examples!
  "
 "   Maintainer: Jeff Buttars (jeffbuttars at gmail dot com)
-" Last Changed: Sunday, 28 March 2010
-"      Version: See g:belly_button_version for version number.
+" Last Changed: Sunday, 28 March 2011
+"      Version: See g:BellyButtonVersion for version number.
 "        Usage: This file should reside in the plugin directory and be
 "               automatically sourced.
 "
@@ -26,10 +26,18 @@ if exists('g:BellyButtonVersion') || &cp || version < 700
 endif
 let g:BellyButtonVersion = 1.0
 
-let s:bbLocalOptFname = '.BellyButton_local_options.vim'
+if !exists('g:BellyButton_local_option_file')
+	let g:BellyButton_local_option_file = '.BellyButton_local_options.vim'
+endif
+let s:bbLocalOptFname = g:BellyButton_local_option_file
 
 fun! s:sanitizeFT()
-	return split(&ft, '\.')[0]
+	let l:ft = split(&ft, '\.')
+	if 0 < len(l:ft)
+		return l:ft[0]
+	endif
+
+	return &ft
 endf
 
 fun! s:showErrors( estr, parseFunc )
@@ -61,7 +69,9 @@ fun! s:showErrors( estr, parseFunc )
 	if l:has_errors
 		copen
 	else
+		"call clearmatches()
 		echo "Belly Button is clean." 
+		exec "redraw"
 	endif
 
 	return l:has_errors
@@ -87,7 +97,6 @@ fun! s:bbInit( bbft )
 
 	"echo "s:bbInit(".a:bbft."): ".s:bbLocalOptFname.":".filereadable(s:bbLocalOptFname)
 	if filereadable(s:bbLocalOptFname) > 0
-		"echo "s:bbInit(".a:bbft.") sourcing:".s:bbLocalOptFname
 		exec "source ".s:bbLocalOptFname
 	endif
 
@@ -205,19 +214,34 @@ fun! s:BellyButtonInfo()
 		endfor
 	endif
 
-
 	echo l:istr
 endf
 
-command! BellyButtonExtra call s:BellyButtonExtra()
-command! BellyButtonLint call s:BellyButtonLint()
-command! BellyButtonLintRaw call s:BellyButtonLintRaw()
-command! BellyButtonExec call s:BellyButtonExec()
-command! BellyButtonInfo call s:BellyButtonInfo()
+function! BellyButtonBufferEnter()
+	let l:ftype = s:sanitizeFT()
 
-au FileType * nmap <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
-au FileType * imap <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
-au FileType * nmap <F4> <ESC>:w<CR>:BellyButtonLint<CR>
-au FileType * imap <F4> <ESC>:w<CR>:BellyButtonLint<CR>
-au FileType * nmap <F5> <ESC>:w<CR>:BellyButtonExec<CR>
-au FileType * imap <F5> <ESC>:w<CR>:BellyButtonExec<CR>
+	try
+		call BellyButton#{l:ftype}#info()
+		echo "extra"
+		nmap <buffer> <silent> <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
+		imap <buffer> <silent> <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
+		echo "lintRaw"
+		nmap <buffer> <silent> <F4> <ESC>:w<CR>:BellyButtonLint<CR>
+		imap <buffer> <silent> <F4> <ESC>:w<CR>:BellyButtonLint<CR>
+		echo "exec"
+		nmap <buffer> <silent> <F5> <ESC>:w<CR>:BellyButtonExec<CR>
+		imap <buffer> <silent> <F5> <ESC>:w<CR>:BellyButtonExec<CR>
+	catch /E117:/
+	endtry
+endfunction
+
+command! BellyButtonExtra   call s:BellyButtonExtra()
+command! BellyButtonLint    call s:BellyButtonLint()
+command! BellyButtonExec    call s:BellyButtonExec()
+command! BellyButtonLintRaw call s:BellyButtonLintRaw()
+command! BellyButtonInfo    call s:BellyButtonInfo()
+
+
+" This is the dynamic gold!
+au BufWinEnter * :call BellyButtonBufferEnter()
+
