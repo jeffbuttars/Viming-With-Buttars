@@ -12,9 +12,8 @@
     2.- Functionality___________________________|BellyButtonFunctionality|
 
     3.- CUSTOMIZATION___________________________|BellyButtonOptions|
-        3.1 Option summary_________________________|BellyButtonOptionSummary|
-        3.2 Options details________________________|BellyButtonOptionDetails|
-        3.2.1 Option file__________________________|BellyButtonOptionFile|
+        3.1 Configuration options______________________________|BellyButtonOptionConfigOpts|
+        3.2 Configuration option file__________________________|BellyButtonOptionFile|
 
     4.- API_____________________________________|BellyButtonAPI|
 	4.0 TEMPLATE_______________________________|BellyButton_filetype_template|
@@ -50,17 +49,17 @@
 
  BellyButton is a plugin to make syntax checking and, in some cases, execution
  or building of the contents of a buffer easy and consistent. The user interface of
- BellyButton consists of three commands, Lint, Exec, and Extra. Lint will do
+ BellyButton consists of three |commands|, Lint, Exec, and Extra. Lint will do
  the syntax check. Exec will run the buffer as a program, script, etc. or even
  attempt to build if appropriate. And Extra will vary by |filetype|. By default 
  these functions are mapped as:
     Extra --> F3
     Lint  --> F4
     Exec  --> F5
-Of course, the user can map those commands however they wish. In addition to
-the three basic commands BellyButton will manage the error output of these
-commands in a friendly Vim way by displaying the error output into Vim's
-|quickfix| window so users can easily navigate through errors to make debugging
+Of course, the user can map those |commands| however they wish. In addition to
+the three basic |commands| BellyButton will manage the error output of these
+|commands| in a friendly Vim way by displaying the error output into Vim's
+|quickfix| |window| so users can easily navigate through errors to make debugging
 as efficient as possible. 
 
 ================================================================================
@@ -68,17 +67,22 @@ as efficient as possible.
  2.- FUNCTIONALITY					*BellyButtonFunctionality*
 
  A core feature of BellyButton is to make it easy to implement Lint and Exec
- commands on a per |filetype| basis. Where an Exec function doesn't make sense a
+ |commands| on a per |filetype| basis. Where an Exec function doesn't make sense a
  make or build function often does instead. In those cases BellyButton will
  try to provide the appropriate build command functionality for the |filetype|. 
 
 ================================================================================
 
  3.- CUSTOMIZATION				*BellyButtonOptions*
-    3.1 Option summary				*BellyButtonOptionSummary*
+    3.1 Configuration options				*BellyButtonOptionConfigOpts*
 
-    3.2 Options details				*BellyButtonOptionDetails*
-    3.2.1 Option file				*BellyButtonOptionFile*
+	|Command| mappings. By default the |BellyButton| |commands| are mapped as
+	such:
+	    <F3> |BellyButtonExtra|
+	    <F4> |BellyButtonLint|
+	    <F5> |BellyButtonExec|
+
+    3.2 Configuration option file			*BellyButtonOptionFile*
 	Some of the external tools used by |BellyButton| have a very large array
 	of options available to them. It's also the case that you will often
 	want to set these options on a per project basis. This is where the
@@ -88,8 +92,7 @@ as efficient as possible.
 	file exists it will be sourced into the current Vim session. 
 	
 	
-	The Javascript
-	plugin is a great example of this. It uses jslint to analyze
+	The Javascript BellyButton plugin is a great example of this. It uses jslint to analyze
 	javascript source code. Jslint is _very_ customizable and you'll
 	probably want some of the options to change on a per project level. 
 
@@ -405,14 +408,19 @@ g:BellyButton_local_option_file
     rhino      true, if the Rhino environment globals should be predefined
     undef      true, if variables should be declared before used
     safe       true, if use of some browser features should be restricted
-    windows    true, if MS Windows-specigic globals should be predefined
+    windows    true, if MS Windows-specific globals should be predefined
     strict     true, require the "use strict"; pragma
     sub        true, if all forms of subscript notation are tolerated
     white      true, if strict whitespace rules apply
     widget     true  if the Yahoo Widgets globals should be predefined
     
-     XXXXXXXXXXXXXXXXXXXXXXXX This is one is very handy!!! XXXXXXXXXXXXXXXX
-    predef		[] an array of globals for jslint to not rais an error on
+    NOTE: This option is very handy!!!
+    predef	[] an array of globals for jslint to not raise an error on
+	if it is not already defined. The value must be expressed as Javascript array
+	in a Vim string.
+	Example:
+	    'predef':"['$', 'Ext', 'window', 'console', 'alert', 'confirm']"
+
     5.3- PYTHON						*BellyButtonFiletypesPython*
     5.4- C						*BellyButtonFiletypesC*
     5.5- HTML						*BellyButtonFiletypesHTML*
@@ -426,16 +434,22 @@ g:BellyButton_local_option_file
 
 	- Add exec output support. 
 	  Add the ability to display the raw output
-	  of a command in a seperate or split buffer. Also, the output buffer
-	  should support "realtime" updating as well as not causing vim to
+	  of a |command| in a separate or split |buffer|. Also, the output |buffer|
+	  should support "real-time" updating as well as not causing vim to
 	  wait for the execution to finish before returning control to the
-	  user. The execution should happen as a seperate process.
+	  user. The execution should happen as a separate process.
 
 	- Add preprocessor support.
-	  Make it easy for a user or plugin writer run a buffer through a
-	  preprocess program before running a lint tool or executing the
-	  buffer. We need to be able to analyze and execute buffers that have
+	  Make it easy for a user or |plugin| writer run a |buffer| through a
+	  pre-process program before running a lint tool or executing the
+	  |buffer|. We need to be able to analyze and execute buffers that have
 	  been pre-processed in as easy a way as possible.
+
+	- Only map the |commands| if the current |buffer| supports it!
+
+	- Support for complex filetypes.
+	  Example, a simple |filetype| is "javascript" but a complex filetype
+	  could be "html.javascript" or even "html.javascript.css" 
 	    
 	
 
@@ -443,12 +457,18 @@ g:BellyButton_local_option_file
 
     7.- Maintainer					*BellyButtonMaintainer*
 
+	Jeff Buttars <jeffbuttars@gmail.com>
+
 ================================================================================
 
     9.- Credits						*BellyButtonCredits*
 
+	Jeff Buttars <jeffbuttars@gmail.com> Original u
+
 ================================================================================
 
    10.- History						*BellyButtonHistory*
+
+	Oh so young...
 
 vim:tw=78:ts=8:ft=help:norl:formatoptions+=tcroqn:autoindent:

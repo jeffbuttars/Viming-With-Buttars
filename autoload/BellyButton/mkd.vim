@@ -144,7 +144,7 @@ function! BellyButton#mkd#exec()
 	return {'sysout':sysout, 'ecode':v:shell_error, 'good_ecode':0, 'parse_error':0}
 endfunction
 
-function! BellyButton#mkd#Info()
-	return "A helpful message"
+function! BellyButton#mkd#info()
+	return {}
 endfunction
 
