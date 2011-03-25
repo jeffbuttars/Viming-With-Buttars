@@ -3,3 +3,4 @@ tlib.vba: call delete('/home/jeff/.vim/plugin/02tlib.vim')|call delete('/home/je
 delimitMate.vba: call delete('/home/jeff/.vim/doc/delimitMate.txt')|call delete('/home/jeff/.vim/plugin/delimitMate.vim')
 tcomment.vba: call delete('/home/jeff/.vim/doc/tcomment.txt')|call delete('/home/jeff/.vim/plugin/tcomment.vim')|call delete('/home/jeff/.vim/autoload/tcomment.vim')
 histwin-0.14.vba: call delete('/home/jeff/.vim/plugin/histwinPlugin.vim')|call delete('/home/jeff/.vim/autoload/histwin.vim')|call delete('/home/jeff/.vim/doc/histwin.txt')
+markdown-1.2.2.vba: call delete('/home/jeff/.vim/ftdetect/markdown.vim')|call delete('/home/jeff/.vim/snippets/markdown.snippets')|call delete('/home/jeff/.vim/syntax/markdown.vim')
