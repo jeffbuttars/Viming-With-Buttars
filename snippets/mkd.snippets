@@ -4,14 +4,11 @@ snippet [
 # image
 snippet ![ 
 	![${1:Alt text}](${2:url} ${3:"$1"})
-# Code Inline
-snippet `
-	`${1}`${2}
-snippet === # H2
+snippet === # HR
 	${1}
 	================	
 	${2}
-snippet --- # H2
+snippet --- # HR
 	${1}
 	----------------
 	${2}
@@ -39,18 +36,42 @@ snippet em
 	*${1}*
 snippet strong 
 	**${1}**
-snippet ital
-	<span style="font-style:italic;">${1:italic text}</span>${2}
 snippet li # List Item - Silly, but I'll add it anyway.
 	* ${1:List item}
 # Default style for Cradlepoint documents
 snippet cpstyle
 	<style>
-		body { background-color:#EEE; max-width:960px; }
-		h1   { color:#222; }
+		body { background-color:#FFF; font-size:large; max-width:960px; }
+		h1   { color:#AB3533; }
 		h2   { color:#333; }
-		h3   { color:#444; }
+		h3, h4 { margin-top:2em; color:#511; }
 		a    { text-decoration:none; color:#7F2623; }
+		li a, li a:visited { color:#AB3533; }
+		img .diagram {
+			width:600px;
+			border:solid #000 1px;
+			padding:1em;
+			margin:0 0 20em 0;
+		}
+		body hr {
+			color:#7F2824;
+			background-color:#7F2824;
+			height:1px;
+			margin: 3em 0 3em 0;
+		}
+		pre {
+			padding:5px;
+			background-color:#f0f0f0;
+			border: solid 1px #aaa;
+			font-family: {monospace};
+		}
+
+		pre#copyright {
+			padding:.2em;
+			background-color:#eee;
+			font-size:.8em;
+			font-family: {sans-serif};
+		}
 	</style>
 snippet pre
 
@@ -59,4 +80,46 @@ snippet pre
 		${2}
 	</pre>
 
-
+# [link][]
+snippet []
+	[${1:link_id}][]${2}
+# [link][id]
+snippet [[
+	[${1:link}][${2:id}]${3}
+# [link](url)
+snippet [(
+	[${1:link}](http://${2:url})${3}
+# [link](email)
+snippet [@
+	[${1:link}(mailto:${2:email})${3}
+# [link](url "title")
+snippet [("
+	[${1:link}](${2:url} "${3:title}")${4}
+# [id]: url "title"
+snippet [:
+	[${1:id}]: http://${2:url} "${3:title}"
+# [id]: email "title"
+snippet [:@
+	[${1:id}]: mailto:${2:url} "${3:title}"
+# ![alt][id]
+snippet ![
+	![${1:alt}][${2:id}]${3}
+# ![alt](url)
+snippet !(
+	![${1:alt}](${2:url})${3}
+# ![alt](url "title")
+snippet !("
+	![${1:alt}](${2:url} "${3:title}")${4}
+# *emphasis* or _emphasis_
+snippet *
+	*${1}*${2}
+snippet _
+	_${1}_${2}
+# **strong** or __strong__
+snippet **
+	**${1}**${2}
+snippet __
+	__${1}__${2}
+# `code`
+snippet `
+	\`${1}\`${2}
