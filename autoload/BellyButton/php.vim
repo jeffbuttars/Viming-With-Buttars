@@ -3,6 +3,9 @@
 		"let s:bbphp_initialized = 1
 	"endif
 "endfunction
+"
+function! BellyButton#php#load()
+endfunction
 
 function! BellyButton#php#exec()
 	" If we find errors, return the matchlist.
