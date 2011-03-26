@@ -2,31 +2,31 @@
 function! BellyButton#markdown#load()
 endfunction
 
-function! BellyButton#mkd#init()
-	if !exists('s:bbmkd_initialized')
+function! BellyButton#markdown#init()
+	if !exists('s:bbmarkdown_initialized')
 		" XXX TODO make these user configurable so they can easily
 		" be set in the .vimrc
 		" Also make the rendering of HTML,PDF and whatever else
 		" configurable.
-		let s:bbmkd_initialized = 1
-		let s:BellyButton_mkd_markdown_exec_list = ['markdown2', 'markdown']
-		let s:BellyButton_mkd_browser_list = ['xdg-open', 'google-chrome', 'firefox',
+		let s:bbmarkdown_initialized = 1
+		let s:BellyButton_markdown_markdown_exec_list = ['markdown2', 'markdown']
+		let s:BellyButton_markdown_browser_list = ['xdg-open', 'google-chrome', 'firefox',
 					\'konqueror', 'opera', 'safari']
-		let s:BellyButton_mkd_pdf_list = ['okular',  'evince', 'acroread', 'xpdf', ]
+		let s:BellyButton_markdown_pdf_list = ['okular',  'evince', 'acroread', 'xpdf', ]
 	endif
 
-	if exists('g:BellyButton_mkd_markdown_exec_list')
-		let s:BellyButton_mkd_markdown_exec_list = g:BellyButton_mkd_markdown_exec_list
+	if exists('g:BellyButton_markdown_markdown_exec_list')
+		let s:BellyButton_markdown_markdown_exec_list = g:BellyButton_markdown_markdown_exec_list
 	endif
-	if exists('b:BellyButton_mkd_markdown_exec_list')
-		let s:BellyButton_mkd_markdown_exec_list = b:BellyButton_mkd_markdown_exec_list
+	if exists('b:BellyButton_markdown_markdown_exec_list')
+		let s:BellyButton_markdown_markdown_exec_list = b:BellyButton_markdown_markdown_exec_list
 	endif
 
-	if exists('g:BellyButton_mkd_browser_list')
-		let s:BellyButton_mkd_browser_list = g:BellyButton_mkd_browser_list
+	if exists('g:BellyButton_markdown_browser_list')
+		let s:BellyButton_markdown_browser_list = g:BellyButton_markdown_browser_list
 	endif
-	if exists('b:BellyButton_mkd_browser_list')
-		let s:BellyButton_mkd_browser_list = b:BellyButton_mkd_browser_list
+	if exists('b:BellyButton_markdown_browser_list')
+		let s:BellyButton_markdown_browser_list = b:BellyButton_markdown_browser_list
 	endif
 
 	if exists('g:BellyButton_pdf_browser_list')
@@ -48,7 +48,7 @@ endfunction
 
 function! s:showHTML( target )
 	let l:bopen = "" 
-	for ext in s:BellyButton_mkd_browser_list
+	for ext in s:BellyButton_markdown_browser_list
 		if executable(ext)
 			let l:bopen = ext
 			break
@@ -61,7 +61,7 @@ endfunction
 
 function! s:showPDF( target )
 	let l:bopen = "" 
-	for ext in s:BellyButton_mkd_pdf_list
+	for ext in s:BellyButton_markdown_pdf_list
 		if executable(ext)
 			let l:bopen = ext
 			break
@@ -75,7 +75,7 @@ endfunction
 function! s:renderHTML( src, target )
 	" Find a markdown executable
 	let b:mdown = "" 
-	for ext in s:BellyButton_mkd_markdown_exec_list
+	for ext in s:BellyButton_markdown_markdown_exec_list
 		if executable(ext)
 			let b:mdown = ext
 			break
@@ -94,7 +94,7 @@ endfunction
 
 function! s:renderPDF( src, target )
 	let b:mdown = "" 
-	for ext in s:BellyButton_mkd_markdown_exec_list
+	for ext in s:BellyButton_markdown_exec_list
 		if executable(ext)
 			let b:mdown = ext
 			break
@@ -119,23 +119,23 @@ endfunction
 
 " We don't really run a lint over markdown
 " so we just render and show the out put
-function! BellyButton#mkd#lintRaw()
+function! BellyButton#markdown#lintRaw()
 	let l:paths = s:getPaths()
 	call s:renderHTML( l:paths['src'], l:paths['dst'] )
 	call s:showHTML(l:paths['dst'])
 endfunction
 
-function! BellyButton#mkd#extra()
+function! BellyButton#markdown#extra()
 	let l:paths = s:getPaths()
 	call s:renderPDF( l:paths['src'], l:paths['dst'] )
 	call s:showPDF(l:paths['dst'])
 endfunction
 
-function! BellyButton#mkd#parseLintError( eline )
+function! BellyButton#markdown#parseLintError( eline )
 	return {}
 endfunction
 
-function! BellyButton#mkd#exec()
+function! BellyButton#markdown#exec()
 
 	let sysout = ""
 	
@@ -146,7 +146,7 @@ function! BellyButton#mkd#exec()
 	return {'sysout':sysout, 'ecode':v:shell_error, 'good_ecode':0, 'parse_error':0}
 endfunction
 
-function! BellyButton#mkd#info()
+function! BellyButton#markdown#info()
 	return {}
 endfunction
 

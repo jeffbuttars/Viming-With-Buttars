@@ -31,7 +31,7 @@ if !exists('g:BellyButton_local_option_file')
 endif
 let s:bbLocalOptFname = g:BellyButton_local_option_file
 
-s:loadMap = {}
+let s:loadMap = {}
 
 fun! s:sanitizeFT()
 	let l:ft = split(&ft, '\.')
