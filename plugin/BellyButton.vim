@@ -31,6 +31,8 @@ if !exists('g:BellyButton_local_option_file')
 endif
 let s:bbLocalOptFname = g:BellyButton_local_option_file
 
+s:loadMap = {}
+
 fun! s:sanitizeFT()
 	let l:ft = split(&ft, '\.')
 	if 0 < len(l:ft)
@@ -221,7 +223,11 @@ function! BellyButtonBufferEnter()
 	let l:ftype = s:sanitizeFT()
 
 	try
-		call BellyButton#{l:ftype}#info()
+		if 1 != get(s:loadMap, l:ftype, 0)
+			call BellyButton#{l:ftype}#load()
+			s:loadMap[l:ftype] = 1
+		endif
+
 		echo "extra"
 		nmap <buffer> <silent> <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
 		imap <buffer> <silent> <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
