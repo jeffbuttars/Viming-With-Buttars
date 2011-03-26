@@ -42,33 +42,31 @@
 "predef		[] an array of globals for jslint to not rais an error on
 
 
+function! BellyButton#javascript#load()
+	let s:js_execs = [{'exec':'js','pre_opt':'-f '}, {'exec':'d8'}]
+	"let s:js_execs = [ {'exec':'d8'}, {'exec':'js','pre_opt':'-f '}]
+
+	" Set up some defaults, use the same defaults
+	" from Crawkfords web version of jslint:
+	" white 	: strict whitespace rules apply
+	" onevar	: only one var statement per function should be allowed
+	" undef     : variables should be declared before used
+	" newcap    : constructor names must be capitalized
+	" nomen     : names should be checked
+	" regexp    : the . should not be allowed in regexp literals
+	" plusplus  : increment/decrement should not be allowed
+	" bitwise   : bitwise operators should not be allowed
+	"
+	" Here set up default options. The defaults
+	" are taken from the default options enabled
+	" on the jslint webpage with the excption
+	" of 'adsafe'
+	let s:jsl_default_options = { 'white':'true', 'onevar':'true',
+			\'undef':'true', 'newcap':'true', 'nomen':'true',
+			\'regexp':'true', 'plusplus':'true', 'bitwise':'true' }
+endfunction
+
 function! BellyButton#javascript#init()
-
-	if !exists('s:bbjslint_initialized')
-		let s:js_execs = [{'exec':'js','pre_opt':'-f '}, {'exec':'d8'}]
-		"let s:js_execs = [ {'exec':'d8'}, {'exec':'js','pre_opt':'-f '}]
-
-		" Set up some defaults, use the same defaults
-		" from Crawkfords web version of jslint:
-		" white 	: strict whitespace rules apply
-		" onevar	: only one var statement per function should be allowed
-		" undef     : variables should be declared before used
-		" newcap    : constructor names must be capitalized
-		" nomen     : names should be checked
-		" regexp    : the . should not be allowed in regexp literals
-		" plusplus  : increment/decrement should not be allowed
-		" bitwise   : bitwise operators should not be allowed
-		"
-		" Here set up default options. The defaults
-		" are taken from the default options enabled
-		" on the jslint webpage with the excption
-		" of 'adsafe'
-		let s:jsl_default_options = { 'white':'true', 'onevar':'true',
-				\'undef':'true', 'newcap':'true', 'nomen':'true',
-				\'regexp':'true', 'plusplus':'true', 'bitwise':'true' }
-
-		let s:bbjslint_initialized = 1
-	endif
 
 	" Rebuild the options everytime.
 	" This makes things more responsive
