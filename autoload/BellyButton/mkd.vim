@@ -1,4 +1,6 @@
 
+function! BellyButton#markdown#load()
+endfunction
 
 function! BellyButton#mkd#init()
 	if !exists('s:bbmkd_initialized')

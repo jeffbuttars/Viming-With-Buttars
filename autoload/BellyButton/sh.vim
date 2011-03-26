@@ -1,3 +1,5 @@
+function! BellyButton#sh#load()
+endfunction
 
 function! BellyButton#sh#init()
 
