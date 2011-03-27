@@ -13,6 +13,11 @@
 
     3.- CUSTOMIZATION___________________________|BellyButtonOptions|
         3.1 Configuration options______________________________|BellyButtonOptionConfigOpts|
+	    3.1.1 Key mapings for BellyButton Commands
+		|BellyButtonExec| map option__________________|g:BellyButton_keymap_exec|
+		|BellyButtonLint| map option__________________|g:BellyButton_keymap_lint|
+		|BellyButtonExtra| map option_________________|g:BellyButton_keymap_extra|
+
         3.2 Configuration option file__________________________|BellyButtonOptionFile|
 
     4.- API_____________________________________|BellyButtonAPI|
@@ -77,11 +82,43 @@ as efficient as possible.
  3.- CUSTOMIZATION				*BellyButtonOptions*
     3.1 Configuration options				*BellyButtonOptionConfigOpts*
 
-	|Command| mappings. By default the |BellyButton| |commands| are mapped as
-	such:
-	    <F3> |BellyButtonExtra|
-	    <F4> |BellyButtonLint|
-	    <F5> |BellyButtonExec|
+	3.1.1 Key mapings for BellyButton Commands
+							*g:BellyButton_keymap_exec*
+							*g:BellyButton_keymap_lint*
+							*g:BellyButton_keymap_extra*
+
+	By default the |BellyButton| |commands| are mapped as such:
+>
+		nmap <buffer> <silent> <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
+		imap <buffer> <silent> <F3> <ESC>:w<CR>:BellyButtonExtra<CR>
+
+		nmap <buffer> <silent> <F4> <ESC>:w<CR>:BellyButtonLint<CR>
+		imap <buffer> <silent> <F4> <ESC>:w<CR>:BellyButtonLint<CR>
+
+		nmap <buffer> <silent> <F5> <ESC>:w<CR>:BellyButtonExec<CR>
+		imap <buffer> <silent> <F5> <ESC>:w<CR>:BellyButtonExec<CR>
+<
+	The commands are mapped on a per buffer basis, and only if plugin for
+	the buffer's filetype exists.
+    
+	You can easily override the default mappings by setting the
+	BellyButton keymap option variables in your .vimrc. The option
+	variable names are:
+	    
+	    |g:BellyButton_keymap_exec|
+	    |g:BellyButton_keymap_lint|
+	    |g:BellyButton_keymap_extra|
+
+	For example, to map the |BellyButtonExec| command to the F10 key you
+	would use this line in your .vimrc:
+>
+	let g:BellyButton_keymap_exec = '<F10>'
+<
+	This would cause the mapping command to be:
+>
+	nmap <buffer> <silent> <F5> <ESC>:w<CR>:BellyButtonExec<CR>
+	imap <buffer> <silent> <F5> <ESC>:w<CR>:BellyButtonExec<CR>
+<
 
     3.2 Configuration option file			*BellyButtonOptionFile*
 	Some of the external tools used by |BellyButton| have a very large array
@@ -92,10 +129,19 @@ as efficient as possible.
 	directory for a file named .BellyButton_local_options.vim . If that
 	file exists it will be sourced into the current Vim session. 
 	
-	
 	The Javascript BellyButton plugin is a great example of this. It uses jslint to analyze
 	javascript source code. Jslint is _very_ customizable and you'll
 	probably want some of the options to change on a per project level. 
+
+	You can change the name of the option file that BellyButton will look
+	for by setting the g:BellyButton_local_option_file option.
+	Example:
+
+	To set the option file name that BellyButton will look for to
+	MyBBOptions.vim you would put the following line in your .vimrc:
+>
+	let g:BellyButton_local_option_file = 'MyBBOptions.vim'
+<
 
 g:BellyButton_local_option_file
 
@@ -118,12 +164,11 @@ g:BellyButton_local_option_file
 	explanation of each functions expected behavior, parameters, and
 	return value. Read the API details in the following sections. 
 >
-    function! BellyButton#<filetype>#init()
+    function! BellyButton#<filetype>#load()
+	" Add any additional 'first time, one time' initializtion code here. 
+    endfunction
 
-	if !exists('s:bb<filetype>_initialized')
-	    let s:bb<filetype>_initialized = 1
-	    " Add any additional 'firs time, one time' initializtion code here. 
-	endif
+    function! BellyButton#<filetype>#init()
 
 	" put any code down here that you want to run every time the
 	" #lintRaw, #exec, and #extra hooks are called, but right before they
@@ -161,7 +206,7 @@ g:BellyButton_local_option_file
     endfunction
 
     function! BellyButton#<filetype>#exec()
-	" This is where you put the code to execute or possible make
+	" This is where you put the code to execute or possibly make
 	" the current buffer. If the #exec hook doesn't make sense for your
 	" plugin, simple don't include it. If you implement the #exec hook
 	" you'll need to return a Dictionary as the result. See the API
@@ -180,6 +225,19 @@ g:BellyButton_local_option_file
     function! BellyButton#<filetype>#extra()
 	" Anything code you wish! See the API for further explanation of this
 	" hook 
+    endfunction
+
+    function! BellyButton#<filetype>#info()
+	return {'lint':"Short description of lint tool(s)",
+		\'exec':"Short description of exec command",
+		\'extra':"Short description of extra command",
+		\'author':"First Name Last Name",
+		\'author':"First Name Last Name",
+		\'authro_email':"author@example.com",
+		\'externals':["External Tool One http://one.example.com",
+		    \"External Tool Two http://two.example.com",
+		    \"External Tool Three http://three.example.com"],
+		\'desc':"Longer detailed description of this plugin."}
     endfunction
 <
     4.1- load 						*BellyButton_filetype_load*
