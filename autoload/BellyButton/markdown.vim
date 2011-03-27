@@ -95,7 +95,7 @@ endfunction
 
 function! s:renderPDF( src, target )
 	let b:mdown = "" 
-	for ext in s:BellyButton_markdown_exec_list
+	for ext in s:BellyButton_markdown_markdown_exec_list
 		if executable(ext)
 			let b:mdown = ext
 			break

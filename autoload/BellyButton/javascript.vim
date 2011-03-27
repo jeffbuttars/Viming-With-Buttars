@@ -43,8 +43,7 @@
 
 
 function! BellyButton#javascript#load()
-	let s:js_execs = [{'exec':'js','pre_opt':'-f '}, {'exec':'d8'}]
-	"let s:js_execs = [ {'exec':'d8'}, {'exec':'js','pre_opt':'-f '}]
+	let s:js_execs = [ {'exec':'d8'}, {'exec':'js','pre_opt':'-f '}]
 
 	" Set up some defaults, use the same defaults
 	" from Crawkfords web version of jslint:
@@ -122,10 +121,10 @@ function! s:getJSExec()
 	return {} 
 endfunction
 
-function! s:writeOptionFile()
+function! s:writeLintOptionFile()
 
 	if empty(s:jsl_options)
-		"echo "s:writeOptionFile() no options"
+		"echo "s:writeLintOptionFile() no options"
 		return "" 
 	endif
 	
@@ -140,6 +139,79 @@ function! s:writeOptionFile()
 
 	"echo "option file ".l:fname
 	return l:fname
+endfunction
+
+function! s:writeBeautyOptionFile()
+
+"JSBEAUTYOPTS = {
+"outfile:'outfilename',
+"funcargs:[]
+"}
+
+	let l:fname = tempname().".js"
+
+	let l:jsl_str = ["var JSBEAUTYOPTS = {};"]
+	let l:jsl_str += ["JSBEAUTYOPTS['outfile'] = '".l:fname."';"]
+	echo "Beauty is at".l:fname
+
+	let l:fname = tempname().".js"
+	call writefile(l:jsl_str, l:fname)
+
+	"echo "option file ".l:fname
+	return l:fname
+endfunction
+
+function! BellyButton#javascript#extra()
+
+	let l:jslint = s:getJSExec()
+"JSBEAUTYOPTS = {
+"outfile:'outfilename',
+"funcargs:[]
+"}
+
+	" Set up command and parameters
+	let l:bbase = BellyButtonModuleBase()."Pretty-Diff/"
+	if has("win32")
+		let s:runjslint_ext = 'wsf'
+	else
+		let s:runjslint_ext = 'js'
+	endif
+
+	let l:opt_file = s:writeBeautyOptionFile()
+
+	"echo l:opt_file
+	let l:cmd = "cd " . l:bbase . " && " . l:jslint['exec']. " "
+	if len(l:opt_file) > 0
+		let l:cmd .= l:opt_file." "
+	endif
+	let l:cmd .= "runbeauty." . s:runjslint_ext
+
+	echo l:cmd
+	let l:jsbeauty_output = system(l:cmd, join(getline(1, '$'), "\n")."\n")
+
+	if v:shell_error != 0 
+		echoerr "Non zero return code from ".l:jslint['exec']
+		echoerr l:jsbeauty_output
+		return
+	endif
+
+	let l:blines = getline(1, '$')
+	let l:nlines = split(l:jsbeauty_output, '\n')
+	let lnum = 0
+	while lnum < len(l:nlines)
+		call setline(lnum+1, l:nlines[lnum] )
+		let lnum = lnum + 1
+	endwhile
+
+	"let lnum = len(l:blines)
+	"if lnum > len(l:nlines)
+		"while lnum > len(l:nlines)
+			"call setline(lnum, '' )
+			"let lnum = lnum - 1
+		"endwhile
+	"endif
+
+	return
 endfunction
 
 "function BellyButton#javascript#exec()
@@ -198,6 +270,7 @@ endfunction
 
 function! BellyButton#javascript#info()
 	return {'lint':"Uses jslint to analyze code",
+		\'extra':"Beutifier, uses the Pretty-Diff js-beutifier on the buffer",
 		\'author':"Jeff Buttars",
 		\'authro_email':"jeffbuttars@gmail.com",
 		\'externals':["JSlint 2011-03-07 by Douglas Crockford http://www.jslint.com/",
