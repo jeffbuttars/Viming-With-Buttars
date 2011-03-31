@@ -71,10 +71,11 @@ function! SetColorColumn( ccol )
 	endif
 	set cursorcolumn
 
+	call clearmatches()
+
 	"echo "SetColorColumn " b:longLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
 
 	if &buftype != "" || expand('%') == ''
-		call clearmatches()
 		setlocal colorcolumn=0
 		return
 	endif

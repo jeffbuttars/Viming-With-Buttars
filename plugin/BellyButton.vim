@@ -247,14 +247,14 @@ function! BellyButtonBufferEnter()
 			let s:loadMap[l:ftype] = 1
 		endif
 
-		exec "nmap <buffer> <silent> ".g:BellyButton_keymap_extra." <ESC>:w<CR>:BellyButtonExtra<CR>"
-		exec "imap <buffer> <silent> ".g:BellyButton_keymap_extra." <ESC>:w<CR>:BellyButtonExtra<CR>"
+		exec "nmap <buffer> <silent> ".g:BellyButton_keymap_extra." <ESC>:BellyButtonExtra<CR>"
+		exec "imap <buffer> <silent> ".g:BellyButton_keymap_extra." <ESC>:BellyButtonExtra<CR>"
 
-		exec "nmap <buffer> <silent> ".g:BellyButton_keymap_lint." <ESC>:w<CR>:BellyButtonLint<CR>"
-		exec "imap <buffer> <silent> ".g:BellyButton_keymap_lint." <ESC>:w<CR>:BellyButtonLint<CR>"
+		exec "nmap <buffer> <silent> ".g:BellyButton_keymap_lint." <ESC>:BellyButtonLint<CR>"
+		exec "imap <buffer> <silent> ".g:BellyButton_keymap_lint." <ESC>:BellyButtonLint<CR>"
 
-		exec "nmap <buffer> <silent> ".g:BellyButton_keymap_exec." <ESC>:w<CR>:BellyButtonExec<CR>"
-		exec "imap <buffer> <silent> ".g:BellyButton_keymap_exec." <ESC>:w<CR>:BellyButtonExec<CR>"
+		exec "nmap <buffer> <silent> ".g:BellyButton_keymap_exec." <ESC>:BellyButtonExec<CR>"
+		exec "imap <buffer> <silent> ".g:BellyButton_keymap_exec." <ESC>:BellyButtonExec<CR>"
 	catch /E117:/
 	endtry
 endfunction
@@ -266,4 +266,4 @@ command! BellyButtonLintRaw call s:BellyButtonLintRaw()
 command! BellyButtonInfo    call s:BellyButtonInfo()
 
 " This is the dynamic gold!
-au BufWinEnter * :call BellyButtonBufferEnter()
+au BufWinEnter,FileType * :call BellyButtonBufferEnter()

@@ -152,7 +152,7 @@ function! s:writeBeautyOptionFile()
 
 	let l:jsl_str = ["var JSBEAUTYOPTS = {};"]
 	let l:jsl_str += ["JSBEAUTYOPTS['outfile'] = '".l:fname."';"]
-	echo "Beauty is at".l:fname
+	" echo "Beauty is at".l:fname
 
 	let l:fname = tempname().".js"
 	call writefile(l:jsl_str, l:fname)
@@ -186,7 +186,6 @@ function! BellyButton#javascript#extra()
 	endif
 	let l:cmd .= "runbeauty." . s:runjslint_ext
 
-	echo l:cmd
 	let l:jsbeauty_output = system(l:cmd, join(getline(1, '$'), "\n")."\n")
 
 	if v:shell_error != 0 
@@ -221,7 +220,6 @@ endfunction
 "endfunction
 
 function! BellyButton#javascript#lintRaw()
-
 	let l:jslint = s:getJSExec()
 
 	""echo "Using jslint:" l:jslint
@@ -238,7 +236,7 @@ function! BellyButton#javascript#lintRaw()
 		let s:runjslint_ext = 'js'
 	endif
 
-	let l:opt_file = s:writeOptionFile()
+	let l:opt_file = s:writeLintOptionFile()
 
 	"echo l:opt_file
 	let l:cmd = "cd " . l:bbase . " && " . l:jslint['exec']. " "
@@ -247,13 +245,11 @@ function! BellyButton#javascript#lintRaw()
 	endif
 	let l:cmd .= l:pre_arg."runjslint." . s:runjslint_ext
 
-	"echo l:cmd
 	let b:jslint_output = system(l:cmd, join(getline(1, '$'), "\n")."\n")
 	if v:shell_error != 0 
-		echoerr("Non zero return code from ".l:jslint['exec'])
+		echoerr "Non zero return code from ".l:jslint['exec']
 		return ""
 	endif
-	"echo b:jslint_output
 	return b:jslint_output
 endfunction
 
