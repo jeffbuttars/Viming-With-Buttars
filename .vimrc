@@ -139,9 +139,10 @@ set autoread
 " When c-y is used to select, enter normal mode.
 imap <c-y> <c-y><esc>
 " Show the info preview window.
-"set completeopt=menuone,preview,longest
 "set completeopt=menuone,preview
-set completeopt=menuone,preview
+"set completeopt=menuone,preview
+set completeopt=menuone,preview,longest
+let g:SuperTabLongestHighlight = 0
 
 "(default: ".,w,b,u,t,i")
 "set complete=".,w,b,u,U,t,i,kspell,d,t"
