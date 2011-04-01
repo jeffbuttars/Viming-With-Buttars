@@ -5,35 +5,40 @@ if !exists('loaded_snips') || exists('s:did_snips_mappings')
 endif
 let s:did_snips_mappings = 1
 
-" I  want to use tab to complete completions.
-function! CleverSnip()
-	if pumvisible() 
-		return "\<C-N>"
-	endif
+" This is put here in the 'after' directory in order for snipMate to override
+" other plugin mappings (e.g., supertab).
+"
+" You can safely adjust these mappings to your preferences (as explained in
+" :help snipMate-remap).
+ino <silent> <tab> <c-r>=TriggerSnippet()<cr>
 
-	return TriggerSnippet() 
-endfunction
-function! CleverBackSnip()
-	if pumvisible() 
-		return "\<C-P>"
-	endif
-
-	return BackwardsSnippet() 
-endfunction
-
-" It would be cool to trigger the snippet if it exists
-" but otherwise return a tab.
-if exists( "g:SnipeMateAllowOmniTab" )
-	if g:SnipeMateAllowOmniTab == 1
-		ino <silent> <tab> <c-r>=CleverSnip()<cr>
-		ino <silent> <s-tab> <c-r>=CleverBackSnip()<cr>
-	else
-		ino <silent> <tab> <c-r>=TriggerSnippet()<cr>
-		ino <silent> <s-tab> <c-r>=BackwardsSnippet()<cr>
-	endif
-endif
-
-
+" " I  want to use tab to complete completions.
+" function! CleverSnip()
+" 	if pumvisible() 
+" 		return "\<C-N>"
+" 	endif
+" 
+" 	return TriggerSnippet() 
+" endfunction
+" function! CleverBackSnip()
+" 	if pumvisible() 
+" 		return "\<C-P>"
+" 	endif
+" 
+" 	return BackwardsSnippet() 
+" endfunction
+" 
+" " It would be cool to trigger the snippet if it exists
+" " but otherwise return a tab.
+" if exists( "g:SnipeMateAllowOmniTab" )
+" 	if g:SnipeMateAllowOmniTab == 1
+" 		ino <silent> <tab> <c-r>=CleverSnip()<cr>
+" 		ino <silent> <s-tab> <c-r>=CleverBackSnip()<cr>
+" 	else
+" 		ino <silent> <tab> <c-r>=TriggerSnippet()<cr>
+" 		ino <silent> <s-tab> <c-r>=BackwardsSnippet()<cr>
+" 	endif
+" endif
 snor <silent> <tab> <esc>i<right><c-r>=TriggerSnippet()<cr>
 ino <silent> <s-tab> <c-r>=BackwardsSnippet()<cr>
 snor <silent> <s-tab> <esc>i<right><c-r>=BackwardsSnippet()<cr>
