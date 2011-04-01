@@ -9,7 +9,8 @@ function! BellyButton#mkd#init()
 		let s:bbmkd_initialized = 1
 		let s:BellyButton_mkd_markdown_exec_list = ['markdown2', 'markdown']
 		let s:BellyButton_mkd_browser_list = ['xdg-open', 'google-chrome', 'firefox',
-					\'konqueror', 'opera', 'safari']
+					\'konqueror', 'opera', 'safari', 
+					\'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome']
 		let s:BellyButton_mkd_pdf_list = ['okular',  'evince', 'acroread', 'xpdf', ]
 	endif
 
