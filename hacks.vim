@@ -71,6 +71,10 @@ function! SetColorColumn( ccol )
 	endif
 	set cursorcolumn
 
+	if !exists('&colorcolumn')
+		return
+	endif
+
 	call clearmatches()
 
 	"echo "SetColorColumn " b:longLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
