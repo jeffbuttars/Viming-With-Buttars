@@ -86,7 +86,7 @@ fun! s:showErrors( estr, parseFunc )
 	else
 		"call clearmatches()
 		echo "Belly Button is clean." 
-		exec "redraw"
+		"exec "redraw"
 	endif
 
 	return l:has_errors
@@ -127,7 +127,7 @@ fun! s:bbClean( bbft )
 	catch /E117:/
 	endtry
 
-	redraw!
+	"redraw!
 endf
 
 fun! s:BellyButtonLint()
