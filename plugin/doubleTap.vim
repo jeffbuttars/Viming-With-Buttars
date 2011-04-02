@@ -150,14 +150,12 @@ let g:DoubleTap_SpaceyInline = '\<LEFT>\<SPACE>\<SPACE>\<LEFT>'
 let g:DoubleTapFinishLine_Map = [ 
 	\	{ 'ftype':'*', 'trigger':";", 'finishChar':";", 'spacey':'' },
 	\	{ 'ftype':'javascript,python,lua', 'trigger':",", 'finishChar':",", 'spacey':'' },
-	\	{ 'ftype':'python', 'trigger':":", 'finishChar':":", 'spacey':'' },
-	\	{ 'ftype':'python', 'trigger':";", 'finishChar':":", 'spacey':'' } ]
+	\	{ 'ftype':'python', 'trigger':":", 'finishChar':":", 'spacey':'' } ]
 
 let g:DoubleTapFinishLineNormal_Map = [ 
 	\	{ 'ftype':'*', 'trigger':";;", 'finishChar':';', 'spacey':'', },
 	\	{ 'ftype':'php,javascript,python,lua,json', 'trigger':",,", 'finishChar':",", 'spacey':'', },
-	\	{ 'ftype':'python,go', 'trigger':";;", 'finishChar':':', 'spacey':'', } ,
-	\	{ 'ftype':'python', 'trigger':"::", 'finishChar':':', 'spacey':'', } ]
+	\	{ 'ftype':'python,go', 'trigger':"::", 'finishChar':':', 'spacey':'', } ]
 
 let g:DoubleTapInsertJumpSimple_Map = [ 
 	\	{ 'ftype':'*', 'trigger':'+', "inChar":"+", 'spacey':'' },
