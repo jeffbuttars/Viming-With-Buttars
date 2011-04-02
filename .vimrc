@@ -665,6 +665,8 @@ au FileType python imap <F1> <ESC>:w<CR>:!python %<CR>
 au FileType python nmap <F5> <ESC>:w<CR>:PyFlakes<CR>
 au FileType python imap <F5> <ESC>:w<CR>:PyFlakes<CR>
 
+let python_highlight_space_errors = 0
+
 " php synax check via 'php -l'
 " uses my plugin/phplint.vim
 "au FileType php nmap <F5> <ESC>:w<CR>:PHPLint<CR>
