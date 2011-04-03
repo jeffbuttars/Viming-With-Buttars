@@ -30,7 +30,26 @@ function! s:writeOptionFile()
 	let l:fname = tempname().".js"
 
 	let l:jsl_str = ["var CSSCLEANOPTS = {};"]
-	let l:jsl_str += ["CSSCLEANOPTS['outfile'] = '".l:fname."';"]
+
+
+	if &expandtab
+		let l:jsl_str += ["CSSCLEANOPTS['character'] = ' ';"]
+		if 0 != &softtabstop
+			let l:jsl_str += ["CSSCLEANOPTS['size'] = ".&softtabstop.";"]
+		elseif 0 != &shiftwidth
+			let l:jsl_str += ["CSSCLEANOPTS['size'] = ".&shiftwidth.";"]
+		else
+			let l:jsl_str += ["CSSCLEANOPTS['size'] = 8;"]
+		endif
+	else
+		let l:jsl_str += ["CSSCLEANOPTS['character'] = '\t';"]
+		let l:jsl_str += ["CSSCLEANOPTS['size'] = 1;"]
+	end
+
+	let l:jsl_str += ["CSSCLEANOPTS['comment'] = '';"]
+	let l:jsl_str += ["CSSCLEANOPTS['alter'] = true;"]
+
+
 	" echo "CSS clean is at".l:fname
 
 	let l:fname = tempname().".js"
