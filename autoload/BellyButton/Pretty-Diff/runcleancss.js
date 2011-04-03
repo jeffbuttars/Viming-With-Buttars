@@ -1,4 +1,3 @@
-
 var css_summary = {};
 load('cleanCSS.js');
 
@@ -23,13 +22,22 @@ var readSTDIN = function() {
     return input.join("\n");
 };
 
-/*JSBEAUTYOPTS = {*/
-/*outfile:'outfilename',*/
-/*funcargs:[]*/
-/*}*/
+/*
+* size is the character size of an indentation
+* character is the character that makes up an indentation
+* comment determines whether or not code comments should be indented
+	to match the code or whitespace collapsed and left justified if
+	passed the value "noindent"
+* alter is whether or not the source code should be manipulated to
+	correct some violations
+*/
+var args = [readSTDIN(), 
+	CSSCLEANOPTS.size || 4,
+	CSSCLEANOPTS.character || ' ',
+	CSSCLEANOPTS.comment || '',
+	CSSCLEANOPTS.alter || true
+];
 
-var body = readSTDIN() || arguments[0],
-	res = cleanCSS(body);
-/*res = js_beautify.apply(this, JSBEAUTYOPTS.funcargs.concat([body])),*/
+var res = cleanCSS.apply(this, args);
 
 print(res);
