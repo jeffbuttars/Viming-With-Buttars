@@ -140,9 +140,11 @@ set autoread
 imap <c-y> <c-y><esc>
 " Show the info preview window.
 "set completeopt=menuone,preview
-"set completeopt=menuone,preview
-set completeopt=menuone,preview,longest
-let g:SuperTabLongestHighlight = 0
+set completeopt=menuone,preview
+" set completeopt=menuone,preview,longest
+"let g:SuperTabLongestHighlight = 0
+" g:SuperTabMappingForward  ('<tab>')
+" g:SuperTabMappingBackward ('<s-tab>')
 
 "(default: ".,w,b,u,t,i")
 "set complete=".,w,b,u,U,t,i,kspell,d,t"

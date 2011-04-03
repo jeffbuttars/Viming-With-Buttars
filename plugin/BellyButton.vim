@@ -259,6 +259,15 @@ function! BellyButtonBufferEnter()
 	endtry
 endfunction
 
+function! BellyButtonBufferStr( newstr )
+	let l:nlines = split(a:newstr, '\n')
+	let lnum = 0
+	while lnum < len(l:nlines)
+		call setline(lnum+1, l:nlines[lnum] )
+		let lnum = lnum + 1
+	endwhile
+endfunction
+
 command! BellyButtonExtra   call s:BellyButtonExtra()
 command! BellyButtonLint    call s:BellyButtonLint()
 command! BellyButtonExec    call s:BellyButtonExec()

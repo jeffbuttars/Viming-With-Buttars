@@ -100,11 +100,11 @@ endfunction
 
 function! s:getJSExec()
 
-	if exists('g:JSLintExecutable') && 
-				\!empty(g:JSLintExecutable) && 
-				\0 != get(g:JSLintExecutable, 'exec') && 
-				\executable(g:JSLintExecutable['exec'])
-		return g:JSLintExecutable
+	if exists('g:JSExecutable') && 
+				\!empty(g:JSExecutable) && 
+				\0 != get(g:JSExecutable, 'exec') && 
+				\executable(g:JSExecutable['exec'])
+		return g:JSExecutable
 	endif
 
 	if has("win32")
@@ -194,13 +194,14 @@ function! BellyButton#javascript#extra()
 		return
 	endif
 
-	let l:blines = getline(1, '$')
-	let l:nlines = split(l:jsbeauty_output, '\n')
-	let lnum = 0
-	while lnum < len(l:nlines)
-		call setline(lnum+1, l:nlines[lnum] )
-		let lnum = lnum + 1
-	endwhile
+	call BellyButtonBufferStr(l:jsbeauty_output)
+	" let l:blines = getline(1, '$')
+	" let l:nlines = split(l:jsbeauty_output, '\n')
+	" let lnum = 0
+	" while lnum < len(l:nlines)
+	" 	call setline(lnum+1, l:nlines[lnum] )
+	" 	let lnum = lnum + 1
+	" endwhile
 
 	"let lnum = len(l:blines)
 	"if lnum > len(l:nlines)
@@ -209,8 +210,6 @@ function! BellyButton#javascript#extra()
 			"let lnum = lnum - 1
 		"endwhile
 	"endif
-
-	return
 endfunction
 
 "function BellyButton#javascript#exec()
