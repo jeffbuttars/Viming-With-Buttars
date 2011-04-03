@@ -261,11 +261,21 @@ endfunction
 
 function! BellyButtonBufferStr( newstr )
 	let l:nlines = split(a:newstr, '\n')
-	let lnum = 0
-	while lnum < len(l:nlines)
-		call setline(lnum+1, l:nlines[lnum] )
-		let lnum = lnum + 1
+	let l:lnum = 0
+
+	while l:lnum < len(l:nlines)
+		call setline(l:lnum+1, l:nlines[l:lnum] )
+		let l:lnum = l:lnum + 1
 	endwhile
+
+	let l:cblines = len(getline(1, '$'))
+	execute ":" l:lnum
+	while l:lnum < l:cblines
+		" call setline(l:lnum, "" )
+		execute "normal" 'dd'
+		let l:lnum = l:lnum +1
+	endwhile
+
 endfunction
 
 command! BellyButtonExtra   call s:BellyButtonExtra()
