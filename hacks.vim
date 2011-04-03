@@ -54,15 +54,15 @@ function! SaveView( save )
 		return
 	endif
 
-	if 1 == a:save
-		silent mkview
-	else
-		silent loadview
-	endif
+	" if 1 == a:save
+	" 	silent mkview
+	" else
+	" 	silent loadview
+	" endif
 
 endfunction
-au BufWinLeave * :call SaveView(1)
-au BufWinEnter * :call SaveView(0)
+" au BufWinLeave * :call SaveView(1)
+" au BufWinEnter * :call SaveView(0)
 
 "highlight OverColLimit term=inverse,bold cterm=bold ctermbg=red ctermfg=black gui=bold guibg=red guifg=black 
 function! SetColorColumn( ccol )
