@@ -577,7 +577,9 @@ set guifont=Inconsolata\ Medium\ 12
 
 " I don't want variables and options saved in my views
 " so remove the 'options' option from the default viewoptions setting.
-set viewoptions-=options
+" set viewoptions-=options
+set viewoptions=cursor
+set sessionoptions=winpos,localoptions
 
 " End More normal Vim tweaks.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
