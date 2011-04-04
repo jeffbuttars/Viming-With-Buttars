@@ -298,6 +298,7 @@ function! s:BEIgnoreBuffer(buf)
     return 1
   endif
 
+
   " Do not add the BufExplorer window to the list.
   if fnamemodify(bufname(a:buf), ":t") == s:name
     call s:BEError("The buffer name was [".s:name."] so it was skipped.")
