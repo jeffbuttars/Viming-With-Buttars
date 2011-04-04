@@ -81,6 +81,7 @@ function! SetColorColumn( ccol )
 
 	if &buftype != "" || expand('%') == ''
 		setlocal colorcolumn=0
+		let &textwidth = (0)
 		return
 	endif
 
@@ -88,6 +89,7 @@ function! SetColorColumn( ccol )
 	if len(l:mlist) < 1 || b:longLineMatchID == 0 || &colorcolumn != (a:ccol+1)
 		"echo "SetColorColumn applying" b:longLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
 		let &colorcolumn = (a:ccol+1)
+		let &textwidth = (a:ccol)
 		let b:longLineMatchID=matchadd( "ErrorMsg", '\%>'.a:ccol.'v.\+', -1 )
 	endif
 endfunction
@@ -139,4 +141,58 @@ autocmd FileType python let pyindent_open_paren="&sw*2"
 """"""""""""""""""""""""""""""""""""""
 " END -- Indent Python in the Google way.
 """"""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Great status line code from:
+" http://www.reddit.com/r/vim/comments/gexi6/a_smarter_statusline_code_in_comments/
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+hi StatColor guibg=#95e454 guifg=black ctermbg=lightgreen ctermfg=black
+hi Modified guibg=orange guifg=black ctermbg=lightred ctermfg=black
+
+function! MyStatusLine(mode)
+    let statusline=""
+    if a:mode == 'Enter'
+        let statusline.="%#StatColor#"
+    endif
+    let statusline.="\(%n\)\ %f\ "
+    if a:mode == 'Enter'
+        let statusline.="%*"
+    endif
+    let statusline.="%#Modified#%m"
+    if a:mode == 'Leave'
+        let statusline.="%*%r"
+    elseif a:mode == 'Enter'
+        let statusline.="%r%*"
+    endif
+
+	let statusline .= "\ (%l/%L,\ %c)\ %P%=%w\ %y\ %r\ [%{&encoding}:%{&fileformat}]\ tw:%{&textwidth}\ "
+	" if exists('g:maxLineLength')
+	" 	let statusline .= "maxcol:".g:maxLineLength."\ "
+	" else
+	" 	let statusline .= "\ "
+	" endif
+
+
+	" set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{&textwidth}\ %P
+    return statusline
+endfunction
+
+au WinEnter * setlocal statusline=%!MyStatusLine('Enter')
+au WinLeave * setlocal statusline=%!MyStatusLine('Leave')
+set statusline=%!MyStatusLine('Enter')
+
+function! InsertStatuslineColor(mode)
+  if a:mode == 'i'
+    hi StatColor guibg=orange ctermbg=lightred
+  elseif a:mode == 'r'
+    hi StatColor guibg=#e454ba ctermbg=magenta
+  elseif a:mode == 'v'
+    hi StatColor guibg=#e454ba ctermbg=magenta
+  else
+    hi StatColor guibg=red ctermbg=red
+  endif
+endfunction 
+
+au InsertEnter * call InsertStatuslineColor(v:insertmode)
+au InsertLeave * hi StatColor guibg=#95e454 guifg=black ctermbg=lightgreen ctermfg=black
 

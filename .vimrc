@@ -37,7 +37,7 @@ set history=1000		" keep 1000 lines of command line history
 "set ruler		" show the cursor position all the time
 " Set up a custom status line. Like setting ruler, but we add the buffer number and filetype to the status
 "set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
-set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{&textwidth}\ %P
+" set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{&textwidth}\ %P
 
 set switchbuf=useopen
 
@@ -145,12 +145,18 @@ set completeopt=menuone,preview
 "let g:SuperTabLongestHighlight = 0
 " g:SuperTabMappingForward  ('<tab>')
 " g:SuperTabMappingBackward ('<s-tab>')
+let g:SuperTabDefaultCompletionType = '<c-n>'
+" let g:SuperTabDefaultCompletionType = 'context'
+" let g:SuperTabCompletionContexts = ['s:ContextDiscover']
+" let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', 'myown']
+" let g:SuperTabContextDiscoverDiscovery = ["&omnifunc:<c-x><c-o>", "myown:<c-x><c-f>"]
+" let g:SuperTabContextDefaultCompletionType = '<c-n>'
 
 "(default: ".,w,b,u,t,i")
 "set complete=".,w,b,u,U,t,i,kspell,d,t"
 "set complete=".,w,b,u,t,i,kspell"
 " Map omnicomplete to Control-o
-imap <C-O> <C-X><C-O> 
+" imap <C-O> <C-X><C-O> 
 
 " Mapping for the a.vim plugin
 " quickly switch between source
@@ -234,7 +240,7 @@ let g:SnipeMateAllowOmniTab = 1
 
 " We're extra friendly for django 
 autocmd FileType python set ft=python.django 		" For SnipMate
-autocmd BufRead *.djml set ft=html.django_template 	" For SnipMate
+autocmd BufRead *.djml set ft=html.htmldjano 	" For SnipMate
 
 autocmd FileType mkd set ft=mkd.html 	" For SnipMate, I want to use HTML
 										" snippets with my markdown
