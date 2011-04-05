@@ -738,6 +738,12 @@ let g:maxLineLength=100
 let g:BellyButton_javascript_jslint_options = {'white':'false', 'onevar':'false' }
 
 
+" Sparkup options
+" I don't like default mapping, I actually use
+" the <c-e> default for navigation
+let g:sparkupExecuteMapping = '<c-s>'
+let g:sparkupNextMapping = '<c-h>'
+
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
