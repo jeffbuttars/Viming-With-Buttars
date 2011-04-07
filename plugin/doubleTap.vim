@@ -109,11 +109,13 @@ if !exists( "g:DoubleTapJumpPreferVimPair" )
 	let g:DoubleTapJumpPreferVimPair = 1
 endif
 
-au BufNewFile,BufReadPre * let b:lcharChar = ''
-au BufNewFile,BufReadPre * let b:lcharTime = reltimestr( reltime() )
-au BufNewFile,BufReadPre * let b:lcharPos = [-1,-1,-1,-1] 
+let b:doubleTap_match_ids = [] 
+
+au BufNewFile,BufReadPre,InsertLeave * let b:lcharChar = ''
+au BufNewFile,BufReadPre,InsertLeave * let b:lcharTime = reltimestr( reltime() )
+au BufNewFile,BufReadPre,InsertLeave * let b:lcharPos = [-1,-1,-1,-1] 
 au BufNewFile,BufReadPre * let b:doubleTap_match_ids = [] 
-au CursorHold,CursorHoldI * call s:clearMatch()
+au CursorHold,CursorHoldI,InsertLeave * call s:clearMatch()
 
 "" XXX TODO: this experimental shit to try and figure out how to make
 " the visual feedback behave properly.
@@ -124,7 +126,8 @@ function! s:checkCurChar()
 		call s:clearMatch()
 	endif	
 endfunction
-au CursorMovedI,CursorMoved * call s:checkCurChar()
+" au CursorMovedI,CursorMoved * call s:checkCurChar()
+au CursorMovedI * call s:checkCurChar()
 
 
 " Spacey
@@ -155,7 +158,7 @@ let g:DoubleTapFinishLine_Map = [
 let g:DoubleTapFinishLineNormal_Map = [ 
 	\	{ 'ftype':'*', 'trigger':";;", 'finishChar':';', 'spacey':'', },
 	\	{ 'ftype':'php,javascript,python,lua,json', 'trigger':",,", 'finishChar':",", 'spacey':'', },
-	\	{ 'ftype':'python,go', 'trigger':"::", 'finishChar':':', 'spacey':'', } ]
+	\	{ 'ftype':'python,go,javascript', 'trigger':"::", 'finishChar':':', 'spacey':'', } ]
 
 let g:DoubleTapInsertJumpSimple_Map = [ 
 	\	{ 'ftype':'*', 'trigger':'+', "inChar":"+", 'spacey':'' },
@@ -660,6 +663,7 @@ for item in g:DoubleTapFinishLine_Map
 	execute printf("autocmd FileType %s imap %s <C-R>=DoubleTapFinishLine( '%s', '%s' )<CR>",
 	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'finishChar' ], item[ 'trigger' ])
 endfor
+
 
 "1
 
