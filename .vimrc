@@ -145,7 +145,8 @@ set completeopt=menuone,preview
 "let g:SuperTabLongestHighlight = 0
 " g:SuperTabMappingForward  ('<tab>')
 " g:SuperTabMappingBackward ('<s-tab>')
-let g:SuperTabDefaultCompletionType = '<c-n>'
+"let g:SuperTabDefaultCompletionType = '<c-n>'
+let g:SuperTabDefaultCompletionType = '<c-x><c-o>'
 " let g:SuperTabDefaultCompletionType = 'context'
 " let g:SuperTabCompletionContexts = ['s:ContextDiscover']
 " let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', 'myown']
@@ -240,7 +241,7 @@ let g:SnipeMateAllowOmniTab = 1
 
 " We're extra friendly for django 
 autocmd FileType python set ft=python.django 		" For SnipMate
-autocmd BufRead *.djml set ft=html.htmldjano 	" For SnipMate
+autocmd BufRead *.djml set ft=html.htmldjango 	" For SnipMate
 
 autocmd FileType mkd set ft=mkd.html 	" For SnipMate, I want to use HTML
 										" snippets with my markdown
@@ -733,9 +734,9 @@ let g:NiceMenuMin = 1
 let g:maxLineLength=100
 
 " BellyButton settings
-"let g:BellyButton_javascript_jslint_options = {'white':'false', 'onevar':'false',
-			"\'predef':"['console','window', 'Ext', '$', 'cp']"}
-let g:BellyButton_javascript_jslint_options = {'white':'false', 'onevar':'false' }
+let g:BellyButton_javascript_jslint_options = {'white':'false', 'onevar':'false',
+			\'predef':"['console','window', 'Ext', '$', 'cp']"}
+" let g:BellyButton_javascript_jslint_options = {'white':'false', 'onevar':'false' }
 
 
 " Sparkup options

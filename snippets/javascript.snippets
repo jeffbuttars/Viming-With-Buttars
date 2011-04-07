@@ -10,16 +10,16 @@ snippet fun
 		${3:console.log( "$1()" );}
 	}//$1()
 # Anonymous Function
-snippet f
-	function(${1}) {${2}};
 snippet af
-	function(${1:args}) {${2}}
+	function(${1:args}) {${2}}${3}
+# Named inline function
+snippet nf
+	var ${1:fname} function(${2:args}) {${3}}${4}
 # Var function 
 snippet vf
 	var ${1:func_name} = function(${2:args}) {
 		${3:console.log( '$1()' );}
 	};//$1()
-# Anonymouse function 
 # if
 snippet if If, standard multiline style 
 	if ( ${1:true} ) {
