@@ -146,7 +146,7 @@ set completeopt=menuone,preview
 " g:SuperTabMappingForward  ('<tab>')
 " g:SuperTabMappingBackward ('<s-tab>')
 "let g:SuperTabDefaultCompletionType = '<c-n>'
-let g:SuperTabDefaultCompletionType = '<c-x><c-o>'
+" let g:SuperTabDefaultCompletionType = '<c-x><c-o>'
 " let g:SuperTabDefaultCompletionType = 'context'
 " let g:SuperTabCompletionContexts = ['s:ContextDiscover']
 " let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', 'myown']
