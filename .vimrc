@@ -736,7 +736,6 @@ let g:maxLineLength=100
 " BellyButton settings
 let g:BellyButton_javascript_jslint_options = {'white':'false', 'onevar':'false',
 			\'predef':"['console','window', 'Ext', '$', 'cp', 'alert', 'confirm']"}
-" let g:BellyButton_javascript_jslint_options = {'white':'false', 'onevar':'false' }
 
 
 " Sparkup options
