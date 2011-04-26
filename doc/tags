@@ -170,6 +170,8 @@ BellyButton_filetype_template	BellyButton.txt	/*BellyButton_filetype_template*
 ExtractSnips()	snipMate.txt	/*ExtractSnips()*
 ExtractSnipsFile()	snipMate.txt	/*ExtractSnipsFile()*
 Filename()	snipMate.txt	/*Filename()*
+LargeFile-copyright	LargeFile.txt	/*LargeFile-copyright*
+LargeFile.txt	LargeFile.txt	/*LargeFile.txt*
 MatchError	matchit.txt	/*MatchError*
 NERDTree	NERD_tree.txt	/*NERDTree*
 NERDTree-?	NERD_tree.txt	/*NERDTree-?*
@@ -417,6 +419,8 @@ indent-guides-mappings	indent_guides.txt	/*indent-guides-mappings*
 indent-guides-options	indent_guides.txt	/*indent-guides-options*
 indent-guides-terminal-vim	indent_guides.txt	/*indent-guides-terminal-vim*
 indent_guides.txt	indent_guides.txt	/*indent_guides.txt*
+largefile	LargeFile.txt	/*largefile*
+largefile-history	LargeFile.txt	/*largefile-history*
 list-snippets	snipMate.txt	/*list-snippets*
 matchit	matchit.txt	/*matchit*
 matchit-%	matchit.txt	/*matchit-%*
