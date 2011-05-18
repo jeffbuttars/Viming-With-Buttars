@@ -103,12 +103,14 @@ function! s:renderPDF( src, target )
 	endfor
 
 	if ! len(b:mdown)
-		echoerr "No markdown executable found."
+		#echoerr "No markdown executable found."
+		echo "No markdown executable found."
 		return {}
 	endif
 
 	if ! executable( 'htmldoc' )
-		echoerr "No htmldoc executable found."
+		" echoerr "No htmldoc executable found."
+		echo "No htmldoc executable found."
 		return {}
 	endif
 
