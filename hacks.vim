@@ -21,6 +21,9 @@ if $CPBSDSRCDIR != "" && getcwd() =~ "^".$CPBSDSRCDIR
 	imap <silent> <F7>  <ESC>:w<CR><ESC>:make imageclean<CR><ESC>:make image<CR>
 	nmap <silent> <F6>  <ESC>:w<CR><ESC>:make kernel<CR>
 	imap <silent> <F6>  <ESC>:w<CR><ESC>:make kernel<CR>
+else
+	nmap <silent> <F6>  <ESC>:w<CR><ESC>:make<CR><CR><CR>
+	imap <silent> <F6>  <ESC>:w<CR><ESC>:make<CR><CR><CR>
 endif
 
 
