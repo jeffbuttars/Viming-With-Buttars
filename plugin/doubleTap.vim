@@ -165,7 +165,7 @@ let g:DoubleTapInsertJumpSimple_Map = [
 	\	{ 'ftype':'php,perl', 'trigger':'.', "inChar":".", 'spacey':'' } ]
 
 let g:DoubleTapJumpOut_Map = [
-	\	{ 'ftype':'html,xhtml,html.django_template,xml,xhtml,htmlcheetah,javascript,php', 'trigger':'>', 'leftChar':'<', 'rightChar':'>' },
+	\	{ 'ftype':'html,xhtml,html.django_template,xml,xhtml,htmlcheetah', 'trigger':'>', 'leftChar':'<', 'rightChar':'>' },
 	\	{ 'ftype':'*', 'trigger':'}', 'leftChar':'{', 'rightChar':'}' },
 	\	{ 'ftype':'*', 'trigger':']', 'leftChar':'[', 'rightChar':']' },
 	\	{ 'ftype':'*', 'trigger':')', 'leftChar':'(', 'rightChar':')' } ]
