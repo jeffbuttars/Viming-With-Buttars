@@ -169,14 +169,14 @@ nmap <silent> <C-S> <ESC>:A<CR>
 " forward through the menu.
 " This does not work with snipmate, so I have a hack
 " in after/plugin/snipmate
-"function! CleverTab()
-	"if !pumvisible() 
-		"return "\<Tab>"
-	"endif
-
-	"return "\<C-N>"
-"endfunction
-"inoremap <Tab> <C-R>=CleverTab()<CR>
+" function! CleverTab()
+" 	if !pumvisible() 
+" 		return "\<Tab>"
+" 	endif
+" 
+" 	return "\<C-N>"
+" endfunction
+" inoremap <Tab> <C-R>=CleverTab()<CR>
 "
 
 " Enter will do a simple accept of the selection
@@ -227,7 +227,6 @@ nnoremap <C-j> <c-w>j
 nnoremap <C-h> <c-w>h
 nnoremap <C-k> <c-w>k
 nnoremap <C-l> <c-w>l
-
 
 " Auto close the preview window
 "autocmd CursorHold * if pumvisible() == 0|pclose|endif
