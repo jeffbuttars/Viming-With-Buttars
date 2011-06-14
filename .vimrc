@@ -432,7 +432,7 @@ if has( "gui_running" )
 	"colo wombat256 
 	let g:lucius_style = "light"
 	colo lucius 
-elseif $TERM =~ '256'
+elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
 	" Use a console friendly theme and turn off cursorline
 	" I  prefer a dark theme at the console..
 	set t_Co=256
