@@ -199,3 +199,62 @@ endfunction
 au InsertEnter * call InsertStatuslineColor(v:insertmode)
 au InsertLeave * hi StatColor guibg=#95e454 guifg=black ctermbg=lightgreen ctermfg=black
 
+" Django rific
+if $CPCLOUD_BASE != ""
+	let $DJAGNO_SETTINGS_MODULE=$CPCLOUD_BASE."/web/nimbo/settings"
+endif
+
+function! MyTabLine()
+	let s = ''
+	for i in range(tabpagenr('$'))
+		" select the highlighting
+		if i + 1 == tabpagenr()
+			let s .= '%#TabLineSel#'
+		else
+			let s .= '%#TabLine#'
+		endif
+
+		" set the tab page number (for mouse clicks)
+		let s .= '%' . (i + 1) . 'T'
+
+		" the label is made by MyTabLabel()
+		" let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
+		if has_key(g:tab_cwd_map, i+1)
+			let s .= ' %#String#'.g:tab_cwd_map[i+1]
+		endif
+
+	endfor
+
+	" after the last tab fill with TabLineFill and reset tab page nr
+	let s .= '%#TabLineFill#%T'
+
+	" right-align the label to close the current tab page
+	if tabpagenr('$') > 1
+	let s .= '%=%#TabLine#%999Xclose'
+	endif
+
+	return s
+endfunction
+
+let g:tab_cwd_map = {}
+fun! TabDirSave(save)
+
+	let l:tnum = tabpagenr()
+	if a:save == 1
+		let g:tab_cwd_map[l:tnum] = getcwd()
+		" echo "saving " l:tnum g:tab_cwd_map[l:tnum]
+	else	
+		if has_key(g:tab_cwd_map, l:tnum)
+			" echo "changing to " l:tnum g:tab_cwd_map[l:tnum]
+			exec "cd ".g:tab_cwd_map[l:tnum]
+			" exec "set guitablabel=".getcwd()
+		endif
+	endif
+
+	exec "set tabline=%!MyTabLine()"
+endf
+
+au TabEnter * call TabDirSave(0)
+au TabLeave * call TabDirSave(1)
+
+
