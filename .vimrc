@@ -157,7 +157,9 @@ set completeopt=menuone,preview
 "set complete=".,w,b,u,U,t,i,kspell,d,t"
 "set complete=".,w,b,u,t,i,kspell"
 " Map omnicomplete to Control-o
-" imap <C-O> <C-X><C-O> 
+imap <C-O> <C-X><C-O> 
+
+" imap <C-space> <C-X><C-O>
 
 " Mapping for the a.vim plugin
 " quickly switch between source
