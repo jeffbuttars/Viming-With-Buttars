@@ -367,7 +367,7 @@ endfunction
 
 function! DoubleTapInsert( thechar, mchar, ... )
 
-	if ! s:checkDoubleInsert( a:thechar )
+	if ! s:checkDoubleInsert( a:thechar ) || s:inString(a:thechar)
 		call s:setMatch()
 		return a:thechar
 	endif
@@ -397,15 +397,14 @@ function! DoubleTapFinishLine( thechar, trigger )
 
 	" If we're in a string, don't do it.
 	" XXX need to make this optional
-	"if s:getSynName() =~? 'String'
-		"return a:trigger
-	"endif
+	if s:inString(a:thechar)
+		return a:thechar
+	endif
 
 	if ! s:checkDoubleInsert( a:thechar )
 		call s:setMatch()
 		return a:thechar
 	endif
-
 
 	call s:sliceChar()
 
