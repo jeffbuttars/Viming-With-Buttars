@@ -50,3 +50,7 @@ endfunction
 au BufWinLeave * :call SaveView(1)
 au BufWinEnter * :call SaveView(0)
 
+if getcwd() =~ "^/home/jeff/public_html/dbagg"
+	autocmd FileType python set ft=python.django 		" For SnipMate
+	autocmd BufRead *.html set ft=html.django_template 	" For SnipMate
+endif
