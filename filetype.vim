@@ -13,3 +13,7 @@ augroup END
 augroup json
 	autocmd BufRead,BufNewFile *.json setfiletype json
 augroup END
+
+" augroup markmin
+" 	autocmd BufRead,BufNewFile *.markmin setfiletype markmin
+" augroup END
