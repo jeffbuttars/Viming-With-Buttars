@@ -60,11 +60,11 @@
  *       the rendering of character entities as they pass through
  *       the DOM, so that the string literal value is preserved.
  */
-var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName, contextSize, inline, lang) {
+var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName, contextSize, inline) {
     "use strict";
     var thead = "<table class='diff'><thead><tr><th></th>" + ((inline === true) ? "<th></th><th class='texttitle'>" + baseTextName + " vs. " + newTextName + "</th></tr></thead><tbody>" : "<th class='texttitle'>" + baseTextName + "</th><th></th><th class='texttitle'>" + newTextName + "</th></tr></thead><tbody>"),
         tbody = [],
-        tfoot = "<tr><th class='author' colspan='" + ((inline === true) ? "3" : "4") + "'>Original diff view created as DOM objects by <a href='http://snowtide.com/jsdifflib'>jsdifflib</a>. Diff view recreated as a JavaScript array by <a href='http://mailmarkup.org/'>Austin Cheney</a>.</th></tr></tfoot></table>",
+        tfoot = "</tbody><tfoot><tr><th class='author' colspan='" + ((inline === true) ? "3" : "4") + "'>Original diff view created as DOM objects by <a href='http://snowtide.com/jsdifflib'>jsdifflib</a>. Diff view recreated as a JavaScript array by <a href='http://mailmarkup.org/'>Austin Cheney</a>.</th></tr></tfoot></table>",
         node = [],
         rows = [],
         idx,
@@ -82,7 +82,7 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
         jump,
 
         //This is the difference algorithm
-        difference = function (a, b, isjunk) {
+        difference = function (a, b) {
             var isbjunk,
                 matching_blocks = [],
                 b2j = [],
@@ -227,18 +227,6 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
                     return matching_blocks;
                 },
                 set_seq2 = (function () {
-                    isjunk = isjunk ? isjunk : function (c) {
-                        var whitespace = {
-                            " ": true,
-                            "\t": true,
-                            "\n": true,
-                            "\f": true,
-                            "\r": true
-                        };
-                        if (whitespace.hasOwnProperty(c)) {
-                            return whitespace[c];
-                        }
-                    };
                     opcodes = null;
                     var chain_b = (function () {
                         var i,
@@ -264,20 +252,6 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
                         for (elt in populardict) {
                             if (populardict.hasOwnProperty(elt)) {
                                 delete b2j[elt];
-                            }
-                        }
-                        if (isjunk) {
-                            for (elt in populardict) {
-                                if (populardict.hasOwnProperty(elt) && isjunk(elt)) {
-                                    junkdict[elt] = 1;
-                                    delete populardict[elt];
-                                }
-                            }
-                            for (elt in b2j) {
-                                if (b2j.hasOwnProperty(elt) && isjunk(elt)) {
-                                    junkdict[elt] = 1;
-                                    delete b2j[elt];
-                                }
                             }
                         }
                         isbjunk = function (key) {
@@ -339,9 +313,7 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
 
         addCells = function (row, tidx, tend, textLines, change) {
             if (tidx < tend) {
-                if (change !== "replace") {
-                    textLines = textLines[tidx].replace(/\$#gt;/g, "&gt;").replace(/\$#lt;/g, "&lt;");
-                }
+                textLines = textLines.replace(/\$#gt;/g, "&gt;").replace(/\$#lt;/g, "&lt;");
                 row.push("<th>" + (tidx + 1).toString().replace(/\&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;") + "</th>");
                 row.push("<td class='" + change + "'>" + textLines + "</td>");
                 return tidx + 1;
@@ -358,10 +330,10 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
             }
             row.push("<td class='" + change + "'>" + textLines[tidx].replace(/\$#gt;/g, "&gt;").replace(/\$#lt;/g, "&lt;") + "</td></tr>");
         },
-        //This function is the heart behind the per character logic of the
-        //Pretty Diff engine.  The logic from diff lib performs comparisons
-        //per lines of code, but does not illustrate per character
-        //differences for the diffview output.
+        //This function is the heart behind the per character logic of
+        //the Pretty Diff engine.  The logic from diff lib performs
+        //comparisons per lines of code, but does not illustrate per
+        //character differences for the diffview output.
         charcomp = function (c, d) {
             var i,
                 j,
@@ -375,9 +347,10 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
                 entity,
                 compare,
 
-                //Some older versions of browsers were having trouble comparing
-                //between single and double quotes as string literals.  To speed
-                //processing for newer browsers remove these lines.
+                //Some older versions of browsers were having trouble
+                //comparing between single and double quotes as string
+                //literals.  To speed processing for newer browsers
+                //remove these lines.
                 a = c.replace(/\'/g, "$#39;").replace(/\"/g, "$#34;").replace(/\&nbsp;/g, " ").replace(/\&#160;/g, " "),
                 b = d.replace(/\'/g, "$#39;").replace(/\"/g, "$#34;").replace(/\&nbsp;/g, " ").replace(/\&#160;/g, " ");
 
@@ -394,10 +367,11 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
                     zx = bx.length;
                 }
 
-                //This is a massive amount of code for a very simple task
-                //Entities that have been split per character along with
-                //their containing data must be reconstituted so that they
-                //can be accurately interpreted as a single array index.
+                //This is a massive amount of code for a very simple
+                //task.  Entities that have been split per character
+                //along with their containing data must be reconstituted 
+                //so that they can be accurately interpreted as a single
+                //array index.
                 entity = function (z) {
                     var a = z.length,
                         b = [];
@@ -414,13 +388,12 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
                             z[n + 2] = "";
                             z[n + 3] = "";
                             z[n + 4] = "";
-                        } else if (z[n] + z[n + 1] + z[n + 2] + z[n + 3] + z[n + 4] + z[n + 5] === "&nbsp;") {
-                            z[n] = ' ';
+                        } else if (z[n] + z[n + 1] + z[n + 2] + z[n + 3] + z[n + 4] === "&amp;") {
+                            z[n] = "&amp;";
                             z[n + 1] = "";
                             z[n + 2] = "";
                             z[n + 3] = "";
                             z[n + 4] = "";
-                            z[n + 5] = "";
                             //If the two lines for replacing quote
                             //characters with entities from appoximately
                             //50 lines above were removed then these
@@ -449,23 +422,18 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
                 };
                 ax = entity(ax);
                 bx = entity(bx);
-                for (i = 0; i < zx; i += 1) {
-                    if (ax[i] === "&" && bx[i] !== "&") {
-                        bx.splice(i, 0, "", "", "", "");
-                    } else if (bx[i] === "&" && ax[i] !== "&") {
-                        ax.splice(i, 0, "", "", "", "");
-                    }
-                }
 
-                //This function actually determines if the same character
-                //positions in two compared arrays match.  If not an <em>
-                //tag is opened.  If a match is then detected, or if a space
-                //is being compared to an undefined character the <em> tag
-                //is closed.  This logic occurs for the duraction of the
-                //character length of given lines of code so that many
-                //separate matches can be specified perline.
+                //This function actually determines if the same
+                //character positions in two compared arrays match.  If
+                //not an <em> tag is opened.  If a match is then
+                //detected, or if a space is being compared to an
+                //undefined character the <em> tag is closed.  This
+                //logic occurs for the duraction of the character length
+                //of given lines of code so that many separate matches
+                //can be specified perline.
                 compare = function () {
-                    var em = /<em>/g;
+                    var em = /<em>/g,
+                        n = 0;
                     for (i = k; i < zx; i += 1) {
                         if (ax[i] === bx[i]) {
                             r = i;
@@ -494,7 +462,7 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
                         }
                     }
                     for (j = i + 1; j < zx; j += 1) {
-                        if (ax[j] === bx[j]) {
+                        if (ax[j] === bx[j] && n === 1) {
                             ax[j - 1] = ax[j - 1] + "</em>";
                             bx[j - 1] = bx[j - 1] + "</em>";
                             k = j;
@@ -507,19 +475,19 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
                         }
                     }
                     if (j === zx && n === 1) {
-                        if (ax[j - 1].indexOf("</em>") === -1) {
-                            ax[ax.length - 1] = ax[ax.length - 1] + "</em>";
+                        if (ax[j - 1].lastIndexOf("</em>") !== ax[j - 1].length - 5) {
+                            ax[j - 1] = ax[j - 1] + "</em>";
                         }
-                        if (bx[j - 1].indexOf("</em>") === -1) {
-                            bx[bx.length - 1] = bx[bx.length - 1] + "</em>";
+                        if (bx[j - 1].lastIndexOf("</em>") !== bx[j - 1].length - 5) {
+                            bx[j - 1] = bx[j - 1] + "</em>";
                         }
                     }
                 };
 
-                //This logic determines if the entire line of code has not
-                //been evaluated so that the compare function can fire
-                //again.  This logic is what allows multiple comparisons per
-                //line of code.
+                //This logic determines if the entire line of code has
+                //not been evaluated so that the compare function can
+                //fire again.  This logic is what allows multiple
+                //comparisons per line of code.
                 for (p = 0; p < zx; p += 1) {
                     if (r + 1 !== zx) {
                         compare();
@@ -527,8 +495,8 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
                 }
 
                 //Final computation before charcomp is finished.
-                c = ax.join("").replace(/\$#lt;/g, "&lt;").replace(/\$#gt;/g, "&gt;").replace(/$#34;/g, "\"").replace(/$#39;/g, "'").replace(/ /g, "&#160;");
-                d = bx.join("").replace(/\$#lt;/g, "&lt;").replace(/\$#gt;/g, "&gt;").replace(/$#34;/g, "\"").replace(/$#39;/g, "'").replace(/ /g, "&#160;");
+                c = ax.join("").replace(/$#34;/g, "\"").replace(/$#39;/g, "'");
+                d = bx.join("").replace(/$#34;/g, "\"").replace(/$#39;/g, "'");
             }
             return [c, d];
         };
@@ -611,7 +579,6 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
                 } else if (change === "delete") {
                     addCellsInline(node, b, null, baseTextLines, change);
                 } else if (b < be || n < ne) {
-                    baseTextLines[b] = baseTextLines[b].replace(/\$#gt;/g, "&gt;").replace(/\$#lt;/g, "&lt;");
                     addCellsInline(node, b, n, baseTextLines, change);
                 }
                 b += 1;
@@ -627,25 +594,34 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
                     if (b < be && n < ne && baseTextLines[b] !== newTextLines[n]) {
                         z = charcomp(baseTextLines[b], newTextLines[n]);
                         errorout -= 1;
+                        b = addCells(node, b, be, z[0], change);
+                        n = addCells(node, n, ne, z[1], change);
                     } else if (baseTextLines[b] !== undefined && newTextLines[n] !== undefined) {
-                        z = [];
-                        z[0] = baseTextLines[b].replace(/\$#gt;/g, "&gt;").replace(/\$#lt;/g, "&lt;");
-                        z[1] = newTextLines[n].replace(/\$#gt;/g, "&gt;").replace(/\$#lt;/g, "&lt;");
+                        if (b < be) {
+                            b = addCells(node, b, be, baseTextLines[b], 'delete');
+                        } else {
+                            b = addCells(node, b, be, baseTextLines[b], change);
+                        }
+                        if (n < ne) {
+                            n = addCells(node, n, ne, newTextLines[n], 'insert');
+                        } else {
+                            n = addCells(node, n, ne, newTextLines[n], change);
+                        }
                     } else if (baseTextLines[b] === undefined || newTextLines[n] === undefined) {
                         z = [];
                         if (baseTextLines[b] !== undefined) {
-                            z[0] = baseTextLines[b].replace(/\$#gt;/g, "&gt;").replace(/\$#lt;/g, "&lt;");
+                            z[0] = baseTextLines[b];
                             z[1] = "";
-                        } else if (newTextLines[n] !== undefined) {
-                            z[1] = newTextLines[n].replace(/\$#gt;/g, "&gt;").replace(/\$#lt;/g, "&lt;");
+                        } else {
+                            z[1] = newTextLines[n];
                             z[0] = "";
                         }
+                        b = addCells(node, b, be, z[0], change);
+                        n = addCells(node, n, ne, z[1], change);
                     }
-                    b = addCells(node, b, be, z[0], change);
-                    n = addCells(node, n, ne, z[1], change);
                 } else {
-                    b = addCells(node, b, be, baseTextLines, change);
-                    n = addCells(node, n, ne, newTextLines, change);
+                    b = addCells(node, b, be, baseTextLines[b], change);
+                    n = addCells(node, n, ne, newTextLines[n], change);
                 }
                 node.push("</tr>");
             }
@@ -653,5 +629,5 @@ var diffview = function (baseTextLines, newTextLines, baseTextName, newTextName,
     }
     rows.push(node.join(""));
     tbody.push(rows.join(""));
-    return (thead + tbody.join("") + "</tbody><tfoot>" + tfoot).replace(/\%#lt;/g, "$#lt;").replace(/\%#gt;/g, "$#gt;");
+    return (thead + tbody.join("") + tfoot).replace(/\%#lt;/g, "$#lt;").replace(/\%#gt;/g, "$#gt;");
 };

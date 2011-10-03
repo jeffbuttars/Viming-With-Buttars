@@ -134,6 +134,10 @@ endif " has("autocmd")
 
 set autoread
 
+" Allow us to save a file as root, if we have sudo privileges,
+" when we're not currently useing vim as root
+cmap w!! %!sudo tee > /dev/null %
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OmniCompletion settings
 " When c-y is used to select, enter normal mode.
@@ -716,7 +720,7 @@ autocmd FileType xml  set equalprg=xmllint\ --format\ -
 
 " doubleTap
 "let g:loaded_doubleTap = 1
-"let g:DoubleTapInsertTimer = 0.8
+let g:DoubleTapInsertTimer = 0.7
 
 " Set NiceMenu Delay
 let g:loaded_nice_menu = 1
