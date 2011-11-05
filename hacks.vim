@@ -99,7 +99,10 @@ endfunction
 if ! exists("g:maxLineLength")
 	let g:maxLineLength=80
 endif
-au BufWinEnter * :call SetColorColumn(g:maxLineLength)
+
+if &buftype != "" && &buftype != "log"
+	au BufWinEnter * :call SetColorColumn(g:maxLineLength)
+endif
 "au FileType python,c,javascript :call SetColorColumn(g:maxLineLength)
 
 """"""""""""""""""""""""""""""""""""""
