@@ -102,6 +102,7 @@ endif
 
 if &buftype != "" && &buftype != "log"
 	au BufWinEnter * :call SetColorColumn(g:maxLineLength)
+	call SetColorColumn(g:maxLineLength)
 endif
 "au FileType python,c,javascript :call SetColorColumn(g:maxLineLength)
 
