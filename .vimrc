@@ -594,14 +594,9 @@ set sessionoptions=winpos,localoptions
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins and external addons
 
-""" Bufexplorer
-" Use Ctrl-l to cut to the buf browser from bufexplorer plugin
-" Think l as in 'list the buffers'
-nmap <silent> <c-l> <esc>:BufExplorer<CR>
-imap <silent> <c-l> <esc>:BufExplorer<CR>
-let g:bufExplorerSortBy='mru' " Sort by most recently used.
-"let g:bufExplorerFindActive=1
-"let g:bufExplorerShowUnlisted=0
+" LustyExplorer
+nmap <silent> <c-l> <esc>:LustyBufferExplorer<CR>
+imap <silent> <c-l> <esc>:LustyBufferExplorer<CR>
 
 """ comments.vim
 "A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
@@ -652,12 +647,9 @@ let Tlist_Display_Prototype = 1
 " Tree Style listing
 let g:netrw_liststyle = 3
 
-""" NERDTree
-" Use Ctrl-d to open/close the NERDTree.
-nmap <C-d> <ESC>:NERDTreeToggle<CR>
-imap <C-d> <ESC>:NERDTreeToggle<CR>
-let NERDChristmasTree=1
-let NERDTreeQuitOnOpen=1
+" Lusty Explorer
+nmap <C-d> <ESC>:LustyFilesystemExplorerFromHere<CR>
+imap <C-d> <ESC>:LustyFilesystemExplorerFromHere<CR>
 
 
 
@@ -735,7 +727,7 @@ let g:maxLineLength=100
 
 " BellyButton settings
 let g:BellyButton_javascript_jslint_options = {'white':'false', 'onevar':'false','bitwise':'false',
-			\'predef':"['console','window', 'Ext', '$', 'cp', 'alert', 'confirm']"}
+			\'predef':"['console','window', 'Ext', '$', 'cp', 'alert', 'confirm', 'document']"}
 
 
 " Sparkup options
