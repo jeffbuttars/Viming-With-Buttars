@@ -7,7 +7,7 @@ snippet autoescape
 snippet block
 	{% block ${1} %}
 	${2}
-	{% endblock %}
+	{% endblock %}{% comment %} END BLOCK $1 {% endcomment %}
 snippet #
 	{# ${1:comment} #}
 snippet comment
@@ -123,3 +123,5 @@ snippet urlizetrunc
 	urlizetrunc:${1}
 snippet wordwrap
 	wordwrap:${1};
+snippet {%
+	{% ${1} %}
