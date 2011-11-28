@@ -69,6 +69,10 @@ endfunction
 
 "highlight OverColLimit term=inverse,bold cterm=bold ctermbg=red ctermfg=black gui=bold guibg=red guifg=black 
 function! SetColorColumn( ccol )
+	if &filetype == "log"
+		return
+	endif
+
 	if ! exists("b:longLineMatchID")
 		let b:longLineMatchID = 0
 	endif
@@ -96,9 +100,11 @@ function! SetColorColumn( ccol )
 		let b:longLineMatchID=matchadd( "ErrorMsg", '\%>'.a:ccol.'v.\+', -1 )
 	endif
 endfunction
+
 if ! exists("g:maxLineLength")
 	let g:maxLineLength=80
 endif
+
 au BufWinEnter * :call SetColorColumn(g:maxLineLength)
 "au FileType python,c,javascript :call SetColorColumn(g:maxLineLength)
 

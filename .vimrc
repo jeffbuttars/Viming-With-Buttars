@@ -717,10 +717,18 @@ autocmd FileType xml  set equalprg=xmllint\ --format\ -
 " load the tag closer
 "au FileType html,xhtml let b:closetag_html_style=1
 "au FileType html,xml,xhtml,xsl,htmlcheetah source ~/.vim/scripts/closetag.vim
+"
+"Enable ropevime
+" python << EOF
+" import sys
+" sys.path.append('/usr/lib/python2.7/site-packages/ropevim-0.3_rc-py2.7.egg/')
+" sys.path.append('/usr/lib/python2.7/site-packages/ropemode-0.1_rc2-py2.7.egg')
+" EOF
+" source /usr/lib/python2.7/site-packages/ropevim-0.3_rc-py2.7.egg/ropevim.vim
 
 " doubleTap
 "let g:loaded_doubleTap = 1
-let g:DoubleTapInsertTimer = 0.7
+let g:DoubleTapInsertTimer = 0.8
 
 " Set NiceMenu Delay
 let g:loaded_nice_menu = 1
