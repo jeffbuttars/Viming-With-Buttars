@@ -1,0 +1,42 @@
+snippet # 
+	# ${1:title}
+	${2}
+snippet ## 
+	## ${1:section}
+	${2}
+snippet ### 
+	### ${1:subsection}
+	${2}
+snippet ** 
+	**${1:bold}**${2}
+snippet ''
+	''${1:italic}''${2}
+snippet `` 
+	``${1:verbatim}``${2}
+snippet [[
+	[[${1:Anchor display} ${2:#target}]]${3}
+snippet li
+	- ${1:item}
+	${2}
+snippet oi
+	+ ${1:item}
+	${2}
+snippet table
+	-------------
+	**${1:A}** | **B** | **C**
+	${2:O} | X | Y
+	${3:O} | X | Y
+	----------${4:\:classname}
+	${5}
+snippet block
+	-------------
+	${1:text}
+	----------${2:\:classname}
+	${3}
+snippet code
+	\`\`
+		${1:code}
+	\`\`:${2:codeclass}
+	${3}
+snippet cite
+	- [[${1:key}]] ${2:value}

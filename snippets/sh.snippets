@@ -1,7 +1,6 @@
 # #!/bin/bash
 snippet #!
 	#!/bin/bash
-	set -e
 	
 snippet if
 	if [[ ${1:condition} ]]; then
@@ -14,6 +13,10 @@ snippet for
 	for (( ${2:i} = 0; $2 < ${1:count}; $2++ )); do
 		${3:#statements}
 	done
+snippet fori
+	for ${1:needle} in ${2:haystack} ; do
+		${3:#statements}
+	done
 snippet wh
 	while [[ ${1:condition} ]]; do
 		${2:#statements}
@@ -21,6 +24,19 @@ snippet wh
 snippet until
 	until [[ ${1:condition} ]]; do
 		${2:#statements}
+	done
+snippet case
+	case ${1:word} in
+		${2:pattern})
+			${3};;
+	esac
+snippet go 
+	while getopts '${1:o}' ${2:opts} 
+	do 
+		case $$2 in
+		${3:o0})
+			${4:#staments};;
+		esac
 	done
 snippet for #1
 	for (( ${2:i} = 0; $2 < ${1:count}; $2++ )); do
@@ -58,8 +74,3 @@ snippet else
 # Easy echo
 snippet echo 
 	echo "${1}";
-snippet case
-	case ${1:word} in
-		${2:pattern})
-			${3};;
-	esac

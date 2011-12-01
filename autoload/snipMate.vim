@@ -1,10 +1,35 @@
+" config which can be overridden (shared lines)
+if !exists('g:snipMate')
+  let g:snipMate = {}
+endif
+let s:snipMate = g:snipMate
+
+" if filetype is objc, cpp, or cs also append snippets from scope 'c'
+" you can add multiple by separating scopes by ',', see s:AddScopeAliases
+" TODO add documentation to doc/*
+let s:snipMate['scope_aliases'] = get(s:snipMate,'scope_aliases',
+	  \ {'objc' :'c'
+	  \ ,'cpp': 'c'
+	  \ ,'cs':'c'
+	  \ ,'xhtml': 'html'
+	  \ ,'html': 'javascript'
+	  \ ,'php': 'php,html,javascript'
+	  \ ,'ur': 'html,javascript'
+	  \ ,'mxml': 'actionscript'
+	  \ } )
+
+" set this to "\<tab>" to make snipmate not swallow tab (make sure to not have
+" expandtab set). Remember that you can always enter tabs by <c-v> <tab> then
+" you don't need this
+let s:snipMate['no_match_completion_feedkeys_chars'] = get(s:snipMate, 'no_match_completion_feedkeys_chars', '')
+
 fun! Filename(...)
 	let filename = expand('%:t:r')
 	if filename == '' | return a:0 == 2 ? a:2 : '' | endif
 	return !a:0 || a:1 == '' ? filename : substitute(a:1, '$1', filename, 'g')
 endf
 
-fun s:RemoveSnippet()
+fun! s:RemoveSnippet()
 	unl! g:snipPos s:curPos s:snipLen s:endCol s:endLine s:prevLen
 	     \ s:lastBuf s:oldWord
 	if exists('s:update')
@@ -14,7 +39,7 @@ fun s:RemoveSnippet()
 	aug! snipMateAutocmds
 endf
 
-fun snipMate#expandSnip(snip, col)
+fun! snipMate#expandSnip(snip, col)
 	let lnum = line('.') | let col = a:col
 
 	let snippet = s:ProcessSnippet(a:snip)
@@ -73,19 +98,36 @@ fun snipMate#expandSnip(snip, col)
 endf
 
 " Prepare snippet to be processed by s:BuildTabStops
-fun s:ProcessSnippet(snip)
+fun! s:ProcessSnippet(snip)
 	let snippet = a:snip
+
+	if exists('g:snipmate_content_visual')
+		let visual = g:snipmate_content_visual | unlet g:snipmate_content_visual
+	else
+		let visual = ''
+	endif
+	let snippet = substitute(snippet,'{VISUAL}', escape(visual,'%\'), 'g')
+
 	" Evaluate eval (`...`) expressions.
 	" Backquotes prefixed with a backslash "\" are ignored.
+	" And backslash can be escaped by doubling it.
 	" Using a loop here instead of a regex fixes a bug with nested "\=".
 	if stridx(snippet, '`') != -1
-		while match(snippet, '\(^\|[^\\]\)`.\{-}[^\\]`') != -1
-			let snippet = substitute(snippet, '\(^\|[^\\]\)\zs`.\{-}[^\\]`\ze',
-		                \ substitute(eval(matchstr(snippet, '\(^\|[^\\]\)`\zs.\{-}[^\\]\ze`')),
-		                \ "\n\\%$", '', ''), '')
-		endw
+		let new = []
+		let snip = split(snippet, '\%(\\\@<!\%(\\\\\)*\)\@<=`', 1)
+		let isexp = 0
+		for i in snip
+			if isexp
+				call add(new, substitute(eval(i), "\n\\%$", '', ''))
+			else
+				call add(new, i)
+			endif
+			let isexp = !isexp
+		endfor
+		let snippet = join(new, '')
 		let snippet = substitute(snippet, "\r", "\n", 'g')
-		let snippet = substitute(snippet, '\\`', '`', 'g')
+		let snippet = substitute(snippet, '\\`', "`", 'g')
+		let snippet = substitute(snippet, '\\\\', "\\", 'g')
 	endif
 
 	" Place all text after a colon in a tab stop after the tab stop
@@ -112,7 +154,7 @@ fun s:ProcessSnippet(snip)
 endf
 
 " Counts occurences of haystack in needle
-fun s:Count(haystack, needle)
+fun! s:Count(haystack, needle)
 	let counter = 0
 	let index = stridx(a:haystack, a:needle)
 	while index != -1
@@ -133,7 +175,7 @@ endf
 "     the matches of "$#", to be replaced with the placeholder. This list is
 "     composed the same way as the parent; the first item is the line number,
 "     and the second is the column.
-fun s:BuildTabStops(snip, lnum, col, indent)
+fun! s:BuildTabStops(snip, lnum, col, indent)
 	let snipPos = []
 	let i = 1
 	let withoutVars = substitute(a:snip, '$\d\+', '', 'g')
@@ -168,7 +210,7 @@ fun s:BuildTabStops(snip, lnum, col, indent)
 	return [snipPos, i - 1]
 endf
 
-fun snipMate#jumpTabStop(backwards)
+fun! snipMate#jumpTabStop(backwards)
 	let leftPlaceholder = exists('s:origWordLen')
 	                      \ && s:origWordLen != g:snipPos[s:curPos][2]
 	if leftPlaceholder && exists('s:oldEndCol')
@@ -198,7 +240,7 @@ fun snipMate#jumpTabStop(backwards)
 	if s:curPos == s:snipLen
 		let sMode = s:endCol == g:snipPos[s:curPos-1][1]+g:snipPos[s:curPos-1][2]
 		call s:RemoveSnippet()
-		return sMode ? "\<tab>" : TriggerSnippet()
+		return sMode ? "\<tab>" : snipMate#TriggerSnippet()
 	endif
 
 	call cursor(g:snipPos[s:curPos][0], g:snipPos[s:curPos][1])
@@ -210,7 +252,7 @@ fun snipMate#jumpTabStop(backwards)
 	return g:snipPos[s:curPos][2] == -1 ? '' : s:SelectWord()
 endf
 
-fun s:UpdatePlaceholderTabStops()
+fun! s:UpdatePlaceholderTabStops()
 	let changeLen = s:origWordLen - g:snipPos[s:curPos][2]
 	unl s:startCol s:origWordLen s:update
 	if !exists('s:oldVars') | return | endif
@@ -257,7 +299,7 @@ fun s:UpdatePlaceholderTabStops()
 	unl s:endCol s:oldVars s:oldEndCol
 endf
 
-fun s:UpdateTabStops()
+fun! s:UpdateTabStops()
 	let changeLine = s:endLine - g:snipPos[s:curPos][0]
 	let changeCol = s:endCol - g:snipPos[s:curPos][1]
 	if exists('s:origWordLen')
@@ -301,7 +343,7 @@ fun s:UpdateTabStops()
 	endif
 endf
 
-fun s:SelectWord()
+fun! s:SelectWord()
 	let s:origWordLen = g:snipPos[s:curPos][2]
 	let s:oldWord = strpart(getline('.'), g:snipPos[s:curPos][1] - 1,
 				\ s:origWordLen)
@@ -328,7 +370,7 @@ endf
 "
 " It also automatically quits the snippet if the cursor is moved out of it
 " while in insert mode.
-fun s:UpdateChangedSnip(entering)
+fun! s:UpdateChangedSnip(entering)
 	if exists('g:snipPos') && bufnr(0) != s:lastBuf
 		call s:RemoveSnippet()
 	elseif exists('s:update') " If modifying a placeholder
@@ -386,7 +428,7 @@ endf
 
 " This updates the variables in a snippet when a placeholder has been edited.
 " (e.g., each "$1" in "${1:foo} $1bar $1bar")
-fun s:UpdateVars()
+fun! s:UpdateVars()
 	let newWordLen = s:endCol - s:startCol + 1
 	let newWord = strpart(getline('.'), s:startCol, newWordLen)
 	if newWord == s:oldWord || empty(g:snipPos[s:curPos][3])
@@ -432,4 +474,428 @@ fun s:UpdateVars()
 	let s:oldWord = newWord
 	let g:snipPos[s:curPos][2] = newWordLen
 endf
+
+" should be moved to utils or such?
+fun! snipMate#SetByPath(dict, path, value)
+	let d = a:dict
+	for p in a:path[:-2]
+		if !has_key(d,p) | let d[p] = {} | endif
+		let d = d[p]
+	endfor
+	let d[a:path[-1]] = a:value
+endf
+
+" reads a .snippets file
+" returns list of
+" ['triggername', 'name', 'contents']
+" if triggername is not set 'default' is assumed
+fun! snipMate#ReadSnippetsFile(file)
+	let result = []
+	if !filereadable(a:file) | return result | endif
+	let inSnip = 0
+	for line in readfile(a:file) + ["\n"]
+		if inSnip && (line[0] == "\t" || line == '')
+			let content .= strpart(line, 1)."\n"
+			continue
+		elseif inSnip
+			call add(result, [trigger, name == '' ? 'default' : name, content[:-2]])
+			let inSnip = 0
+		endif
+
+		if line[:6] == 'snippet'
+			let inSnip = 1
+			let trigger = strpart(line, 8)
+			let name = ''
+			let space = stridx(trigger, ' ') + 1
+			if space " Process multi snip
+				let name = strpart(trigger, space)
+				let trigger = strpart(trigger, 0, space - 1)
+			endif
+			let content = ''
+		endif
+	endfor
+	return result
+endf
+
+
+let s:read_snippets_cached  = {'func' : function('snipMate#ReadSnippetsFile'), 'version': 3, 'use_file_cache':1}
+
+" adds scope aliases to list.
+" returns new list
+" the aliases of aliases are added recursively
+fun! s:AddScopeAliases(list)
+  let did = {}
+  let scope_aliases = get(s:snipMate,'scope_aliases', {})
+  let new = a:list
+  let new2 =  []
+  while !empty(new)
+	for i in new
+	  if !has_key(did, i)
+		let did[i] = 1
+		call extend(new2, split(get(scope_aliases,i,''),','))
+	  endif
+	endfor
+	let new = new2
+	let new2 = []
+  endwhile
+  return keys(did)
+endf
+
+" don't ask me wy searching for trigger { is soo slow.
+fun! s:Glob(dir,  file)
+	let f = a:dir.a:file
+	if a:dir =~ '\*' || isdirectory(a:dir)
+		return split(glob(escape(f,"{}")),"\n")
+	else
+		return filereadable(f) ? [f] : []
+	endif
+endf
+
+" returns dict of
+" { path: { 'type': one of 'snippet' 'snippets',
+"           'exists': 1 or 0
+"           " for single snippet files:
+"           'name': name of snippet
+"           'trigger': trigger of snippet
+"         }
+" }
+" use trigger = '*' to match all snippet files
+" use mustExist = 1 to return existing files only
+"
+"     mustExist = 0 is used by OpenSnippetFiles
+fun! snipMate#GetSnippetFiles(mustExist, scopes, trigger)
+  let paths = funcref#Call(s:snipMate.snippet_dirs)
+
+  let result = {}
+  let scopes = s:AddScopeAliases(a:scopes)
+
+  " collect existing files
+  for scope in scopes
+
+	for r in paths
+	  let rtp_last = fnamemodify(r,':t')
+
+	  " .snippets files (many snippets per file).
+	  let glob_p = r.'/snippets/'.scope.'.snippets'
+	  for snippetsF in split(glob(glob_p),"\n")
+		let scope = fnamemodify(snippetsF,':t:r')
+		let result[snippetsF] = {'exists': 1, 'type': 'snippets', 'name_prefix': rtp_last.' '.scope }
+	  endfor
+
+	  if !a:mustExist && !has_key(result, glob_p)
+		" name_prefix not used
+		let result[glob_p] = {'exists': 0, 'type': 'snippets'}
+	  endif
+
+	  let glob_p = r.'/snippets/'.scope.'/*.snippets'
+	  for snippetsF in split(glob(glob_p),"\n")
+		let result[snippetsF] = {'exists': 1, 'type': 'snippets', 'name_prefix' : rtp_last.' '.fnamemodify(snippetsF,':t:r')}
+	  endfor
+
+	  " == one file per snippet: ==
+
+	  " without name snippets/<filetype>/<trigger>.snippet
+	  for f in s:Glob(r.'/snippets/'.scope,'/'.a:trigger.'.snippet')
+		let trigger = fnamemodify(f,':t:r')
+		let result[f] = {'exists': 1, 'type': 'snippet', 'name': 'default', 'trigger': trigger, 'name_prefix' : rtp_last.' '.scope}
+	  endfor
+	  " add /snippets/trigger/*.snippet files (TODO)
+
+	  " with name (multi-snip) snippets/<filetype>/<trigger>/<name>.snippet
+	  for f in s:Glob(r.'/snippets/'.scope.'/'.a:trigger,'/*.snippet')
+		let name = fnamemodify(f,':t:r')
+		let trigger = fnamemodify(f,':h:t')
+		let result[f] = {'exists': 1, 'type': 'snippet', 'name': name, 'trigger': trigger, 'name_prefix' : rtp_last.' '.scope}
+	  endfor
+	endfor
+  endfor
+  return result
+endf
+
+
+" default triggers based on paths
+fun! snipMate#DefaultPool(scopes, trigger, result)
+	let triggerR = substitute(a:trigger,'*','.*','g')
+	for [f,opts] in items(snipMate#GetSnippetFiles(1, a:scopes, a:trigger))
+		if opts.type == 'snippets'
+			for [trigger, name, contents] in cached_file_contents#CachedFileContents(f, s:read_snippets_cached, 0)
+				if trigger !~ triggerR | continue | endif
+				call snipMate#SetByPath(a:result, [trigger, opts.name_prefix.' '.name], contents)
+			endfor
+		elseif opts.type == 'snippet'
+			call snipMate#SetByPath(a:result, [opts.trigger, opts.name_prefix.' '.opts.name], funcref#Function('return readfile('.string(f).')'))
+		else
+			throw "unexpected"
+		endif
+	endfor
+endf
+
+" return a dict of snippets found in runtimepath matching trigger
+" scopes: list of scopes. usually this is the filetype. eg ['c','cpp']
+" trigger may contain glob patterns. Thus use '*' to get all triggers
+"
+fun! snipMate#GetSnippets(scopes, trigger)
+	let result = {}
+	let triggerR = escape(substitute(a:trigger,'*','.*','g'), '~') " escape '~' for use as regexp
+	" let scopes = s:AddScopeAliases(a:scopes)
+
+	for F in values(g:snipMateSources)
+	  call funcref#Call(F, [a:scopes, a:trigger, result])
+	endfor
+	return result
+endf
+
+" adds leading tab
+" and replaces leading spaces by tabs
+" see ftplugin/snippet.vim
+fun! snipMate#RetabSnip() range
+  let leadingTab = expand('%:e') == 'snippets'
+
+  let lines = getline(a:firstline, a:lastline)
+
+  " remove leading "\t"
+  let allIndented = 1
+  for l in lines
+	if l[0] != '\t' | let allIndented = 0 | endif
+  endfor
+
+  " retab
+  if allIndented
+	call map(lines, 'v:val[1:]')
+  endif
+
+  let leadingSp = filter(map(copy(lines),'matchstr(v:val,"^\\s*") '),'v:val !=""')
+  if !empty(leadingSp)
+	" lines containing leading spaces found
+	let smallestInd =  len(sort(leadingSp)[-1])
+	let ind = input('retab, spaces per tab: ', smallestInd)
+	for i in range(0, len(lines)-1)
+	  let ml = matchlist(lines[i], '^\(\s*\)\(.*\)')
+	  let lines[i] = repeat("\t", len(ml[1]) / ind)
+				 \ . repeat( " ", len(ml[1]) % ind)
+				 \ . ml[2]
+	endfor
+  endif
+  " readd tab
+  let tab = leadingTab ? "\t" : ""
+  for i in range(0,len(lines)-1)
+	call setline(a:firstline + i, tab.lines[i])
+  endfor
+endf
+
+fun! snipMate#OpenSnippetFiles()
+  let dict = snipMate#GetSnippetFiles(0, snipMate#ScopesByFile(), '*')
+  " sort by files wether they exist - put existing files first
+  let exists = []
+  let notExists = []
+  for [file, v] in items(dict)
+	let v['file'] = file
+	if v['exists']
+	  call add(exists, v)
+	else
+	  call add(notExists, v)
+	endif
+  endfor
+  let all = exists + notExists
+  let show = map(copy(all),'(v:val["exists"] ? "exists:" : "does not exist yet:")." ".v:val["file"]')
+  let select = tlib#input#List('mi', 'select files to be opened in splits', show)
+  for idx in select
+	exec 'sp '.all[idx - 1]['file']
+  endfor
+endf
+
+fun! snipMate#ScopesByFile()
+	" duplicates are removed in AddScopeAliases
+	return filter(funcref#Call(s:snipMate.get_scopes), "v:val != ''")
+endf
+
+" used by both: completion and insert snippet
+fun! snipMate#GetSnippetsForWordBelowCursor(word, suffix, break_on_first_match)
+	" Setup lookups: '1.2.3' becomes [1.2.3] + [3, 2.3]
+	let parts = split(a:word, '\W\zs')
+	if len(parts) > 2
+		let parts = parts[-2:] " max 2 additional items, this might become a setting
+	endif
+	let lookups = [a:word.a:suffix]
+	let lookup = ''
+	for w in reverse(parts)
+		let lookup = w . lookup
+		if index(lookups, lookup) == -1
+			call add(lookups, lookup.a:suffix)
+		endif
+	endfor
+
+	" allow matching '.'
+	if a:word =~ '\.$'
+		call insert(lookups, '.'.a:suffix, 0)
+	endif
+
+	call filter(lookups, 'v:val != ""')
+	" echo lookups
+
+	let matching_snippets = []
+	let snippet = ''
+	" prefer longest word
+	for word in lookups
+		" echomsg string(lookups).' current: '.word
+		for [k,snippetD] in items(funcref#Call(s:snipMate['get_snippets'], [snipMate#ScopesByFile(), word]))
+			if a:suffix == ''
+				" hack: require exact match
+				if k != word | continue | endif
+			endif
+			call add(matching_snippets, [k, snippetD])
+			if a:break_on_first_match | break| endif
+		endfor
+	endfor
+	return matching_snippets
+endf
+
+" snippets: dict containing snippets by name
+" usually this is just {'default' : snippet_contents }
+fun! s:ChooseSnippet(snippets)
+	let snippet = []
+	let keys = keys(a:snippets)
+	let i = 1
+	for snip in keys
+		let snippet += [i.'. '.snip]
+		let i += 1
+	endfor
+	if len(snippet) == 1
+		" there's only a single snippet, choose it
+		let idx = 0
+	else
+		let idx = tlib#input#List('si','select snippet by name',snippet) -1
+		if idx == -1
+			return ''
+		endif
+	endif
+	" if a:snippets[..] is a String Call returns it
+	" If it's a function or a function string the result is returned
+	return funcref#Call(a:snippets[keys(a:snippets)[idx]])
+endf
+
+fun! snipMate#ShowAvailableSnips()
+	let line  = getline('.')
+	let col   = col('.')
+	let word  = matchstr(line, '\S\+\%'.col.'c')
+	let matchlen = 0
+	let matches = []
+
+	let snippet_triggers = map(snipMate#GetSnippetsForWordBelowCursor(word, '*', 0),'v:val[0]')
+
+	for trigger in snippet_triggers
+		if word == ''
+			let matches += [trigger] " Show all matches if word is empty
+		elseif trigger =~ '^'.word
+			let matches += [trigger]
+			let len = len(word)
+			if len > matchlen | let matchlen = len | endif
+		endif
+	endfor
+
+	" Pretty hacky, but really can't have the tab swallowed!
+	if len(matches) == 0
+		call feedkeys(s:snipMate['no_match_completion_feedkeys_chars'], 'n')
+		return ''
+	endif
+
+	" This is to avoid a bug with Vim when using complete(col - matchlen, matches)
+	" (Issue#46 on the Google Code snipMate issue tracker).
+	call setline(line('.'), substitute(line, repeat('.', matchlen).'\%'.col.'c', '', ''))
+	call complete(col, sort(matches))
+	return ''
+endf
+
+
+" user interface implementation {{{1
+
+fun! snipMate#TriggerSnippet()
+	if exists('g:SuperTabMappingForward')
+		if g:SuperTabMappingForward == "<tab>"
+			let SuperTabPlug = maparg('<Plug>SuperTabForward', 'i')
+			if SuperTabPlug == ""
+				let SuperTabKey = "\<c-n>"
+			else
+				exec "let SuperTabKey = \"" . escape(SuperTabPlug, '<') . "\""
+			endif
+		elseif g:SuperTabMappingBackward == "<tab>"
+			let SuperTabPlug = maparg('<Plug>SuperTabBackward', 'i')
+			if SuperTabPlug == ""
+				let SuperTabKey = "\<c-p>"
+			else
+				exec "let SuperTabKey = \"" . escape(SuperTabPlug, '<') . "\""
+			endif
+		endif
+	endif
+
+	if pumvisible() " Update snippet if completion is used, or deal with supertab
+		if exists('SuperTabKey')
+			call feedkeys(SuperTabKey) | return ''
+		endif
+		call feedkeys("\<esc>a", 'n') " Close completion menu
+		call feedkeys("\<tab>") | return ''
+	endif
+
+	if exists('g:snipPos') | return snipMate#jumpTabStop(0) | endif
+
+	let word = matchstr(getline('.'), '\S\+\%'.col('.').'c')
+	let list = snipMate#GetSnippetsForWordBelowCursor(word, '',  1)
+	if empty(list)
+		let snippet = ''
+	else
+		let [trigger, snippetD] = list[0]
+
+		let s = s:ChooseSnippet(snippetD)
+		if type(s) == type([])
+			let snippet = join(s, "\n")
+		else
+			let snippet = s
+		end
+
+		let &undolevels = &undolevels " create new undo point
+		let col = col('.') - len(trigger)
+		sil exe 's/\V'.escape(trigger, '/\.').'\%#//'
+		return snipMate#expandSnip(snippet, col)
+	endif
+
+	" should allow other plugins to register hooks instead (duplicate code)
+	if exists('SuperTabKey')
+		call feedkeys(SuperTabKey)
+		return ''
+	endif
+	return word == ''
+	  \ ? "\<tab>"
+	  \ : "\<c-r>=snipMate#ShowAvailableSnips()\<cr>"
+endf
+
+
+fun! snipMate#BackwardsSnippet()
+	if exists('g:snipPos') | return snipMate#jumpTabStop(1) | endif
+
+	if exists('g:SuperTabMappingForward')
+		if g:SuperTabMappingForward == "<s-tab>"
+			let SuperTabPlug = maparg('<Plug>SuperTabForward', 'i')
+			if SuperTabPlug == ""
+				let SuperTabKey = "\<c-n>"
+			else
+				exec "let SuperTabKey = \"" . escape(SuperTabPlug, '<') . "\""
+			endif
+		elseif g:SuperTabMappingBackward == "<s-tab>"
+			let SuperTabPlug = maparg('<Plug>SuperTabBackward', 'i')
+			if SuperTabPlug == ""
+				let SuperTabKey = "\<c-p>"
+			else
+				exec "let SuperTabKey = \"" . escape(SuperTabPlug, '<') . "\""
+			endif
+		endif
+	endif
+	" should allow other plugins to register hooks instead (duplicate code)
+	if exists('SuperTabKey')
+		call feedkeys(SuperTabKey)
+		return ''
+	endif
+	return "\<s-tab>"
+endf
+
+
 " vim:noet:sw=4:ts=4:ft=vim
