@@ -712,7 +712,7 @@ autocmd FileType xml  set equalprg=xmllint\ --format\ -
 
 " doubleTap
 "let g:loaded_doubleTap = 1
-let g:DoubleTapInsertTimer = 0.7
+let g:DoubleTapInsertTimer = 0.75
 
 " Set NiceMenu Delay
 let g:loaded_nice_menu = 1
