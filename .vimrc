@@ -749,6 +749,8 @@ let g:BellyButton_javascript_jslint_options = {'white':'false', 'onevar':'false'
 let g:sparkupExecuteMapping = '<c-s>'
 let g:sparkupNextMapping = '<c-h>'
 
+let g:snips_author = 'Jeff Buttars'
+
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 

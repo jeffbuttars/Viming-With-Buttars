@@ -49,7 +49,8 @@ snippet once
 	#endif /* end of include guard: $1 */
 # If Condition
 snippet if
-	if (${1}) {${2}
+	if (${1:/* condition */}) {
+		${2:/* code */}
 	}
 snippet el
 	else {
@@ -57,14 +58,16 @@ snippet el
 	}
 # Ternary conditional
 snippet t
-	${1:ifthis} ? ${2:a} : ${3:b}
+	${1:/* condition */} ? ${2:a} : ${3:b}
 # Do While Loop
 snippet do
-	do { ${2}
-	} while (${1});
+	do {
+		${2:/* code */}
+	} while (${1:/* condition */});
 # While Loop
 snippet wh
-	while (${1) { ${2}
+	while (${1:/* condition */}) {
+		${2:/* code */}
 	}
 # For Loop
 snippet for
@@ -73,13 +76,15 @@ snippet for
 	}
 # Custom For Loop
 snippet forr
-	for (${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++}) { ${5}
+	for (${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++}) {
+		${5:/* code */}
 	}
 # Function
 snippet fun
 	${1:void} ${2:function_name}(${3})
-	{ ${4}
-	}//$2()
+	{
+		${4:/* code */}
+	}
 # Function Declaration
 snippet fund
 	${1:void} ${2:function_name}(${3});${4}
@@ -93,25 +98,48 @@ snippet st
 	}${3: /* optional variable list */};${4}
 # Typedef struct
 snippet tds
-	typedef struct ${2:_$1 }{ ${3}
+	typedef struct ${2:_$1 }{
+		${3:/* data */}
 	} ${1:`Filename('$1_t', 'name')`};
 # Typdef enum
 snippet tde
-	typedef enum { ${1}
+	typedef enum {
+		${1:/* data */}
 	} ${2:foo};
 # printf
 # unfortunately version this isn't as nice as TextMates's, given the lack of a
 # dynamic `...`
 snippet pr
 	printf("${1:%s}\n"${2});${3}
-snippet dpr # May I suggest a: #define dprintf( fmt, ...) printf( fmt, __VA_ARGS__ )
-	dprintf("%s()${1}\n", __FUNCTION__${2});${3}
 # fprintf (again, this isn't as nice as TextMate's version, but it works)
 snippet fpr
 	fprintf(${1:stderr}, "${2:%s}\n"${3});${4}
 # This is kind of convenient
 snippet .
 	[${1}]${2}
+# GPL
+snippet gpl
+	/*
+	 * This program is free software; you can redistribute it and/or modify
+	 * it under the terms of the GNU General Public License as published by
+	 * the Free Software Foundation; either version 2 of the License, or
+	 * (at your option) any later version.
+	 *
+	 * This program is distributed in the hope that it will be useful,
+	 * but WITHOUT ANY WARRANTY; without even the implied warranty of
+	 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	 * GNU General Public License for more details.
+	 *
+	 * You should have received a copy of the GNU General Public License
+	 * along with this program; if not, write to the Free Software
+	 * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+	 *
+	 * Copyright (C) ${1:Author}, `strftime("%Y")`
+	 */
+	
+	${2}
+snippet dpr # May I suggest a: #define dprintf( fmt, ...) printf( fmt, __VA_ARGS__ )
+	dprintf("%s()${1}\n", __FUNCTION__${2});${3}
 snippet un
 	unsigned
 snippet DE

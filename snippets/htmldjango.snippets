@@ -1,5 +1,16 @@
-snippet var
-	{{${1}}}${2}
+# Generic tags
+
+snippet %
+	{% ${1} %}${2}
+snippet %%
+	{% ${1:tag_name} %}
+	${2}
+	{% end$1 %}
+snippet {
+	{{ ${1} }}${2}
+
+# Template Tags
+
 snippet autoescape
 	{% autoescape ${1:off} %}
 	${2}
@@ -122,4 +133,5 @@ snippet truncatewordshtml
 snippet urlizetrunc
 	urlizetrunc:${1}
 snippet wordwrap
-	wordwrap:${1};
+	wordwrap:${1}
+
