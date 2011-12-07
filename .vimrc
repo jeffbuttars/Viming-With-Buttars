@@ -252,6 +252,10 @@ autocmd FileType mkd set ft=mkd.html 	" For SnipMate, I want to use HTML
 										" snippets with my markdown
 autocmd BufRead *.go set ft=go 	" For SnipMate
 
+" Setup pysmell
+" source ~/.vim/plugin/pysmell.vim
+autocmd FileType python set omnifunc=pysmell#Complete
+
 "End OmniCompletion settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
