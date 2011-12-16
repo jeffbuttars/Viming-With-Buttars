@@ -52,7 +52,7 @@ set showcmd		" display incomplete commands
 " Don't use Ex mode, use Q for formatting
 map Q gq
 
-if version > 702
+if version >= 730
 	set undofile
 	set undodir=~/.vim/undos
 endif
