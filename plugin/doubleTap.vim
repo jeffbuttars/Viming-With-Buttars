@@ -170,8 +170,9 @@ let g:DoubleTapJumpOut_Map = [
 	\	{ 'ftype':'*', 'trigger':']', 'leftChar':'[', 'rightChar':']' },
 	\	{ 'ftype':'*', 'trigger':')', 'leftChar':'(', 'rightChar':')' } ]
 
+" \	{ 'ftype':'*', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':g:DoubleTap_SpaceyBlock },
 let g:DoubleTapInsert_Map = [ 
-	\	{ 'ftype':'*', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':g:DoubleTap_SpaceyBlock },
+	\	{ 'ftype':'*', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':"" },
 	\	{ 'ftype':'make', 'trigger':"{", 'lChar':'{', 'rChar':'}', 'spacey':'' },
 	\	{ 'ftype':'*', 'trigger':"[", 'lChar':'[', 'rChar':']', 'spacey':"" },
 	\	{ 'ftype':'*', 'trigger':"(", 'lChar':'(', 'rChar':')', 'spacey':"" },

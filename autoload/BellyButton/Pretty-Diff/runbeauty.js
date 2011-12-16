@@ -29,7 +29,8 @@ var readSTDIN = function() {
 /*}*/
 
 var body = readSTDIN() || arguments[0],
-	res = js_beautify(body);
+	args = {source : body}
+	res = js_beautify(args);
 /*res = js_beautify.apply(this, JSBEAUTYOPTS.funcargs.concat([body])),*/
 
 print(res);
