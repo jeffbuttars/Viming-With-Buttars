@@ -269,7 +269,7 @@ endfunction
 "1}}}
 
 function! s:setMatch( ... )
-
+"{{{
 	if ! g:DoubleTap_enable_visual_feedback
 		return
 	endif
@@ -288,7 +288,7 @@ function! s:setMatch( ... )
 
 		call add( b:doubleTap_match_ids, matchadd( 'Special', '\%'.cord[0].'l\%'.cord[1].'c', 100  ) )
 	endfor
-
+"}}}
 endfunction
 
 function! s:advCursorAndMatch( adv, ... )
