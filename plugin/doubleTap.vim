@@ -318,9 +318,9 @@ function! s:clearMatch()
 	let b:doubleTap_match_ids = []
 endfunction
 
-function! s:checkDoubleInsert( thechar )
+function! s:checkDoubleInsert(thechar)
 
-	let l:ntime = reltimestr( reltime() )
+	let l:ntime = reltimestr(reltime())
 	let l:npos = getpos('.')
 	call s:clearMatch()
 
@@ -331,12 +331,12 @@ function! s:checkDoubleInsert( thechar )
 		return 0 
 	endif
 
-	let l:cline = getline( '.' )
-	let l:cpos = getpos( '.' )[2]
+	let l:cline = getline('.')
+	let l:cpos = getpos('.')[2]
 	if l:cline[l:cpos - 2] == a:thechar 
 		let s:lcharTime = l:ntime
 		let s:lcharChar = '' 
-		if exists( 'NiceMenuCancel' )
+		if exists('NiceMenuCancel')
 			call NiceMenuCancel()
 		endif
 
@@ -470,13 +470,13 @@ endfunction
 " buffer and jump to it.
 " Param: a:right_char the character to jump too.
 " 
-function! DoubleTapJumpOut( left_char, right_char )
+function! DoubleTapJumpOut(left_char, right_char)
 
 	if &paste
 		return a:right_char
 	endif
 
-	if ! s:checkDoubleInsert( a:right_char )
+	if ! s:checkDoubleInsert(a:right_char)
 		call s:setMatch()
 		return a:right_char
 	endif

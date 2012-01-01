@@ -657,8 +657,10 @@ let Tlist_Display_Prototype = 1
 let g:netrw_liststyle = 3
 
 " Lusty Explorer
-nmap <C-d> <ESC>:LustyFilesystemExplorerFromHere<CR>
-imap <C-d> <ESC>:LustyFilesystemExplorerFromHere<CR>
+" nmap <C-d> <ESC>:LustyFilesystemExplorerFromHere<CR>
+" imap <C-d> <ESC>:LustyFilesystemExplorerFromHere<CR>
+nmap <C-d> <ESC>:LustyFilesystemExplorer<CR>
+imap <C-d> <ESC>:LustyFilesystemExplorer<CR>
 
 
 
@@ -716,7 +718,7 @@ autocmd FileType xml  set equalprg=xmllint\ --format\ -
 
 " doubleTap
 "let g:loaded_doubleTap = 1
-let g:DoubleTapInsertTimer = 0.75
+let g:DoubleTapInsertTimer = 0.8
 
 " Set NiceMenu Delay
 let g:loaded_nice_menu = 1
