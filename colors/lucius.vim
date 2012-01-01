@@ -20,8 +20,10 @@ else
 endif
 
 if g:lucius_style == "dark"
-    hi Normal           guifg=#e0e0e0           guibg=#202020
-    hi Normal           ctermfg=253             ctermbg=234
+	"hi Normal           guifg=#e0e0e0           guibg=#202020
+    hi Normal           guifg=#e0e0e0           guibg=#101010
+    "hi Normal           ctermfg=253             ctermbg=234
+    hi Normal           ctermfg=253             ctermbg=233
 
     hi Comment          guifg=#606060                                   gui=none
     hi Comment          ctermfg=240                                     cterm=none
