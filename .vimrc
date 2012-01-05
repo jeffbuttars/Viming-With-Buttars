@@ -745,7 +745,7 @@ let g:BellyButton_javascript_jslint_options = {'white':'false', 'vars':'true','b
 " Sparkup options
 " I don't like default mapping, I actually use
 " the <c-e> default for navigation
-let g:sparkupExecuteMapping = '<c-s>'
+let g:sparkupExecuteMapping = '<c-t>'
 let g:sparkupNextMapping = '<c-h>'
 
 let g:snips_author = 'Jeff Buttars'
