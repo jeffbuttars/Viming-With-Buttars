@@ -144,8 +144,8 @@ cmap w!! %!sudo tee > /dev/null %
 imap <c-y> <c-y><esc>
 " Show the info preview window.
 "set completeopt=menuone,preview
-set completeopt=menuone,preview
-" set completeopt=menuone,preview,longest
+" set completeopt=menu,preview
+set completeopt=menuone,preview,longest
 "let g:SuperTabLongestHighlight = 0
 " g:SuperTabMappingForward  ('<tab>')
 " g:SuperTabMappingBackward ('<s-tab>')
@@ -254,7 +254,8 @@ autocmd BufRead *.go set ft=go 	" For SnipMate
 
 " Setup pysmell
 " source ~/.vim/plugin/pysmell.vim
-autocmd FileType python set omnifunc=pysmell#Complete
+" let g:pysmell_debug = 1
+" autocmd FileType python set omnifunc=pysmell#Complete
 
 "End OmniCompletion settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -716,7 +717,7 @@ autocmd FileType xml  set equalprg=xmllint\ --format\ -
 
 " doubleTap
 "let g:loaded_doubleTap = 1
-let g:DoubleTapInsertTimer = 0.75
+let g:DoubleTapInsertTimer = 0.8
 
 " Set NiceMenu Delay
 let g:loaded_nice_menu = 1
