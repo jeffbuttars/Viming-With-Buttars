@@ -1,23 +1,36 @@
-# Markdown
-
-snippet [
-	[${1:text}](http://${2:address} "${3:title}")
-snippet [*
-	[${1:link}](${2:`@*`} "${3:title}")${4}
+# [link][]
+snippet []
+	[${1:link_id}][]${2}
+# [link][id]
+snippet [[
+	[${1:link}][${2:id}]${3}
+# [link](url)
+snippet [(
+	[${1:link}](http://${2:url})${3}
+# [link](email)
+snippet [@
+	[${1:link}(mailto:${2:email})${3}
+# [link](url "title")
+snippet [("
+	[${1:link}](${2:url} "${3:title}")${4}
+# [id]: url "title"
 snippet [:
-	[${1:id}]: http://${2:url} "${3:title}"
+	[${1:id}]: http://${2:url} "${3:title}"${4}
+# [id_hash]: urlfromclipboard "title"
 snippet [:*
-	[${1:id}]: ${2:`@*`} "${3:title}"
+	[${1:id}]: ${2:`@*`} "${3:title}"${4}
 
+# [alttext](imagepath "title")
 snippet ![
-	![${1:alttext}](${2:/images/image.jpg} "${3:title}")
+	![${1:alttext}](${2:/images/image.jpg} "${3:title}")${4}
+# [alttext](imagepathfromclipboard "title")
 snippet ![*
 	![${1:alt}](${2:`@*`} "${3:title}")${4}
 
 snippet ![:
-	![${1:id}]: ${2:url} "${3:title}"
+	![${1:id}]: ${2:url} "${3:title}"${4}
 snippet ![:*
-	![${1:id}]: ${2:`@*`} "${3:title}"
+	![${1:id}]: ${2:`@*`} "${3:title}"${4}
 
 snippet ===
 	`repeat('=', strlen(getline(line(".") - 1)))`
@@ -27,3 +40,103 @@ snippet ---
 	`repeat('-', strlen(getline(line(".") - 1)))`
 	
 	${1}
+
+#### My snippets
+# Link
+snippet h1
+	# ${1}
+	${2}
+snippet h2
+	## ${1}
+	${2}
+snippet h3
+	### ${1}
+	${2}
+snippet h4
+	#### ${1}
+	${2}
+snippet h5
+	##### ${1}
+	${2}
+snippet h6
+	###### ${1}
+	${2}
+snippet hr
+	--------------------------------
+snippet em
+	*${1}*${2}
+snippet strong 
+	**${1}**${2}
+snippet li # List Item - Silly, but I'll add it anyway.
+	* ${1:List item}
+# Default style for Cradlepoint documents
+snippet cpstyle
+	<style>
+		body { background-color:#FFF; max-width:960px; }
+		h1   { color:#AB3533; }
+		h2   { color:#333; }
+		h3, h4 { margin-top:2em; color:#511; }
+		a    { text-decoration:none; color:#7F2623; }
+		li a, li a:visited { color:#AB3533; }
+		img .diagram {
+			width:600px;
+			border:solid #000 1px;
+			padding:1em;
+			margin:0 0 20em 0;
+		}
+		body hr {
+			color:#7F2824;
+			background-color:#7F2824;
+			height:1px;
+			margin: 3em 0 3em 0;
+		}
+		pre {
+			padding:5px;
+			background-color:#f0f0f0;
+			border: solid 1px #aaa;
+			font-family: {monospace};
+		}
+
+		pre#copyright {
+			padding:.2em;
+			background-color:#eee;
+			font-size:.8em;
+			font-family: {sans-serif};
+		}
+	</style>
+snippet pre
+
+
+	<pre id="${1}">
+		${2}
+	</pre>
+
+snippet img 
+
+
+	<img src="${1}" />
+
+snippet table
+
+
+	<table>
+		<thead>
+			<tr>
+				<th>${1}</th><th>${2}</th><th>${3}</th>
+			</tr>
+		</thead>
+	<!--
+		<tfoot>
+			<tr>
+				<td></td><td></td><td></td>
+			</tr>
+		</tfoot>
+	-->
+		<tbody>
+			<tr>
+				<td>${4}</td><td>${5}</td><td>${6}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	${7}
