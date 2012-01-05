@@ -113,7 +113,7 @@ function! s:renderPDF( src, target )
 	endif
 
 "markdown2 $1 | htmldoc - --webpage -f $ofile; okular $ofile
-	let sysout = system( b:mdown." '".a:src."' | htmldoc - --webpage -f '".a:target.".pdf'" )
+	let sysout = system( b:mdown." '".a:src."' | htmldoc - --webpage -f --color --embedfonts -t pdf14'".a:target.".pdf'" )
 	return {'sysout':sysout, 'ecode':v:shell_error, 'good_ecode':0, 'parse_error':0}
 endfunction
 
