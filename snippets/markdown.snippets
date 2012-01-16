@@ -90,6 +90,7 @@ snippet cpstyle
 			height:1px;
 			margin: 3em 0 3em 0;
 		}
+		pre ,
 		pre code {
 			-webkit-border-radius: 5px;
 			-moz-border-radius: 5px;
@@ -120,9 +121,9 @@ snippet pre
 snippet code
 
 
-	<pre><code class="${1:python}">
-		${2}
-	</code></pre>
+	<pre>
+		${1}
+	</pre>
 
 snippet ic
 	\`\`${1:code}\`\`${2}
