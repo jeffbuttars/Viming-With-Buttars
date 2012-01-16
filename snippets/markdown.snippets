@@ -6,7 +6,7 @@ snippet [[
 	[${1:link}][${2:id}]${3}
 # [link](url)
 snippet [(
-	[${1:link}](http://${2:url})${3}
+	[${1:link}](${2:url})${3}
 # [link](email)
 snippet [@
 	[${1:link}(mailto:${2:email})${3}
@@ -15,7 +15,7 @@ snippet [("
 	[${1:link}](${2:url} "${3:title}")${4}
 # [id]: url "title"
 snippet [:
-	[${1:id}]: http://${2:url} "${3:title}"${4}
+	[${1:id}]: ${2:url} "${3:title}"${4}
 # [id_hash]: urlfromclipboard "title"
 snippet [:*
 	[${1:id}]: ${2:`@*`} "${3:title}"${4}
@@ -96,7 +96,6 @@ snippet cpstyle
 			border: solid 1px #aaa;
 			font-family: {monospace};
 		}
-
 		pre#copyright {
 			padding:.2em;
 			background-color:#eee;
@@ -110,6 +109,16 @@ snippet pre
 	<pre id="${1}">
 		${2}
 	</pre>
+
+snippet code
+
+
+	<pre><code class="${1:python}">
+		${2}
+	</code></pre>
+
+snippet ic
+	\`\`${1:code}\`\`${2}
 
 snippet img 
 
