@@ -71,6 +71,15 @@ endif
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
+	" Remove menu bar from gvim
+	"set guioptions-=m
+	" Remove toolbar from gvim
+	set guioptions-=T
+	" Set gvim font. I like the Inconsolata font these days.
+	" You'll need to install, do it, it's very much worth it.
+	" A great font, and it's 100% free.
+	set guifont=Inconsolata\ Medium\ 10
+
 endif
 
 set incsearch		" do incremental searching
@@ -581,16 +590,6 @@ set tags=tags;/
 au FileType python set tags +=~/.tags/tags-python
 au FileType c set tags +=~/.tags/tags-c
 au FileType cpp set tags +=~/.tags/tags-cpp
-
-" Remove menu bar from gvim
-"set guioptions-=m
-" Remove toolbar from gvim
-set guioptions-=T
-" Set gvim font. I like the Inconsolata font these days.
-" You'll need to install, do it, it's very much worth it.
-" A great font, and it's 100% free.
-set guifont=Inconsolata\ Medium\ 12
-"set guifont=Anonymous\ Pro\ 12
 
 " I don't want variables and options saved in my views
 " so remove the 'options' option from the default viewoptions setting.
