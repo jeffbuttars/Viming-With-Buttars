@@ -1,2 +1,6 @@
 " HTML / Django Template 
-autocmd BufNewFile,BufRead *.{djml} set filetype=htmldjango
+"
+augroup djml 
+	"autocmd BufRead,BufNewFile *.djml setfiletype html.htmldjango
+	autocmd BufNewFile,BufRead *.{djml} set filetype=html.htmldjango
+augroup END
