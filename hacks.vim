@@ -150,9 +150,10 @@ autocmd FileType python let pyindent_open_paren="&sw*2"
 """"""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Great status line code from:
-" http://www.reddit.com/r/vim/comments/gexi6/a_smarter_statusline_code_in_comments/
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" Great status line code from: 
+" [a_smarter_statusline_code_in_comments](http://www.reddit.com/r/vim/comments/gexi6/a_smarter_statusline_code_in_comments/)
+" 
 hi StatColor guibg=#95e454 guifg=black ctermbg=lightgreen ctermfg=black
 hi Modified guibg=orange guifg=black ctermbg=lightred ctermfg=black
 

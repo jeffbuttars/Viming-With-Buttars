@@ -1,74 +1,105 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Maintainer: Jeff Buttars 
-" jeffbuttars@gmail.com
-" http://code.google.com/p/vimingwithbuttar/ 
-" Last change:	2010 Feb 08
+" #Viming With Buttars
 "
-" To use it, copy it to
-"     for Unix and OS/2:  ~/.vimrc
-"	      for Amiga:  s:.vimrc
-"  for MS-DOS and Win32:  $VIM\_vimrc
-"	    for OpenVMS:  sys$login:.vimrc
-
-" Original Maintainer:	Bram Moolenaar <Bram@vim.org>
+" ## Maintainer: Jeff Buttars  
+" <jeffbuttars@gmail.com>  
+" [Git Hub Repo](http://github.com/jeffbuttars/viming-with-buttars)
+"
+" To use this .vimrc copy it to :  
+"
+" * On Linux, OS X, Unix and OS/2:  ~/.vimrc  
+" *	On Amiga:  s:.vimrc  
+" * On MS-DOS and Win32:  $VIM\_vimrc  
+" * On OpenVMS:  sys$login:.vimrc  
+"
+" ## Original Maintainer:	Bram Moolenaar <Bram@vim.org>  
 " Bram wrote/writes Vim, send money to his charity for Uganda. 
-" Find more info at http://www.vim.org
-
-" When started as "evim", evim.vim will already have done these settings.
+" Find more info at [Vim.org](http://www.vim.org)  
+"
+" __*If your reading this as a README on GitHub you should know that this 
+" README is generted from the .vimrc file of this project using [Vimdown](https://github.com/jeffbuttars/Vimdown)*__
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" It's .vimrc time  
+" ## Options
+" When started as "evim", evim.vim will already have done these settings, so
+" we'll bail out in that scenario
 if v:progname =~? "evim"
   finish
 endif
 
+" ### Basic Vim settings
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
-set nocompatible
+set nocompatible " Don't be compatible with basic Vi
 
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 
 set nobackup " do not keep a backup file, use versions instead
 
 set history=1000 " keep 1000 lines of command line history
+"
+" * [nocompatible][]
+" * [backspace][]
+" * [nobackup][]
+" * [history][]
+"
 
 " ### Ruler and Statusline
 " 
-" Use set ruler 
-" set ruler		" show the cursor position all the time
-" Set up a custom status line. Like setting ruler, but we add the buffer number and filetype to the status
-"set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
-" set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{&textwidth}\ %P
+" I don't use these following examples, I have a more advanced version
+" of setting the status line in 
+" [hacks.vim](https://github.com/jeffbuttars/Viming-With-Buttars/blob/master/hacks.vim)  
+"  
+" Using set ruler  
+" <pre>set ruler		" show the cursor position all the time</pre>
+" Set up a custom status line. Like setting ruler, statusline overrides ruler, but we add the buffer number and filetype to the status:
+" <pre>set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P</pre>
+" or  
+" <pre>set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{&textwidth}\ %P</pre>  
+"
+" * [ruler][]
+" * [statusline][]
 
 set switchbuf=useopen
 set laststatus=2 " last window will always have a status line
-
-set showcmd		" display incomplete commands
-
-" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
-" let &guioptions = substitute(&guioptions, "t", "", "g")
-
-" Don't use Ex mode, use Q for formatting
-map Q gq
-
+set showcmd		 " display incomplete commands
+"
+" * [switchbuf][]
+" * [laststatus][]
+" * [showcmd][]
+"  
+" For Win32 GUI: you can remove 't' flag from 'guioptions' for no tearoff menu entries  
+" <pre>let &[guioptions = substitute(&guioptions, "t", "", "g")</pre>
+" 
+" * [guioptions][]
+"
+"
+" If we're running Vim 7.3 or newer, enable persisten undo
+" and tell vim were to store the undo files. 
 if version >= 730
 	set undofile
 	set undodir=~/.vim/undos
 endif
-
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U> <C-G>u<C-U>
-
+"
+" * [undofile][]
+" * [undodir][]
+"  
+"
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
   set mouse=a
 endif
+"
+" * [mouse][]
+"
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
-	" Remove menu bar from gvim
-	"set guioptions-=m
+	
+	"set guioptions-=m " Remove menu bar from gvim
 	" Remove toolbar from gvim
 	set guioptions-=T
 	" Set gvim font. I like the Inconsolata font these days.
@@ -162,6 +193,16 @@ set completeopt=menuone,preview,longest
 " let g:SuperTabContextDiscoverDiscovery = ["&omnifunc:<c-x><c-o>", "myown:<c-x><c-f>"]
 " let g:SuperTabContextDefaultCompletionType = '<c-n>'
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" ## Mappings
+
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U> <C-G>u<C-U>
+"
+" * [inoremap][]
+"
 "(default: ".,w,b,u,t,i")
 "set complete=".,w,b,u,U,t,i,kspell,d,t"
 "set complete=".,w,b,u,t,i,kspell"
@@ -748,32 +789,21 @@ let g:snips_author = 'Jeff Buttars'
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Misc People and places that I've gotten stuff from
-"http://dancingpenguinsoflight".com"/2009/02/code-navigation-completion-snippets-in-vim/
-"http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/
-
-" IBM Vim series, quite good.
-" Scripting the Vim editor, Part 1: Variables, values, and expressions
-" http://www.ibm.com/developerworks/linux/library/l-vim-script-1/index.html
-
-" Scripting the Vim editor, Part 2: User-defined functions
-" http://www.ibm.com/developerworks/linux/library/l-vim-script-2/index.html
-
-" Scripting the Vim editor, Part 3: Built-in lists
-" http://www.ibm.com/developerworks/linux/library/l-vim-script-3/index.html
-
-" Scripting the Vim editor, Part 4: Dictionaries
-" http://www.ibm.com/developerworks/linux/library/l-vim-script-4/index.html
-
-" Scripting the Vim editor, Part 5: Event-driven scripting and automation
-" http://www.ibm.com/developerworks/linux/library/l-vim-script-5/index.html
-
-" Some good python settings suggestions:
-" http://www.cmdln.org/2008/10/18/vim-customization-for-python/
+" ####Misc People and places that I've gotten stuff from  
 "
-" Good information on line wrapping:
-" http://blog.ezyang.com/2010/03/vim-textwidth/
-
+" * [code-navigation-completion-snippets-in-vim](http://dancingpenguinsoflight".com"/2009/02/code-navigation-completion-snippets-in-vim/)
+" * [5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic](http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/)
+"
+" #### IBM Vim series, quite good.
+"
+" * [Scripting the Vim editor, Part 1: Variables, values, and expressions](http://www.ibm.com/developerworks/linux/library/l-vim-script-1/index.html)
+" * [Scripting the Vim editor, Part 2: User-defined functions](http://www.ibm.com/developerworks/linux/library/l-vim-script-2/index.html)
+" * [Scripting the Vim editor, Part 3: Built-in lists](http://www.ibm.com/developerworks/linux/library/l-vim-script-3/index.html)
+" * [Scripting the Vim editor, Part 4: Dictionaries](http://www.ibm.com/developerworks/linux/library/l-vim-script-4/index.html)
+" * [Scripting the Vim editor, Part 5: Event-driven scripting and automation](http://www.ibm.com/developerworks/linux/library/l-vim-script-5/index.html)
+" * [Some good python settings suggestions](http://www.cmdln.org/2008/10/18/vim-customization-for-python/)
+" * [Good information on line wrapping](http://blog.ezyang.com/2010/03/vim-textwidth/)
+"
 " The php syntax file and showing the cursorline don't play well together.
 " If you find editing PHP files with cursorline enabled unbearably slow
 " Use the following to disable the cursorline for PHP files
@@ -783,8 +813,25 @@ let g:snips_author = 'Jeff Buttars'
 "
 "
 "
-" I put my smalle Vim hacks into a seperate file called hacks.vim
+" I put my small Vim hacks into a seperate file called hacks.vim
 " There are things, often functions/commands, I don't want in my 
 " .vimrc but I also don't want to write a plugin for.
 " I source it last thing
 runtime hacks.vim 
+
+" [nocompatible]: http://vimdoc.sourceforge.net/htmldoc/options.html#'nocompatible'
+" [backspace]: http://vimdoc.sourceforge.net/htmldoc/options.html#'backspace'
+" [nobackup]: http://vimdoc.sourceforge.net/htmldoc/options.html#'nobackup'
+" [history]: http://vimdoc.sourceforge.net/htmldoc/options.html#'history'
+" [ruler]: http://vimdoc.sourceforge.net/htmldoc/options.html#'ruler'
+" [statusline]: http://vimdoc.sourceforge.net/htmldoc/options.html#'statusline'
+" [guioptions]: http://vimdoc.sourceforge.net/htmldoc/options.html#'guioptions'
+" [switchbuf]: http://vimdoc.sourceforge.net/htmldoc/options.html#'switchbuf'
+" [laststatus]: http://vimdoc.sourceforge.net/htmldoc/options.html#'laststatus'
+" [showcmd]: http://vimdoc.sourceforge.net/htmldoc/options.html#'showcmd'
+" [undofile]: http://vimdoc.sourceforge.net/htmldoc/options.html#'undofile'
+" [undodir]: http://vimdoc.sourceforge.net/htmldoc/options.html#'undodir'
+" [mouse]: http://vimdoc.sourceforge.net/htmldoc/options.html#'mouse'
+" [inoremap]: http://vimdoc.sourceforge.net/htmldoc/map.html#:inoremap
+" [imap]: http://vimdoc.sourceforge.net/htmldoc/map.html#:imap
+" [nmap]: http://vimdoc.sourceforge.net/htmldoc/map.html#:nmap
