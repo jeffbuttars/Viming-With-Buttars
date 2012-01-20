@@ -23,26 +23,22 @@ endif
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
+set backspace=indent,eol,start " allow backspacing over everything in insert mode
 
-"if has("vms")
-  "set nobackup		" do not keep a backup file, use versions instead
-"else
-  "set backup		" keep a backup file
-"endif
-set nobackup		" do not keep a backup file, use versions instead
+set nobackup " do not keep a backup file, use versions instead
 
-set history=1000		" keep 1000 lines of command line history
-"set ruler		" show the cursor position all the time
+set history=1000 " keep 1000 lines of command line history
+
+" ### Ruler and Statusline
+" 
+" Use set ruler 
+" set ruler		" show the cursor position all the time
 " Set up a custom status line. Like setting ruler, but we add the buffer number and filetype to the status
 "set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 " set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{&textwidth}\ %P
 
 set switchbuf=useopen
-
-" last window will always have a status line
-set laststatus=2
+set laststatus=2 " last window will always have a status line
 
 set showcmd		" display incomplete commands
 
@@ -778,8 +774,17 @@ let g:snips_author = 'Jeff Buttars'
 " Good information on line wrapping:
 " http://blog.ezyang.com/2010/03/vim-textwidth/
 
-"au FileType php set nocursorline 
-"au WinEnter * setlocal number
-"au WinLeave * setlocal nonumber
-
+" The php syntax file and showing the cursorline don't play well together.
+" If you find editing PHP files with cursorline enabled unbearably slow
+" Use the following to disable the cursorline for PHP files
+" 
+"
+" <pre>au FileType php set nocursorline </pre>
+"
+"
+"
+" I put my smalle Vim hacks into a seperate file called hacks.vim
+" There are things, often functions/commands, I don't want in my 
+" .vimrc but I also don't want to write a plugin for.
+" I source it last thing
 runtime hacks.vim 
