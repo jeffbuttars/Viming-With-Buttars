@@ -28,7 +28,7 @@ we'll bail out in that scenario
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">if</span> v:progname =~? <span style="color: #60a0b0; font-style: italic">&quot;evim&quot;</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">if</span> v:progname =~? <span style="color: #60a0b0; font-style: italic">&quot;evim&quot;</span>
   <span style="color: #007020; font-weight: bold">finish</span>
 <span style="color: #007020; font-weight: bold">endif</span>
 </pre></div>
@@ -42,7 +42,7 @@ This must be first, because it changes other options as a side effect.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">nocompatible</span> <span style="color: #60a0b0; font-style: italic">&quot; Don&#39;t be compatible with basic Vi</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">nocompatible</span> <span style="color: #60a0b0; font-style: italic">&quot; Don&#39;t be compatible with basic Vi</span>
 
 <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">backspace</span>=indent,<span style="color: #007020">eol</span>,<span style="color: #007020; font-weight: bold">start</span> <span style="color: #60a0b0; font-style: italic">&quot; allow backspacing over everything in insert mode</span>
 
@@ -65,22 +65,47 @@ I don't use these following examples, I have a more advanced version
 of setting the status line in 
 [hacks.vim](https://github.com/jeffbuttars/Viming-With-Buttars/blob/master/hacks.vim)  
  
-Using set ruler  
-<pre>set ruler		" show the cursor position all the time</pre>
+Using set ruler
+
+
+
+<div class="vimdown_vim">
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #60a0b0; font-style: italic">	&quot; set ruler    &quot; show the cursor position all the time</span>
+</pre></div>
+</div>
+
+
 Set up a custom status line. Like setting ruler, statusline overrides ruler, but we add the buffer number and filetype to the status:
-<pre>set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P</pre>
-or  
-<pre>set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{&textwidth}\ %P</pre>  
+
+
+
+<div class="vimdown_vim">
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #60a0b0; font-style: italic">	&quot; set statusline=%&lt;%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P</span>
+</pre></div>
+</div>
+
+
+or
+
+
+
+<div class="vimdown_vim">
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #60a0b0; font-style: italic">	&quot; set statusline=%&lt;%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{&amp;textwidth}\ %P</span>
+</pre></div>
+</div>
+
+
 
 * [ruler][]
 * [statusline][]
 
 
 
+
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">switchbuf</span>=useopen
-<span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">laststatus</span>=<span style="color: #40a070">2</span> <span style="color: #60a0b0; font-style: italic">&quot; last window will always have a status line</span>
-<span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">showcmd</span>		 <span style="color: #60a0b0; font-style: italic">&quot; display incomplete commands</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">switchbuf</span>=useopen
+<span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">laststatus</span>=<span style="color: #40a070">2</span>          <span style="color: #60a0b0; font-style: italic">&quot; last window will always have a status line</span>
+<span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">showcmd</span>		         <span style="color: #60a0b0; font-style: italic">&quot; display incomplete commands</span>
 </pre></div>
 </div>
 
@@ -91,7 +116,15 @@ or
 * [showcmd][]
  
 For Win32 GUI: you can remove 't' flag from 'guioptions' for no tearoff menu entries  
-<pre>let &[guioptions = substitute(&guioptions, "t", "", "g")</pre>
+
+
+
+<div class="vimdown_vim">
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #60a0b0; font-style: italic">	&quot; let &amp;[guioptions = substitute(&amp;guioptions, &quot;t&quot;, &quot;&quot;, &quot;g&quot;)</span>
+</pre></div>
+</div>
+
+
 
 * [guioptions][]
 
@@ -102,7 +135,7 @@ and tell vim were to store the undo files.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">if</span> version &gt;= <span style="color: #40a070">730</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">if</span> version &gt;= <span style="color: #40a070">730</span>
 	<span style="color: #007020; font-weight: bold">set</span> undofile
 	<span style="color: #007020; font-weight: bold">set</span> undodir=~<span style="color: #235388">/.vim/</span>undos
 <span style="color: #007020; font-weight: bold">endif</span>
@@ -120,7 +153,7 @@ In many terminal emulators the mouse works just fine, thus enable it.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">if</span> has(<span style="color: #4070a0">&#39;mouse&#39;</span>)
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">if</span> has(<span style="color: #4070a0">&#39;mouse&#39;</span>)
   <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">mouse</span>=a
 <span style="color: #007020; font-weight: bold">endif</span>
 </pre></div>
@@ -130,57 +163,96 @@ In many terminal emulators the mouse works just fine, thus enable it.
 
 * [mouse][]
 
-Switch syntax highlighting on, when the terminal has colors
-Also switch on highlighting the last used search pattern.
+Switch syntax highlighting on if the terminal supports colors
+or if we're runnig in a GUI.
+Also switch on highlighting of the last used search pattern.
 
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">if</span> &amp;<span style="color: #007020">t_Co</span> &gt; <span style="color: #40a070">2</span> || has(<span style="color: #4070a0">&quot;gui_running&quot;</span>)
-  <span style="color: #007020">syntax</span> <span style="color: #007020; font-weight: bold">on</span>
-  <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">hlsearch</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">if</span> &amp;<span style="color: #007020">t_Co</span> &gt; <span style="color: #40a070">2</span> || has(<span style="color: #4070a0">&quot;gui_running&quot;</span>)
+	<span style="color: #007020">syntax</span> <span style="color: #007020; font-weight: bold">on</span>
+	<span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">hlsearch</span>
 <span style="color: #60a0b0; font-style: italic">	</span>
-<span style="color: #60a0b0; font-style: italic">	&quot;set guioptions-=m &quot; Remove menu bar from gvim</span>
-<span style="color: #60a0b0; font-style: italic">	&quot; Remove toolbar from gvim</span>
-	<span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">guioptions</span>-=T
-<span style="color: #60a0b0; font-style: italic">	&quot; Set gvim font. I like the Inconsolata font these days.</span>
+<span style="color: #60a0b0; font-style: italic">	&quot;set guioptions-=m &quot; Will remove menu bar from gvim</span>
+	<span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">guioptions</span>-=T <span style="color: #60a0b0; font-style: italic">&quot; Remove toolbar from gvim</span>
+
+<span style="color: #60a0b0; font-style: italic">	&quot; Set gvim font. I like the Inconsolata font.</span>
 <span style="color: #60a0b0; font-style: italic">	&quot; You&#39;ll need to install, do it, it&#39;s very much worth it.</span>
 <span style="color: #60a0b0; font-style: italic">	&quot; A great font, and it&#39;s 100% free.</span>
 	<span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">guifont</span>=Inconsolata\ Medium\ <span style="color: #40a070">10</span>
-
 <span style="color: #007020; font-weight: bold">endif</span>
-
-<span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">incsearch</span>		<span style="color: #60a0b0; font-style: italic">&quot; do incremental searching</span>
 </pre></div>
 </div>
 
+
+ 
+* [syntax][]
+* [hlsearch][]
+* [guioptions][]
+
+
+__I don't use the following, but some like it so I included for FYI purposes:__  
 
 This line will make Vim set out tab characters, trailing whitespace and
 invisible spaces visually, and additionally use the # sign at the end of lines
-to mark lines that extend off-screen. For more info, see :h listchars
-set list
-set listchars=tab:\|.,trail:.,extends:#,nbsp:.
-In some files, like HTML and XML files, tabs are fine and showing them is
-really annoying, you can disable them easily using an autocmd declaration:
-autocmd filetype html,xml set listchars-=tab:>.
+to mark lines that extend off-screen. For more info, see :h listchars  
 
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">ttyfast</span>
-<span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">laststatus</span>=<span style="color: #40a070">2</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #60a0b0; font-style: italic">   &quot; set list  </span>
+<span style="color: #60a0b0; font-style: italic">   &quot; set listchars=tab:\|.,trail:.,extends:#,nbsp:.</span>
 </pre></div>
 </div>
 
 
-Only do this part when compiled with support for autocommands.
+
+* [listchars][]
+
 
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">if</span> has(<span style="color: #4070a0">&quot;autocmd&quot;</span>)
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">ttyfast</span>
+<span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">laststatus</span>=<span style="color: #40a070">2</span>
+<span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">incsearch</span>		<span style="color: #60a0b0; font-style: italic">&quot; Enable incremental searching</span>
+</pre></div>
+</div>
 
-<span style="color: #60a0b0; font-style: italic">  &quot; Enable file type detection.</span>
+
+__________
+
+
+## Autocommands
+
+We check if autocommands are enabled before we use them. 
+
+
+
+<div class="vimdown_vim">
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">if</span> has(<span style="color: #4070a0">&quot;autocmd&quot;</span>)
+</pre></div>
+</div>
+
+
+In some files, like HTML and XML files, tabs are fine and showing them is
+really annoying, you can disable them easily using the autocmd declaration:
+
+
+
+<div class="vimdown_vim">
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #60a0b0; font-style: italic">   &quot; autocmd filetype html,xml set listchars-=tab:&gt;.</span>
+</pre></div>
+</div>
+
+
+
+
+
+
+<div class="vimdown_vim">
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #60a0b0; font-style: italic">  &quot; Enable file type detection.</span>
 <span style="color: #60a0b0; font-style: italic">  &quot; Use the default filetype settings, so that mail gets &#39;tw&#39; set to 72,</span>
 <span style="color: #60a0b0; font-style: italic">  &quot; &#39;cindent&#39; is on in C files, etc.</span>
 <span style="color: #60a0b0; font-style: italic">  &quot; Also load indent files, to automatically do language-dependent indenting.</span>
@@ -223,7 +295,7 @@ if !exists(":DiffOrig")
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #60a0b0; font-style: italic">  &quot;command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #60a0b0; font-style: italic">  &quot;command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis</span>
 <span style="color: #60a0b0; font-style: italic">		  &quot;\ | wincmd p | diffthis</span>
 </pre></div>
 </div>
@@ -234,7 +306,7 @@ endif
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">autoread</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">autoread</span>
 </pre></div>
 </div>
 
@@ -245,7 +317,7 @@ when we're not currently useing vim as root
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">cmap <span style="color: #007020; font-weight: bold">w</span>!! %!sudo tee &gt; <span style="color: #235388">/dev/</span>null %
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">cmap <span style="color: #007020; font-weight: bold">w</span>!! %!sudo tee &gt; <span style="color: #235388">/dev/</span>null %
 </pre></div>
 </div>
 
@@ -258,7 +330,7 @@ When c-y is used to select, enter normal mode.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">imap &lt;<span style="color: #007020; font-weight: bold">c</span>-<span style="color: #007020; font-weight: bold">y</span>&gt; &lt;<span style="color: #007020; font-weight: bold">c</span>-<span style="color: #007020; font-weight: bold">y</span>&gt;&lt;esc&gt;
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">imap &lt;<span style="color: #007020; font-weight: bold">c</span>-<span style="color: #007020; font-weight: bold">y</span>&gt; &lt;<span style="color: #007020; font-weight: bold">c</span>-<span style="color: #007020; font-weight: bold">y</span>&gt;&lt;esc&gt;
 </pre></div>
 </div>
 
@@ -270,7 +342,7 @@ set completeopt=menu,preview
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">completeopt</span>=menuone,preview,longest
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">completeopt</span>=menuone,preview,longest
 </pre></div>
 </div>
 
@@ -295,7 +367,7 @@ so that you can undo CTRL-U after inserting a line break.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">inoremap &lt;C-U&gt; &lt;C-G&gt;<span style="color: #007020; font-weight: bold">u</span>&lt;C-U&gt;
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">inoremap &lt;C-U&gt; &lt;C-G&gt;<span style="color: #007020; font-weight: bold">u</span>&lt;C-U&gt;
 </pre></div>
 </div>
 
@@ -311,7 +383,7 @@ Map omnicomplete to Control-o
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">imap &lt;C-O&gt; &lt;C-<span style="color: #007020; font-weight: bold">X</span>&gt;&lt;C-O&gt; 
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">imap &lt;C-O&gt; &lt;C-<span style="color: #007020; font-weight: bold">X</span>&gt;&lt;C-O&gt; 
 </pre></div>
 </div>
 
@@ -324,7 +396,7 @@ and header files with <C-H>
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">imap &lt;<span style="color: #007020; font-weight: bold">silent</span>&gt; &lt;C-S&gt; &lt;ESC&gt;:A&lt;CR&gt;
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">imap &lt;<span style="color: #007020; font-weight: bold">silent</span>&gt; &lt;C-S&gt; &lt;ESC&gt;:A&lt;CR&gt;
 nmap &lt;<span style="color: #007020; font-weight: bold">silent</span>&gt; &lt;C-S&gt; &lt;ESC&gt;:A&lt;CR&gt;
 </pre></div>
 </div>
@@ -351,7 +423,7 @@ THIS INTERFERES WITH NICE MENU
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">function</span>! CleverCR()
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">function</span>! CleverCR()
 	<span style="color: #007020; font-weight: bold">if</span> !pumvisible() 
 		<span style="color: #007020; font-weight: bold">return</span> <span style="color: #60a0b0; font-style: italic">&quot;\&lt;CR&gt;&quot;</span>
 	<span style="color: #007020; font-weight: bold">endif</span>
@@ -385,7 +457,7 @@ it, you don’t want to go back!
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">nnoremap ; :
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">nnoremap ; :
 </pre></div>
 </div>
 
@@ -398,7 +470,7 @@ line. It changes behaviour so that it jumps to the next row in the editor
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">nnoremap <span style="color: #007020; font-weight: bold">j</span> gj
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">nnoremap <span style="color: #007020; font-weight: bold">j</span> gj
 nnoremap <span style="color: #007020; font-weight: bold">k</span> gk
 </pre></div>
 </div>
@@ -410,7 +482,7 @@ Use J instead of CTRL-W j, etc.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">nnoremap &lt;C-<span style="color: #007020; font-weight: bold">j</span>&gt; &lt;<span style="color: #007020; font-weight: bold">c</span>-<span style="color: #007020; font-weight: bold">w</span>&gt;<span style="color: #007020; font-weight: bold">j</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">nnoremap &lt;C-<span style="color: #007020; font-weight: bold">j</span>&gt; &lt;<span style="color: #007020; font-weight: bold">c</span>-<span style="color: #007020; font-weight: bold">w</span>&gt;<span style="color: #007020; font-weight: bold">j</span>
 nnoremap &lt;C-<span style="color: #007020; font-weight: bold">h</span>&gt; &lt;<span style="color: #007020; font-weight: bold">c</span>-<span style="color: #007020; font-weight: bold">w</span>&gt;<span style="color: #007020; font-weight: bold">h</span>
 nnoremap &lt;C-<span style="color: #007020; font-weight: bold">k</span>&gt; &lt;<span style="color: #007020; font-weight: bold">c</span>-<span style="color: #007020; font-weight: bold">w</span>&gt;<span style="color: #007020; font-weight: bold">k</span>
 nnoremap &lt;C-<span style="color: #007020; font-weight: bold">l</span>&gt; &lt;<span style="color: #007020; font-weight: bold">c</span>-<span style="color: #007020; font-weight: bold">w</span>&gt;<span style="color: #007020; font-weight: bold">l</span>
@@ -429,7 +501,7 @@ of snipMate :( available from vimingwithbuttar at google code.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:SnipeMateAllowOmniTab = <span style="color: #40a070">1</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:SnipeMateAllowOmniTab = <span style="color: #40a070">1</span>
 </pre></div>
 </div>
 
@@ -439,7 +511,7 @@ We're extra friendly for django
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">autocmd <span style="color: #007020">FileType</span> python <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">ft</span>=python.django 		<span style="color: #60a0b0; font-style: italic">&quot; For SnipMate</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">autocmd <span style="color: #007020">FileType</span> python <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">ft</span>=python.django 		<span style="color: #60a0b0; font-style: italic">&quot; For SnipMate</span>
 autocmd <span style="color: #007020">BufRead</span> *.djml <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">ft</span>=html.htmldjango 	<span style="color: #60a0b0; font-style: italic">&quot; For SnipMate</span>
 
 autocmd <span style="color: #007020">FileType</span> mkd <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">ft</span>=mkd.html 	<span style="color: #60a0b0; font-style: italic">&quot; For SnipMate, I want to use HTML</span>
@@ -464,7 +536,7 @@ You press * or # to search for the current visual selection !! Really useful
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">function</span>! VisualSearch(direction) range
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">function</span>! VisualSearch(direction) range
   <span style="color: #007020; font-weight: bold">let</span> <span style="color: #007020; font-weight: bold">l</span>:saved_reg = @&quot;
   execute <span style="color: #60a0b0; font-style: italic">&quot;normal! vgvy&quot;</span>
   <span style="color: #007020; font-weight: bold">let</span> <span style="color: #007020; font-weight: bold">l</span>:pattern = escape(@&quot;, <span style="color: #4070a0">&#39;\\/.*$^~[]&#39;</span>)
@@ -497,7 +569,7 @@ set diffopt=filler,vertical,iwhite,context:10
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">diffopt</span>=filler,<span style="color: #007020; font-weight: bold">vertical</span>,context:<span style="color: #40a070">15</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">diffopt</span>=filler,<span style="color: #007020; font-weight: bold">vertical</span>,context:<span style="color: #40a070">15</span>
 <span style="color: #007020; font-weight: bold">let</span> g:html_diff_one_file = <span style="color: #40a070">1</span>
 </pre></div>
 </div>
@@ -508,7 +580,7 @@ Use real tabs, 4 spaces
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">tabstop</span>=<span style="color: #40a070">4</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">tabstop</span>=<span style="color: #40a070">4</span>
 <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">shiftwidth</span>=<span style="color: #40a070">4</span>
 <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">shiftround</span>	<span style="color: #60a0b0; font-style: italic">&quot; use multiple of shiftwidth when indenting with &#39;&lt;&#39; and &#39;&gt;&#39;</span>
 <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">smarttab</span>
@@ -521,7 +593,7 @@ Show matching braces
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">showmatch</span> 
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">showmatch</span> 
 </pre></div>
 </div>
 
@@ -531,7 +603,7 @@ Quick blink when a match is made
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020; font-weight: bold">mat</span>=<span style="color: #40a070">5</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020; font-weight: bold">mat</span>=<span style="color: #40a070">5</span>
 </pre></div>
 </div>
 
@@ -545,7 +617,7 @@ Screw the swap file
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">noswapfile</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">noswapfile</span>
 </pre></div>
 </div>
 
@@ -561,7 +633,7 @@ tune it to  match your prefered style.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">cinoptions</span>+=J
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">cinoptions</span>+=J
 </pre></div>
 </div>
 
@@ -571,7 +643,7 @@ Keep this many lines above/below the cursor while scrolling.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">scrolloff</span>=<span style="color: #40a070">3</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">scrolloff</span>=<span style="color: #40a070">3</span>
 </pre></div>
 </div>
 
@@ -582,7 +654,7 @@ see :h title for better info.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">title</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">title</span>
 </pre></div>
 </div>
 
@@ -593,7 +665,7 @@ set foldmethod=syntax
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">foldmethod</span>=manual
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">foldmethod</span>=manual
 </pre></div>
 </div>
 
@@ -608,7 +680,7 @@ program for this mapping to work as advertised.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">nmap &lt;C-PageDown&gt; :tabnext&lt;CR&gt;
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">nmap &lt;C-PageDown&gt; :tabnext&lt;CR&gt;
 nmap &lt;C-PageUp&gt; :<span style="color: #007020; font-weight: bold">tabprevious</span>&lt;CR&gt;
 imap &lt;C-PageDown&gt; :tabnext&lt;CR&gt;
 imap &lt;C-PageUp&gt; :<span style="color: #007020; font-weight: bold">tabprevious</span>&lt;CR&gt;
@@ -630,7 +702,7 @@ This is enormously useful. Luckily, it's very easy to recreate in Vim:
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">vnoremap ((  &lt;ESC&gt;`&gt;a)&lt;ESC&gt;`&lt;i(&lt;ESC&gt;
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">vnoremap ((  &lt;ESC&gt;`&gt;a)&lt;ESC&gt;`&lt;i(&lt;ESC&gt;
 vnoremap ))  &lt;ESC&gt;`&lt;i(&lt;ESC&gt;`&gt;&lt;<span style="color: #007020; font-weight: bold">right</span>&gt;a)&lt;ESC&gt;
 vnoremap {{  &lt;ESC&gt;`&gt;a}&lt;ESC&gt;`&lt;i{&lt;ESC&gt;
 vnoremap }}  &lt;ESC&gt;`&lt;i{&lt;ESC&gt;`&gt;&lt;<span style="color: #007020; font-weight: bold">right</span>&gt;a}&lt;ESC&gt;
@@ -646,7 +718,7 @@ vnoremap "  <ESC>`>a"<ESC>`<i"<ESC>
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">vnoremap <span style="color: #60a0b0; font-style: italic">&quot;&quot;  &lt;ESC&gt;`&gt;a&quot;&lt;ESC&gt;`&lt;i&quot;&lt;ESC&gt;</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">vnoremap <span style="color: #60a0b0; font-style: italic">&quot;&quot;  &lt;ESC&gt;`&gt;a&quot;&lt;ESC&gt;`&lt;i&quot;&lt;ESC&gt;</span>
 vnoremap <span style="color: #4070a0">&#39;&#39;</span>  &lt;ESC&gt;`&gt;a<span style="color: #4070a0">&#39;&lt;ESC&gt;`&lt;i&#39;</span>&lt;ESC&gt;
 vnoremap ``  &lt;ESC&gt;`&gt;a`&lt;ESC&gt;`&lt;i`&lt;ESC&gt;
 vnoremap [[  &lt;ESC&gt;`&gt;a]&lt;ESC&gt;`&lt;i[&lt;ESC&gt;
@@ -660,7 +732,7 @@ When vimrc is edited, automatically reload it!
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">autocmd! bufwritepost .vimrc source ~/.vimrc
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">autocmd! bufwritepost .vimrc source ~/.vimrc
 </pre></div>
 </div>
 
@@ -676,7 +748,7 @@ save the buffer list
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">viminfo</span>=&#39;<span style="color: #40a070">20000</span>,f1,&lt;<span style="color: #40a070">500</span>,:<span style="color: #40a070">1000</span>,@<span style="color: #40a070">1000</span>,/<span style="color: #40a070">1000</span>,%
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">viminfo</span>=&#39;<span style="color: #40a070">20000</span>,f1,&lt;<span style="color: #40a070">500</span>,:<span style="color: #40a070">1000</span>,@<span style="color: #40a070">1000</span>,/<span style="color: #40a070">1000</span>,%
 </pre></div>
 </div>
 
@@ -688,7 +760,7 @@ Use more modern css
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> html_use_css = <span style="color: #40a070">1</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> html_use_css = <span style="color: #40a070">1</span>
 </pre></div>
 </div>
 
@@ -698,7 +770,7 @@ wrap long lines
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">wrap</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">wrap</span>
 <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">sidescroll</span>=<span style="color: #40a070">3</span>
 </pre></div>
 </div>
@@ -710,7 +782,7 @@ http://kmandla.wordpress.com/2009/07/27/proper-word-wrapping-in-vim/
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">formatoptions</span>+=<span style="color: #007020; font-weight: bold">l</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">formatoptions</span>+=<span style="color: #007020; font-weight: bold">l</span>
 <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">lbr</span>
 
 <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">selection</span>=inclusive
@@ -727,7 +799,7 @@ set key timeout, good for remaps
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">timeoutlen</span>=<span style="color: #40a070">300</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">timeoutlen</span>=<span style="color: #40a070">300</span>
 </pre></div>
 </div>
 
@@ -744,7 +816,7 @@ for PHP files. :(
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">au <span style="color: #007020">FileType</span> php <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">nocursorline</span> 
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">au <span style="color: #007020">FileType</span> php <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">nocursorline</span> 
 </pre></div>
 </div>
 
@@ -772,7 +844,7 @@ based on the environment.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">colo</span> evening 
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">colo</span> evening 
 </pre></div>
 </div>
 
@@ -782,7 +854,7 @@ evening is a nice dark theme, usually available by a default install.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">if</span> has( <span style="color: #60a0b0; font-style: italic">&quot;gui_running&quot; )</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">if</span> has( <span style="color: #60a0b0; font-style: italic">&quot;gui_running&quot; )</span>
 <span style="color: #60a0b0; font-style: italic">	&quot; I like a white based them in GVim</span>
 	<span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">cursorline</span>
 	<span style="color: #007020">hi</span> clear CursorLine 
@@ -821,7 +893,7 @@ set linenumbers on by default
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020; font-weight: bold">number</span> 
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020; font-weight: bold">number</span> 
 </pre></div>
 </div>
 
@@ -834,7 +906,7 @@ out and I doubt you'll miss them.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">augroup drupal_module
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">augroup drupal_module
 	autocmd <span style="color: #007020">BufRead</span> *.module,*.<span style="color: #007020">inc</span> <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020; font-weight: bold">filetype</span>=php
 augroup END
 </pre></div>
@@ -848,7 +920,7 @@ be aggressive/paranoid and save often automatically.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">autowriteall</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">autowriteall</span>
 <span style="color: #007020; font-weight: bold">set</span>	<span style="color: #007020">autoread</span>
 </pre></div>
 </div>
@@ -860,7 +932,7 @@ works only in non-gui mode for now
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">map #<span style="color: #007020; font-weight: bold">sp</span> :<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:!ispell %&lt;CR&gt;:<span style="color: #007020; font-weight: bold">e</span> %&lt;CR&gt; 
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">map #<span style="color: #007020; font-weight: bold">sp</span> :<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:!ispell %&lt;CR&gt;:<span style="color: #007020; font-weight: bold">e</span> %&lt;CR&gt; 
 </pre></div>
 </div>
 
@@ -874,7 +946,7 @@ a lot of real words like text and markdown files.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">au <span style="color: #007020">FileType</span> text,markdown,rst <span style="color: #007020; font-weight: bold">setlocal</span> <span style="color: #007020; font-weight: bold">spell</span> <span style="color: #007020">spelllang</span>=en_us
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">au <span style="color: #007020">FileType</span> text,markdown,rst <span style="color: #007020; font-weight: bold">setlocal</span> <span style="color: #007020; font-weight: bold">spell</span> <span style="color: #007020">spelllang</span>=en_us
 au <span style="color: #007020">FileType</span> text,markdown,rst <span style="color: #007020; font-weight: bold">let</span> <span style="color: #007020; font-weight: bold">b</span>:NiceMenuContextRegex=<span style="color: #4070a0">&#39;[a-zA-Z0-9]&#39;</span> 
 </pre></div>
 </div>
@@ -886,7 +958,7 @@ Make right mouse button work in gvim
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">mousemodel</span>=<span style="color: #007020; font-weight: bold">popup</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">mousemodel</span>=<span style="color: #007020; font-weight: bold">popup</span>
 </pre></div>
 </div>
 
@@ -896,7 +968,7 @@ Allow toggling of paste/nopaste via F2
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">pastetoggle</span>=&lt;F2&gt;
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">pastetoggle</span>=&lt;F2&gt;
 </pre></div>
 </div>
 
@@ -906,7 +978,7 @@ Don't acutally close buffers, just hide them.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">hidden</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">hidden</span>
 </pre></div>
 </div>
 
@@ -920,7 +992,7 @@ on a word, fun stuff.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">dictionary</span>+=<span style="color: #235388">/usr/</span>share<span style="color: #235388">/dict/</span>words,<span style="color: #235388">/usr/</span><span style="color: #007020">dict</span><span style="color: #235388">/words,/</span>usr<span style="color: #235388">/dict/</span>extra.words
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">dictionary</span>+=<span style="color: #235388">/usr/</span>share<span style="color: #235388">/dict/</span>words,<span style="color: #235388">/usr/</span><span style="color: #007020">dict</span><span style="color: #235388">/words,/</span>usr<span style="color: #235388">/dict/</span>extra.words
 </pre></div>
 </div>
 
@@ -931,7 +1003,7 @@ ex command for toggling hex mode - define mapping if desired
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">command! -<span style="color: #007020">bar</span> Hexmode <span style="color: #007020; font-weight: bold">call</span> ToggleHex()
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">command! -<span style="color: #007020">bar</span> Hexmode <span style="color: #007020; font-weight: bold">call</span> ToggleHex()
 </pre></div>
 </div>
 
@@ -941,7 +1013,7 @@ helper function to toggle hex mode
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">function</span>! ToggleHex()
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">function</span>! ToggleHex()
 <span style="color: #60a0b0; font-style: italic">  &quot; hex mode should be considered a read-only operation</span>
 <span style="color: #60a0b0; font-style: italic">  &quot; save values for modified and read-only for restoration later,</span>
 <span style="color: #60a0b0; font-style: italic">  &quot; and clear the read-only flag for now</span>
@@ -986,7 +1058,7 @@ A more verbose pastetoggle
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">function</span>! TogglePaste()
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">function</span>! TogglePaste()
 	<span style="color: #007020; font-weight: bold">if</span>	&amp;<span style="color: #007020">paste</span> == <span style="color: #40a070">0</span>
 		<span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">paste</span>
 		echo <span style="color: #60a0b0; font-style: italic">&quot;Paste is ON!&quot;</span>
@@ -1005,7 +1077,7 @@ set pastetoggle=<F2>
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">nmap &lt;F2&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">call</span> TogglePaste()&lt;CR&gt;
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">nmap &lt;F2&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">call</span> TogglePaste()&lt;CR&gt;
 imap &lt;F2&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">call</span> TogglePaste()&lt;CR&gt;i
 </pre></div>
 </div>
@@ -1019,7 +1091,7 @@ augroup mkd
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #60a0b0; font-style: italic">	&quot;autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:&gt;</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #60a0b0; font-style: italic">	&quot;autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:&gt;</span>
 </pre></div>
 </div>
 
@@ -1031,7 +1103,7 @@ is only generated once in a while.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020; font-weight: bold">tags</span>=<span style="color: #007020; font-weight: bold">tags</span>;/
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020; font-weight: bold">tags</span>=<span style="color: #007020; font-weight: bold">tags</span>;/
 au <span style="color: #007020">FileType</span> python <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020; font-weight: bold">tags</span> +=~<span style="color: #235388">/.tags/</span><span style="color: #007020; font-weight: bold">tags</span>-python
 au <span style="color: #007020">FileType</span> <span style="color: #007020; font-weight: bold">c</span> <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020; font-weight: bold">tags</span> +=~<span style="color: #235388">/.tags/</span><span style="color: #007020; font-weight: bold">tags</span>-<span style="color: #007020; font-weight: bold">c</span>
 au <span style="color: #007020">FileType</span> cpp <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020; font-weight: bold">tags</span> +=~<span style="color: #235388">/.tags/</span><span style="color: #007020; font-weight: bold">tags</span>-cpp
@@ -1046,7 +1118,7 @@ set viewoptions-=options
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">viewoptions</span>=<span style="color: #007020">cursor</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">viewoptions</span>=<span style="color: #007020">cursor</span>
 <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">sessionoptions</span>=<span style="color: #007020; font-weight: bold">winpos</span>,localoptions
 </pre></div>
 </div>
@@ -1063,7 +1135,7 @@ LustyExplorer
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">nmap &lt;<span style="color: #007020; font-weight: bold">silent</span>&gt; &lt;<span style="color: #007020; font-weight: bold">c</span>-<span style="color: #007020; font-weight: bold">l</span>&gt; &lt;esc&gt;:LustyBufferExplorer&lt;CR&gt;
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">nmap &lt;<span style="color: #007020; font-weight: bold">silent</span>&gt; &lt;<span style="color: #007020; font-weight: bold">c</span>-<span style="color: #007020; font-weight: bold">l</span>&gt; &lt;esc&gt;:LustyBufferExplorer&lt;CR&gt;
 imap &lt;<span style="color: #007020; font-weight: bold">silent</span>&gt; &lt;<span style="color: #007020; font-weight: bold">c</span>-<span style="color: #007020; font-weight: bold">l</span>&gt; &lt;esc&gt;:LustyBufferExplorer&lt;CR&gt;
 </pre></div>
 </div>
@@ -1082,7 +1154,7 @@ Display function name in status bar:
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:ctags_statusline=<span style="color: #40a070">1</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:ctags_statusline=<span style="color: #40a070">1</span>
 </pre></div>
 </div>
 
@@ -1092,7 +1164,7 @@ Automatically start script
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> generate_tags=<span style="color: #40a070">1</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> generate_tags=<span style="color: #40a070">1</span>
 </pre></div>
 </div>
 
@@ -1102,7 +1174,7 @@ Displays taglist results in a vertical window:
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> Tlist_Use_Horiz_Window=<span style="color: #40a070">0</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> Tlist_Use_Horiz_Window=<span style="color: #40a070">0</span>
 </pre></div>
 </div>
 
@@ -1113,7 +1185,7 @@ nnoremap TT :TlistToggle<CR>
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">nnoremap TT :TlistOpen&lt;CR&gt;
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">nnoremap TT :TlistOpen&lt;CR&gt;
 map &lt;F4&gt; :TlistToggle&lt;CR&gt;
 
 <span style="color: #007020; font-weight: bold">let</span> Tlist_Use_Right_Window     = <span style="color: #40a070">0</span>
@@ -1133,7 +1205,7 @@ changed by modifying the 'Tlist_WinWidth' variable:
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> Tlist_WinWidth = <span style="color: #40a070">60</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> Tlist_WinWidth = <span style="color: #40a070">60</span>
 </pre></div>
 </div>
 
@@ -1143,7 +1215,7 @@ Close Tlist when jumping to tag
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> Tlist_Close_On_Select = <span style="color: #40a070">1</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> Tlist_Close_On_Select = <span style="color: #40a070">1</span>
 </pre></div>
 </div>
 
@@ -1157,7 +1229,7 @@ will be displayed.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> Tlist_Display_Prototype = <span style="color: #40a070">1</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> Tlist_Display_Prototype = <span style="color: #40a070">1</span>
 </pre></div>
 </div>
 
@@ -1169,7 +1241,7 @@ Tree Style listing
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:netrw_liststyle = <span style="color: #40a070">3</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:netrw_liststyle = <span style="color: #40a070">3</span>
 </pre></div>
 </div>
 
@@ -1181,7 +1253,7 @@ imap <C-d> <ESC>:LustyFilesystemExplorerFromHere<CR>
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">nmap &lt;C-<span style="color: #007020; font-weight: bold">d</span>&gt; &lt;ESC&gt;:LustyFilesystemExplorer&lt;CR&gt;
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">nmap &lt;C-<span style="color: #007020; font-weight: bold">d</span>&gt; &lt;ESC&gt;:LustyFilesystemExplorer&lt;CR&gt;
 imap &lt;C-<span style="color: #007020; font-weight: bold">d</span>&gt; &lt;ESC&gt;:LustyFilesystemExplorer&lt;CR&gt;
 </pre></div>
 </div>
@@ -1194,7 +1266,7 @@ quickfix window.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:JSLintHighlightErrorLine = <span style="color: #40a070">0</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:JSLintHighlightErrorLine = <span style="color: #40a070">0</span>
 <span style="color: #007020; font-weight: bold">let</span> g:JSLintIgnoreImpliedGlobals = <span style="color: #40a070">1</span>
 au <span style="color: #007020">FileType</span> javascript nmap &lt;F5&gt; &lt;ESC&gt;:JSLint&lt;CR&gt;
 au <span style="color: #007020">FileType</span> javascript imap &lt;F5&gt; &lt;ESC&gt;:JSLint&lt;CR&gt;
@@ -1208,7 +1280,7 @@ or run it through PyFlakes command.
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">au <span style="color: #007020">FileType</span> python nmap &lt;F1&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:!python %&lt;CR&gt;
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">au <span style="color: #007020">FileType</span> python nmap &lt;F1&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:!python %&lt;CR&gt;
 au <span style="color: #007020">FileType</span> python imap &lt;F1&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:!python %&lt;CR&gt;
 au <span style="color: #007020">FileType</span> python nmap &lt;F5&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:PyFlakes&lt;CR&gt;
 au <span style="color: #007020">FileType</span> python imap &lt;F5&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:PyFlakes&lt;CR&gt;
@@ -1228,7 +1300,7 @@ I don't use this much, so may be buggy
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">au <span style="color: #007020">FileType</span> html nmap &lt;F5&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:HTMLTidyLint&lt;CR&gt;
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">au <span style="color: #007020">FileType</span> html nmap &lt;F5&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:HTMLTidyLint&lt;CR&gt;
 au <span style="color: #007020">FileType</span> html imap &lt;F5&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:HTMLTidyLint&lt;CR&gt;
 </pre></div>
 </div>
@@ -1241,7 +1313,7 @@ script and outputs errors into a quick fix windowl
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">au <span style="color: #007020">FileType</span> <span style="color: #007020; font-weight: bold">sh</span>,bash nmap &lt;F1&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:!<span style="color: #007020; font-weight: bold">sh</span> %&lt;CR&gt;
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">au <span style="color: #007020">FileType</span> <span style="color: #007020; font-weight: bold">sh</span>,bash nmap &lt;F1&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:!<span style="color: #007020; font-weight: bold">sh</span> %&lt;CR&gt;
 au <span style="color: #007020">FileType</span> <span style="color: #007020; font-weight: bold">sh</span>,bash imap &lt;F1&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:!<span style="color: #007020; font-weight: bold">sh</span> %&lt;CR&gt;
 au <span style="color: #007020">FileType</span> <span style="color: #007020; font-weight: bold">sh</span>,bash nmap &lt;F5&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:BashRun&lt;CR&gt;
 au <span style="color: #007020">FileType</span> <span style="color: #007020; font-weight: bold">sh</span>,bash imap &lt;F5&gt; &lt;ESC&gt;:<span style="color: #007020; font-weight: bold">w</span>&lt;CR&gt;:BashRun&lt;CR&gt;
@@ -1254,7 +1326,7 @@ au FileType sh,bash setlocal errorformat=%f\ line\ %l:\ %m
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">au <span style="color: #007020">FileType</span> <span style="color: #007020; font-weight: bold">go</span> <span style="color: #007020; font-weight: bold">setlocal</span> <span style="color: #007020">errorformat</span>=%<span style="color: #007020; font-weight: bold">f</span>:%<span style="color: #007020; font-weight: bold">l</span>:\ %<span style="color: #007020; font-weight: bold">m</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">au <span style="color: #007020">FileType</span> <span style="color: #007020; font-weight: bold">go</span> <span style="color: #007020; font-weight: bold">setlocal</span> <span style="color: #007020">errorformat</span>=%<span style="color: #007020; font-weight: bold">f</span>:%<span style="color: #007020; font-weight: bold">l</span>:\ %<span style="color: #007020; font-weight: bold">m</span>
 </pre></div>
 </div>
 
@@ -1265,7 +1337,7 @@ URL: http://lloyd.github.com/yajl/
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">autocmd <span style="color: #007020">FileType</span> json <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">equalprg</span>=json_reformat
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">autocmd <span style="color: #007020">FileType</span> json <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">equalprg</span>=json_reformat
 autocmd <span style="color: #007020">FileType</span> xml  <span style="color: #007020; font-weight: bold">set</span> <span style="color: #007020">equalprg</span>=xmllint\ --format\ -
 </pre></div>
 </div>
@@ -1282,7 +1354,7 @@ let g:loaded_doubleTap = 1
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:DoubleTapInsertTimer = <span style="color: #40a070">0</span>.<span style="color: #40a070">8</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:DoubleTapInsertTimer = <span style="color: #40a070">0</span>.<span style="color: #40a070">8</span>
 </pre></div>
 </div>
 
@@ -1292,7 +1364,7 @@ Set NiceMenu Delay
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:loaded_nice_menu = <span style="color: #40a070">1</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:loaded_nice_menu = <span style="color: #40a070">1</span>
 <span style="color: #007020; font-weight: bold">let</span> g:NiceMenuDelay = <span style="color: #4070a0">&#39;.6&#39;</span>
 <span style="color: #007020; font-weight: bold">let</span> g:NiceMenuMin = <span style="color: #40a070">1</span>
 </pre></div>
@@ -1311,7 +1383,7 @@ autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:maxLineLength=<span style="color: #40a070">100</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:maxLineLength=<span style="color: #40a070">100</span>
 </pre></div>
 </div>
 
@@ -1321,7 +1393,7 @@ BellyButton settings
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:BellyButton_javascript_jslint_options = {<span style="color: #4070a0">&#39;white&#39;</span>:<span style="color: #4070a0">&#39;false&#39;</span>, <span style="color: #4070a0">&#39;vars&#39;</span>:<span style="color: #4070a0">&#39;true&#39;</span>,<span style="color: #4070a0">&#39;bitwise&#39;</span>:<span style="color: #4070a0">&#39;false&#39;</span>,
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:BellyButton_javascript_jslint_options = {<span style="color: #4070a0">&#39;white&#39;</span>:<span style="color: #4070a0">&#39;false&#39;</span>, <span style="color: #4070a0">&#39;vars&#39;</span>:<span style="color: #4070a0">&#39;true&#39;</span>,<span style="color: #4070a0">&#39;bitwise&#39;</span>:<span style="color: #4070a0">&#39;false&#39;</span>,
 			\<span style="color: #4070a0">&#39;predef&#39;</span>:<span style="color: #4070a0">&quot;[&#39;Backbone&#39;, &#39;_&#39;, &#39;console&#39;,&#39;window&#39;, &#39;Ext&#39;, &#39;jQuery&#39;, &#39;$&#39;, &#39;cp&#39;, &#39;alert&#39;, &#39;confirm&#39;, &#39;document&#39;]&quot;</span>}
 </pre></div>
 </div>
@@ -1334,7 +1406,7 @@ the <c-e> default for navigation
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:sparkupExecuteMapping = <span style="color: #4070a0">&#39;&lt;c-t&gt;&#39;</span>
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">let</span> g:sparkupExecuteMapping = <span style="color: #4070a0">&#39;&lt;c-t&gt;&#39;</span>
 <span style="color: #007020; font-weight: bold">let</span> g:sparkupNextMapping = <span style="color: #4070a0">&#39;&lt;c-h&gt;&#39;</span>
 
 <span style="color: #007020; font-weight: bold">let</span> g:snips_author = <span style="color: #4070a0">&#39;Jeff Buttars&#39;</span>
@@ -1347,7 +1419,7 @@ __________
 
 ####Misc People and places that I've gotten stuff from  
 
-* [code-navigation-completion-snippets-in-vim](http://dancingpenguinsoflight".com"/2009/02/code-navigation-completion-snippets-in-vim/)
+* [code-navigation-completion-snippets-in-vim](http://dancingpenguinsoflight.com/2009/02/code-navigation-completion-snippets-in-vim/)
 * [5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic](http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/)
 
 #### IBM Vim series, quite good.
@@ -1377,7 +1449,7 @@ I source it last thing
 
 
 <div class="vimdown_vim">
-<div class="highlight" style="background: #f0f0f0;  -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .5em;"><pre style="line-height: 125%">runtime hacks.<span style="color: #007020; font-weight: bold">vim</span> 
+<div class="highlight" style="background: #f0f0f0; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px ;padding: .25em .5em .25em .5em; margin:.5em 1em .5em .25em ;"><pre style="line-height: 125%">runtime hacks.<span style="color: #007020; font-weight: bold">vim</span> 
 </pre></div>
 </div>
 
@@ -1395,6 +1467,10 @@ I source it last thing
 [undofile]: http://vimdoc.sourceforge.net/htmldoc/options.html#'undofile'
 [undodir]: http://vimdoc.sourceforge.net/htmldoc/options.html#'undodir'
 [mouse]: http://vimdoc.sourceforge.net/htmldoc/options.html#'mouse'
+[syntax]: http://vimdoc.sourceforge.net/htmldoc/options.html#'syntax'
+[hlsearch]: http://vimdoc.sourceforge.net/htmldoc/options.html#'hlsearch'
+[listchars]: http://vimdoc.sourceforge.net/htmldoc/options.html#'listchars'
+
 [inoremap]: http://vimdoc.sourceforge.net/htmldoc/map.html#:inoremap
 [imap]: http://vimdoc.sourceforge.net/htmldoc/map.html#:imap
 [nmap]: http://vimdoc.sourceforge.net/htmldoc/map.html#:nmap
