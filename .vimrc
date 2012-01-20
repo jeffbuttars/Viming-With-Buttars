@@ -18,6 +18,9 @@
 " __*If your reading this as a README on GitHub you should know that this 
 " README is generted from the .vimrc file of this project using [Vimdown](https://github.com/jeffbuttars/Vimdown)*__
 "
+" * [Vim Options](#vimoptions)
+" * [Autocommands][autocommands]
+" * [Mappings][mappings]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " It's .vimrc time  
 " ## Options
@@ -27,7 +30,7 @@ if v:progname =~? "evim"
   finish
 endif
 
-" ### Basic Vim settings
+" ### [Vim Options]
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible " Don't be compatible with basic Vi
@@ -43,33 +46,32 @@ set history=1000 " keep 1000 lines of command line history
 " * [nobackup][]
 " * [history][]
 "
-
 " ### Ruler and Statusline
 " 
 " I don't use these following examples, I have a more advanced version
 " of setting the status line in 
 " [hacks.vim](https://github.com/jeffbuttars/Viming-With-Buttars/blob/master/hacks.vim)  
 "  
-" Using set ruler  
-" <pre>set ruler		" show the cursor position all the time</pre>
+" Using set ruler
+	" set ruler    " show the cursor position all the time
 " Set up a custom status line. Like setting ruler, statusline overrides ruler, but we add the buffer number and filetype to the status:
-" <pre>set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P</pre>
-" or  
-" <pre>set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{&textwidth}\ %P</pre>  
+	" set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+" or
+	" set statusline=%<%y\ b%n\ %h%m%r%=%-14.(%l,%c%V%)\ %{&textwidth}\ %P
 "
 " * [ruler][]
 " * [statusline][]
-
+"
 set switchbuf=useopen
-set laststatus=2 " last window will always have a status line
-set showcmd		 " display incomplete commands
+set laststatus=2          " last window will always have a status line
+set showcmd		         " display incomplete commands
 "
 " * [switchbuf][]
 " * [laststatus][]
 " * [showcmd][]
 "  
 " For Win32 GUI: you can remove 't' flag from 'guioptions' for no tearoff menu entries  
-" <pre>let &[guioptions = substitute(&guioptions, "t", "", "g")</pre>
+	" let &[guioptions = substitute(&guioptions, "t", "", "g")
 " 
 " * [guioptions][]
 "
@@ -93,39 +95,54 @@ endif
 " * [mouse][]
 "
 
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
+" Switch syntax highlighting on if the terminal supports colors
+" or if we're runnig in a GUI.
+" Also switch on highlighting of the last used search pattern.
 if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
+	syntax on
+	set hlsearch
 	
-	"set guioptions-=m " Remove menu bar from gvim
-	" Remove toolbar from gvim
-	set guioptions-=T
-	" Set gvim font. I like the Inconsolata font these days.
+	"set guioptions-=m " Will remove menu bar from gvim
+	set guioptions-=T " Remove toolbar from gvim
+
+	" Set gvim font. I like the Inconsolata font.
 	" You'll need to install, do it, it's very much worth it.
 	" A great font, and it's 100% free.
 	set guifont=Inconsolata\ Medium\ 10
-
 endif
 
-set incsearch		" do incremental searching
-
-"This line will make Vim set out tab characters, trailing whitespace and
-"invisible spaces visually, and additionally use the # sign at the end of lines
-"to mark lines that extend off-screen. For more info, see :h listchars
-"set list
-"set listchars=tab:\|.,trail:.,extends:#,nbsp:.
-
-"In some files, like HTML and XML files, tabs are fine and showing them is
-"really annoying, you can disable them easily using an autocmd declaration:
-"autocmd filetype html,xml set listchars-=tab:>.
+"  
+" * [syntax][]
+" * [hlsearch][]
+" * [guioptions][]
+"
+"
+" __I don't use the following, but some like it so I included for FYI purposes:__  
+"
+" This line will make Vim set out tab characters, trailing whitespace and
+" invisible spaces visually, and additionally use the # sign at the end of lines
+" to mark lines that extend off-screen. For more info, see :h listchars  
+   " set list  
+   " set listchars=tab:\|.,trail:.,extends:#,nbsp:.
+" 
+" * [listchars][]
+"
 
 set ttyfast
 set laststatus=2
+set incsearch		" Enable incremental searching
 
-" Only do this part when compiled with support for autocommands.
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" ## Autocommands
+"
+" We check if autocommands are enabled before we use them. 
 if has("autocmd")
+
+"In some files, like HTML and XML files, tabs are fine and showing them is
+"really annoying, you can disable them easily using the autocmd declaration:
+   " autocmd filetype html,xml set listchars-=tab:>.
+"
 
   " Enable file type detection.
   " Use the default filetype settings, so that mail gets 'tw' set to 72,
@@ -791,7 +808,7 @@ let g:snips_author = 'Jeff Buttars'
 
 " ####Misc People and places that I've gotten stuff from  
 "
-" * [code-navigation-completion-snippets-in-vim](http://dancingpenguinsoflight".com"/2009/02/code-navigation-completion-snippets-in-vim/)
+" * [code-navigation-completion-snippets-in-vim](http://dancingpenguinsoflight.com/2009/02/code-navigation-completion-snippets-in-vim/)
 " * [5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic](http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/)
 "
 " #### IBM Vim series, quite good.
@@ -832,6 +849,10 @@ runtime hacks.vim
 " [undofile]: http://vimdoc.sourceforge.net/htmldoc/options.html#'undofile'
 " [undodir]: http://vimdoc.sourceforge.net/htmldoc/options.html#'undodir'
 " [mouse]: http://vimdoc.sourceforge.net/htmldoc/options.html#'mouse'
+" [syntax]: http://vimdoc.sourceforge.net/htmldoc/options.html#'syntax'
+" [hlsearch]: http://vimdoc.sourceforge.net/htmldoc/options.html#'hlsearch'
+" [listchars]: http://vimdoc.sourceforge.net/htmldoc/options.html#'listchars'
+"
 " [inoremap]: http://vimdoc.sourceforge.net/htmldoc/map.html#:inoremap
 " [imap]: http://vimdoc.sourceforge.net/htmldoc/map.html#:imap
 " [nmap]: http://vimdoc.sourceforge.net/htmldoc/map.html#:nmap
