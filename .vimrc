@@ -199,16 +199,6 @@ imap <c-y> <c-y><esc>
 "set completeopt=menuone,preview
 " set completeopt=menu,preview
 set completeopt=menuone,preview,longest
-"let g:SuperTabLongestHighlight = 0
-" g:SuperTabMappingForward  ('<tab>')
-" g:SuperTabMappingBackward ('<s-tab>')
-"let g:SuperTabDefaultCompletionType = '<c-n>'
-" let g:SuperTabDefaultCompletionType = '<c-x><c-o>'
-" let g:SuperTabDefaultCompletionType = 'context'
-" let g:SuperTabCompletionContexts = ['s:ContextDiscover']
-" let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', 'myown']
-" let g:SuperTabContextDiscoverDiscovery = ["&omnifunc:<c-x><c-o>", "myown:<c-x><c-f>"]
-" let g:SuperTabContextDefaultCompletionType = '<c-n>'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
@@ -224,7 +214,7 @@ inoremap <C-U> <C-G>u<C-U>
 "set complete=".,w,b,u,U,t,i,kspell,d,t"
 "set complete=".,w,b,u,t,i,kspell"
 " Map omnicomplete to Control-o
-imap <C-O> <C-X><C-O> 
+" imap <C-O> <C-X><C-O> 
 
 " imap <C-space> <C-X><C-O>
 
