@@ -56,3 +56,10 @@ velo
 ZenOSS
 WPC
 MBR
+Django
+MQ
+uWSGI
+django
+dmq
+WSGI
+nginx
