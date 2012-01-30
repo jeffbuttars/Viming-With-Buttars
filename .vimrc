@@ -289,11 +289,24 @@ vnoremap <silent> # :call VisualSearch('b')<CR>
 set diffopt=filler,vertical,context:15
 let g:html_diff_one_file = 1
 
-"Use real tabs, 4 spaces
+" Use real tabs, 4 spaces
+" I prefer to use realtabs, but, I'm overruled by spaces.
+" Use this if you want real tabs.
+"<pre>
+" set tabstop=4
+" set shiftwidth=4
+" set shiftround	" use multiple of shiftwidth when indenting with '<' and '>'
+" set smarttab
+"</pre>
+
+" A gave in and use spaces instead of real tabs
 set tabstop=4
+set softtabstop=4
 set shiftwidth=4
-set shiftround	" use multiple of shiftwidth when indenting with '<' and '>'
+set textwidth=80
 set smarttab
+set shiftround	" use multiple of shiftwidth when indenting with '<' and '>'
+set expandtab
 
 " Show matching braces
 set showmatch 
@@ -724,7 +737,7 @@ let g:NiceMenuMin = 1
 "autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\
 "%l%.%#,%Z%[%^\ ]%\\@=%m
 
-let g:maxLineLength=100
+let g:maxLineLength=80
 
 " BellyButton settings
 let g:BellyButton_javascript_jslint_options = {'white':'false', 'vars':'true','bitwise':'false',
@@ -738,6 +751,37 @@ let g:sparkupExecuteMapping = '<c-t>'
 let g:sparkupNextMapping = '<c-h>'
 
 let g:snips_author = 'Jeff Buttars'
+
+" [Pathogen](https://github.com/tpope/vim-pathogen)
+call pathogen#infect()
+
+" [Vundle](https://github.com/gmarik/vundle) Configuration
+"
+"
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of unused
+"
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle command are not allowed..
+"
+" Add vundle to our runtime path (rtp) and start vundle
+"
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" bundles
+" let Vundle manage Vundle
+" required! 
+Bundle 'gmarik/vundle'
+
+" git repos:
+
+" vim-script repos
+
+" non-github repos
 
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -760,4 +804,8 @@ let g:snips_author = 'Jeff Buttars'
 " au WinEnter * setlocal number  
 " au WinLeave * setlocal nonumber  
 
+" For tweaks that don't need to be a plugin but are too verbose
+" for my .vimrc I push them into the hacks.vim file. Calling 
+" runtime on the file will make sure it's contents are used
+" when this .vimrc is sourced.
 runtime hacks.vim 
