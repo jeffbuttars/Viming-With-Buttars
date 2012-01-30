@@ -91,8 +91,8 @@ function! SetColorColumn( ccol )
 	let l:mlist = getmatches()
 	if len(l:mlist) < 1 || b:longLineMatchID == 0 || &colorcolumn != (a:ccol+1)
 		"echo "SetColorColumn applying" b:longLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
-		let &colorcolumn = (a:ccol+1)
-		let &textwidth = (a:ccol)
+		let &colorcolumn = (a:ccol)
+		let &textwidth = (a:ccol-1)
 		let b:longLineMatchID=matchadd( "ErrorMsg", '\%>'.a:ccol.'v.\+', -1 )
 	endif
 endfunction
