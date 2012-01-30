@@ -192,23 +192,14 @@ set autoread
 cmap w!! %!sudo tee > /dev/null %
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" OmniCompletion settings
+
+" ##OmniCompletion settings
 " When c-y is used to select, enter normal mode.
 imap <c-y> <c-y><esc>
 " Show the info preview window.
 "set completeopt=menuone,preview
 " set completeopt=menu,preview
 set completeopt=menuone,preview,longest
-"let g:SuperTabLongestHighlight = 0
-" g:SuperTabMappingForward  ('<tab>')
-" g:SuperTabMappingBackward ('<s-tab>')
-"let g:SuperTabDefaultCompletionType = '<c-n>'
-" let g:SuperTabDefaultCompletionType = '<c-x><c-o>'
-" let g:SuperTabDefaultCompletionType = 'context'
-" let g:SuperTabCompletionContexts = ['s:ContextDiscover']
-" let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', 'myown']
-" let g:SuperTabContextDiscoverDiscovery = ["&omnifunc:<c-x><c-o>", "myown:<c-x><c-f>"]
-" let g:SuperTabContextDefaultCompletionType = '<c-n>'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
@@ -353,11 +344,24 @@ vnoremap <silent> # :call VisualSearch('b')<CR>
 set diffopt=filler,vertical,context:15
 let g:html_diff_one_file = 1
 
-"Use real tabs, 4 spaces
+" Use real tabs, 4 spaces
+" I prefer to use realtabs, but, I'm overruled by spaces.
+" Use this if you want real tabs.
+"<pre>
+" set tabstop=4
+" set shiftwidth=4
+" set shiftround	" use multiple of shiftwidth when indenting with '<' and '>'
+" set smarttab
+"</pre>
+
+" A gave in and use spaces instead of real tabs
 set tabstop=4
+set softtabstop=4
 set shiftwidth=4
-set shiftround	" use multiple of shiftwidth when indenting with '<' and '>'
+set textwidth=80
 set smarttab
+set shiftround	" use multiple of shiftwidth when indenting with '<' and '>'
+set expandtab
 
 " Show matching braces
 set showmatch 
@@ -406,7 +410,7 @@ imap <C-PageUp> :tabprevious<CR>
 "imap <C-PageDown> <esc>:bn<CR>
 "imap <C-PageUp> <esc>:bp<CR>
 
-"http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
+"[concisionandconcinnity.blogspot.com](http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html)
 " The above URL also has good stuff for autoclosing matching pairs, like (). 
 "One of the nicer minor features of TextMate is its treatment of highlighted text. 
 "If you have something highlighted and type a, it replaces the text, like other editors. 
@@ -448,7 +452,7 @@ set wrap
 set sidescroll=3
 
 " Some wordwrapp foo from
-" http://kmandla.wordpress.com/2009/07/27/proper-word-wrapping-in-vim/
+" [kmandla](http://kmandla.wordpress.com/2009/07/27/proper-word-wrapping-in-vim/)
 set formatoptions+=l
 set lbr
 
@@ -574,7 +578,7 @@ set hidden
 " on a word, fun stuff.
 set dictionary+=/usr/share/dict/words,/usr/dict/words,/usr/dict/extra.words
 
-" http://vim.wikia.com/wiki/Improved_Hex_editing
+" [Improved_Hex_editing](http://vim.wikia.com/wiki/Improved_Hex_editing)
 " ex command for toggling hex mode - define mapping if desired
 command! -bar Hexmode call ToggleHex()
 
@@ -631,7 +635,7 @@ endfunction
 nmap <F2> <ESC>:call TogglePaste()<CR>
 imap <F2> <ESC>:call TogglePaste()<CR>i
 
-"http://plasticboy.com/markdown-vim-mode/
+"[plasticboy](http://plasticboy.com/markdown-vim-mode/)
 "Markdown format options, which I don't use 
 " but I'll include them here for your experimentation
 "augroup mkd
@@ -759,7 +763,7 @@ au FileType sh,bash imap <F5> <ESC>:w<CR>:BashRun<CR>
 au FileType go setlocal errorformat=%f:%l:\ %m
 
 " json_reformat is at:
-" URL: http://lloyd.github.com/yajl/
+" URL: [lloyd.github.com](http://lloyd.github.com/yajl/)
 autocmd FileType json set equalprg=json_reformat
 autocmd FileType xml  set equalprg=xmllint\ --format\ -
 
@@ -788,7 +792,7 @@ let g:NiceMenuMin = 1
 "autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\
 "%l%.%#,%Z%[%^\ ]%\\@=%m
 
-let g:maxLineLength=100
+let g:maxLineLength=80
 
 " BellyButton settings
 let g:BellyButton_javascript_jslint_options = {'white':'false', 'vars':'true','bitwise':'false',
@@ -803,24 +807,55 @@ let g:sparkupNextMapping = '<c-h>'
 
 let g:snips_author = 'Jeff Buttars'
 
+" [Pathogen](https://github.com/tpope/vim-pathogen)
+call pathogen#infect()
+
+" [Vundle](https://github.com/gmarik/vundle) Configuration
+"
+"
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of unused
+"
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle command are not allowed..
+"
+" Add vundle to our runtime path (rtp) and start vundle
+"
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" bundles
+" let Vundle manage Vundle
+" required! 
+Bundle 'gmarik/vundle'
+
+" git repos:
+
+" vim-script repos
+
+" non-github repos
+
  "End Plugins and external addons
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" ####Misc People and places that I've gotten stuff from  
+" Misc People and places that I've gotten stuff from  
+"[http://dancingpenguinsoflight".com"/2009/02/code-navigation-completion-snippets-in-vim/](http://dancingpenguinsoflight".com"/2009/02/code-navigation-completion-snippets-in-vim/)  
+"[http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/](http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/)  
 "
-" * [code-navigation-completion-snippets-in-vim](http://dancingpenguinsoflight.com/2009/02/code-navigation-completion-snippets-in-vim/)
-" * [5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic](http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/)
+" IBM Vim series, quite good.
 "
-" #### IBM Vim series, quite good.
-"
-" * [Scripting the Vim editor, Part 1: Variables, values, and expressions](http://www.ibm.com/developerworks/linux/library/l-vim-script-1/index.html)
-" * [Scripting the Vim editor, Part 2: User-defined functions](http://www.ibm.com/developerworks/linux/library/l-vim-script-2/index.html)
+" * [Scripting the Vim editor, Part 1: Variables, values, and expressions](http://www.ibm.com/developerworks/linux/library/l-vim-script-1/index.html)  
+" * [Scripting the Vim editor, Part 2: User-defined functions](http://www.ibm.com/developerworks/linux/library/l-vim-script-2/index.html)  
 " * [Scripting the Vim editor, Part 3: Built-in lists](http://www.ibm.com/developerworks/linux/library/l-vim-script-3/index.html)
 " * [Scripting the Vim editor, Part 4: Dictionaries](http://www.ibm.com/developerworks/linux/library/l-vim-script-4/index.html)
 " * [Scripting the Vim editor, Part 5: Event-driven scripting and automation](http://www.ibm.com/developerworks/linux/library/l-vim-script-5/index.html)
 " * [Some good python settings suggestions](http://www.cmdln.org/2008/10/18/vim-customization-for-python/)
 " * [Good information on line wrapping](http://blog.ezyang.com/2010/03/vim-textwidth/)
 "
+" 
 " The php syntax file and showing the cursorline don't play well together.
 " If you find editing PHP files with cursorline enabled unbearably slow
 " Use the following to disable the cursorline for PHP files
