@@ -294,6 +294,8 @@ if exists("python_highlight_exceptions") && python_highlight_exceptions != 0
   syn keyword pythonExClass	PendingDepricationWarning SyntaxWarning
   syn keyword pythonExClass	RuntimeWarning FutureWarning
   syn keyword pythonExClass	ImportWarning UnicodeWarning
+
+  syn keyword Keyword self
 endif
 
 if exists("python_slow_sync") && python_slow_sync != 0
@@ -370,5 +372,7 @@ if version >= 508 || !exists("did_python_syn_inits")
 
   delcommand HiLink
 endif
+
+syn keyword Keyword self
 
 let b:current_syntax = "python"
