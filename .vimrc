@@ -801,12 +801,10 @@ let Tlist_Use_Horiz_Window=0 " Displays taglist results in a vertical window:
 nnoremap TT :TlistOpen<CR>
 map <F4> :TlistToggle<CR>
 
-"Tlist_WinWidth~
-"The default width of the vertically split taglist window is 30. This can be
-"changed by modifying the 'Tlist_WinWidth' variable:
+" The default width of the vertically split taglist window is 30. This can be
+" changed by modifying the 'Tlist_WinWidth' variable:  
 let Tlist_WinWidth = 60
 let Tlist_Close_On_Select = 1 " Close Tlist when jumping to tag
-"Tlist_Display_Prototype~
 "By default, only the tag name will be displayed in the taglist window. If you
 "like to see tag prototypes instead of names, set the 'Tlist_Display_Prototype'
 "variable to 1. By default, this variable is set to zero and only tag names
@@ -833,10 +831,10 @@ let Tlist_Display_Prototype = 1
 " * [Scripting the Vim editor, Part 4: Dictionaries](http://www.ibm.com/developerworks/linux/library/l-vim-script-4/index.html)
 " * [Scripting the Vim editor, Part 5: Event-driven scripting and automation](http://www.ibm.com/developerworks/linux/library/l-vim-script-5/index.html)
 " * [Some good python settings suggestions](http://www.cmdln.org/2008/10/18/vim-customization-for-python/)
-" * [Good information on line wrapping](http://blog.ezyang.com/2010/03/vim-textwidth/)
-
+" * [Good information on line wrapping](http://blog.ezyang.com/2010/03/vim-textwidth/)  
+"
 " The g:maxLineLength variable is used by the MyStatusLine() function
-" I define in hacks.vim
+" I define in hacks.vim  
 let g:maxLineLength=80
 "
 " I put my small Vim hacks into a seperate file called hacks.vim
