@@ -25,8 +25,8 @@
 " Bram wrote/writes Vim, send money to his charity for Uganda. 
 " Find more info at [Vim.org](http://www.vim.org)  
 "
-" *If your reading this as a README on GitHub you should know that this 
-" README is generted from the .vimrc file of this project using [Vimdown](https://github.com/jeffbuttars/Vimdown)*  
+" __If your reading this as a README on GitHub you should know that this 
+" README is generted from the .vimrc file of this project using [Vimdown](https://github.com/jeffbuttars/Vimdown)__  
 "
 " After each code block I will try to put some links to the appropriate vimdoc
 " pages for the Vim features used in the section. This is a large .vimrc file
@@ -39,6 +39,7 @@
 " * [Mappings](#mappings)
 " * [Plugin Settings](#pluginsettings)
 " * [Misc.](#misc)
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " ## Options
