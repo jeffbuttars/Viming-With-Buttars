@@ -5,4 +5,4 @@ view/*
 doc/
 
 syntax:regexp
-!(^bundle\/vundle.*$)
+(?<!bundle\/vundle)$
