@@ -69,6 +69,11 @@ endfunction
 
 "highlight OverColLimit term=inverse,bold cterm=bold ctermbg=red ctermfg=black gui=bold guibg=red guifg=black 
 function! SetColorColumn( ccol )
+
+    if &buftype == "" && &buftype == "log"
+        return
+    endif
+
 	if ! exists("b:longLineMatchID")
 		let b:longLineMatchID = 0
 	endif
@@ -100,11 +105,8 @@ if ! exists("g:maxLineLength")
 	let g:maxLineLength=80
 endif
 
-if &buftype != "" && &buftype != "log"
-	au BufWinEnter * :call SetColorColumn(g:maxLineLength)
-	call SetColorColumn(g:maxLineLength)
-endif
-"au FileType python,c,javascript :call SetColorColumn(g:maxLineLength)
+au BufWinEnter * :call SetColorColumn(g:maxLineLength)
+call SetColorColumn(g:maxLineLength)
 
 """"""""""""""""""""""""""""""""""""""
 " Indent Python in the Google way.
