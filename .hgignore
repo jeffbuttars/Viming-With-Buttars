@@ -4,5 +4,5 @@ undos
 view/*
 doc/
 
-syntax:regex
+syntax:regexp
 !^bundle/vundle.*$
