@@ -967,6 +967,16 @@ Use the following to disable the cursorline for PHP files
 
 ## Plugin Settings 
 
+#### tComment
+
+I like to use CTRL-C to toggle comments 
+
+```vim
+exec 'noremap <C-C> :TComment<cr>'
+
+```
+
+
 #### [Lusty Explorer](http://www.vim.org/scripts/script.php?script_id=1890)
 
 ```vim
@@ -1066,7 +1076,30 @@ Bundle 'gmarik/vundle'
 ```
 git repos:
 
+```vim
+Bundle 'vim-scripts/LustyExplorer'
+Bundle 'garbas/vim-snipmate'
+Bundle 'vim-scripts/tComment'
+Bundle 'rygwdn/vim-conque'
+
+```
+
 vim-script repos:
+
+```vim
+Bundle 'a.vim'
+Bundle 'vcscommand'
+Bundle 'python.vim'
+Bundle 'vim-ipython.vim'
+Bundle 'matchit.zip'
+Bundle 'vim-indent-object'
+Bundle 'histwin.vim'
+Bundle 'Tabular'
+Bundle 'ScrollColors'
+Bundle 'LargeFile'
+Bundle 'tlib'
+
+```
 
 non-github repos:
 
