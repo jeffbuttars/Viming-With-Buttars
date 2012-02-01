@@ -721,6 +721,7 @@ autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^
 "
 " I like to use CTRL-C to toggle comments 
 exec 'noremap <C-C> :TComment<cr>'
+exec 'noremap <C-N> :TCommentBlock<cr>'
 "
 "
 " #### [Lusty Explorer](http://www.vim.org/scripts/script.php?script_id=1890)
@@ -785,13 +786,14 @@ call vundle#rc()
 " required! 
 Bundle 'gmarik/vundle'
 
-" git repos:
+" git-hub specific bundles:
 Bundle 'vim-scripts/LustyExplorer'
 Bundle 'garbas/vim-snipmate'
 Bundle 'vim-scripts/tComment'
 Bundle 'rygwdn/vim-conque'
+Bundle 'kogakure/vim-sparkup'
 "
-" vim-script repos:
+" Other bundles
 Bundle 'a.vim'
 Bundle 'vcscommand'
 Bundle 'python.vim'
@@ -803,8 +805,7 @@ Bundle 'Tabular'
 Bundle 'ScrollColors'
 Bundle 'LargeFile'
 Bundle 'tlib'
-"
-" non-github repos:
+
 "
 " #### [TagList](https://github.com/vim-scripts/taglist.vim)
 " Set taglist plugin options
