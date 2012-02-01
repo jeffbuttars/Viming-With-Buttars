@@ -1,0 +1,18 @@
+# pack-refs with: peeled 
+51caa860f022eeb9585cd21f84cd57034787e843 refs/tags/0.9
+^793ee8a91ec548e71d0a70cb4c3889891f42805a
+0bbcd0aa0667031f6bb91b06f2b0b7b4a8cb55d9 refs/tags/0.8
+^32c5ae479ef0ac7d9061442d47569c5f2578ac56
+eb656297099ab6eec7b1cffe3019065a1b0e6070 refs/tags/0.7.1
+^9dcdbf16c6a0a0c9e4e85c3564d84a49824e535f
+5fbfb1aaedeee7820938cd8ecbabae2e1dbfdec2 refs/tags/0.7
+^352181553fa584dfa9c1c93940b57d3f7f1f5d94
+1a9a26d7d53f40cfb06ec7b0e3f00a685235e0b3 refs/tags/0.5
+^dcc6443d30816a46d37b518c93279ef87ea4d5d0
+a108fe817f8f0a11b9b48346d831c6abc041ffcb refs/tags/0.2
+^8dfbd77c2326134c6e3943b5803dc0a7118776b3
+51d1bc60e4774105a9a3c822460bde60cde316a8 refs/remotes/origin/v
+c9d81623c33febf0111de9df3d2065c56803a549 refs/remotes/origin/master
+f669af6547702106d2a52962ca42e2ab35ae78d7 refs/remotes/origin/faster
+1df405ed6572449e631e457c75f979cc3db4f365 refs/remotes/origin/events
+5d2a24f27e3662be9fbe21b0a46c8ab00ff2eac5 refs/remotes/origin/BundleMake
