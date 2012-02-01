@@ -795,9 +795,9 @@ Bundle 'kogakure/vim-sparkup'
 "
 " Other bundles
 Bundle 'a.vim'
-Bundle 'vcscommand'
+Bundle 'vcscommand.vim'
 Bundle 'python.vim'
-Bundle 'vim-ipython.vim'
+Bundle 'vim-ipython'
 Bundle 'matchit.zip'
 Bundle 'vim-indent-object'
 Bundle 'histwin.vim'
