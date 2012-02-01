@@ -794,6 +794,7 @@ Bundle 'rygwdn/vim-conque'
 Bundle 'kogakure/vim-sparkup'
 "
 " Other bundles
+Bundle 'pep8'
 Bundle 'a.vim'
 Bundle 'vcscommand.vim'
 Bundle 'python.vim'
