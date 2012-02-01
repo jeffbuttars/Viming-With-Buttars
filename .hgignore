@@ -3,3 +3,6 @@ swapback
 undos
 view/*
 doc/
+
+syntax:regex
+!^bundle/vundle.*$
