@@ -717,6 +717,10 @@ autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^
 "
 " ## Plugin Settings 
 "
+" #### Pep8
+" Map Pep8 to F8
+let g:pep8_map='<F8>'
+"
 " #### tComment
 "
 " I like to use CTRL-C to toggle comments 
@@ -794,6 +798,7 @@ Bundle 'rygwdn/vim-conque'
 Bundle 'kogakure/vim-sparkup'
 "
 " Other bundles
+Bundle 'pep8'
 Bundle 'a.vim'
 Bundle 'vcscommand.vim'
 Bundle 'python.vim'
@@ -805,6 +810,7 @@ Bundle 'Tabular'
 Bundle 'ScrollColors'
 Bundle 'LargeFile'
 Bundle 'tlib'
+Bundle 'Python-Syntax'
 
 "
 " #### [TagList](https://github.com/vim-scripts/taglist.vim)
