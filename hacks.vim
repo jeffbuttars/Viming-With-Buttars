@@ -69,6 +69,7 @@ endfunction
 
 "highlight OverColLimit term=inverse,bold cterm=bold ctermbg=red ctermfg=black gui=bold guibg=red guifg=black 
 function! SetColorColumn( ccol )
+
 	if ! exists("b:longLineMatchID")
 		let b:longLineMatchID = 0
 	endif
@@ -82,7 +83,7 @@ function! SetColorColumn( ccol )
 
 	"echo "SetColorColumn " b:longLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
 
-	if &buftype != "" || expand('%') == ''
+	if &buftype != "" || expand('%') == '' || &buftype == "log" || &ft == "log"
 		setlocal colorcolumn=0
 		let &textwidth = (0)
 		return
@@ -100,10 +101,7 @@ if ! exists("g:maxLineLength")
 	let g:maxLineLength=80
 endif
 
-if &buftype != "" && &buftype != "log"
-	au BufWinEnter * :call SetColorColumn(g:maxLineLength)
-	call SetColorColumn(g:maxLineLength)
-endif
+au BufWinEnter,FileType * :call SetColorColumn(g:maxLineLength)
 "au FileType python,c,javascript :call SetColorColumn(g:maxLineLength)
 
 """"""""""""""""""""""""""""""""""""""
