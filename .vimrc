@@ -105,9 +105,12 @@ Bundle 'colorsupport.vim'
 " schemes
 Bundle 'Lucius'
 Bundle 'noahfrederick/Hemisu'
-Bundle 'eclm_wombat.vim'
-Bundle 'wombat256.vim'
-Bundle 'Wombat'
+" The following are schemes I like, but I'm not using them right now.
+    " Bundle 'eclm_wombat.vim'
+    " Bundle 'wombat256.vim'
+    " Bundle 'Wombat'
+    " Bundle 'jellybeans.vim'
+    " Bundle 'github-theme'
 "
 " <a name="vimoptions" />
 "
@@ -608,8 +611,14 @@ if has( "gui_running" )
 	" I like a white based theme in GVim
 	set cursorline
 	hi clear CursorLine 
+
+    " If using lucius
 	let g:lucius_style = "light"
-	colo lucius 
+    " If using hemisu
+    set background=light
+
+	" colo lucius 
+    colo hemisu
 elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
 	" Use a console friendly theme and turn off cursorline
 	" I prefer a dark theme at the console..
@@ -618,12 +627,15 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
 	hi clear CursorLine 
 	
 	if $TERM_META =~ 'white'
+        set background=light
 		let g:lucius_style = "light"
-		colo lucius 
 	else
+        set background=dark
 		let g:lucius_style = "dark"
-		colo lucius 
 	endif
+
+    " colo lucius 
+    colo hemisu
 endif
 
 " set linenumbers on by default
