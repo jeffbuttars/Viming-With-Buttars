@@ -115,16 +115,17 @@ Bundle 'colorsupport.vim'
 ```
 Colorschemes
 
-Lucius is a great 256 color theme with both light and dark 
-schemes
+[Lucius](https://github.com/vim-scripts/Lucius) is a great 256
+color theme with both light and dark 
+schemes.  
+[Hemisu](http://noahfrederick.com/vim-color-scheme-hemisu/)
+looks nice, going to try it out for a while
 
 ```vim
 Bundle 'Lucius'
 Bundle 'noahfrederick/Hemisu'
-Bundle 'eclm_wombat.vim'
-Bundle 'wombat256.vim'
-Bundle 'Wombat'
 ```
+The following are schemes I like, but I'm not using them right now.
 
 <a name="vimoptions" />
 
@@ -690,8 +691,14 @@ if has( "gui_running" )
 	" I like a white based theme in GVim
 	set cursorline
 	hi clear CursorLine 
+
+    " If using lucius
 	let g:lucius_style = "light"
-	colo lucius 
+    " If using hemisu
+    set background=light
+
+	" colo lucius 
+    colo hemisu
 elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
 	" Use a console friendly theme and turn off cursorline
 	" I prefer a dark theme at the console..
@@ -700,12 +707,15 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
 	hi clear CursorLine 
 	
 	if $TERM_META =~ 'white'
+        set background=light
 		let g:lucius_style = "light"
-		colo lucius 
 	else
+        set background=dark
 		let g:lucius_style = "dark"
-		colo lucius 
 	endif
+
+    " colo lucius 
+    colo hemisu
 endif
 ```
 set linenumbers on by default
