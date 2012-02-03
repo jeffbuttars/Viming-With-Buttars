@@ -33,6 +33,7 @@
 " and I have yet to tame it. So it's not in a great order, a work in progress.
 " 
 " ## .vimrc sections:
+" * [Bundles](#bundles)
 " * [Vim Options](#vimoptions)
 " * [Autocommands](#autocommands)
 " * [OminCompletion Settings](#ominsettings) 
@@ -41,8 +42,77 @@
 " * [Misc.](#misc)
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ## Bundles
 "
-" ## Options
+" We deal with our bundles first thing because later sections
+" rely on them being available.
+"
+" #### [Pathogen](https://github.com/tpope/vim-pathogen)
+" [Pathogen](https://github.com/tpope/vim-pathogen) is a
+" nice package format for Vim _'packages'_.  
+" [Vundle](https://github.com/gmarik/vundle) is a great package manager
+" for Pathogen bundles.
+"
+" Call infect to get the bundle handling started.
+call pathogen#infect()
+"
+" Brief help on Bundle commands  
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of unused
+"
+" see :h vundle for more details or wiki for FAQ
+" *NOTE*: comments after Bundle command are not allowed..
+"
+" [Vundle](https://github.com/gmarik/vundle) Configuration
+" Add vundle to our runtime path (rtp) and start vundle
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" Bundles
+" let Vundle manage Vundle
+" required! 
+Bundle 'gmarik/vundle'
+
+" git-hub specific bundles:
+Bundle 'vim-scripts/LustyExplorer'
+Bundle 'garbas/vim-snipmate'
+Bundle 'vim-scripts/tComment'
+Bundle 'rygwdn/vim-conque'
+   " Bundle 'kogakure/vim-sparkup'
+Bundle 'ZenCoding.vim'
+"
+" Other bundles
+Bundle 'pep8'
+Bundle 'a.vim'
+Bundle 'vcscommand.vim'
+Bundle 'python.vim'
+Bundle 'vim-ipython'
+Bundle 'matchit.zip'
+Bundle 'vim-indent-object'
+Bundle 'histwin.vim'
+Bundle 'Tabular'
+Bundle 'ScrollColors'
+Bundle 'LargeFile'
+Bundle 'tlib'
+Bundle 'Python-Syntax'
+
+Bundle 'colorsupport.vim'
+" Colorschemes
+"
+" Lucius is a great 256 color theme with both light and dark 
+" schemes
+Bundle 'Lucius'
+Bundle 'noahfrederick/Hemisu'
+Bundle 'eclm_wombat.vim'
+Bundle 'wombat256.vim'
+Bundle 'Wombat'
+"
+" <a name="vimoptions" />
+"
+" ### Vim Options
+"
 " When started as "evim", evim.vim will already have done these settings, so
 " we'll bail out in that scenario
 if v:progname =~? "evim"
@@ -51,10 +121,6 @@ endif
 " * [evim][]
 " * [finish][]
 "
-"
-" <a name="vimoptions" />
-"
-" ### Vim Options
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible " Don't be compatible with basic Vi
@@ -106,7 +172,7 @@ set showcmd		         " display incomplete commands
 "
 " If we're running Vim 7.3 or newer, enable persistent undo
 " and tell vim were to store the undo files. 
-if version >= 730
+if version >= 703
 	set undofile
 	set undodir=~/.vim/undos
 endif
@@ -552,15 +618,9 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
 	hi clear CursorLine 
 	
 	if $TERM_META =~ 'white'
-		"colo github 
 		let g:lucius_style = "light"
 		colo lucius 
 	else
-		"colo molokai 
-		"colo wombat256 
-		"colo jellybeans 
-		"colo 256-grayvim
-		"colo mywombat256 
 		let g:lucius_style = "dark"
 		colo lucius 
 	endif
@@ -756,62 +816,19 @@ let g:DoubleTapInsertTimer = 0.8
 " #### [Sparkup](https://github.com/rstacruz/sparkup) options
 " I don't like default mapping, I actually use
 " the <c-e> default map for navigation
-let g:sparkupExecuteMapping = '<c-t>'
-let g:sparkupNextMapping = '<c-h>'
+" let g:sparkupExecuteMapping = '<c-t>'
+" let g:sparkupNextMapping = '<c-h>'
+
+" #### [ZenCoding](https://github.com/mattn/zencoding-vim)
+" I still like sparkup, but I'm going to give Zen a shot.
+" Change the mapping to my liking
+let g:user_zen_leader_key = '<c-t>'
 "
 "
 " #### BellyButton settings
 let g:BellyButton_javascript_jslint_options = {'white':'false', 'vars':'true','bitwise':'false',
 			\'predef':"['Backbone', '_', 'console','window', 'Ext', 'jQuery', '$', 'cp', 'alert', 'confirm', 'document']"}
 "
-"
-" #### [Pathogen](https://github.com/tpope/vim-pathogen)
-call pathogen#infect()
-
-" [Vundle](https://github.com/gmarik/vundle) Configuration
-"
-"
-" Brief help
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install(update) bundles
-" :BundleSearch(!) foo - search(or refresh cache first) for foo
-" :BundleClean(!)      - confirm(or auto-approve) removal of unused
-"
-" see :h vundle for more details or wiki for FAQ
-" *NOTE*: comments after Bundle command are not allowed..
-"
-" Add vundle to our runtime path (rtp) and start vundle
-"
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-" Bundles
-" let Vundle manage Vundle
-" required! 
-Bundle 'gmarik/vundle'
-
-" git-hub specific bundles:
-Bundle 'vim-scripts/LustyExplorer'
-Bundle 'garbas/vim-snipmate'
-Bundle 'vim-scripts/tComment'
-Bundle 'rygwdn/vim-conque'
-Bundle 'kogakure/vim-sparkup'
-"
-" Other bundles
-Bundle 'pep8'
-Bundle 'a.vim'
-Bundle 'vcscommand.vim'
-Bundle 'python.vim'
-Bundle 'vim-ipython'
-Bundle 'matchit.zip'
-Bundle 'vim-indent-object'
-Bundle 'histwin.vim'
-Bundle 'Tabular'
-Bundle 'ScrollColors'
-Bundle 'LargeFile'
-Bundle 'tlib'
-Bundle 'Python-Syntax'
-
 "
 " #### [TagList](https://github.com/vim-scripts/taglist.vim)
 " Set taglist plugin options
