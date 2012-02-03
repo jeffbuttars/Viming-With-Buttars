@@ -101,8 +101,11 @@ Bundle 'Python-Syntax'
 Bundle 'colorsupport.vim'
 " Colorschemes
 "
-" Lucius is a great 256 color theme with both light and dark 
-" schemes
+" [Lucius](https://github.com/vim-scripts/Lucius) is a great 256
+" color theme with both light and dark 
+" schemes.  
+" [Hemisu](http://noahfrederick.com/vim-color-scheme-hemisu/)
+" looks nice, going to try it out for a while
 Bundle 'Lucius'
 Bundle 'noahfrederick/Hemisu'
 " The following are schemes I like, but I'm not using them right now.
