@@ -77,7 +77,8 @@ Bundle 'gmarik/vundle'
 
 " git-hub specific bundles:
 Bundle 'vim-scripts/LustyExplorer'
-Bundle 'garbas/vim-snipmate'
+   " Bundle 'garbas/vim-snipmate'
+Bundle 'UltiSnips'
 Bundle 'vim-scripts/tComment'
 Bundle 'rygwdn/vim-conque'
    " Bundle 'kogakure/vim-sparkup'
@@ -402,27 +403,14 @@ nnoremap k gk
    " nnoremap <C-h> <c-w>h
    " nnoremap <C-k> <c-w>k
    " nnoremap <C-l> <c-w>l
-"  
+  
 
-""" Snipmate 
-" Don't trigger snipmate when using completion
-" This option currently requires the buttars hacked version
-" of snipMate :( available from vimingwithbuttar at google code.
-let g:SnipeMateAllowOmniTab = 1
-
-" We're extra friendly for django 
+" We're extra friendly for Django
+" and for SnipMate/UltiSnips, I want to use HTML
+" snippets with my markdown wo we chain the filetypes
 autocmd FileType python set ft=python.django 		" For SnipMate
 autocmd BufRead *.djml set ft=html.htmldjango 	" For SnipMate
-
-autocmd FileType mkd set ft=mkd.html 	" For SnipMate, I want to use HTML
-										" snippets with my markdown
-autocmd BufRead *.go set ft=go 	" For SnipMate
-
-" Setup pysmell
-" source ~/.vim/plugin/pysmell.vim
-" let g:pysmell_debug = 1
-" autocmd FileType python set omnifunc=pysmell#Complete
-
+autocmd FileType mkd set ft=mkd.html
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " From an idea by Michael Naumann
@@ -623,8 +611,8 @@ if has( "gui_running" )
 	" colo lucius 
     colo hemisu
 elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
-	" Use a console friendly theme and turn off cursorline
-	" I prefer a dark theme at the console..
+	" Use a console friendly theme and force Vim to
+    " use 256 colors if we think the console can handle it.
 	set t_Co=256
 	set cursorline
 	hi clear CursorLine 
@@ -637,8 +625,8 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
 		let g:lucius_style = "dark"
 	endif
 
-    " colo lucius 
-    colo hemisu
+    colo lucius 
+    " colo hemisu
 endif
 
 " set linenumbers on by default
@@ -811,7 +799,8 @@ imap <C-d> <ESC>:LustyFilesystemExplorer<CR>
 "
 "
 " #### [SnipMate](https://github.com/garbas/vim-snipmate)
-let g:snips_author = 'Jeff Buttars'
+" **Currently Unused**
+" let g:snips_author = 'Jeff Buttars'
 "
 " [json_reformat](http://lloyd.github.com/yajl/)
 "
