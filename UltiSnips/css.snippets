@@ -1,0 +1,33 @@
+
+snippet { " new property block"
+{
+	$1
+}$2
+endsnippet
+
+snippet . "New rule"
+${1} {
+    ${2}
+}$0
+endsnippet
+
+snippet .. "New class rule"
+.${1} {
+    ${2}
+}$0
+endsnippet
+
+snippet .# "New id rule"
+#${1} {
+    ${2}
+}$0
+endsnippet
+
+snippet ta "text-align: left:center:right (txt)"
+text-align: ${1:left/right/center/justify};$0
+endsnippet
+
+snippet wi "width: %/px/em"
+width: ${1:%/px/em};$0
+endsnippet
+
