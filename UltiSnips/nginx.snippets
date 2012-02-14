@@ -1,0 +1,12 @@
+snippet loc "location [path] { [] }"
+location ${1} {
+	${2};
+}$0
+endsnippet
+
+snippet ser "server { [] }"
+server {
+	listen ${1};
+    server_name ${2};
+}$0
+endsnippet
