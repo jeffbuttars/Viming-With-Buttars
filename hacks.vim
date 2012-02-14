@@ -1,30 +1,34 @@
 
 " If I'm in a CPBSD dev dir, default the make command
-" to be cpmake
-if $CPBSDSRCDIR != "" && getcwd() =~ "^".$CPBSDSRCDIR
-	set makeprg=cpmake
-
-	let tstr = $CPBSDSRCDIR."/tags" 
-	if filereadable( tstr )
-		"" make sure our big ass bsd tags file
-		"" is used in subdirs as well.
-		set tags+=tstr 
-	endif
-
-	nmap <silent> <F10> <ESC>:w<CR><ESC>:make -j10 kernel<CR><ESC>make -10 build<CR><ESC>:make imageclean<CR><ESC>make image<CR>
-	imap <silent> <F10> <ESC>:w<CR><ESC>:make -j10 kernel<CR><ESC>make -10 build<CR><ESC>:make imageclean<CR><ESC>make image<CR>
-	nmap <silent> <F9>  <ESC>:w<CR><ESC>:make all<CR>
-	imap <silent> <F9>  <ESC>:w<CR><ESC>:make all<CR>
-	nmap <silent> <F8>  <ESC>:w<CR><ESC>:make -j10 build<CR>
-	imap <silent> <F8>  <ESC>:w<CR><ESC>:make -j10 build<CR>
-	nmap <silent> <F7>  <ESC>:w<CR><ESC>:make imageclean<CR><ESC>:make image<CR>
-	imap <silent> <F7>  <ESC>:w<CR><ESC>:make imageclean<CR><ESC>:make image<CR>
-	nmap <silent> <F6>  <ESC>:w<CR><ESC>:make kernel<CR>
-	imap <silent> <F6>  <ESC>:w<CR><ESC>:make kernel<CR>
-else
-	nmap <silent> <F6>  <ESC>:w<CR><ESC>:make<CR><CR><CR>
-	imap <silent> <F6>  <ESC>:w<CR><ESC>:make<CR><CR><CR>
-endif
+" to be cpmake. 
+" I don't use this anymore. Relic from a previous job.
+" The gist is, if I'm under a certain directory than I assume
+" I'm working on a specific problem. In that case I setup
+" some hotkeys to make the overlly verbose build commands easier.
+   " if $CPBSDSRCDIR != "" && getcwd() =~ "^".$CPBSDSRCDIR
+   " 	set makeprg=cpmake
+   " 
+   " 	let tstr = $CPBSDSRCDIR."/tags" 
+   " 	if filereadable( tstr )
+   " 		"" make sure our big ass bsd tags file
+   " 		"" is used in subdirs as well.
+   " 		set tags+=tstr 
+   " 	endif
+   " 
+   " 	nmap <silent> <F10> <ESC>:w<CR><ESC>:make -j10 kernel<CR><ESC>make -10 build<CR><ESC>:make imageclean<CR><ESC>make image<CR>
+   " 	imap <silent> <F10> <ESC>:w<CR><ESC>:make -j10 kernel<CR><ESC>make -10 build<CR><ESC>:make imageclean<CR><ESC>make image<CR>
+   " 	nmap <silent> <F9>  <ESC>:w<CR><ESC>:make all<CR>
+   " 	imap <silent> <F9>  <ESC>:w<CR><ESC>:make all<CR>
+   " 	nmap <silent> <F8>  <ESC>:w<CR><ESC>:make -j10 build<CR>
+   " 	imap <silent> <F8>  <ESC>:w<CR><ESC>:make -j10 build<CR>
+   " 	nmap <silent> <F7>  <ESC>:w<CR><ESC>:make imageclean<CR><ESC>:make image<CR>
+   " 	imap <silent> <F7>  <ESC>:w<CR><ESC>:make imageclean<CR><ESC>:make image<CR>
+   " 	nmap <silent> <F6>  <ESC>:w<CR><ESC>:make kernel<CR>
+   " 	imap <silent> <F6>  <ESC>:w<CR><ESC>:make kernel<CR>
+   " else
+   " 	nmap <silent> <F6>  <ESC>:w<CR><ESC>:make<CR><CR><CR>
+   " 	imap <silent> <F6>  <ESC>:w<CR><ESC>:make<CR><CR><CR>
+   " endif
 
 
 " Little something from http://www.ibm.com/developerworks/linux/library/l-vim-script-5/index.html 
@@ -32,8 +36,9 @@ endif
 function! Autosave()
 
 	" close the preview window if it's visible
-	" and the pop up menu is not visible
-	if pumvisible() == 0
+	" and the pop up menu is not visible, but not if 
+    " we're in a preview window.
+	if pumvisible() == 0 && &buftype == ''
 		pclose
 	endif
 
@@ -68,7 +73,7 @@ endfunction
 " au BufWinEnter * :call SaveView(0)
 
 "highlight OverColLimit term=inverse,bold cterm=bold ctermbg=red ctermfg=black gui=bold guibg=red guifg=black 
-function! SetColorColumn( ccol )
+function! SetColorColumn(ccol)
 
 	if ! exists("b:longLineMatchID")
 		let b:longLineMatchID = 0
@@ -83,26 +88,29 @@ function! SetColorColumn( ccol )
 
 	"echo "SetColorColumn " b:longLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
 
-	if &buftype != "" || expand('%') == '' || &buftype == "log" || &ft == "log"
+	if a:ccol == 0 || &buftype != "" || expand('%') == '' || &buftype == "log" || &ft == "log" || &ft == 'html' || &ft == 'css'
 		setlocal colorcolumn=0
 		let &textwidth = (0)
+        " echo "bailing out"
 		return
 	endif
 
 	let l:mlist = getmatches()
 	if len(l:mlist) < 1 || b:longLineMatchID == 0 || &colorcolumn != (a:ccol+1)
-		"echo "SetColorColumn applying" b:longLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
+		" echo "SetColorColumn applying" b:longLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
 		let &colorcolumn = (a:ccol)
 		let &textwidth = (a:ccol-1)
 		let b:longLineMatchID=matchadd( "ErrorMsg", '\%>'.a:ccol.'v.\+', -1 )
+
+        " exec "normal colorscheme ".g:colors_name
 	endif
 endfunction
 if ! exists("g:maxLineLength")
 	let g:maxLineLength=80
 endif
 
-au BufWinEnter,FileType * :call SetColorColumn(g:maxLineLength)
-"au FileType python,c,javascript :call SetColorColumn(g:maxLineLength)
+" au BufWinEnter,FileType * :call SetColorColumn(g:maxLineLength)
+au FileType * :call SetColorColumn(g:maxLineLength)
 
 """"""""""""""""""""""""""""""""""""""
 "

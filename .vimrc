@@ -78,7 +78,7 @@ Bundle 'gmarik/vundle'
 " git-hub specific bundles:
 Bundle 'vim-scripts/LustyExplorer'
    " Bundle 'garbas/vim-snipmate'
-Bundle 'UltiSnips'
+Bundle 'UltiSnips-2.0'
 Bundle 'vim-scripts/tComment'
 Bundle 'rygwdn/vim-conque'
    " Bundle 'kogakure/vim-sparkup'
@@ -299,10 +299,7 @@ set autoread
 " if we have sudo privileges, " when we're not currently useing vim as root
 cmap w!! %!sudo tee > /dev/null %
 
-" Auto close the preview window after a short time of inactivity
-autocmd CursorHold * if pumvisible() == 0|pclose|endif
-autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-
+"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 "
@@ -411,6 +408,10 @@ nnoremap k gk
 autocmd FileType python set ft=python.django 		" For SnipMate
 autocmd BufRead *.djml set ft=html.htmldjango 	" For SnipMate
 autocmd FileType mkd set ft=mkd.html
+
+
+let g:UltiSnipsListSnippets = "<c-q>"
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " From an idea by Michael Naumann
@@ -886,7 +887,7 @@ let Tlist_Display_Prototype = 1
 " I define in hacks.vim  
 let g:maxLineLength=80
 "
-" I put my small Vim hacks into a seperate file called hacks.vim
+" I put my small Vim hacks into a seperate file called [hacks.vim](https://github.com/jeffbuttars/Viming-With-Buttars/blob/master/hacks.vim file)
 " There are things, often functions/commands, I don't want in my 
 " .vimrc but I also don't want to write a plugin for.
 " I source it last thing

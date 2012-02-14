@@ -303,6 +303,10 @@ endfunction
 
 function! s:clearMatch()
 
+	if &buftype != "" || expand('%') == ''
+		return
+	endif
+
 	if ! g:DoubleTap_enable_visual_feedback
 		return
 	endif
