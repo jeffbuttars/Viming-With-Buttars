@@ -55,6 +55,8 @@
 "
 " Call infect to get the bundle handling started.
 call pathogen#infect()
+   " infect our locally tracked pkgs
+call pathogen#infect('~/.vim/pkgs')
 "
 " Brief help on Bundle commands  
 " :BundleList          - list configured bundles
@@ -78,7 +80,7 @@ Bundle 'gmarik/vundle'
 " git-hub specific bundles:
 Bundle 'vim-scripts/LustyExplorer'
    " Bundle 'garbas/vim-snipmate'
-Bundle 'UltiSnips-2.0'
+" Bundle 'UltiSnips-2.1'
 Bundle 'vim-scripts/tComment'
 Bundle 'rygwdn/vim-conque'
    " Bundle 'kogakure/vim-sparkup'
@@ -98,6 +100,7 @@ Bundle 'ScrollColors'
 Bundle 'LargeFile'
 Bundle 'tlib'
 Bundle 'Python-Syntax'
+Bundle 'nginx.vim'
 
 Bundle 'colorsupport.vim'
 " Colorschemes
