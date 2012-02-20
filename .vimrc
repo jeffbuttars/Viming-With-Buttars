@@ -87,7 +87,6 @@ Bundle 'rygwdn/vim-conque'
 Bundle 'ZenCoding.vim'
 "
 " Other bundles
-Bundle 'pep8'
 Bundle 'a.vim'
 Bundle 'vcscommand.vim'
 Bundle 'python.vim'
@@ -408,7 +407,7 @@ nnoremap k gk
 " We're extra friendly for Django
 " and for SnipMate/UltiSnips, I want to use HTML
 " snippets with my markdown wo we chain the filetypes
-autocmd FileType python set ft=python.django 		" For SnipMate
+   " autocmd FileType python set ft=python.django 		" For SnipMate
 autocmd BufRead *.djml set ft=html.htmldjango 	" For SnipMate
 autocmd FileType mkd set ft=mkd.html
 
@@ -784,9 +783,6 @@ autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^
 "
 " ## Plugin Settings 
 "
-" #### Pep8
-" Map Pep8 to F8
-let g:pep8_map='<F8>'
 "
 " #### tComment
 "
