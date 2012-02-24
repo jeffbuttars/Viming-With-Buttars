@@ -1,7 +1,26 @@
+
+global !p
+def x(snip):
+    if snip.ft.startswith("x"):
+        snip.rv = '/'
+    else:
+        snip.rv = ""
+endglobal
+
 snippet span "XHTML <span>"
 <span${1: id="${2:name}"}>
 	${VISUAL}$0
 </span>
 endsnippet
 
-
+snippet html "XHTML <html>"
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8"`!p x(snip)`>
+        <title>${1:`!p snip.rv = snip.basename or "Page Title"`}</title>
+    </head>
+    <body>
+        $0
+    </body>
+</html>
+endsnippet

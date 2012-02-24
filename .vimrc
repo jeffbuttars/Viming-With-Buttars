@@ -85,6 +85,9 @@ Bundle 'vim-scripts/tComment'
 Bundle 'rygwdn/vim-conque'
    " Bundle 'kogakure/vim-sparkup'
 Bundle 'ZenCoding.vim'
+Bundle 'https://github.com/nvie/vim-flake8'
+Bundle 'https://github.com/ehamberg/vim-cute-python'
+
 "
 " Other bundles
 Bundle 'a.vim'
