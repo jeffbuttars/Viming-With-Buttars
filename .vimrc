@@ -412,7 +412,6 @@ nnoremap k gk
 " snippets with my markdown wo we chain the filetypes
    " autocmd FileType python set ft=python.django 		" For SnipMate
 autocmd BufRead *.djml set ft=html.htmldjango 	" For SnipMate
-autocmd FileType mkd set ft=mkd.html
 
 
 let g:UltiSnipsListSnippets = "<c-q>"
