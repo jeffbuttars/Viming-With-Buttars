@@ -78,7 +78,7 @@ Bundle 'gmarik/vundle'
 " git-hub specific bundles:
 Bundle 'vim-scripts/LustyExplorer'
    " Bundle 'garbas/vim-snipmate'
-Bundle 'UltiSnips-2.0'
+Bundle 'UltiSnips-2.1'
 Bundle 'vim-scripts/tComment'
 Bundle 'rygwdn/vim-conque'
    " Bundle 'kogakure/vim-sparkup'
@@ -405,9 +405,9 @@ nnoremap k gk
 " We're extra friendly for Django
 " and for SnipMate/UltiSnips, I want to use HTML
 " snippets with my markdown wo we chain the filetypes
-autocmd FileType python set ft=python.django 		" For SnipMate
-autocmd BufRead *.djml set ft=html.htmldjango 	" For SnipMate
-autocmd FileType mkd set ft=mkd.html
+" autocmd FileType python set ft=python.django
+autocmd BufRead *.djml set ft=html.htmldjango
+" autocmd FileType mkd set ft=mkd.html
 
 
 let g:UltiSnipsListSnippets = "<c-q>"
