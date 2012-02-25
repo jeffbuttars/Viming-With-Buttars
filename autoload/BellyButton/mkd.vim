@@ -1,8 +1,8 @@
 
-function! BellyButton#markdown#load()
+function! BellyButton#mkd#load()
 endfunction
 
-function! BellyButton#markdown#init()
+function! BellyButton#mkd#init()
 	if !exists('s:bbmarkdown_initialized')
 		" XXX TODO make these user configurable so they can easily
 		" be set in the .vimrc
@@ -120,23 +120,23 @@ endfunction
 
 " We don't really run a lint over markdown
 " so we just render and show the out put
-function! BellyButton#markdown#lintRaw()
+function! BellyButton#mkd#lintRaw()
 	let l:paths = s:getPaths()
 	call s:renderHTML( l:paths['src'], l:paths['dst'] )
 	call s:showHTML(l:paths['dst'])
 endfunction
 
-function! BellyButton#markdown#extra()
+function! BellyButton#mkd#extra()
 	let l:paths = s:getPaths()
 	call s:renderPDF( l:paths['src'], l:paths['dst'] )
 	call s:showPDF(l:paths['dst'])
 endfunction
 
-function! BellyButton#markdown#parseLintError( eline )
+function! BellyButton#mkd#parseLintError( eline )
 	return {}
 endfunction
 
-function! BellyButton#markdown#exec()
+function! BellyButton#mkd#exec()
 
 	let sysout = ""
 	
@@ -147,7 +147,7 @@ function! BellyButton#markdown#exec()
 	return {'sysout':sysout, 'ecode':v:shell_error, 'good_ecode':0, 'parse_error':0}
 endfunction
 
-function! BellyButton#markdown#info()
+function! BellyButton#mkd#info()
 	return {}
 endfunction
 
