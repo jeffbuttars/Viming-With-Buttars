@@ -1,13 +1,3 @@
-"<!--<style>
-"div.codehilite {
-"background-color:#F0F0F0;
-"padding:.25em;
-"border:1px solid #CCC;
-"-webkit-border-radius: 3px;
-"-moz-border-radius: 3px;
-"border-radius: 3px;
-"}
-"</style>-->
 " #Viming With Buttars
 "
 " ## Maintainer: Jeff Buttars  
@@ -715,6 +705,9 @@ set sessionoptions=winpos,localoptions
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins and external addons
+"
+" VCS Command Plugin
+let VCSCommandVCSTypePreference='hg git svn'
 
 " LustyExplorer
 nmap <silent> <c-l> <esc>:LustyBufferExplorer<CR>
@@ -811,7 +804,7 @@ autocmd FileType xml  set equalprg=xmllint\ --format\ -
 
 " doubleTap
 "let g:loaded_doubleTap = 1
-let g:DoubleTapInsertTimer = 0.8
+let g:DoubleTapInsertTimer = 0.9
 
 " Set NiceMenu Delay
 " let g:loaded_nice_menu = 1
@@ -888,7 +881,7 @@ let Tlist_Display_Prototype = 1
 " I define in hacks.vim  
 let g:maxLineLength=80
 "
-" I put my small Vim hacks into a seperate file called [hacks.vim](https://github.com/jeffbuttars/Viming-With-Buttars/blob/master/hacks.vim file)
+" I put my small Vim hacks into a seperate file called [hacks.vim](https://github.com/jeffbuttars/Viming-With-Buttars/blob/master/hacks.vim) file
 " There are things, often functions/commands, I don't want in my 
 " .vimrc but I also don't want to write a plugin for.
 " I source it last thing
