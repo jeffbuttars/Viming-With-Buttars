@@ -102,8 +102,8 @@ function! SetColorColumn(ccol)
 		let &textwidth = (a:ccol-1)
 		let b:longLineMatchID=matchadd( "ErrorMsg", '\%>'.a:ccol.'v.\+', -1 )
 
-        " exec "normal colorscheme ".g:colors_name
 	endif
+
 endfunction
 if ! exists("g:maxLineLength")
 	let g:maxLineLength=80
