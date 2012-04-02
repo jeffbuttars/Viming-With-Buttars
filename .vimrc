@@ -496,7 +496,7 @@ set title
 
 "set foldmethod=indent
 "set foldmethod=syntax
-set foldmethod=manual
+set foldmethod=marker
 
 " Easy cycle through tabs using Ctrl-PgUp/PgDown 
 " similar to FireFox
@@ -893,7 +893,7 @@ let g:maxLineLength=80
 " .vimrc but I also don't want to write a plugin for.
 " I source it last thing
 runtime hacks.vim 
-" * [runtime][]
+" * [runtime][]  
 
 " [evim]: http://vimdoc.sourceforge.net/htmldoc/starting.html#evim
 " 
