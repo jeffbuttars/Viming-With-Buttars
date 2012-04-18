@@ -77,6 +77,8 @@ Bundle 'rygwdn/vim-conque'
 Bundle 'ZenCoding.vim'
 Bundle 'https://github.com/nvie/vim-flake8'
 Bundle 'https://github.com/ehamberg/vim-cute-python'
+Bundle 'vim-scala'
+Bundle 'scalacommenter.vim'
 
 "
 " Other bundles
@@ -158,6 +160,7 @@ set history=1000 " keep 1000 lines of command line history
 " * [statusline][]
 "
 " Set up some buffer and window behaviors
+filetype on
 set switchbuf=useopen
 set laststatus=2          " last window will always have a status line
 set showcmd		         " display incomplete commands
@@ -191,24 +194,12 @@ endif
 " * [mouse][]
 "
 
-" Switch syntax highlighting on if the terminal supports colors
-" or if we're runnig in a GUI.
-" Also switch on highlighting of the last used search pattern.
-if &t_Co > 2 || has("gui_running")
-	syntax on
+" Switch on highlighting of the last used search pattern.
+if &t_Co > 2
 	set hlsearch
-	
-	"set guioptions-=m " Will remove menu bar from gvim
-	set guioptions-=T " Remove toolbar from gvim
-
-	" Set gvim font. I like the Inconsolata font.
-	" You'll need to install, do it, it's very much worth it.
-	" A great font, and it's 100% free.
-	set guifont=Inconsolata\ Medium\ 10
 endif
 
 "  
-" * [syntax][]
 " * [hlsearch][]
 " * [guioptions][]
 "
@@ -569,6 +560,12 @@ set timeoutlen=300
 au FileType php set nocursorline 
 
 
+" Enable syntax highlighting
+syntax on
+"
+" * [syntax][]
+"
+
 " color schemes I have liked.
 " * colo elflord " a low color dark theme. Great for the real console.
 " * colo evening " dark theme, low color console friendly
@@ -605,6 +602,13 @@ if has( "gui_running" )
 
 	" colo lucius 
     colo hemisu
+	"set guioptions-=m " Will remove menu bar from gvim
+	set guioptions-=T " Remove toolbar from gvim
+
+	" Set gvim font. I like the Inconsolata font.
+	" You'll need to install, do it, it's very much worth it.
+	" A great font, and it's 100% free.
+	set guifont=Inconsolata\ Medium\ 10
 elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
 	" Use a console friendly theme and force Vim to
     " use 256 colors if we think the console can handle it.
