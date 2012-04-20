@@ -79,13 +79,16 @@ Bundle 'https://github.com/nvie/vim-flake8'
 Bundle 'https://github.com/ehamberg/vim-cute-python'
 Bundle 'vim-scala'
 Bundle 'scalacommenter.vim'
+  "Bundle 'https://github.com/Lokaltog/vim-powerline'
+Bundle 'vim-powerline'
+Bundle 'vim-pandoc'
 
 "
 " Other bundles
 Bundle 'a.vim'
 Bundle 'vcscommand.vim'
 Bundle 'python.vim'
-Bundle 'vim-ipython'
+" Bundle 'vim-ipython'
 Bundle 'matchit.zip'
 Bundle 'vim-indent-object'
 Bundle 'histwin.vim'
@@ -140,6 +143,9 @@ set history=1000 " keep 1000 lines of command line history
 " * [nobackup][]
 " * [history][]
 "
+" Set our encoding to UTF-8
+set encoding=utf-8
+
 " ### Ruler and Statusline
 " 
 " I don't use the following ruler and statusline examples, I have a more advanced version
@@ -387,12 +393,6 @@ nnoremap k gk
    " nnoremap <C-k> <c-w>k
    " nnoremap <C-l> <c-w>l
   
-
-" We're extra friendly for Django
-" and for SnipMate/UltiSnips, I want to use HTML
-" snippets with my markdown wo we chain the filetypes
-   " autocmd FileType python set ft=python.django 		" For SnipMate
-autocmd BufRead *.djml set ft=html.htmldjango 	" For SnipMate
 
 
 let g:UltiSnipsListSnippets = "<c-q>"
@@ -735,8 +735,6 @@ let g:netrw_liststyle = 3
 " or run it through PyFlakes command.
 au FileType python nmap <F1> <ESC>:w<CR>:!python %<CR>
 au FileType python imap <F1> <ESC>:w<CR>:!python %<CR>
-au FileType python nmap <F5> <ESC>:w<CR>:PyFlakes<CR>
-au FileType python imap <F5> <ESC>:w<CR>:PyFlakes<CR>
 
 let python_highlight_space_errors = 0
 
