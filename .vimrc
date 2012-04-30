@@ -68,12 +68,12 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " git-hub specific bundles:
-Bundle 'vim-scripts/LustyExplorer'
-   " Bundle 'garbas/vim-snipmate'
 " Bundle 'UltiSnips-2.1'
 Bundle 'vim-scripts/tComment'
 Bundle 'rygwdn/vim-conque'
    " Bundle 'kogakure/vim-sparkup'
+
+Bundle 'https://github.com/kien/ctrlp.vim'
 Bundle 'ZenCoding.vim'
 Bundle 'https://github.com/nvie/vim-flake8'
 Bundle 'https://github.com/ehamberg/vim-cute-python'
@@ -713,10 +713,6 @@ set sessionoptions=winpos,localoptions
 " VCS Command Plugin
 let VCSCommandVCSTypePreference='hg git svn'
 
-" LustyExplorer
-nmap <silent> <c-l> <esc>:LustyBufferExplorer<CR>
-imap <silent> <c-l> <esc>:LustyBufferExplorer<CR>
-
 """ comments.vim
 "A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
 " This will detect file types and use oneline comments accordingle. Cool
@@ -788,16 +784,12 @@ exec 'noremap <C-C> :TComment<cr>'
 exec 'noremap <C-N> :TCommentBlock<cr>'
 "
 "
-" #### [Lusty Explorer](http://www.vim.org/scripts/script.php?script_id=1890)
-   " nmap <C-d> <ESC>:LustyFilesystemExplorerFromHere<CR>
-   " imap <C-d> <ESC>:LustyFilesystemExplorerFromHere<CR>
-nmap <C-d> <ESC>:LustyFilesystemExplorer<CR>
-imap <C-d> <ESC>:LustyFilesystemExplorer<CR>
-"
-"
-" #### [SnipMate](https://github.com/garbas/vim-snipmate)
-" **Currently Unused**
-" let g:snips_author = 'Jeff Buttars'
+
+" Ctrl-P
+imap <C-l> <ESC>:CtrlPBuffer<CR>
+map  <C-l> <ESC>:CtrlPBuffer<CR>
+
+
 "
 " [json_reformat](http://lloyd.github.com/yajl/)
 "
