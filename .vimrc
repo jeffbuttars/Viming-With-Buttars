@@ -68,8 +68,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " git-hub specific bundles:
-Bundle 'vim-scripts/LustyExplorer'
-   " Bundle 'garbas/vim-snipmate'
+Bundle 'https://github.com/kien/ctrlp.vim' 
 " Bundle 'UltiSnips-2.1'
 Bundle 'vim-scripts/tComment'
 Bundle 'rygwdn/vim-conque'
@@ -77,14 +76,15 @@ Bundle 'rygwdn/vim-conque'
 Bundle 'ZenCoding.vim'
 Bundle 'https://github.com/nvie/vim-flake8'
 Bundle 'https://github.com/ehamberg/vim-cute-python'
-Bundle 'vim-scala'
-Bundle 'scalacommenter.vim'
+" Bundle 'vim-scala'
+" Bundle 'scalacommenter.vim'
   "Bundle 'https://github.com/Lokaltog/vim-powerline'
 Bundle 'vim-powerline'
 Bundle 'vim-pandoc'
 
 "
 " Other bundles
+Bundle 'AsyncCommand'
 Bundle 'a.vim'
 Bundle 'vcscommand.vim'
 Bundle 'python.vim'
@@ -713,9 +713,9 @@ set sessionoptions=winpos,localoptions
 " VCS Command Plugin
 let VCSCommandVCSTypePreference='hg git svn'
 
-" LustyExplorer
-nmap <silent> <c-l> <esc>:LustyBufferExplorer<CR>
-imap <silent> <c-l> <esc>:LustyBufferExplorer<CR>
+" Ctrl-P 
+nmap <silent> <c-l> <esc>:CtrlPBuffer<CR>
+imap <silent> <c-l> <esc>:CtrlPBuffer<CR>
 
 """ comments.vim
 "A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
