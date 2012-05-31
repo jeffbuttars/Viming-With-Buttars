@@ -37,15 +37,11 @@ syn match	eclImport   display "MODULE\c"
 
 syn match	eclOperator   display "\<+\>\c"
 
-
-syntax region Comment start="/\*" end="\*/"
+syntax region eclComment start="/\*" end="\*/"
 syntax region eclString start="'" end="'"
 
-
-" hi def link eclFormat		cSpecial
-" hi def link eclCppString		cString
-hi def link eclCommentL		cComment
-hi def link eclCommentStart	cComment
+hi def link eclCommentL		eclComment
+hi def link eclCommentStart	eclComment
 hi def link eclBoolean		Boolean
 hi def link eclLabel		Label
 hi def link eclUserLabel		Label
@@ -58,15 +54,15 @@ hi def link eclNumber		Number
 hi def link eclOctal		Number
 hi def link eclOctalZero		PreProc	 " link this to Error if you want
 hi def link eclFloat		Float
-hi def link eclOctalError		cError
-hi def link eclParenError		cError
-hi def link eclErrInParen		cError
-hi def link eclErrInBracket	cError
-hi def link eclCommentError	cError
-hi def link eclCommentStartError	cError
-hi def link eclSpaceError		cError
-hi def link eclSpecialError	cError
-hi def link eclCurlyError		cError
+hi def link eclOctalError		eclError
+hi def link eclParenError		eclError
+hi def link eclErrInParen		eclError
+hi def link eclErrInBracket	eclError
+hi def link eclCommentError	eclError
+hi def link eclCommentStartError	eclError
+hi def link eclSpaceError		eclError
+hi def link eclSpecialError	    eclError
+hi def link eclCurlyError		eclError
 hi def link eclOperator		Operator
 hi def link eclStructure		Structure
 hi def link eclStorageClass	StorageClass
@@ -77,25 +73,17 @@ hi def link eclDefine	    Define
 " hi def link eclIncluded		cString
 hi def link eclError		Error
 hi def link eclStatement		Statement
-hi def link eclCppInWrapper	cCppOutWrapper
-hi def link eclCppOutWrapper	cPreCondit
-hi def link eclPreConditMatch	cPreCondit
+hi def link eclCppInWrapper	eclCppOutWrapper
+hi def link eclCppOutWrapper	eclPreCondit
+hi def link eclPreConditMatch	eclPreCondit
 hi def link eclPreCondit		PreCondit
 hi def link eclType		Type
 hi def link eclConstant		Constant
-" hi def link eclCommentString	cString
-" hi def link eclComment2String	cString
-" hi def link eclCommentSkip	cComment
 hi def link eclString		String
 hi def link eclComment		Comment
 hi def link eclSpecial		Special
 hi def link eclTodo		Todo
 hi def link eclBadContinuation	Error
-hi def link eclCppOutSkip		cCppOutIf2
-hi def link eclCppInElse2		cCppOutIf2
-hi def link eclCppOutIf2		cCppOut2  " Old syntax group for #if 0 body
-hi def link eclCppOut2		cCppOut  " Old syntax group for #if of #if 0
-hi def link eclCppOut		Comment
 hi def link eclIdent Identifier
 
 let b:current_syntax = "ecl"
