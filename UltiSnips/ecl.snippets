@@ -1,3 +1,30 @@
-snippet OP "OUTPUT()" b
+snippet op "OUTPUT()" b
 OUTPUT(${1});${0}
 endsnippet
+
+snippet erec "EXPORT RECORD" b
+EXPORT ${1} := RECORD${2:(${3})}
+    ${0}
+END;
+endsnippet
+
+snippet ds "DATASET"
+DATASET(${1})${0}
+endsnippet
+
+snippet "un(\d*)" "UNSIGNED\d*" r
+UNSIGNED`!p snip.rv = match.group(1)`
+endsnippet
+
+snippet "int(\d*)" "INTEGER\d*" r
+INTEGER`!p snip.rv = match.group(1)`
+endsnippet
+
+snippet "str(\d*)" "STRING\d*" r
+STRING`!p snip.rv = match.group(1)`
+endsnippet
+
+snippet "qstr(\d*)" "QSTRING\d*" r
+QSTRING`!p snip.rv = match.group(1)`
+endsnippet
+

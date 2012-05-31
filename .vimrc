@@ -320,7 +320,7 @@ command! -bar Hexmode call ToggleHex()
 set viewoptions=cursor
 set sessionoptions=winpos,localoptions
 
-
+runtime! vimrc/*.vim
 
 " [evim]: http://vimdoc.sourceforge.net/htmldoc/starting.html#evim
 " [nocompatible]: http://vimdoc.sourceforge.net/htmldoc/options.html#'nocompatible'

@@ -39,6 +39,7 @@ Bundle 'https://github.com/kien/ctrlp.vim'
 Bundle 'https://github.com/nvie/vim-flake8'
 Bundle 'https://github.com/klen/python-mode'
 Bundle 'https://github.com/Lokaltog/vim-powerline'
+Bundle 'https://github.com/vim-scripts/UltiSnips'
 
 " Other bundles
 Bundle 'python.vim'

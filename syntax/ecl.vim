@@ -3,18 +3,20 @@ if exists("b:current_syntax")
     finish
 endif
 
-" keywords
-syn keyword syntaxElementKeyword LEFT RIGHT UNSIGNED INTEGER
-syn match eclType '\<UNSIGNED\d*\>\c'
-syn match eclType '\<INTEGER\d*\>\c'
-syn match eclType '\<Q\?STRING\d*\>\c'
-syn match eclType '\<RECORD\c'
-syn match eclType '\<DATASET\>\c'
+syntax case ignore
 
-syn match eclConstant '\<LEFT\>\c'
-syn match eclConstant '\<RIGHT\>\c'
-syn match eclBoolean '\<TRUE\>\c'
-syn match eclBoolean '\<FALSE\>\c'
+" keywords
+syn keyword syntaxElementKeyword LEFT RIGHT
+syn match eclType /\<UNSIGNED\d*\>/
+syn match eclType '\<INTEGER\d*\>'
+syn match eclType '\<Q\?STRING\d*\>'
+syn match eclType '\<RECORD\>'
+syn match eclType '\<DATASET\>'
+
+syn match eclConstant '\<LEFT\>'
+syn match eclConstant '\<RIGHT\>'
+syn match eclBoolean '\<TRUE\>'
+syn match eclBoolean '\<FALSE\>'
 
 syn match eclFunction '\<XML\>\c'
 syn match eclFunction '\<XMLTEXT\>\c'
@@ -37,8 +39,16 @@ syn match	eclImport   display "MODULE\c"
 
 syn match	eclOperator   display "\<+\>\c"
 
-syntax region eclComment start="/\*" end="\*/"
+syn keyword	eclTodo		contained TODO FIXME XXX
+:syntax match eclComment /\/\/.*/ contains=eclTodo
+syntax region eclComment start="/\*" end="\*/" contains=eclTodo
+
 syntax region eclString start="'" end="'"
+
+syntax region eclBlock start=/\<RECORD\>/ end=/\<END\>\s*;/ contains=ALL
+syntax region eclBlock start=/\<MODULE\>/ end=/\<END\>\s*;/ contains=ALL
+syntax region eclBlock start=/\<TRANSFORM\>/ end=/\<END\>\s*;/ contains=ALL
+syntax region eclBlock start=/\<FUNCTION\>/ end=/\<END\>\s*;/ contains=ALL
 
 hi def link eclCommentL		eclComment
 hi def link eclCommentStart	eclComment
