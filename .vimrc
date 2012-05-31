@@ -24,99 +24,11 @@
 " 
 " ## .vimrc sections:
 " * [Bundles](#bundles)
-" * [Vim Options](#vimoptions)
-" * [Autocommands](#autocommands)
-" * [OminCompletion Settings](#ominsettings) 
-" * [Mappings](#mappings)
-" * [Plugin Settings](#pluginsettings)
-" * [Misc.](#misc)
+" * [Maps](#maps)
 "
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ## Bundles
-"
-" We deal with our bundles first thing because later sections
-" rely on them being available.
-"
-" #### [Pathogen](https://github.com/tpope/vim-pathogen)
-" [Pathogen](https://github.com/tpope/vim-pathogen) is a
-" nice package format for Vim _'packages'_.  
-" [Vundle](https://github.com/gmarik/vundle) is a great package manager
-" for Pathogen bundles.
-"
-" Call infect to get the bundle handling started.
-call pathogen#infect()
-   " infect our locally tracked pkgs
-call pathogen#infect('~/.vim/pkgs')
-"
-" Brief help on Bundle commands  
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install(update) bundles
-" :BundleSearch(!) foo - search(or refresh cache first) for foo
-" :BundleClean(!)      - confirm(or auto-approve) removal of unused
-"
-" see :h vundle for more details or wiki for FAQ
-" *NOTE*: comments after Bundle command are not allowed..
-"
-" [Vundle](https://github.com/gmarik/vundle) Configuration
-" Add vundle to our runtime path (rtp) and start vundle
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+" Load our bundles
+runtime vimrc/bundles.vim
 
-" Bundles
-" let Vundle manage Vundle
-" required! 
-Bundle 'gmarik/vundle'
-
-" git-hub specific bundles:
-Bundle 'https://github.com/kien/ctrlp.vim' 
-" Bundle 'UltiSnips-2.1'
-Bundle 'vim-scripts/tComment'
-Bundle 'rygwdn/vim-conque'
-   " Bundle 'kogakure/vim-sparkup'
-Bundle 'ZenCoding.vim'
-Bundle 'https://github.com/nvie/vim-flake8'
-Bundle 'https://github.com/ehamberg/vim-cute-python'
-" Bundle 'vim-scala'
-" Bundle 'scalacommenter.vim'
-  "Bundle 'https://github.com/Lokaltog/vim-powerline'
-Bundle 'vim-powerline'
-Bundle 'vim-pandoc'
-
-"
-" Other bundles
-Bundle 'AsyncCommand'
-Bundle 'a.vim'
-Bundle 'vcscommand.vim'
-Bundle 'python.vim'
-" Bundle 'vim-ipython'
-Bundle 'matchit.zip'
-Bundle 'vim-indent-object'
-Bundle 'histwin.vim'
-Bundle 'Tabular'
-Bundle 'ScrollColors'
-Bundle 'LargeFile'
-Bundle 'tlib'
-Bundle 'Python-Syntax'
-Bundle 'nginx.vim'
-
-Bundle 'colorsupport.vim'
-" Colorschemes
-"
-" [Lucius](https://github.com/vim-scripts/Lucius) is a great 256
-" color theme with both light and dark 
-" schemes.  
-" [Hemisu](http://noahfrederick.com/vim-color-scheme-hemisu/)
-" looks nice, going to try it out for a while
-Bundle 'Lucius'
-Bundle 'noahfrederick/Hemisu'
-" The following are schemes I like, but I'm not using them right now.
-    " Bundle 'eclm_wombat.vim'
-    " Bundle 'wombat256.vim'
-    " Bundle 'Wombat'
-    " Bundle 'jellybeans.vim'
-    " Bundle 'github-theme'
-"
-" <a name="vimoptions" />
 "
 " ### Vim Options
 "
@@ -228,7 +140,7 @@ set incsearch    " Enable incremental searching
 " * [ttyfast][]
 " * [laststatus][]
 " * [incsearch][]
-
+"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " <a name="autocommands" /> 
@@ -248,6 +160,7 @@ if has("autocmd")
   " Use the default filetype settings, so that mail gets 'tw' set to 72,
   " 'cindent' is on in C files, etc.
   " Also load indent files, to automatically do language-dependent indenting.
+  filetype plugin on
   filetype plugin indent on
 
   " Put these in an autocmd group, so that we can delete them easily.
@@ -287,144 +200,11 @@ set autoread
 "
 " * [autoread][]
 "
-" This allows us to save a file as root with the :w!! command,
-" if we have sudo privileges, " when we're not currently useing vim as root
-cmap w!! %!sudo tee > /dev/null %
-
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"
-"
-" <a name="ominsettings" />
-" ##OmniCompletion settings
-"
-" No much going on here for Omni Completion. In the past there were all sorts of
-" nasty hacks for this section.  
-" When c-y is used to select a completion, enter normal mode after it's inserted.
-imap <c-y> <c-y><esc>
-set completeopt=menuone,preview,longest
-" You can tweak what is searched and in what order for keyword completion. This
-" .vimrc only uses the defaults for now. Here are some quick examples of setting it.
-" (default: ".,w,b,u,t,i")
-   "set complete=".,w,b,u,U,t,i,kspell,d,t"
-   "set complete=".,w,b,u,t,i,kspell"
-"
-" * [completeopt][]
-" * [complete][]
-"
-"
-" <a name="mappings" />
-" 
-" ## Mappings
-" * See [map][]  
-"
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U> <C-G>u<C-U>
-"
-" * [inoremap][]  
-"
-" Map omnicomplete to Control-o while in insert mode.
-   " For reasons I have yet to figure out this mapping is broken, 
-   " so it's commented out for now.
-   " imap <C-O> <C-X><C-O> 
-
-" Mapping for the a.vim plugin
-" quickly switch between source
-" and header files with <C-H> when editing C files
-autocmd FileType c imap <silent> <C-S> <ESC>:A<CR>
-autocmd FileType c nmap <silent> <C-S> <ESC>:A<CR>
-
-" Enter will do a simple accept of the selection
-" Moved this into delimitMate to get them
-" to work together
-function! CleverCR()
-	if !pumvisible() 
-		return "\<CR>"
-	endif
-
-	return "\<C-Y>"
-endfunction
-inoremap <CR> <C-R>=CleverCR()<CR>
-"
-" * [pumvisible][]
-" 
-" Use the F3 key to toggle line numbers between absolute and relative
-function! ToggleRNU()
-	if 0 == &rnu
-		set relativenumber
-	else
-		set number 
-	endif
-endfunction
-nmap <silent> <F3> <ESC>:call ToggleRNU()<CR>
-"
-" * [number][]
-" * [relativenumber][]
-"
-
-
-" The ';' ':' shortcut. For example, to save a file, you type :w normally, which means:
-"
-"    Press and hold Shift  
-"    Press ;  
-"    Release the Shift key  
-"    Press w  
-"    Press Return  
-" This trick strips off steps 1 and 3 for each Vim command. It takes some times
-" for your muscle memory to get used to this new ;w command, but once you use
-" it, you don’t want to go back!
-nnoremap ; :
-"
-"If you like long lines with line wrapping enabled, this solves the problem
-"that pressing down jumpes your cursor “over” the current line to the next
-"line. It changes behaviour so that it jumps to the next row in the editor
-"(much more natural):
-nnoremap j gj
-nnoremap k gk
-
-" Easier window navigation when you split up your buffers.
-" Use J instead of CTRL-W j, etc.  
-" Personally, this interferes with other shortcuts and I'm OK
-" using the defaults, so I'll comment this out and leave it
-" here in case someone reading this finds it useful.
-   " nnoremap <C-j> <c-w>j
-   " nnoremap <C-h> <c-w>h
-   " nnoremap <C-k> <c-w>k
-   " nnoremap <C-l> <c-w>l
-  
-
-
-let g:UltiSnipsListSnippets = "<c-q>"
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" From an idea by Michael Naumann
-"You press * or # to search for the current visual selection !! Really useful
-function! VisualSearch(direction) range
-  let l:saved_reg = @"
-  execute "normal! vgvy"
-  let l:pattern = escape(@", '\\/.*$^~[]')
-  let l:pattern = substitute(l:pattern, "\n$", "", "")
-  if a:direction == 'b'
-    execute "normal ?" . l:pattern . "^M"
-  else
-    execute "normal /" . l:pattern . "^M"
-  endif
-  let @/ = l:pattern
-  let @" = l:saved_reg
-endfunction
-vnoremap <silent> * :call VisualSearch('f')<CR>
-vnoremap <silent> # :call VisualSearch('b')<CR>
-" End From an idea by Michael Naumann
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " More normal Vim tweaks.
 " vertical: make a diff split vertical by default
 " iwhite: ignore whitespace
-" context: show 10 lines of context
-"set diffopt=filler,vertical,iwhite,context:10
+" context: show 15 lines of context
 set diffopt=filler,vertical,context:15
 let g:html_diff_one_file = 1
 
@@ -442,7 +222,7 @@ let g:html_diff_one_file = 1
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set textwidth=80
+set textwidth=80 " Too narrow for my tastes, but satisfies most standards.
 set smarttab
 set shiftround	" use multiple of shiftwidth when indenting with '<' and '>'
 set expandtab
@@ -456,7 +236,7 @@ set mat=5
 " and in a central palce.
 "set directory=~/.vim/swapback
 "set backupdir=~/.vim/swapback
-" Screw the swap file
+" OR, screw the swap file
 set noswapfile
 
 " C opts
@@ -476,43 +256,9 @@ set scrolloff=3
 set title
 
 "set foldmethod=indent
-"set foldmethod=syntax
+" set foldmethod=syntax
 set foldmethod=marker
 
-" Easy cycle through tabs using Ctrl-PgUp/PgDown 
-" similar to FireFox
-" This won't work in all terminal programs. some use
-" this same key sequence to cycley through tabs, so you
-" may need to disable this key shortcut in your terminal
-" program for this mapping to work as advertised.
-nmap <C-PageDown> :tabnext<CR>
-nmap <C-PageUp> :tabprevious<CR>
-imap <C-PageDown> :tabnext<CR>
-imap <C-PageUp> :tabprevious<CR>
-"nmap <C-PageDown> :bn<CR>
-"nmap <C-PageUp> :bp<CR>
-"imap <C-PageDown> <esc>:bn<CR>
-"imap <C-PageUp> <esc>:bp<CR>
-
-"[concisionandconcinnity.blogspot.com](http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html)
-" The above URL also has good stuff for autoclosing matching pairs, like (). 
-"One of the nicer minor features of TextMate is its treatment of highlighted text. 
-"If you have something highlighted and type a, it replaces the text, like other editors. 
-"If you type (, however, it wraps the selected text in parentheses. 
-"This is enormously useful. Luckily, it's very easy to recreate in Vim:
-vnoremap ((  <ESC>`>a)<ESC>`<i(<ESC>
-vnoremap ))  <ESC>`<i(<ESC>`><right>a)<ESC>
-vnoremap {{  <ESC>`>a}<ESC>`<i{<ESC>
-vnoremap }}  <ESC>`<i{<ESC>`><right>a}<ESC>
-" If allow " here, it messes up register selection
-" So we use "" instead, and it works.
-" Move this into doubleTap?
-"vnoremap "  <ESC>`>a"<ESC>`<i"<ESC>
-vnoremap ""  <ESC>`>a"<ESC>`<i"<ESC>
-vnoremap ''  <ESC>`>a'<ESC>`<i'<ESC>
-vnoremap ``  <ESC>`>a`<ESC>`<i`<ESC>
-vnoremap [[  <ESC>`>a]<ESC>`<i[<ESC>
-vnoremap ]]  <ESC>`<i[<ESC>`><right>a]<ESC>
 
 " When vimrc is edited, automatically reload it!
 autocmd! bufwritepost .vimrc source ~/.vimrc
@@ -548,120 +294,13 @@ set wildignore=*.swp,*.bak,*.pyc,*.pyo,*.class,*.6
 " set key timeout, good for remaps
 set timeoutlen=300
 
-" I hate it when the cursorline is an underline
-" This is how I make the cursorline a hightlight
-"set cursorline
-"hi clear CursorLine 
-
-" CursorLine really slows down php files
-" There is something wrong with the PHP syntax
-" plugin, as a work around we disable cursorline
-" for PHP files. :(
-au FileType php set nocursorline 
-
-
-" Enable syntax highlighting
-syntax on
-"
-" * [syntax][]
-"
-
-" color schemes I have liked.
-" * colo elflord " a low color dark theme. Great for the real console.
-" * colo evening " dark theme, low color console friendly
-" * colo xoria256 " a nice dark theme for 256 color terms
-" * colo wombat256 " the classic wombat theme for 256 color terms
-" * colo pyte " A white theme
-" * colo mySlate 
-" * colo peaksea " A light theme
-" * colo molokai " A dark pastelly theme, a little bisexual but very pleasing.
-" * colo neutron " A very nice creamy light theme.
-" * colo vylight  " A light theme
-" * colo jellybeans " A dark color full theme
-
-" Explicitly say we want 256 colors when we find 256
-" in the TERM environmental variable.
-" When this is set it can mess up using vim on a real console.
-"  Definitely in Fedora >= 11. So we try to be smart about
-" it and only set it if we think it's wanted.  
-"
-" We default to a theme that works everywere.
-" Then we see if we can upgrade to a better theme
-" based on the environment.
-colo evening " evening is a nice dark theme, usually available with a default install.
-
-if has( "gui_running" )
-	" I like a white based theme in GVim
-	set cursorline
-	hi clear CursorLine 
-
-    " If using lucius
-	let g:lucius_style = "light"
-    " If using hemisu
-    set background=light
-
-	" colo lucius 
-    colo hemisu
-	"set guioptions-=m " Will remove menu bar from gvim
-	set guioptions-=T " Remove toolbar from gvim
-
-	" Set gvim font. I like the Inconsolata font.
-	" You'll need to install, do it, it's very much worth it.
-	" A great font, and it's 100% free.
-	set guifont=Inconsolata\ Medium\ 10
-elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
-	" Use a console friendly theme and force Vim to
-    " use 256 colors if we think the console can handle it.
-	set t_Co=256
-	set cursorline
-	hi clear CursorLine 
-	
-	if $TERM_META =~ 'white'
-        set background=light
-		let g:lucius_style = "light"
-	else
-        set background=dark
-		let g:lucius_style = "dark"
-	endif
-
-    colo lucius 
-    " colo hemisu
-endif
-
-" set linenumbers on by default
-set number 
-
-" Drupal rules
-" If you edit a lot of php-drupal you should
-" use these next few lines. If not, leave them commented
-" out and I doubt you'll miss them.
-   " augroup drupal_module
-   " 	autocmd BufRead *.module,*.inc set filetype=php
-   " augroup END
 
 " autowrite: "on" saves a lot of trouble
 " set autowrite
 " be aggressive/paranoid and save often automatically.
 set autowriteall
 set	autoread
-
-"interactive spell check
-" works only in non-gui mode for now
-map #sp :w<CR>:!ispell %<CR>:e %<CR> 
-
-" Use the next line to selectively enable spell
-" checking for certain filetypes.
-" I usually don't want spell checking when 
-" writting code, so only enable for thing with
-" a lot of real words like text and markdown files.
-au FileType text,markdown,rst setlocal spell spelllang=en_us
-au FileType text,markdown,rst let b:NiceMenuContextRegex='[a-zA-Z0-9]' 
-
-
 set mousemodel=popup " Make right mouse button work in gvim
-
-set pastetoggle=<F2> " Allow toggling of paste/nopaste via F2
-
 set hidden " Don't acutally close buffers, just hide them.
 
 " dictionary: english words first
@@ -675,223 +314,15 @@ set dictionary+=/usr/share/dict/words,/usr/dict/words,/usr/dict/extra.words
 " ex command for toggling hex mode - define mapping if desired
 command! -bar Hexmode call ToggleHex()
 
-" A more verbose pastetoggle
-function! TogglePaste()
-	if	&paste == 0
-		set paste
-		echo "Paste is ON!"
-	else
-		set nopaste
-		echo "Paste is OFF!"
-	endif
-endfunction
-
-" Allow toggling of paste/nopaste via F2
-"set pastetoggle=<F2>
-nmap <F2> <ESC>:call TogglePaste()<CR>
-imap <F2> <ESC>:call TogglePaste()<CR>i
-
-" I like to put system library tags in a different tag file that
-" is only generated once in a while.
-set tags=tags;/
-au FileType python set tags +=~/.tags/tags-python
-au FileType c set tags +=~/.tags/tags-c
-au FileType cpp set tags +=~/.tags/tags-cpp
-
 " I don't want variables and options saved in my views
 " so remove the 'options' option from the default viewoptions setting.
 " set viewoptions-=options
 set viewoptions=cursor
 set sessionoptions=winpos,localoptions
 
-" End More normal Vim tweaks.
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins and external addons
-"
-" VCS Command Plugin
-let VCSCommandVCSTypePreference='hg git svn'
-
-" Ctrl-P 
-nmap <silent> <c-l> <esc>:CtrlPBuffer<CR>
-imap <silent> <c-l> <esc>:CtrlPBuffer<CR>
-
-""" comments.vim
-"A more elaborate comment set up. Use Ctr-C to comment and Ctr-x to uncomment
-" This will detect file types and use oneline comments accordingle. Cool
-" because you visually select regions and comment/uncomment the whole region.
-" works with marked regions to.
-" Just put it in your plugin directory.
-
-
-
-
-""" netrw
-" Tree Style listing
-let g:netrw_liststyle = 3
-
-" run the current buffer as a python script 
-" or run it through PyFlakes command.
-au FileType python nmap <F1> <ESC>:w<CR>:!python %<CR>
-au FileType python imap <F1> <ESC>:w<CR>:!python %<CR>
-
-let python_highlight_space_errors = 0
-
-" php synax check via 'php -l'
-" uses my plugin/phplint.vim
-"au FileType php nmap <F5> <ESC>:w<CR>:PHPLint<CR>
-"au FileType php imap <F5> <ESC>:w<CR>:PHPLint<CR>
-
-" use tidy
-" I don't use this much, so may be buggy
-au FileType html nmap <F5> <ESC>:w<CR>:HTMLTidyLint<CR>
-au FileType html imap <F5> <ESC>:w<CR>:HTMLTidyLint<CR>
-
-
-" My own custom plugin/bashrun.vim
-" Very simple, BashRun runs the buffer as a bash
-" script and outputs errors into a quick fix windowl
-au FileType sh,bash nmap <F1> <ESC>:w<CR>:!sh %<CR>
-au FileType sh,bash imap <F1> <ESC>:w<CR>:!sh %<CR>
-au FileType sh,bash nmap <F5> <ESC>:w<CR>:BashRun<CR>
-au FileType sh,bash imap <F5> <ESC>:w<CR>:BashRun<CR>
-"au FileType sh,bash setlocal errorformat=%f\ line\ %l:\ %m
-
-
-au FileType go setlocal errorformat=%f:%l:\ %m
-
-" Syntax checking entire python file  
-" Usage: :make (check file)  
-" :clist (view list of errors)  
-" :cn, :cp (move around list of errors)  
-autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
-autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
-
-" The php syntax file and showing the cursorline don't play well together.
-" If you find editing PHP files with cursorline enabled unbearably slow
-" Use the following to disable the cursorline for PHP files
-" 
-"
-" <pre>au FileType php set nocursorline </pre>
-
-
-" <a name="pluginsettings" />
-"
-" ## Plugin Settings 
-"
-"
-" #### tComment
-"
-" I like to use CTRL-C to toggle comments 
-exec 'noremap <C-C> :TComment<cr>'
-exec 'noremap <C-N> :TCommentBlock<cr>'
-"
-"
-" #### [Lusty Explorer](http://www.vim.org/scripts/script.php?script_id=1890)
-   " nmap <C-d> <ESC>:LustyFilesystemExplorerFromHere<CR>
-   " imap <C-d> <ESC>:LustyFilesystemExplorerFromHere<CR>
-nmap <C-d> <ESC>:LustyFilesystemExplorer<CR>
-imap <C-d> <ESC>:LustyFilesystemExplorer<CR>
-"
-"
-" #### [SnipMate](https://github.com/garbas/vim-snipmate)
-" **Currently Unused**
-" let g:snips_author = 'Jeff Buttars'
-"
-" [json_reformat](http://lloyd.github.com/yajl/)
-"
-autocmd FileType json set equalprg=json_reformat
-autocmd FileType xml  set equalprg=xmllint\ --format\ -
-
-" doubleTap
-"let g:loaded_doubleTap = 1
-let g:DoubleTapInsertTimer = 0.9
-
-" Set NiceMenu Delay
-" let g:loaded_nice_menu = 1
-" let g:NiceMenuDelay = '.6'
-" let g:NiceMenuMin = 1
-
-"
-" #### [Sparkup](https://github.com/rstacruz/sparkup) options
-" I don't like default mapping, I actually use
-" the <c-e> default map for navigation
-" let g:sparkupExecuteMapping = '<c-t>'
-" let g:sparkupNextMapping = '<c-h>'
-
-" #### [ZenCoding](https://github.com/mattn/zencoding-vim)
-" I still like sparkup, but I'm going to give Zen a shot.
-" Change the mapping to my liking
-let g:user_zen_leader_key = '<c-t>'
-"
-"
-" #### BellyButton settings
-let g:BellyButton_javascript_jslint_options = {'white':'false', 'vars':'true','bitwise':'false',
-			\'predef':"['Backbone', '_', 'console','window', 'Ext', 'jQuery', '$', 'cp', 'alert', 'confirm', 'document']"}
-"
-"
-" #### [TagList](https://github.com/vim-scripts/taglist.vim)
-" Set taglist plugin options
-let Tlist_Use_Right_Window     = 0
-let Tlist_Exit_OnlyWindow      = 1
-let Tlist_Enable_Fold_Column   = 0
-let Tlist_Compact_Format       = 1
-let Tlist_File_Fold_Auto_Close = 1
-let Tlist_Auto_Highlight_Tag   = 1
-let g:ctags_statusline=1 " Display function name in status bar:
-let generate_tags=1      " Automatically start script
-let Tlist_Use_Horiz_Window=0 " Displays taglist results in a vertical window:
-
-" Shorter commands to toggle Taglist display
-nnoremap TT :TlistOpen<CR>
-map <F4> :TlistToggle<CR>
-
-" The default width of the vertically split taglist window is 30. This can be
-" changed by modifying the 'Tlist_WinWidth' variable:  
-let Tlist_WinWidth = 60
-let Tlist_Close_On_Select = 1 " Close Tlist when jumping to tag
-"By default, only the tag name will be displayed in the taglist window. If you
-"like to see tag prototypes instead of names, set the 'Tlist_Display_Prototype'
-"variable to 1. By default, this variable is set to zero and only tag names
-"will be displayed.
-let Tlist_Display_Prototype = 1
-"
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"
-" <a name="misc" />
-"
-" ## Misc.
-
-" ####Misc People and places that I've gotten stuff from  
-"
-" * [code-navigation-completion-snippets-in-vim](http://dancingpenguinsoflight.com/2009/02/code-navigation-completion-snippets-in-vim/)
-" * [5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic](http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/)
-"
-" #### IBM Vim series, quite good.
-"
-" * [Scripting the Vim editor, Part 1: Variables, values, and expressions](http://www.ibm.com/developerworks/linux/library/l-vim-script-1/index.html)
-" * [Scripting the Vim editor, Part 2: User-defined functions](http://www.ibm.com/developerworks/linux/library/l-vim-script-2/index.html)
-" * [Scripting the Vim editor, Part 3: Built-in lists](http://www.ibm.com/developerworks/linux/library/l-vim-script-3/index.html)
-" * [Scripting the Vim editor, Part 4: Dictionaries](http://www.ibm.com/developerworks/linux/library/l-vim-script-4/index.html)
-" * [Scripting the Vim editor, Part 5: Event-driven scripting and automation](http://www.ibm.com/developerworks/linux/library/l-vim-script-5/index.html)
-" * [Some good python settings suggestions](http://www.cmdln.org/2008/10/18/vim-customization-for-python/)
-" * [Good information on line wrapping](http://blog.ezyang.com/2010/03/vim-textwidth/)  
-"
-" The g:maxLineLength variable is used by the MyStatusLine() function
-" I define in hacks.vim  
-let g:maxLineLength=80
-"
-" I put my small Vim hacks into a seperate file called [hacks.vim](https://github.com/jeffbuttars/Viming-With-Buttars/blob/master/hacks.vim) file
-" There are things, often functions/commands, I don't want in my 
-" .vimrc but I also don't want to write a plugin for.
-" I source it last thing
-runtime hacks.vim 
-" * [runtime][]  
 
 " [evim]: http://vimdoc.sourceforge.net/htmldoc/starting.html#evim
-" 
 " [nocompatible]: http://vimdoc.sourceforge.net/htmldoc/options.html#'nocompatible'
 " [backspace]: http://vimdoc.sourceforge.net/htmldoc/options.html#'backspace'
 " [nobackup]: http://vimdoc.sourceforge.net/htmldoc/options.html#'nobackup'
