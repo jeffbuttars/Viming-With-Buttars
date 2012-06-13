@@ -82,16 +82,12 @@ filetype on
 set switchbuf=useopen
 set laststatus=2          " last window will always have a status line
 set showcmd		         " display incomplete commands
+set lazyredraw      " Don't redraw screen when executing macros
 "
 " * [switchbuf][]
 " * [laststatus][]
 " * [showcmd][]
 "  
-" For Win32 GUI: you can remove 't' flag from 'guioptions' for no tearoff menu entries  
-	" let &[guioptions = substitute(&guioptions, "t", "", "g")
-" 
-" * [guioptions][]
-"
 "
 " If we're running Vim 7.3 or newer, enable persistent undo
 " and tell vim were to store the undo files. 
@@ -161,7 +157,8 @@ if has("autocmd")
   " 'cindent' is on in C files, etc.
   " Also load indent files, to automatically do language-dependent indenting.
   filetype plugin on
-  filetype plugin indent on
+  filetype indent on
+
 
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
@@ -186,6 +183,20 @@ else
 endif " has("autocmd")
 "
 " *[autoindent][]
+
+set fileformats=unix,dos,mac " try recognizing line endings in this order
+
+" allow vim commands to copy to system clipboard (*)
+" for X11:
+"   + is the clipboard register (Ctrl-{c,v})
+"   * is the selection register (middle click, Shift-Insert)
+set clipboard=unnamed
+
+" use clipboard register when supported (X11 only)
+if has("unnamedplus")
+    set clipboard+=unnamedplus
+endif
+
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
@@ -234,10 +245,10 @@ set mat=5
 
 " Keep our swap and backup files out of the way 
 " and in a central palce.
-"set directory=~/.vim/swapback
-"set backupdir=~/.vim/swapback
+set directory=~/.vim/swapback
+set backupdir=~/.vim/swapback
 " OR, screw the swap file
-set noswapfile
+" set noswapfile
 
 " C opts
 " Kernel style
@@ -255,9 +266,10 @@ set scrolloff=3
 " see :h title for better info.
 set title
 
-"set foldmethod=indent
+" set foldmethod=indent
 " set foldmethod=syntax
-set foldmethod=marker
+" set foldmethod=marker
+set foldmethod=manual
 
 
 " When vimrc is edited, automatically reload it!
