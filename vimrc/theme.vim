@@ -45,6 +45,12 @@ if has( "gui_running" )
 	" You'll need to install, do it, it's very much worth it.
 	" A great font, and it's 100% free.
 	set guifont=Inconsolata\ Medium\ 10
+    "
+    " For Win32 GUI: you can remove 't' flag from 'guioptions' for no tearoff menu entries  
+        " let &[guioptions = substitute(&guioptions, "t", "", "g")
+    " 
+    " * [guioptions][]
+    "
 elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
 	" Use a console friendly theme and force Vim to
 	" use 256 colors if we think the console can handle it.
