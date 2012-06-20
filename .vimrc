@@ -255,9 +255,9 @@ set scrolloff=3
 " see :h title for better info.
 set title
 
-"set foldmethod=indent
+set foldmethod=manual
 " set foldmethod=syntax
-set foldmethod=marker
+" set foldmethod=marker
 
 
 " When vimrc is edited, automatically reload it!
