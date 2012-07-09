@@ -40,6 +40,8 @@ Bundle 'https://github.com/nvie/vim-flake8'
 Bundle 'https://github.com/klen/python-mode'
 Bundle 'https://github.com/Lokaltog/vim-powerline'
 Bundle 'https://github.com/vim-scripts/UltiSnips'
+Bundle 'https://github.com/kien/rainbow_parentheses.vim'
+
 
 " Other bundles
 Bundle 'python.vim'
