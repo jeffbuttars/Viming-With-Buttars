@@ -43,11 +43,13 @@ Bundle 'https://github.com/vim-scripts/UltiSnips'
 Bundle 'https://github.com/kien/rainbow_parentheses.vim'
 
 
+
 " Other bundles
 Bundle 'python.vim'
 Bundle 'vcscommand.vim'
 Bundle 'vim-scripts/tComment'
 Bundle 'ZenCoding.vim'
+Bundle 'Gundo'
 " https://lampsvn.epfl.ch/trac/scala/browser/scala-tool-support/trunk/src/vim
 " Bundle 'scala'
 

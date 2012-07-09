@@ -270,6 +270,8 @@ set title
 " set foldmethod=syntax
 " set foldmethod=marker
 set foldmethod=manual
+set nofoldenable
+set foldcolumn=1
 
 
 " When vimrc is edited, automatically reload it!
