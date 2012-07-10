@@ -69,7 +69,7 @@ Bundle 'gmarik/vundle'
 
 " git-hub specific bundles:
 Bundle 'https://github.com/kien/ctrlp.vim' 
-" Bundle 'UltiSnips-2.1'
+Bundle 'UltiSnips'
 Bundle 'vim-scripts/tComment'
 Bundle 'rygwdn/vim-conque'
    " Bundle 'kogakure/vim-sparkup'
@@ -78,8 +78,7 @@ Bundle 'https://github.com/nvie/vim-flake8'
 Bundle 'https://github.com/ehamberg/vim-cute-python'
 " Bundle 'vim-scala'
 " Bundle 'scalacommenter.vim'
-  "Bundle 'https://github.com/Lokaltog/vim-powerline'
-Bundle 'vim-powerline'
+Bundle 'https://github.com/Lokaltog/vim-powerline'
 Bundle 'vim-pandoc'
 
 "

@@ -1,3 +1,38 @@
 snippet OP "OUTPUT()" b
 OUTPUT(${1});${0}
 endsnippet
+
+snippet IMP "IMPORT" b
+IMPORT ${1};${0}
+endsnippet
+
+snippet EMOD "EXPORT MODULE" b
+EXPORT ${1} := MODULE
+    ${0}
+END;
+endsnippet
+
+snippet EREC "EXPORT RECORD"
+EXPORT ${1} := RECORD
+    ${0}
+END;
+endsnippet
+
+snippet REC "RECORD"
+${1} := RECORD
+    ${0}
+END;
+endsnippet
+
+
+snippet EDS "EXPORT DATASET"
+EXPORT ${1} := DATASET('${2:logicalname}', ${3:RecType}${4:,${5}})${0};
+endsnippet
+
+snippet DS "DATASET"
+${1} := DATASET('${2:logicalname}', ${3:RecType}${4:,${5}})${0};
+endsnippet
+
+snippet XP "XPATH"
+XPATH('${1}')${0}
+endsnippet
