@@ -1,0 +1,69 @@
+
+snippet fns "Function namespace"
+var ${1:new_namespace} = (function $1 (){
+
+    // Private vars
+    ${2: var ${3:name} = "private";}
+    
+
+    // Private functions
+    ${4: ${5:var pfunc = function pfunc() {
+        return "";
+    };} }
+
+    // Return the public interface
+    return {
+        $6:$0;
+    };
+})();
+endsnippet
+
+snippet ons "object namespace"
+if (! window.${1:nsname} ) {
+    var $1 = {};
+    window.$1 = $1;
+}$0
+endsnippet
+
+snippet af "Anonymous Function"
+function(${1:args}) {${2}}${3}
+endsnippet
+
+snippet (af "Anonymous Function"
+(function(${1:args}) {${2}
+})${3}
+endsnippet
+
+snippet (af) "Anonymous Function"
+var ${1} = (function(${2:args}) {
+${3}
+})();//$1 ${0}
+endsnippet
+
+snippet naf "Named Anonymous Function"
+function ${1:funcname}(${2:args}) {${3}}$0
+endsnippet
+
+snippet nf "Named inline function"
+var ${1:fname} function(${2:args}) {${3}}$0
+endsnippet
+
+snippet vf "Var function"
+var ${1:func_name} = function(${2:args}) {
+    ${3:console.log('$1()');}
+};//$1()$0
+endsnippet
+
+snippet vnf "Var named function"
+var ${1:func_name} = function $1(${2:args}) {
+    ${3:console.log( ${4: "$1()"} );}$5
+};//$1()$0
+endsnippet
+
+snippet v "simple var = someting expression"
+var ${1} = ${2};
+endsnippet
+
+snippet cl "console.log()"
+console.log($1);$0
+endsnippet

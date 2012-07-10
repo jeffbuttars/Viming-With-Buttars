@@ -1,0 +1,31 @@
+clearsnippets if
+
+snippet dp "DEBUG_PRINT"
+DEBUG_PRINT("%s() ${1}\n", __FUNCTION__${2});${0}
+endsnippet
+
+snippet func "function" b
+${1} ${2:void} ${3:func_name}(${4})
+{
+    ${0}
+}//$3()
+endsnippet
+
+snippet "(\(?)c\*" "char *" r
+`!p snip.rv = match.group(1) or '' `char *${1:vname}
+endsnippet
+
+snippet "(\(?)v\*" "void *" r
+`!p snip.rv = match.group(1) or '' `void *${1:vname}
+endsnippet
+
+snippet if "if () {.." !
+if (${1}) {
+    ${0}
+}
+endsnippet
+
+snippet "u(\(?)i(\d*)" "uint\d*_t" r
+uint`!p snip.rv = (match.group(1) or '') + match.group(2)`_t
+endsnippet
+

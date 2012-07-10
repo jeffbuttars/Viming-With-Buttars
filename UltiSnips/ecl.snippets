@@ -1,38 +1,50 @@
-snippet OP "OUTPUT()" b
+snippet op "OUTPUT()" b
 OUTPUT(${1});${0}
 endsnippet
 
-snippet IMP "IMPORT" b
+snippet imp "IMPORT" b
 IMPORT ${1};${0}
 endsnippet
 
-snippet EMOD "EXPORT MODULE" b
+snippet emod "EXPORT MODULE" b
 EXPORT ${1} := MODULE
+
+snippet erec "EXPORT RECORD" b
+EXPORT ${1} := RECORD${2:(${3})}
     ${0}
 END;
 endsnippet
 
-snippet EREC "EXPORT RECORD"
-EXPORT ${1} := RECORD
-    ${0}
-END;
-endsnippet
-
-snippet REC "RECORD"
+snippet rec "RECORD"
 ${1} := RECORD
     ${0}
 END;
 endsnippet
 
-
-snippet EDS "EXPORT DATASET"
+snippet eds "EXPORT DATASET"
 EXPORT ${1} := DATASET('${2:logicalname}', ${3:RecType}${4:,${5}})${0};
 endsnippet
 
-snippet DS "DATASET"
+snippet ds "DATASET"
 ${1} := DATASET('${2:logicalname}', ${3:RecType}${4:,${5}})${0};
 endsnippet
 
 snippet XP "XPATH"
 XPATH('${1}')${0}
+endsnippet
+
+snippet "un(\d*)" "UNSIGNED\d*" r
+UNSIGNED`!p snip.rv = match.group(1)`
+endsnippet
+
+snippet "int(\d*)" "INTEGER\d*" r
+INTEGER`!p snip.rv = match.group(1)`
+endsnippet
+
+snippet "str(\d*)" "STRING\d*" r
+STRING`!p snip.rv = match.group(1)`
+endsnippet
+
+snippet "qstr(\d*)" "QSTRING\d*" r
+QSTRING`!p snip.rv = match.group(1)`
 endsnippet

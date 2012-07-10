@@ -1,0 +1,52 @@
+snippet basepage "Base page boilerplate for Django templates" b
+<!DOCTYPE HTML>
+<html>
+    <head>
+    {% block page_head %}
+
+        {% block page_meta %}
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        {% endblock %}{# page_meta #}
+
+        <title>{% block page_title %}${1:Page Title}{% endblock %}</title>
+
+        {% block page_style_links %}
+            {# <link rel="stylesheet" href="{{STATIC_URL}}style.css" type="text/css" media="all" /> #}
+        {% endblock %}{# page_style_links #}
+
+        {% block page_js_links %}
+            {# <script src="{{STATIC_URL}}.js" type="text/javascript" charset="utf-8"></script> #}
+        {% endblock %}{# page_js_links #}
+
+        <style>
+        {% block page_style %}
+        {% endblock %}{# page_style #}
+        </style>
+
+        <script type="text/javascript" charset="utf-8">
+        {% block page_js %}
+            
+        {% endblock %}{# page_js #}
+        </script>
+
+    {% endblock %}{# page_head #}
+    </head>
+    <body>
+        {% block page_body %}
+        {% endblock %}{# page_body #}
+
+        {% comment %}
+        <script type="text/javascript" charset="utf-8">
+        {% block page_bottom_js %}
+            
+        {% endblock %}{# page_bottom_js #}
+        </script>
+        {% endcomment %}
+    </body>
+</html>
+endsnippet
+
+snippet extends "My djml extens" !
+{% extends "${1:${2:core_base}.djml}" %}
+endsnippet
+
