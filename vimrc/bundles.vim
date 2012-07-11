@@ -37,11 +37,10 @@ Bundle 'gmarik/vundle'
 " git-hub specific bundles:
 Bundle 'https://github.com/kien/ctrlp.vim'
 Bundle 'https://github.com/nvie/vim-flake8'
-Bundle 'https://github.com/klen/python-mode'
+" Bundle 'https://github.com/klen/python-mode'
 Bundle 'https://github.com/Lokaltog/vim-powerline'
 Bundle 'https://github.com/vim-scripts/UltiSnips'
 Bundle 'https://github.com/kien/rainbow_parentheses.vim'
-
 
 
 " Other bundles
@@ -61,8 +60,8 @@ Bundle 'Gundo'
 " [Hemisu](http://noahfrederick.com/vim-color-scheme-hemisu/)
 " looks nice, going to try it out for a while
 Bundle 'Lucius'
-Bundle 'noahfrederick/Hemisu'
 " The following are schemes I like, but I'm not using them right now.
+    " Bundle 'noahfrederick/Hemisu'
     " Bundle 'eclm_wombat.vim'
     " Bundle 'wombat256.vim'
     " Bundle 'Wombat'
