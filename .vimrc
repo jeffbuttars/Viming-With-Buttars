@@ -243,12 +243,12 @@ set mat=5
 
 " Keep our swap and backup files out of the way 
 " and in a central palce.
-let swapbdir = shellescape($HOME."/.vim/swapback")
-if ! isdirectory(swapbdir)
-    execute "silent! !mkdir -p ".swapbdir
-endif
-set directory=$HOME/.vim/swapback
-set backupdir=$HOME/.vim/swapback
+" let swapbdir = shellescape($HOME."/.vim/swapback")
+" if ! isdirectory(swapbdir)
+"     execute "silent! !mkdir -p ".swapbdir
+" endif
+" set directory=~/.vim/swapback
+" set backupdir=~/.vim/swapback
 " OR, screw the swap file
 " set noswapfile
 " set nobackup " do not keep a backup file, use versions instead
