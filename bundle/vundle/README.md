@@ -9,7 +9,7 @@
 1. Setup [Vundle]:
 
      ```
-     $ git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+     $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
      ```
 
 2. Configure bundles:
@@ -41,7 +41,7 @@
      Bundle 'git://git.wincent.com/command-t.git'
      " ...
 
-     filetype plugin indent on     " required! 
+     filetype plugin indent on     " required!
      "
      " Brief help
      " :BundleList          - list configured bundles
@@ -62,7 +62,7 @@
      *Windows users* see [Vundle for Windows](https://github.com/gmarik/vundle/wiki/Vundle-for-Windows)
 
      Installing requires [Git] and triggers [Git clone](http://gitref.org/creating/#clone) for each configured repo to `~/.vim/bundle/`.
-     
+
 4. Consider [donating](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T44EJZX8RBUWY)
 
 [*Thank you*](http://j.mp/rSbm01) for supporting this project! )
@@ -82,7 +82,7 @@
 Also [Vundle]:
 
 - manages runtime path of your installed scripts
-- regenerates helptag atomatically
+- regenerates helptag automatically
 
 ## Docs
 
@@ -92,6 +92,7 @@ see [`:h vundle`](vundle/blob/master/doc/vundle.txt#L1) vimdoc for more details.
 
    * [gmarik's vimrc](https://github.com/gmarik/vimfiles/blob/1f4f26d42f54443f1158e0009746a56b9a28b053/vimrc#L136)
    * [mutewinter's Vim Config of Champions](https://github.com/mutewinter/dot_vim)
+   * [vimified - Ultimate, kick-ass VIM configuration on top of Vundle](https://github.com/zaiste/vimified)
 
    If you have an interesting example, feel free to send a pull request with link to your config. Thx!
 
@@ -144,7 +145,7 @@ see [wiki](/gmarik/vundle/wiki)
 [all available vim scripts]:http://vim-scripts.org/vim/scripts.html
 
 [install]:https://github.com/gmarik/vundle/blob/master/doc/vundle.txt#L110-124
-[update]:https://github.com/gmarik/vundle/blob/master/doc/vundle.txt#L128-133
-[search]:https://github.com/gmarik/vundle/blob/master/doc/vundle.txt#L135-157
-[clean]:https://github.com/gmarik/vundle/blob/master/doc/vundle.txt#L167-179
-[interactive mode]:https://github.com/gmarik/vundle/blob/master/doc/vundle.txt#L183-209
+[update]:https://github.com/gmarik/vundle/blob/master/doc/vundle.txt#L128-134
+[search]:https://github.com/gmarik/vundle/blob/master/doc/vundle.txt#L136-158
+[clean]:https://github.com/gmarik/vundle/blob/master/doc/vundle.txt#L168-180
+[interactive mode]:https://github.com/gmarik/vundle/blob/master/doc/vundle.txt#L184-210

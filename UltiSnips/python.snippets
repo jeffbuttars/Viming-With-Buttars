@@ -12,6 +12,7 @@ global !p
 
 NORMAL  = 0x1
 DOXYGEN = 0x2
+RST = 0x3
 
 def get_args(arglist):
     args = [arg.split('=')[0].strip() for arg in arglist.split(',') if arg]
@@ -24,19 +25,26 @@ def get_style(snip):
     style = snip.opt("g:ultisnips_python_style", "normal")
 
     if    style == "doxygen": return DOXYGEN
+    elif style == 'rst': return RST
     else: return NORMAL
 
 
-def format_arg(arg, style):
+def format_arg(arg, style, snip):
     if style == DOXYGEN:
         return "@param %s @todo" % arg
+    elif style == RST:
+        return (":param %s: arg description\n"
+                "%s:type %s: type description") % (arg, snip.indent, arg)
     elif style == NORMAL:
         return ":%s: @todo" % arg
 
 
-def format_return(style):
+def format_return(style, snip):
     if style == DOXYGEN:
         return "@return: @todo"
+    elif style == RST:
+        return (":return:\n"
+                "%s:rtype:") % snip
     elif style == NORMAL:
         return ":returns: @todo"
 
@@ -51,7 +59,7 @@ def write_docstring_args(args, snip):
     style = get_style(snip)
 
     for arg in args:
-        snip += format_arg(arg, style)
+        snip += format_arg(arg, style, snip)
 
 
 def write_init_body(args, parents, snip):
@@ -134,7 +142,7 @@ if args:
    write_docstring_args(args, snip)
 
 style = get_style(snip)
-snip += format_return(style)
+snip += format_return(style, snip.indent)
 snip += '"""' `
 
 	${5:pass}
