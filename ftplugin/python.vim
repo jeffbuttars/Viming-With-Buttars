@@ -2,6 +2,7 @@
 let g:ultisnips_python_style = 'rst'
 
 " Indent Python in the Google way.
+
 setlocal indentexpr=GetGooglePythonIndent(v:lnum)
 
 let s:maxoff = 50 " maximum number of lines to look backwards.
