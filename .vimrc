@@ -26,7 +26,7 @@
 " * [Bundles](#bundles)
 " * [Maps](#maps)
 "
-" Load our bundles
+" Load our bundles early
 runtime vimrc/bundles.vim
 
 "
@@ -45,8 +45,6 @@ endif
 set nocompatible " Don't be compatible with basic Vi
 
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
-
-set nobackup " do not keep a backup file, use versions instead
 
 set history=1000 " keep 1000 lines of command line history
 "
@@ -245,10 +243,16 @@ set mat=5
 
 " Keep our swap and backup files out of the way 
 " and in a central palce.
-set directory=~/.vim/swapback
-set backupdir=~/.vim/swapback
+" let swapbdir = shellescape($HOME."/.vim/swapback")
+" if ! isdirectory(swapbdir)
+"     execute "silent! !mkdir -p ".swapbdir
+" endif
+" set directory=~/.vim/swapback
+" set backupdir=~/.vim/swapback
 " OR, screw the swap file
 " set noswapfile
+" set nobackup " do not keep a backup file, use versions instead
+
 
 " C opts
 " Kernel style
