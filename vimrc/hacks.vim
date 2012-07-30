@@ -67,7 +67,7 @@ function! SetColorColumn(ccol)
 
 	"echo "SetColorColumn " b:longLineMatchID "" a:ccol "\%>".a:ccol."v.\+"
 
-	if a:ccol == 0 || &buftype != "" || expand('%') == '' || &buftype == "log" || &ft == "log" || &ft == 'html' || &ft == 'css' || &ft == 'html'
+	if a:ccol == 0 || &buftype != "" || expand('%') == '' || &buftype == "log"
 		setlocal colorcolumn=0
 		let &textwidth = (0)
         " echo "bailing out"
@@ -88,8 +88,7 @@ if ! exists("g:maxLineLength")
 	let g:maxLineLength=80
 endif
 
-" au BufWinEnter,FileType * :call SetColorColumn(g:maxLineLength)
-au FileType * :call SetColorColumn(g:maxLineLength)
+au FileType python,sh :call SetColorColumn(g:maxLineLength)
 
 " helper function to toggle hex mode
 function! ToggleHex()
