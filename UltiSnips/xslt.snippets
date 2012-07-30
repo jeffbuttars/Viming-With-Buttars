@@ -1,0 +1,44 @@
+
+snippet doc "Fresh Document" b
+<?xml version="1.0"?>
+
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<xsl:template match="${1:/}">
+    ${0}
+</xsl:template>
+
+</xsl:stylesheet>
+endsnippet
+
+snippet feach "<xslt:for-each select=''>"
+<xsl:for-each select="${1}">
+</xsl:for-each>
+endsnippet
+
+snippet vof "<xslt:value-of select=''>"
+<xsl:value-of select="${1}" />
+endsnippet
+
+snippet tmpl "<xslt:template match='/'>"
+<xsl:template select="${1:/}">
+    ${0}
+</xsl:template>
+endsnippet
+
+snippet if "<xslt:if test=''>"
+<xsl:if test="${1:}">
+    ${0}
+</xsl:if>
+endsnippet
+
+snippet var "<xslt:variable select>"
+<xsl:variable name="${1:}" $select="${2:/}" />${0}
+endsnippet
+
+snippet var "<xslt:variable>"
+<xsl:variable name="${1:}" ${2:select="${3:/}"}>
+    ${0}
+</xsl:variable>
+endsnippet

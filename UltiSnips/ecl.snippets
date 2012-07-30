@@ -8,6 +8,9 @@ endsnippet
 
 snippet emod "EXPORT MODULE" b
 EXPORT ${1} := MODULE
+    ${0}
+END; // MODULE $1
+endsnippet
 
 snippet erec "EXPORT RECORD" b
 EXPORT ${1} := RECORD${2:(${3})}
@@ -47,4 +50,10 @@ endsnippet
 
 snippet "qstr(\d*)" "QSTRING\d*" r
 QSTRING`!p snip.rv = match.group(1)`
+endsnippet
+
+snippet mac "MACRO"
+${1}(${2}) := MACRO
+    ${0}
+ENDMACRO; // MACRO $1()
 endsnippet
