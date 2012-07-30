@@ -45,10 +45,11 @@ syntax region eclComment start="/\*" end="\*/" contains=eclTodo
 
 syntax region eclString start="'" end="'"
 
-syntax region eclBlock start=/\<RECORD\>/ end=/\<END\>\s*;/ contains=ALL
-syntax region eclBlock start=/\<MODULE\>/ end=/\<END\>\s*;/ contains=ALL
-syntax region eclBlock start=/\<TRANSFORM\>/ end=/\<END\>\s*;/ contains=ALL
-syntax region eclBlock start=/\<FUNCTION\>/ end=/\<END\>\s*;/ contains=ALL
+syntax region eclRecBlock start=/\<RECORD\>/ end=/\<END\>\s*;/ contains=ALL
+syntax region eclModBlock start=/\<MODULE\>/ end=/\<END\>\s*;/ contains=ALL
+syntax region eclTransBlock start=/\<TRANSFORM\>/ end=/\<END\>\s*;/ contains=ALL
+syntax region eclFuncBlock start=/\<FUNCTION\>/ end=/\<END\>\s*;/ contains=ALL
+syntax region eclMacroBlock start=/\<MACRO\>/ end=/\<ENDMACRO\>\s*;/ contains=ALL
 
 hi def link eclCommentL		eclComment
 hi def link eclCommentStart	eclComment
