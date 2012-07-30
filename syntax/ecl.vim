@@ -19,6 +19,7 @@ syn match eclBoolean '\<TRUE\>'
 syn match eclBoolean '\<FALSE\>'
 
 syn match eclFunction '\<XML\>\c'
+syn match eclFunction '\<XPATH\>\c'
 syn match eclFunction '\<XMLTEXT\>\c'
 syn match eclFunction '\<NORMALIZE\>\c'
 syn match eclFunction '\<PARSE\>\c'
