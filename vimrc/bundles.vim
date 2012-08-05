@@ -49,7 +49,7 @@ Bundle 'vim-scripts/tComment'
 Bundle 'ZenCoding.vim'
 Bundle 'Gundo'
 Bundle 'ack.vim'
-Bundle 'https://github.com/hdima/vim-scripts/blob/master/syntax/python/python.vim'
+Bundle 'fugitive.vim'
 " https://lampsvn.epfl.ch/trac/scala/browser/scala-tool-support/trunk/src/vim
 " Bundle 'scala'
 
