@@ -50,6 +50,7 @@ Bundle 'ZenCoding.vim'
 Bundle 'Gundo'
 Bundle 'ack.vim'
 Bundle 'fugitive.vim'
+Bundle 'The-NERD-tree'
 " https://lampsvn.epfl.ch/trac/scala/browser/scala-tool-support/trunk/src/vim
 " Bundle 'scala'
 

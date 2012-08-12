@@ -88,7 +88,7 @@ if ! exists("g:maxLineLength")
 	let g:maxLineLength=80
 endif
 
-au FileType python,sh :call SetColorColumn(g:maxLineLength)
+au FileType python.sh :call SetColorColumn(g:maxLineLength)
 
 " helper function to toggle hex mode
 function! ToggleHex()
