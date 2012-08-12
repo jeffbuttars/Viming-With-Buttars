@@ -57,16 +57,30 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
 	set t_Co=256
 	set cursorline
 	hi clear CursorLine 
-	
-	if $TERM_META =~ 'white'
-        set background=light
-		let g:lucius_style = "light"
-	else
-        set background=dark
-		let g:lucius_style = "dark"
-	endif
 
-	colo lucius 
+    set background=dark
+    let g:lucius_style = "dark"
+    let w:solarized_style = g:lucius_style
+
+    " let w:solarized_style = "light"
+    " if $TERM_META =~ 'solar'
+    "     colorscheme solarized 
+    " else
+    "     if $TERM_META =~ 'white'
+    "         set background=light
+    "         let g:lucius_style = "light"
+    "     endif
+
+    "     colorscheme lucius
+	" endif
+
+    if $TERM_META =~ 'white'
+        set background=light
+        let g:lucius_style = "light"
+    endif
+
+    colorscheme lucius
+
 endif
 
 " set linenumbers on by default
