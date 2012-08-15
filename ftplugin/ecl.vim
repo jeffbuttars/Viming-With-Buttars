@@ -15,3 +15,10 @@ else
     nmap <F7> <ESC>:!time ecl run --cluster=hthor --server=. '%'<CR>
     imap <F7> <ESC><ESC>:!time ecl run --cluster=hthor --server=. '%'<CR>
 endif
+
+" Config for tComment
+if exists('tcomment#DefineType')
+    call tcomment#DefineType('ecl',              '// %s'            )
+    call tcomment#DefineType('ecl_inline',       g:tcommentInlineC  )
+    call tcomment#DefineType('ecl_block',        g:tcommentBlockC   )
+endif

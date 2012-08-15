@@ -88,7 +88,7 @@ if ! exists("g:maxLineLength")
 	let g:maxLineLength=80
 endif
 
-au FileType python,sh :call SetColorColumn(g:maxLineLength)
+au FileType python.sh :call SetColorColumn(g:maxLineLength)
 
 " helper function to toggle hex mode
 function! ToggleHex()
@@ -148,3 +148,9 @@ endf
 
 au TabEnter * call TabDirSave(0)
 au TabLeave * call TabDirSave(1)
+
+" Open a shell command in a new window, the command supports shell completion
+command! -complete=shellcmd -nargs=* R rightbelow vnew | r ! <args>
+
+" Open a Quickfix window for the last search.
+nnoremap <silent> ,/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
