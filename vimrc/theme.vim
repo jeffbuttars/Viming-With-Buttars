@@ -36,8 +36,7 @@ if has( "gui_running" )
 	let g:lucius_style = "light"
 	set background=light
 
-	" colo lucius 
-	colo hemisu
+	colo lucius 
 	"set guioptions-=m " Will remove menu bar from gvim
 	set guioptions-=T " Remove toolbar from gvim
 
@@ -62,18 +61,6 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
     let g:lucius_style = "dark"
     let w:solarized_style = g:lucius_style
 
-    " let w:solarized_style = "light"
-    " if $TERM_META =~ 'solar'
-    "     colorscheme solarized 
-    " else
-    "     if $TERM_META =~ 'white'
-    "         set background=light
-    "         let g:lucius_style = "light"
-    "     endif
-
-    "     colorscheme lucius
-	" endif
-
     if $TERM_META =~ 'white'
         set background=light
         let g:lucius_style = "light"
@@ -85,4 +72,7 @@ endif
 
 " set linenumbers on by default
 set number 
+
+" A cleaner vertical split
+ set fillchars=vert:\:
 

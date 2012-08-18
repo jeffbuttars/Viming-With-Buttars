@@ -16,8 +16,14 @@ let python_print_as_function = 1
 
 let g:ultisnips_python_style = 'rst'
 
-let no_flake8_maps = 0
-silent! autocmd BufWritePost <buffer> if &ft == 'python' | call Flake8()
+" Flake8 and syntastic options
+" let no_flake8_maps = 0
+" let g:flake8_quickfix = 0
+" silent! autocmd BufWritePost <buffer> if &ft == 'python' | call Flake8()
+let g:syntastic_check_on_open = 1
+let g:syntastic_auto_loc_list=1
+let g:syntastic_loc_list_height=15
+let g:syntastic_quiet_warnings=0
 
 " Indent Python in the Google way.
 

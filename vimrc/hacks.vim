@@ -148,3 +148,9 @@ endf
 
 au TabEnter * call TabDirSave(0)
 au TabLeave * call TabDirSave(1)
+
+" Open a shell command in a new window, the command supports shell completion
+command! -complete=shellcmd -nargs=* R rightbelow vnew | r ! <args>
+
+" Open a Quickfix window for the last search.
+nnoremap <silent> ,/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
