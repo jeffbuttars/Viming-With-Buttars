@@ -11,6 +11,7 @@ syn match eclType /\<UNSIGNED\d*\>/
 syn match eclType '\<INTEGER\d*\>'
 syn match eclType '\<Q\?STRING\d*\>'
 syn match eclType '\<RECORD\>'
+syn match eclType '\<INDEX\>'
 syn match eclType '\<MACRO\>'
 syn match eclType '\<DATASET\>'
 

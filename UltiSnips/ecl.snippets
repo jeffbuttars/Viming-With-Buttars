@@ -65,3 +65,21 @@ endsnippet
 snippet seq "SEQUENTIAL()"
 SEQUENTIAL(${1});
 endsnippet
+
+snippet idx "NAME := INDEX()"
+IDX_${1} := INDEX(
+    ${2:DSET},
+    {${3:KEYS}},
+    ${4:IDX_NAME}
+); // $1
+${0}
+endsnippet
+
+snippet eidx "EXPORT NAME := INDEX()"
+EXPORT IDX_${1} := INDEX(
+    ${2:DSET},
+    {${3:KEYS}},
+    ${4:IDX_NAME}
+); // $1
+${0}
+endsnippet
