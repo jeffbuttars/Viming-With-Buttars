@@ -1,7 +1,7 @@
 
 " mock.ecl(7,14): error C3002: syntax error near "UNSIGNED4" : expected :=, ';'
 set makeprg=eclcc\ -syntax\ '%'
-set errorformat=%f(%l,%c):\ error\ %t%n:\ %m
+set errorformat=%f(%l\\,%c):\ %trror\ C%n:\ %m,%f(%l\\,%c):\ %tarning\ C%n:\ %m
 
 nmap <F8> <ESC>:!eclcc -syntax '%'<CR>
 imap <F8> <ESC><ESC>:!eclcc -syntax '%'<CR>
