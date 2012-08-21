@@ -11,6 +11,8 @@ syn match eclType /\<UNSIGNED\d*\>/
 syn match eclType '\<INTEGER\d*\>'
 syn match eclType '\<Q\?STRING\d*\>'
 syn match eclType '\<RECORD\>'
+syn match eclType '\<INDEX\>'
+syn match eclType '\<MACRO\>'
 syn match eclType '\<DATASET\>'
 
 syn match eclConstant '\<LEFT\>'
@@ -33,6 +35,7 @@ syntax match eclStatement '\<SELF\>\c'
 syntax match eclDefine '\<EXPORT\>\c'
 
 syntax match eclIdent '\<end\>\s*;\c'
+syntax match eclIdent '\<endmacro\>\s*;\c'
 " syn region eclTransformBlock start="\<tranform\>\c"	end="\<end\>" contains=ALLBUT,@rubyNotTop fold
 
 syn match	eclImport   display "^\s*IMPORT\s\+\a\w*\c"

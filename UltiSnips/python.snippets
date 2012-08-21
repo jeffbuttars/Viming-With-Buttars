@@ -78,6 +78,10 @@ def write_slots_args(args, snip):
     args = ['"%s"' % arg for arg in args]
     snip += '__slots__ = (%s,)' % ', '.join(args)
 
+def get_arg_names(log_str):
+    names = [log_str.split(':')[0].strip() for arg in log_str.split(',') if arg]
+    return names
+
 endglobal
 
 
@@ -141,7 +145,8 @@ logger = logging.getLogger(${1:__name__})
 logger_ch = logging.StreamHandler()
 logger.setLevel(logging.DEBUG)
 log_formatter = logging.Formatter(('%(asctime)s %(levelname)s:%(process)s'
-                                   ' %(funcName)s() %(message)s'))
+                                   ' %(lineno)s:%(module)s:%(funcName)s()'
+                                   ' %(message)s'))
 logger_ch.setFormatter(log_formatter)
 logger.addHandler(logger_ch)${0}
 endsnippet
@@ -259,12 +264,48 @@ snippet djf "Django model field member" b
 ${1:field_name} = models.${2:fieldType}(${3})${0}
 endsnippet
 
+
+# snippet pa "Print arg 'arg: %s'" i
+# ${1:arg}: %s`!p
+# names = get_arg_names(t[1])
+# snip.rv += names`${0}
+# endsnippet
+
 snippet pa "Print arg 'arg: %s'" i
 ${1:arg}: %s${0}
 endsnippet
 
 snippet sup "super(Class, self)."
 super(${1:Classname}, self).${2}(${3})${0}
+endsnippet
+
+snippet optpar
+from optparse import OptionParser
+
+opt_parser = OptionParser(                                                                          
+    usage=("usage: %prog Add your help message here.")
+)     
+
+# A basic option that sets an option variable to a string value
+opt_parser.add_option("-c", "--config", dest="config_file",                 
+        default="",                                           
+        help=("The path to the config file for this"        
+            " program"))   
+
+# An example of a boolean option
+opt_parser.add_option("-d", "--daemonize", dest="daemonize",                
+        action="store_true", default=False,                   
+        help=("Have the program service daemonize itself" )
+)
+
+# 'options' is an object that allows easy referencing of the
+# parser options added above.
+# Ex: To the the value of the '--config' option refercence: options.config_file
+# 'args' is a list of arguments given that aren't part of the option switches
+# defined above.
+# Ex: If the command '$ command --config=/path/to/config start' is called
+# Then args would look like: ['start']
+(options, args) = opt_parser.parse_args()
 endsnippet
 
 # vim:ft=snippets:
