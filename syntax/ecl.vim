@@ -20,6 +20,8 @@ syn match eclConstant '\<RIGHT\>'
 syn match eclBoolean '\<TRUE\>'
 syn match eclBoolean '\<FALSE\>'
 
+syn match eclFunction /\<SEQUENTIAL\>/
+syn match eclFunction /\<APPLY\>/
 syn match eclFunction '\<XML\>\c'
 syn match eclFunction '\<XPATH\>\c'
 syn match eclFunction '\<XMLTEXT\>\c'
@@ -33,6 +35,7 @@ syn match eclRepeat '\<XMLPROJECT\>\c'
 syntax match eclStatement '\<SELF\>\c'
 
 syntax match eclDefine '\<EXPORT\>\c'
+syntax match eclDefine '\<SHARED\>\c'
 
 syntax match eclIdent '\<end\>\s*;\c'
 syntax match eclIdent '\<endmacro\>\s*;\c'

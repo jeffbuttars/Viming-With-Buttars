@@ -23,3 +23,8 @@ if exists('tcomment#DefineType')
     call tcomment#DefineType('ecl_inline',       g:tcommentInlineC  )
     call tcomment#DefineType('ecl_block',        g:tcommentBlockC   )
 endif
+
+" Syntastic syntax checker
+" function SyntaxCheckers_ecl_GetLocList()
+" endfunction
+
