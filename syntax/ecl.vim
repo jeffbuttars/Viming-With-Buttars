@@ -11,8 +11,7 @@ syn match eclType /\<UNSIGNED\d*\>/
 syn match eclType '\<INTEGER\d*\>'
 syn match eclType '\<Q\?STRING\d*\>'
 syn match eclType '\<RECORD\>'
-syn match eclType '\<INDEX\>'
-syn match eclType '\<MACRO\>'
+syn match eclType '\<BOOLEAN\>'
 syn match eclType '\<DATASET\>'
 
 syn match eclConstant '\<LEFT\>'
@@ -22,6 +21,11 @@ syn match eclBoolean '\<FALSE\>'
 
 syn match eclFunction /\<SEQUENTIAL\>/
 syn match eclFunction /\<APPLY\>/
+syn match eclMacro '\<MACRO\>'
+syn match eclMacro '\<FUNCTIONMACRO\>'
+
+syn match eclFunction '\<INDEX\>'
+syn match eclFunction '\<BUILDINDEX\>'
 syn match eclFunction '\<XML\>\c'
 syn match eclFunction '\<XPATH\>\c'
 syn match eclFunction '\<XMLTEXT\>\c'
@@ -45,6 +49,7 @@ syn match	eclImport   display "^\s*IMPORT\s\+\a\w*\c"
 syn match	eclImport   display "MODULE\c"
 
 syn match	eclOperator   display "\<+\>\c"
+syn match	eclOperator   display "RETURN\c"
 
 syn keyword	eclTodo		contained TODO FIXME XXX
 :syntax match eclComment /\/\/.*/ contains=eclTodo
@@ -57,6 +62,7 @@ syntax region eclModBlock start=/\<MODULE\>/ end=/\<END\>\s*;/ contains=ALL
 syntax region eclTransBlock start=/\<TRANSFORM\>/ end=/\<END\>\s*;/ contains=ALL
 syntax region eclFuncBlock start=/\<FUNCTION\>/ end=/\<END\>\s*;/ contains=ALL
 syntax region eclMacroBlock start=/\<MACRO\>/ end=/\<ENDMACRO\>\s*;/ contains=ALL
+syntax region eclFuncMacroBlock start=/\<FUNCTIONMACRO\>/ end=/\<ENDMACRO\>\s*;/ contains=ALL
 
 hi def link eclCommentL		eclComment
 hi def link eclCommentStart	eclComment
@@ -86,6 +92,7 @@ hi def link eclStructure		Structure
 hi def link eclStorageClass	StorageClass
 hi def link eclImport		Include
 hi def link eclPreProc		PreProc
+hi def link eclMacro	    Define
 hi def link eclDefine	    Define
 " hi def link eclDefine		Macro
 " hi def link eclIncluded		cString
