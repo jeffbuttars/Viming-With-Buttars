@@ -134,7 +134,9 @@ endf
 
 func! vundle#installer#clean(bang) abort
   let bundle_dirs = map(copy(g:bundles), 'v:val.path()') 
-  let all_dirs = v:version >= 702 ? split(globpath(g:bundle_dir, '*', 1), "\n") : split(globpath(g:bundle_dir, '*'), "\n")
+  let all_dirs = (v:version > 702 || (v:version == 702 && has("patch51")))
+  \   ? split(globpath(g:bundle_dir, '*', 1), "\n")
+  \   : split(globpath(g:bundle_dir, '*'), "\n")
   let x_dirs = filter(all_dirs, '0 > index(bundle_dirs, v:val)')
 
   if empty(x_dirs)
@@ -187,7 +189,7 @@ endf
 func! s:has_doc(rtp) abort
   return isdirectory(a:rtp.'/doc')
   \   && (!filereadable(a:rtp.'/doc/tags') || filewritable(a:rtp.'/doc/tags'))
-  \   && v:version >= 702
+  \   && (v:version > 702 || (v:version == 702 && has("patch51")))
   \     ? !(empty(glob(a:rtp.'/doc/*.txt', 1)) && empty(glob(a:rtp.'/doc/*.??x', 1)))
   \     : !(empty(glob(a:rtp.'/doc/*.txt')) && empty(glob(a:rtp.'/doc/*.??x')))
 endf
@@ -206,7 +208,7 @@ func! s:sync(bang, bundle) abort
   let git_dir = expand(a:bundle.path().'/.git/', 1)
   if isdirectory(git_dir) || filereadable(expand(a:bundle.path().'/.git', 1))
     if !(a:bang) | return 'todate' | endif
-    let cmd = 'cd '.shellescape(a:bundle.path()).' && git pull'
+    let cmd = 'cd '.shellescape(a:bundle.path()).' && git pull && git submodule update --init --recursive'
 
     if (has('win32') || has('win64'))
       let cmd = substitute(cmd, '^cd ','cd /d ','')  " add /d switch to change drives
@@ -216,7 +218,7 @@ func! s:sync(bang, bundle) abort
     let get_current_sha = 'cd '.shellescape(a:bundle.path()).' && git rev-parse HEAD'
     let initial_sha = s:system(get_current_sha)[0:15]
   else
-    let cmd = 'git clone '.a:bundle.uri.' '.shellescape(a:bundle.path())
+    let cmd = 'git clone --recursive '.a:bundle.uri.' '.shellescape(a:bundle.path())
     let initial_sha = ''
   endif
 
