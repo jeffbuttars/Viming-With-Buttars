@@ -16,6 +16,9 @@ syntax enable
 " * colo neutron " A very nice creamy light theme.
 " * colo vylight  " A light theme
 " * colo jellybeans " A dark color full theme
+"
+" Add the tomorrow themes to the runtime path
+set runtimepath+=~/.vim/bundle/tomorrow-theme/vim
 
 " Explicitly say we want 256 colors when we find 256
 " in the TERM environmental variable.
@@ -64,9 +67,12 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
     if $TERM_META =~ 'white'
         set background=light
         let g:lucius_style = "light"
+        colorscheme Tomorrow
+    else
+        colorscheme Tomorrow-Night-Bright
     endif
 
-    colorscheme lucius
+    " colorscheme lucius
 
 endif
 
