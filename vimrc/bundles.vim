@@ -71,10 +71,16 @@ Bundle 'https://github.com/w0ng/vim-hybrid'
 " looks nice, going to try it out for a while
 Bundle 'Lucius'
 " The following are schemes I like, but I'm not using them right now.
-    " Bundle 'noahfrederick/Hemisu'
-    " Bundle 'eclm_wombat.vim'
-    " Bundle 'wombat256.vim'
-    " Bundle 'Wombat'
-    " Bundle 'jellybeans.vim'
-    " Bundle 'github-theme'
+"
+Bundle 'https://github.com/Lokaltog/vim-distinguished'
+Bundle 'github-theme'
+Bundle 'noahfrederick/Hemisu'
+Bundle 'eclm_wombat.vim'
+Bundle 'wombat256.vim'
+Bundle 'Wombat'
+Bundle 'jellybeans.vim'
+Bundle 'twilight256.vim'
+Bundle 'twilight'
+Bundle 'Twilight-for-python'
+Bundle 'https://github.com/tpope/vim-vividchalk'
 
