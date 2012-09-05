@@ -70,6 +70,10 @@ Bundle 'https://github.com/w0ng/vim-hybrid'
 " [Hemisu](http://noahfrederick.com/vim-color-scheme-hemisu/)
 " looks nice, going to try it out for a while
 Bundle 'Lucius'
+
+" The tomorrow theme(s)
+Bundle 'https://github.com/chriskempson/tomorrow-theme'
+
 " The following are schemes I like, but I'm not using them right now.
 "
 Bundle 'https://github.com/Lokaltog/vim-distinguished'
