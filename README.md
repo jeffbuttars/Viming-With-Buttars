@@ -51,7 +51,7 @@ you source the virtualcandy.sh file, to configure VirtualCandy settings.
 
 Start a new virtualenv, or rebuild one from a requirements file. This
 function only works on your current working directory(all other functions work
-anyware within a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) project). If you run vcstart in a
+anyware within a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) project). If you run `vcstart` in a
 directory without a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) of the name defined by `$VC_DEFUALT_VENV_NAME` ,
 then a new [Virtualenv](http://www.virtualenv.org/en/latest/index.html) will be created. After the [Virtualenv](http://www.virtualenv.org/en/latest/index.html) is created, if a
 requirements file is present, all of the packages listed in the
