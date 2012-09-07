@@ -21,7 +21,7 @@ Source VirtualCandy from your bashrc, add this line to your ~/.bashrc file:
 ## Philosophy of [Virtualenv](http://www.virtualenv.org/en/latest/index.html) usage
 
 My usage of [Virtualenv](http://www.virtualenv.org/en/latest/index.html) is very similar to how one uses Git or Hg.
-I create on [Virtualenv](http://www.virtualenv.org/en/latest/index.html) environment per project and that [Virtualenv](http://www.virtualenv.org/en/latest/index.html) environment
+I create one [Virtualenv](http://www.virtualenv.org/en/latest/index.html) environment per project and that [Virtualenv](http://www.virtualenv.org/en/latest/index.html) environment
 is located at the top of the project's directory tree. I also name 
 all of my [Virtualenv](http://www.virtualenv.org/en/latest/index.html) directories the same name, .venv, and this project
 uses that as the default [Virtualenv](http://www.virtualenv.org/en/latest/index.html) directory name. But that is configurable.  
