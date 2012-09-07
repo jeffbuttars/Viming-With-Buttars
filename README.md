@@ -82,8 +82,8 @@ latest version and then re-write the requirements file to reflect the update.
 
 ### vctags
 
-TODO: Make the inotify watch optional with a command line flag
-TODO: Make the [Virtualenv](http://www.virtualenv.org/en/latest/index.html) name option a command line flag 
+TODO: Make the inotify watch optional with a command line flag  
+TODO: Make the [Virtualenv](http://www.virtualenv.org/en/latest/index.html) name option a command line flag   
 
 Runs ctags and creates a tags file in your current working directory. The
 [Virtualenv](http://www.virtualenv.org/en/latest/index.html) directory of the current project will be explicitly scanned by ctags
