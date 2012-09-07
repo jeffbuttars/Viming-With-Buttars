@@ -60,6 +60,11 @@ requirements file will be installed. If a [Virtualenv](http://www.virtualenv.org
 new [Virtualenv](http://www.virtualenv.org/en/latest/index.html) will be created, the packages listed in requirements file will be
 installed/updated if necessary.
 
+### vcactivate
+
+`vcactivate` will activate the [Virtualenv](http://www.virtualenv.org/en/latest/index.html) of the current project. `vcactivate` finds
+the current project by using the `vcfindenv` command.
+
 ### vcfreeze
 
 Write a new requirements file for the current [Virtualenv](http://www.virtualenv.org/en/latest/index.html). The
@@ -74,11 +79,6 @@ environemental variable.
 
 This will upgrade all of the packages listed in the requirements file to their
 latest version and then re-write the requirements file to reflect the update.
-
-### vcactivate
-
-`vcactivate` will activate the [Virtualenv](http://www.virtualenv.org/en/latest/index.html) of the current project. `vcactivate` finds
-the current project by using the `vcfindenv` command.
 
 ### vctags
 
