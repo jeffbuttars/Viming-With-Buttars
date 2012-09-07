@@ -27,7 +27,7 @@ all of my [Virtualenv](http://www.virtualenv.org/en/latest/index.html) directori
 uses that as the default [Virtualenv](http://www.virtualenv.org/en/latest/index.html) directory name. But that is configurable.  
 
 Most VirtualCandy functions can be used from anyware withing a project using a
-[Virtualenv](http://www.virtualenv.org/en/latest/index.html). VirtualCandy will find the nearest install [Virtualenv](http://www.virtualenv.org/en/latest/index.html) by traversing
+[Virtualenv](http://www.virtualenv.org/en/latest/index.html). VirtualCandy will find the nearest install of [Virtualenv](http://www.virtualenv.org/en/latest/index.html) by traversing
 up the directory tree until one or no [Virtualenv](http://www.virtualenv.org/en/latest/index.html) are found.
 
 ## Configuration
