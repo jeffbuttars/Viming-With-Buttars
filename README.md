@@ -7,15 +7,11 @@ My Own Bash Wrapper Functions for Python's Virtualenv
 
 Clone the repo into your home directory:
 
-```bash
-git git@github.com:jeffbuttars/virtualcandy.git .virtualcandy
-```
+    git git@github.com:jeffbuttars/virtualcandy.git .virtualcandy
 
 Source VirtualCandy from your bashrc, add this line to your ~/.bashrc file:
 
-```bash
-. ~/.virtualcandy/virtualcandy.sh
-```
+    . ~/.virtualcandy/virtualcandy.sh
 
 
 ## Philosophy of Virtualenv usage
@@ -37,6 +33,7 @@ you source the virtualcandy.sh file, to configure VirtualCandy settings.
 
 
 ### Set the name of your Virtualenv directory created by and used by VirtualCandy
+
     VC_DEFUALT_VENV_NAME='.venv'
 
 
