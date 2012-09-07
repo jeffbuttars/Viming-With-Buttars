@@ -1,35 +1,21 @@
+# VirtualCandy
+# Use at your own risk, no quarentee provided.
+# Author: Jeff Buttars
+# git@github.com:jeffbuttars/virtualcandy.git
+# See the README.md
 
-if [[ -z $DEFUALT_VENV_NAME ]]; then
-    DEFUALT_VENV_NAME='.venv'
+if [[ -z $VC_DEFUALT_VENV_NAME ]]; then
+    VC_DEFUALT_VENV_NAME='.venv'
 fi
 
-if [[ -z $DEFUALT_VENV_REQFILE ]]; then
-    DEFUALT_VENV_REQFILE='requirements.txt'
+if [[ -z $VC_DEFUALT_VENV_REQFILE ]]; then
+    VC_DEFUALT_VENV_REQFILE='requirements.txt'
 fi
-
-# Start a new virtualenv, or 
-# rebuild on from a requirements.txt file.
-function vcstart()
-{
-    vname=$DEFUALT_VENV_NAME
-    if [[ -n $1 ]]; then
-        vname="$1"
-    fi
-
-    virtualenv $vname
-    . $vname/bin/activate
-
-    if [[ -f requirements.txt ]]; then
-        pip install -r $DEFUALT_VENV_REQFILE
-    else
-        touch $DEFUALT_VENV_REQFILE
-    fi
-} #vcstart
 
 function vcfinddir()
 {
     cur=$PWD
-    vname=$DEFUALT_VENV_NAME
+    vname=$VC_DEFUALT_VENV_NAME
     found='false'
 
     if [[ -n $1 ]]; then
@@ -52,11 +38,30 @@ function vcfinddir()
     fi
 } #vcfinddir
 
+# Start a new virtualenv, or 
+# rebuild on from a requirements.txt file.
+function vcstart()
+{
+    vname=$VC_DEFUALT_VENV_NAME
+    if [[ -n $1 ]]; then
+        vname="$1"
+    fi
+
+    virtualenv $vname
+    . $vname/bin/activate
+
+    if [[ -f requirements.txt ]]; then
+        pip install -r $VC_DEFUALT_VENV_REQFILE
+    else
+        touch $VC_DEFUALT_VENV_REQFILE
+    fi
+} #vcstart
+
 # Upgrade the nearest virtualenv packages
 # and re-freeze them
 function vcpkgup()
 {
-    vname=$DEFUALT_VENV_NAME
+    vname=$VC_DEFUALT_VENV_NAME
 
     if [[ -n $1 ]]; then
         vname="$1"
@@ -64,7 +69,7 @@ function vcpkgup()
 
     vdir=$(vcfinddir $vname)
 
-    reqlist="$vdir/$DEFUALT_VENV_REQFILE"
+    reqlist="$vdir/$VC_DEFUALT_VENV_REQFILE"
     echo "Using req list $reqlist"
 
     if [[ -f $reqlist ]]; then
@@ -83,7 +88,7 @@ function vcpkgup()
 function vcfindenv()
 {
     cur=$PWD
-    vname=$DEFUALT_VENV_NAME
+    vname=$VC_DEFUALT_VENV_NAME
 
     if [[ -n $1 ]]; then
         vname="$1"
@@ -109,8 +114,8 @@ function vcfreeze()
 
     vcactivate
 
-    pip freeze > "$vd/$DEFUALT_VENV_REQFILE"
-    cat  "$vd/$DEFUALT_VENV_REQFILE"
+    pip freeze > "$vd/$VC_DEFUALT_VENV_REQFILE"
+    cat  "$vd/$VC_DEFUALT_VENV_REQFILE"
 } #vcfreeze
 
 function vcactivate()
@@ -136,16 +141,16 @@ function vcactivate()
 function vctags()
 {
     
-    vloc=''
+    # vloc=''
+    # if [[ -n $1 ]]; then
+    #     vloc=$(vcfindenv $1)
+    # else
+    #     vloc=$(vcfindenv)
+    # fi
+    # shift
 
-    if [[ -n $1 ]]; then
-        vloc=$(vcfindenv $1)
-    else
-        vloc=$(vcfindenv)
-    fi
-    shift
-
-    filelist='*'
+    vloc=$(vcfindenv)
+    filelist="$vloc"
 
     ccmd="ctags --sort=yes --tag-relative=no -R --python-kinds=-i"
     if [[ -n $vloc ]]; then
