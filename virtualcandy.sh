@@ -57,6 +57,44 @@ function vcstart()
     fi
 } #vcstart
 
+# A simple, and generic, pip update script.
+# For a given file containing a pkg lising
+# all packages are updated. If no args are given,
+# then a 'requirements.txt' file will be looked
+# for in the current directory. If the $VC_DEFUALT_VENV_REQFILE
+# variable is set, than that filename will be looked
+# for in the current directory.
+# If an argument is passed to the function, then
+# that file and path will be used.
+# This function is used by the vcpkgup function
+function pip_update()
+{
+    reqf="requirements.txt"
+
+    if [[ -n $VC_DEFUALT_VENV_REQFILE ]]; then
+        reqf="$VC_DEFUALT_VENV_REQFILE"
+    fi
+
+    if [[ -n $1 ]]; then
+        reqf="$1"
+    fi
+
+    res=0
+    if [[ -f $reqf ]]; then
+        tfile="/tmp/pkglist_$RANDOM.txt"
+        echo $tfile
+        cat $reqf | awk -F '==' '{print $1}' > $tfile
+        pip install --upgrade -r $tfile
+        res=$?
+        rm -f $tfile
+    else
+        echo "Unable to find package list file: $reqf"
+        res=1
+    fi
+
+    return $res
+} #pip_update
+
 # Upgrade the nearest virtualenv packages
 # and re-freeze them
 function vcpkgup()
@@ -73,15 +111,17 @@ function vcpkgup()
     echo "Using req list $reqlist"
 
     if [[ -f $reqlist ]]; then
-        tfile="/tmp/pkglist_$RANDOM.txt"
-        echo $tfile
-        cat $reqlist | awk -F '==' '{print $1}' > $tfile
         vcactivate $vname
-        pip install --upgrade -r $tfile
-        vcfreeze $vname
-        rm -f $tfile
+        pip_update $reqlist
+        res=$?
+        if [[ "$res" == 0 || "$res" == "" ]]; then
+            vcfreeze $vname
+        else
+            echo "Bad exit status from pip_update, not freezing the package list."
+        fi
     fi
     
+    return $res
 } #vcpkgup
 
 
@@ -137,6 +177,7 @@ function vcactivate()
     fi
 
 } #vcactivate
+alias vca='vcactivate'
 
 function vctags()
 {
