@@ -24,6 +24,10 @@
 if exists('g:BellyButtonVersion') || &cp || version < 700
 	finish
 endif
+
+" Disabling for now
+finish
+
 let g:BellyButtonVersion = 1.0
 
 if !exists('g:BellyButton_local_option_file')

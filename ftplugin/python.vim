@@ -53,3 +53,12 @@ endfunction
 
 let pyindent_nested_paren="&sw*2"
 let pyindent_open_paren="&sw*2"
+
+
+" If autopep8 is installed, map it to F5
+let found_ap = system("which autopep8")
+if found_ap != ""
+    imap <F5> <ESC>:%!autopep8 -i %<CR>
+    nmap <F5> <ESC>:%!autopep8 -i %<CR>
+endif
+
