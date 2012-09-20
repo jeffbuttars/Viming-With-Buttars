@@ -20,3 +20,7 @@ for ${1:needle} in ${2:haystack} ; do
     ${3:#statements}
 done
 endsnippet
+
+snippet tdir "THIS_DIR"
+THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+endsnippet

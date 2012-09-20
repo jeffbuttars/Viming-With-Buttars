@@ -25,7 +25,7 @@ if (! window.${1:nsname} ) {
 }$0
 endsnippet
 
-snippet af "Anonymous Function"
+snippet af "Anonymous Function" i
 function(${1:args}) {${2}}${3}
 endsnippet
 
@@ -66,4 +66,18 @@ endsnippet
 
 snippet cl "console.log()"
 console.log($1);$0
+endsnippet
+
+snippet req "require('');"
+require("${1}");$0
+endsnippet
+
+snippet vreq "var name = require('');"
+var ${1} = require('${2:$1}');$0
+endsnippet
+
+snippet fori "for key in"
+for (var ${1:key} in ${2:obj}) { if ($2.hasOwnProperty(key)) {
+    ${3:obj[key]};$0
+}}
 endsnippet
