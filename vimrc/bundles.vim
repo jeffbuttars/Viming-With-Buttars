@@ -57,7 +57,7 @@ Bundle 'Conque'
 Bundle 'Solarized'
 Bundle 'simple-pairs'
 Bundle 'Syntastic'
-Bundle 'https://github.com/w0ng/vim-hybrid'
+Bundle 'Python-mode-klen'
 
 " https://lampsvn.epfl.ch/trac/scala/browser/scala-tool-support/trunk/src/vim
 " Bundle 'scala'
@@ -87,4 +87,6 @@ Bundle 'twilight256.vim'
 Bundle 'twilight'
 Bundle 'Twilight-for-python'
 Bundle 'https://github.com/tpope/vim-vividchalk'
+Bundle 'https://github.com/w0ng/vim-hybrid'
+
 

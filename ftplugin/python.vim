@@ -16,6 +16,15 @@ let python_print_as_function = 1
 
 let g:ultisnips_python_style = 'rst'
 
+" Python-mode options
+" 
+" Don't run lint on write, let Syntastic handle that 
+let g:pymode_lint = 0
+let g:pymode_lint_write = 0
+" Turn off folding
+" let g:pymode_folding = 0
+" Enable some extra syntax highlighting
+let g:pymode_syntax_print_as_function = 1
 
 " Indent Python in the Google way.
 
