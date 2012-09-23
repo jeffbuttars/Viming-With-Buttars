@@ -45,6 +45,10 @@ you source the virtualcandy.sh file, to configure VirtualCandy settings.
 
     VC_DEFUALT_VENV_REQFILE='requirements.txt'
 
+### Enable auto activation, when set to 'true', of a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) when you enter it's containing directory. If you use [Virtualenv](http://www.virtualenv.org/en/latest/index.html) often, this is a very handy option. Example: If you have a directory named ~/Dev1 that has a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) in it. Then upon changing into the ~/Dev1 directory that [Virtualenv](http://www.virtualenv.org/en/latest/index.html) will be activated. If you a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) activated and cd into a directory containing a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) that is different from the currently activated [Virtualenv](http://www.virtualenv.org/en/latest/index.html), then the current [Virtualenv](http://www.virtualenv.org/en/latest/index.html) will be deactivated and the new one will be activated.
+
+    VC_AUTO_ACTIVATION=false
+
 ## Function Overview
 
 ### vcstart
@@ -92,6 +96,10 @@ current working directory will also be recursively added to the tags file. Any
 parameters given to the `vctags` command will be treated as files and/or
 directories that should be scanned by ctags. 
 
+### vcbundle
+
+Creates a package bundle containing all of the packages listed in the current [Virtualenv](http://www.virtualenv.org/en/latest/index.html)'s VC\_DEFUALT\_VENV\_REQFILE file. The name of the bundle output will be 'VC\_DEFUALT\_VENV\_NAME.pybundle', but with any leading '.' stripped from the [Virtualenv](http://www.virtualenv.org/en/latest/index.html) name. For instance, if VC\_DEFUALT\_VENV\_NAME is '.myenv' the bundle will be named 'myenv.pybundle'.
+
 #### File Watching
 
 If `inotify-utils` is installed, then the `vctags` command will monitor the
@@ -111,6 +119,11 @@ If `vctags` is given parameters, then ctags is run as:
     `ctags --sort=yes --tag-relative=no -R --python-kinds=-i $VENV_LOCATION $@`  
 Where `$@` is all of the parameters passed to the `vctags` command.
 
+### vc\_auto\_activate
+
+Checks the current directory for a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) named VC\_DEFUALT\_VENV\_NAME. If it exists it is activated. This function is put into the PROMPT\_COMMAND variable and executed on every changed of directory.  
+This function is intended for internal use by VirtualCandy iteself, but it is
+available to the user.
 
 ### vcfindenv
 

@@ -12,6 +12,10 @@ if [[ -z $VC_DEFUALT_VENV_REQFILE ]]; then
     VC_DEFUALT_VENV_REQFILE='requirements.txt'
 fi
 
+if [[ -z $VC_AUTO_ACTIVATION ]]; then
+    VC_AUTO_ACTIVATION=false
+fi
+
 function vcfinddir()
 {
     cur=$PWD
@@ -217,5 +221,42 @@ function vctags()
         done
     fi
 } #vctags
+
+function vcbundle()
+{
+    vcactivate
+    vdir=$(vcfinddir)
+    bname="${VC_DEFUALT_VENV_NAME#.}.pybundle"
+    echo "Creating bundle $bname"
+    pip bundle "$bname" -r "$vdir/$VC_DEFUALT_VENV_REQFILE"
+} #vcbundle
+
+function vc_auto_activate()
+{
+    if [[ -d "$VC_DEFUALT_VENV_NAME" ]]; then
+        if [[ -n $VIRTUAL_ENV ]]; then
+            if [[ "$VIRTUAL_ENV" != "$PWD/$VC_DEFUALT_VENV_NAME" ]]; then
+                from="~${VIRTUAL_ENV#$HOME/}"
+                to="$(vcfindenv)"
+                to="~${to#$HOME/}"
+                echo -e "Switching from $from to $to"
+                deactivate
+            fi
+        fi
+
+        vcactivate
+    fi
+} #vc_auto_activate
+
+# Automatically activate the current directories
+# Virtualenv is one exists
+if [[ "$VC_AUTO_ACTIVATION" == "true" ]]; then
+    if [[ -n "$PROMPT_COMMAND" ]]; then
+        export VC_OLD_PROMPT_COMMAD="$PROMPT_COMMAND"
+        PROMPT_COMMAND="$PROMPT_COMMAND;vc_auto_activate"
+    else
+        PROMPT_COMMAND="vc_auto_activate"
+    fi
+fi
 
 # vim:set ft=sh:
