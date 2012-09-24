@@ -38,16 +38,16 @@ up the directory tree until one or no [Virtualenv](http://www.virtualenv.org/en/
 Set the following environemental variables in your ~/.bashrc, before
 you source the virtualcandy.sh file, to configure VirtualCandy settings.  
 
-### Set the name of your [Virtualenv](http://www.virtualenv.org/en/latest/index.html) directory created by and used by VirtualCandy
+### Naming it: Set the name of your [Virtualenv](http://www.virtualenv.org/en/latest/index.html) directory created by and used by VirtualCandy
 
     VC_DEFUALT_VENV_NAME='.venv'
 
 
-### Set the name of the requirements file used by [Pip](http://pypi.python.org/pypi/pip) freeze and VirtualCandy to store your installed package information
+### Requirements files: Set the name of the requirements file used by [Pip](http://pypi.python.org/pypi/pip) freeze and VirtualCandy to store your installed package information
 
     VC_DEFUALT_VENV_REQFILE='requirements.txt'
 
-### Enable auto activation, when set to 'true', of a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) when you enter it's containing directory. If you use [Virtualenv](http://www.virtualenv.org/en/latest/index.html) often, this is a very handy option. Example: If you have a directory named ~/Dev1 that has a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) in it. Then upon changing into the ~/Dev1 directory that [Virtualenv](http://www.virtualenv.org/en/latest/index.html) will be activated. If you a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) activated and cd into a directory containing a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) that is different from the currently activated [Virtualenv](http://www.virtualenv.org/en/latest/index.html), then the current [Virtualenv](http://www.virtualenv.org/en/latest/index.html) will be deactivated and the new one will be activated.
+### Auto activation(when set to 'true', it's off by default) of a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) when you enter it's containing directory. If you use [Virtualenv](http://www.virtualenv.org/en/latest/index.html) often, this is a very handy option. Example: If you have a directory named ~/Dev1 that has a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) in it. Then upon changing into the ~/Dev1 directory that [Virtualenv](http://www.virtualenv.org/en/latest/index.html) will be activated. If you a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) activated and cd into a directory containing a [Virtualenv](http://www.virtualenv.org/en/latest/index.html) that is different from the currently activated [Virtualenv](http://www.virtualenv.org/en/latest/index.html), then the current [Virtualenv](http://www.virtualenv.org/en/latest/index.html) will be deactivated and the new one will be activated.
 
     VC_AUTO_ACTIVATION=false
 
