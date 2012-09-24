@@ -185,15 +185,6 @@ alias vca='vcactivate'
 
 function vctags()
 {
-    
-    # vloc=''
-    # if [[ -n $1 ]]; then
-    #     vloc=$(vcfindenv $1)
-    # else
-    #     vloc=$(vcfindenv)
-    # fi
-    # shift
-
     vloc=$(vcfindenv)
     filelist="$vloc"
 
@@ -217,7 +208,11 @@ function vctags()
     if [[ -n $res ]]; then
         while [[ true ]]; do
             inotifywait -e modify -r $filelist
-            $ccmd
+            nice -n 19 ionice -c 3 $ccmd
+            # Sleep a bit to keep from hitting the disk
+            # to hard during a mad editing burst from 
+            # those mad men coders
+            sleep 30
         done
     fi
 } #vctags
