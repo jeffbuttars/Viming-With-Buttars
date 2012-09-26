@@ -88,5 +88,6 @@ Bundle 'twilight'
 Bundle 'Twilight-for-python'
 Bundle 'https://github.com/tpope/vim-vividchalk'
 Bundle 'https://github.com/w0ng/vim-hybrid'
+Bundle 'summerfruit256.vim'
 
 

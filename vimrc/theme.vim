@@ -67,7 +67,9 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
     if $TERM_META =~ 'white'
         set background=light
         let g:lucius_style = "light"
-        colorscheme Tomorrow
+        " colorscheme Tomorrow
+        colorscheme summerfruit256 
+        set nocursorline
     else
         colorscheme Tomorrow-Night-Bright
     endif
