@@ -186,47 +186,48 @@ function vcactivate()
 } #vcactivate
 alias -g vca='vcactivate'
 
-# function _vctags()
-# {
-#     vloc=$(vcfindenv)
-#     filelist="$vloc"
-# 
-#     ccmd="ctags --sort=yes --tag-relative=no -R --python-kinds=-i"
-#     if [[ -n $vloc ]]; then
-#         echo "Making tags with $vloc"
-#         filelist="$vloc"
-#     fi
-# 
-#     if [[ "$#" == "0" ]]; then
-#         filelist="$filelist *"
-#     else
-#         filelist="$filelist $@"
-#     fi
-# 
-#     ccmd="$ccmd $filelist"
-#     echo "Using command $ccmd"
-#     $ccmd
-# 
-#     res=$(which inotifywait)
-#     VC_AUTOTAG_RUN=1
-#     if [[ -n $res ]]; then
-#         while [[ "$VC_AUTOTAG_RUN" == "1" ]]; do
-#             inotifywait -e modify -r $filelist
-#             nice -n 19 ionice -c 3 $ccmd
-#             # Sleep a bit to keep from hitting the disk
-#             # to hard during a mad editing burst from 
-#             # those mad men coders
-#             sleep 30
-#         done
-#     fi
-# } #_vctags
-# 
-# function vctags()
-# {
-#     _vctags 1>/dev/null 2>&1 &
-#     VC_VCTAGS_PID="$!"
-#     echo "vctags: $VC_VCTAGS_PID"
-# } #vctags
+function _vctags()
+{
+    vloc=$(vcfindenv)
+    filelist="$vloc"
+
+    ccmd="ctags --sort=yes --tag-relative=no -R --python-kinds=-i"
+    if [[ -n $vloc ]]; then
+        echo "Making tags with $vloc"
+        filelist="$vloc"
+    fi
+
+    if [[ "$#" == "0" ]]; then
+        filelist="$filelist *"
+    else
+        filelist="$filelist $@"
+    fi
+
+    ccmd="$ccmd $filelist"
+    echo "Using command $ccmd"
+    $ccmd
+
+    res=$(which inotifywait)
+    VC_AUTOTAG_RUN=1
+    if [[ -n $res ]]; then
+        while [[ "$VC_AUTOTAG_RUN" == "1" ]]; do
+            inotifywait -e modify -r $filelist
+            nice -n 19 ionice -c 3 $ccmd
+            # Sleep a bit to keep from hitting the disk
+            # to hard during a mad editing burst from 
+            # those mad men coders
+            sleep 30
+        done
+    fi
+} #_vctags
+
+function vctags()
+{
+    _vctags
+    # _vctags 1>/dev/null 2>&1 &
+    # VC_VCTAGS_PID="$!"
+    # echo "vctags: $VC_VCTAGS_PID"
+} #vctags
 
 function vcbundle()
 {
