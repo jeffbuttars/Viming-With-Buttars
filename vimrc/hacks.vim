@@ -154,3 +154,9 @@ command! -complete=shellcmd -nargs=* R rightbelow vnew | r ! <args>
 
 " Open a Quickfix window for the last search.
 nnoremap <silent> ,/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
+
+" If a virtualenv is active, see if we have tags file in
+" the virtualenv root dir. If so, add it to our tags list.
+if $VIRTUAL_ENV != ''
+    set tags+=system('echo "$(dirname $VIRTUAL_ENV)/tags"')
+endif
