@@ -264,6 +264,13 @@ snippet djf "Django model field member" b
 ${1:field_name} = models.${2:fieldType}(${3})${0}
 endsnippet
 
+snippet djv "Django view" b
+${1:@render_to}
+def ${2:view_name}(req${3:, kwargs})
+    $0
+#$2()
+endsnippet
+
 
 # snippet pa "Print arg 'arg: %s'" i
 # ${1:arg}: %s`!p

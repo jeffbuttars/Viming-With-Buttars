@@ -78,7 +78,7 @@ endsnippet
 
 snippet fori "for key in"
 for (var ${1:key} in ${2:obj}) { if ($2.hasOwnProperty(key)) {
-    ${3:obj[key]};$0
+    ${3:$2[key]};$0
 }}
 endsnippet
 

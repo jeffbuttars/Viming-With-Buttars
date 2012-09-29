@@ -1,8 +1,28 @@
+snippet #! "#!/bin/zsh"
+#!/bin/zsh
+endsnippet
 
 snippet if "if [[ ]]; then"
 if [[ ${1} ]]
 then
     ${2}
 fi${0}
-
 endsnippet
+
+snippet fun "function() "
+function ${1}()
+{
+	$0
+} #$1
+endsnippet
+
+snippet fori
+for ${1:needle} in ${2:haystack} ; do
+    ${3:#statements}
+done
+endsnippet
+
+snippet tdir "THIS_DIR"
+THIS_DIR=$(readlink -f "$(dirname $0)")
+endsnippet
+
