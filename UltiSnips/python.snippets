@@ -210,6 +210,12 @@ write_init_body(t[1], args, t[2], snip)
 #$1
 endsnippet
 
+snippet cln "class with nothing, it's naked" b
+class ${1:MyClass}(${2:object}):
+    ${3:pass}$0
+#$1
+endsnippet
+
 snippet clt "unittest test case class with docstrings" b
 class Test${1:TestClass}(unittest.TestCase):
 	"""${3:Docstring for $1 }"""
