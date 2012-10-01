@@ -224,9 +224,9 @@ function _vctags()
 function vctags()
 {
     _vctags
-    # _vctags 1>/dev/null 2>&1 &
-    # VC_VCTAGS_PID="$!"
-    # echo "vctags: $VC_VCTAGS_PID"
+    _vctags 1>/dev/null 2>&1 &
+    VC_VCTAGS_PID="$!"
+    echo "vctags: $VC_VCTAGS_PID"
 } #vctags
 
 function vcbundle()
@@ -237,6 +237,23 @@ function vcbundle()
     echo "Creating bundle $bname"
     pip bundle "$bname" -r "$vdir/$VC_DEFUALT_VENV_REQFILE"
 } #vcbundle
+
+function vcmod()
+{
+    if [[ -z $1 ]]
+    then
+        echo "$0: A module name is required."
+        exit 1
+    fi 
+
+    mkdir -p "$1"
+    if [[ ! -f "$1/__init__.py" ]]
+    then
+        touch "$1/__init__.py" 
+    else
+        echo "$0: A module named $1 already exists."
+    fi
+} #vcmod
 
 function vc_auto_activate()
 {
