@@ -260,6 +260,8 @@ function vc_auto_activate()
 # Virtualenv is one exists
 if [[ "$VC_AUTO_ACTIVATION" == "true" ]]; then
     chpwd_functions=(${chpwd_functions[@]} "vc_auto_activate")
+    # We want to run it now in case the terminal was started
+    # with CWD in a virtuanenv directory
     vc_auto_activate
 fi
 
