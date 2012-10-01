@@ -19,6 +19,23 @@ then
     VC_AUTO_ACTIVATION=false
 fi
 
+VC_VCTAGS_PID=''
+function _vcexit()
+{
+    echo "$VC_VCTAGS_PID" > /tmp/lastvctags.pid
+    if [[ "$VC_VCTAGS_PID" != '' ]]
+    then
+        echo "Cleaning up vctags $VC_VCTAGS_PID"
+        kill $VC_VCTAGS_PID
+        wait $VC_VCTAGS_PID
+    fi
+    
+} #_vcexit
+
+# TRAPINT() {
+#     _vcexit
+# }
+
 function vcfinddir()
 {
     cur=$PWD
@@ -223,10 +240,10 @@ function _vctags()
 
 function vctags()
 {
-    _vctags
-    # _vctags 1>/dev/null 2>&1 &
-    # VC_VCTAGS_PID="$!"
-    # echo "vctags: $VC_VCTAGS_PID"
+    # _vctags
+    _vctags 1>/dev/null 2>&1 &
+    VC_VCTAGS_PID="$!"
+    echo "vctags: $VC_VCTAGS_PID"
 } #vctags
 
 function vcbundle()
@@ -264,5 +281,7 @@ if [[ "$VC_AUTO_ACTIVATION" == "true" ]]; then
     # with CWD in a virtuanenv directory
     vc_auto_activate
 fi
+
+zshexit_functions=(${zshexit_functions[@]} "_vc_exit")
 
 # vim:set ft=zsh:
