@@ -16,6 +16,18 @@ if [[ -z $VC_AUTO_ACTIVATION ]]; then
     VC_AUTO_ACTIVATION=false
 fi
 
+function clean_on_exit()
+{
+    if [[ -n $VC_VCTAGS_PID ]]; then
+        kill $VC_VCTAGS_PID
+        wait $VC_VCTAGS_PID
+    fi
+    VC_AUTOTAG_RUN=0
+    
+} #clean_on_exit
+
+trap "clean_on_exit" EXIT SIGINT SIGHUP SIGKILL SIGTERM
+
 function vcfinddir()
 {
     cur=$PWD
@@ -183,7 +195,7 @@ function vcactivate()
 } #vcactivate
 alias vca='vcactivate'
 
-function vctags()
+function _vctags()
 {
     vloc=$(vcfindenv)
     filelist="$vloc"
@@ -205,8 +217,9 @@ function vctags()
     $ccmd
 
     res=$(which inotifywait)
+    VC_AUTOTAG_RUN=1
     if [[ -n $res ]]; then
-        while [[ true ]]; do
+        while [[ "$VC_AUTOTAG_RUN" == "1" ]]; do
             inotifywait -e modify -r $filelist
             nice -n 19 ionice -c 3 $ccmd
             # Sleep a bit to keep from hitting the disk
@@ -215,6 +228,14 @@ function vctags()
             sleep 30
         done
     fi
+} #_vctags
+
+function vctags()
+{
+    _vctags
+    # _vctags 1>/dev/null 2>&1 &
+    # VC_VCTAGS_PID="$!"
+    # echo "vctags: $VC_VCTAGS_PID"
 } #vctags
 
 function vcbundle()

@@ -240,20 +240,18 @@ function vcbundle()
 
 function vc_auto_activate()
 {
-    if [[ "$VC_AUTO_ACTIVATION" == "true" ]]; then
-        if [[ -d "$VC_DEFUALT_VENV_NAME" ]]; then
-            if [[ -n $VIRTUAL_ENV ]]; then
-                if [[ "$VIRTUAL_ENV" != "$PWD/$VC_DEFUALT_VENV_NAME" ]]; then
-                    from="~${VIRTUAL_ENV#$HOME/}"
-                    to="$(vcfindenv)"
-                    to="~${to#$HOME/}"
-                    echo -e "Switching from $from to $to"
-                    deactivate
-                fi
+    if [[ -d "$VC_DEFUALT_VENV_NAME" ]]; then
+        if [[ -n $VIRTUAL_ENV ]]; then
+            if [[ "$VIRTUAL_ENV" != "$PWD/$VC_DEFUALT_VENV_NAME" ]]; then
+                from="~${VIRTUAL_ENV#$HOME/}"
+                to="$(vcfindenv)"
+                to="~${to#$HOME/}"
+                echo -e "Switching from $from to $to"
+                deactivate
             fi
-
-            vcactivate
         fi
+
+        vcactivate
     fi
 } #vc_auto_activate
 
@@ -262,6 +260,7 @@ function vc_auto_activate()
 # Virtualenv is one exists
 if [[ "$VC_AUTO_ACTIVATION" == "true" ]]; then
     chpwd_functions=(${chpwd_functions[@]} "vc_auto_activate")
+    vc_auto_activate
 fi
 
 # vim:set ft=zsh:
