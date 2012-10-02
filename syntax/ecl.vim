@@ -21,6 +21,7 @@ syn match eclBoolean '\<FALSE\>'
 
 syn match eclFunction /\<SEQUENTIAL\>/
 syn match eclFunction /\<APPLY\>/
+syn match eclMacro '\<FUNCTION\>'
 syn match eclMacro '\<MACRO\>'
 syn match eclMacro '\<FUNCTIONMACRO\>'
 
@@ -30,6 +31,7 @@ syn match eclFunction '\<XML\>\c'
 syn match eclFunction '\<XPATH\>\c'
 syn match eclFunction '\<XMLTEXT\>\c'
 syn match eclFunction '\<NORMALIZE\>\c'
+syn match eclFunction '\<WHEN\>\c'
 syn match eclFunction '\<PARSE\>\c'
 syn match eclFunction '\<OUTPUT\>\c'
 
@@ -57,8 +59,9 @@ syntax region eclComment start="/\*" end="\*/" contains=eclTodo
 
 syntax region eclString start="'" end="'"
 
-syntax region eclRecBlock start=/\<RECORD\>/ end=/\<END\>\s*;/ contains=ALL
-syntax region eclModBlock start=/\<MODULE\>/ end=/\<END\>\s*;/ contains=ALL
+syntax region eclRecBlock start=/\<RECORD\>/ end=/\<END\>\s*;/ fold transparent contains=ALL
+" syntax region eclModBlock start=/\<MODULE\>/ end=/\<END\>\s*;/ contains=ALL
+syntax region eclModBlock start="MODULE" end="END;" contains=ALL
 syntax region eclTransBlock start=/\<TRANSFORM\>/ end=/\<END\>\s*;/ contains=ALL
 syntax region eclFuncBlock start=/\<FUNCTION\>/ end=/\<END\>\s*;/ contains=ALL
 syntax region eclMacroBlock start=/\<MACRO\>/ end=/\<ENDMACRO\>\s*;/ contains=ALL

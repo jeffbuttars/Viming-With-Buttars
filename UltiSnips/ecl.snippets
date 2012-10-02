@@ -7,7 +7,7 @@ IMPORT ${1};${0}
 endsnippet
 
 snippet emod "EXPORT MODULE" b
-EXPORT ${1} := MODULE
+EXPORT ${1:`!v substitute(expand('%:t'), "\\..*$", '', 'g')`} := MODULE
     ${0}
 END; // MODULE $1
 endsnippet
@@ -71,6 +71,7 @@ ${1:resulttype }${2:funcname}(${3}) := FUNCTION
     ${4}
     RETURN ${5};
 END; //$2()${0}
+endsnippet
 
 snippet idx "NAME := INDEX()"
 IDX_${1} := INDEX(
@@ -88,4 +89,8 @@ EXPORT IDX_${1} := INDEX(
     ${4:IDX_NAME}
 ); // $1
 ${0}
+endsnippet
+
+snippet ret "RETURN;"
+RETURN${1};$0
 endsnippet
