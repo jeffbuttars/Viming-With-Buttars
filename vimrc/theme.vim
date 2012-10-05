@@ -31,6 +31,15 @@ set runtimepath+=~/.vim/bundle/tomorrow-theme/vim
 " based on the environment.
 colo evening " evening is a nice dark theme, usually available with a default install.
 
+function! Havescheme(name)
+    let l:pat = 'colors/'.a:name.'.vim'
+    if 1 == empty(globpath(&rtp, l:pat))
+        return 0
+    else
+        return 1
+    endif
+endfunction
+
 if has( "gui_running" )
 	" I like a white based theme in GVim
 	set cursorline
@@ -53,7 +62,7 @@ if has( "gui_running" )
     " 
     " * [guioptions][]
     "
-elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
+elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal' || $TERM =~ 'screen'
 	" Use a console friendly theme and force Vim to
 	" use 256 colors if we think the console can handle it.
 	set t_Co=256
@@ -67,15 +76,21 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal'
     if $TERM_META =~ 'white'
         set background=light
         let g:lucius_style = "light"
-        " colorscheme Tomorrow
-        colorscheme summerfruit256 
+
+        if 1 == Havescheme('summerfruit256')
+            colorscheme summerfruit256
+        elseif 1 == Havescheme('Tomorrow')
+            colorscheme Tomorrow
+        elseif 1 == Havescheme('lucius')
+            colorscheme lucius
+        endif
+
         set nocursorline
     else
         colorscheme Tomorrow-Night-Bright
     endif
 
     " colorscheme lucius
-
 endif
 
 " set linenumbers on by default
