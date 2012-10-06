@@ -31,7 +31,7 @@ function _vcexit()
 
 function vcfinddir()
 {
-    _vcfindir
+    _vcfinddir
 } #vcfinddir
 
 # Start a new virtualenv, or 
