@@ -4,20 +4,12 @@
 # git@github.com:jeffbuttars/virtualcandy.git
 # See the README.md
 
-if [[ -z $VC_DEFUALT_VENV_NAME ]]
-then
-    VC_DEFUALT_VENV_NAME='.venv'
-fi
+# Source in the common code first, override
+# what's necessary
 
-if [[ -z $VC_DEFUALT_VENV_REQFILE ]]
-then
-    VC_DEFUALT_VENV_REQFILE='requirements.txt'
-fi
+THIS_DIR=$(readlink -f "$(dirname $0)")
+source "$THIS_DIR/vc_common_code.sh"
 
-if [[ -z $VC_AUTO_ACTIVATION ]]
-then
-    VC_AUTO_ACTIVATION=false
-fi
 
 VC_VCTAGS_PID=''
 function _vcexit()
@@ -36,49 +28,17 @@ function _vcexit()
 #     _vcexit
 # }
 
+
 function vcfinddir()
 {
-    cur=$PWD
-    vname=$VC_DEFUALT_VENV_NAME
-    found='false'
-
-    if [[ -n $1 ]]; then
-        vname="$1"
-    fi
-
-    while [[ "$cur" != "/" ]]; do
-        # echo "cur == $cur"
-        if [[ -d "$cur/$vname" ]]; then
-            found="true"
-            echo "$cur"
-            break
-        fi
-
-        cur=$(dirname $cur)
-    done
-
-    if [[ "$found" == "false" ]]; then
-        echo ""
-    fi
+    _vcfinddir
 } #vcfinddir
 
 # Start a new virtualenv, or 
 # rebuild on from a requirements.txt file.
 function vcstart()
 {
-    vname=$VC_DEFUALT_VENV_NAME
-    if [[ -n $1 ]]; then
-        vname="$1"
-    fi
-
-    virtualenv $vname
-    . $vname/bin/activate
-
-    if [[ -f requirements.txt ]]; then
-        pip install -r $VC_DEFUALT_VENV_REQFILE
-    else
-        touch $VC_DEFUALT_VENV_REQFILE
-    fi
+    _vcstart
 } #vcstart
 
 # A simple, and generic, pip update script.
@@ -93,113 +53,30 @@ function vcstart()
 # This function is used by the vcpkgup function
 function pip_update()
 {
-    reqf="requirements.txt"
-
-    if [[ -n $VC_DEFUALT_VENV_REQFILE ]]; then
-        reqf="$VC_DEFUALT_VENV_REQFILE"
-    fi
-
-    if [[ -n $1 ]]; then
-        reqf="$1"
-    fi
-
-    res=0
-    if [[ -f $reqf ]]; then
-        tfile="/tmp/pkglist_$RANDOM.txt"
-        echo $tfile
-        cat $reqf | awk -F '==' '{print $1}' > $tfile
-        pip install --upgrade -r $tfile
-        res=$?
-        rm -f $tfile
-    else
-        echo "Unable to find package list file: $reqf"
-        res=1
-    fi
-
-    return $res
+ _pip_update
 } #pip_update
 
 # Upgrade the nearest virtualenv packages
 # and re-freeze them
 function vcpkgup()
 {
-    vname=$VC_DEFUALT_VENV_NAME
-
-    if [[ -n $1 ]]; then
-        vname="$1"
-    fi
-
-    vdir=$(vcfinddir $vname)
-
-    reqlist="$vdir/$VC_DEFUALT_VENV_REQFILE"
-    echo "Using req list $reqlist"
-
-    if [[ -f $reqlist ]]; then
-        vcactivate $vname
-        pip_update $reqlist
-        res=$?
-        if [[ "$res" == 0 || "$res" == "" ]]; then
-            vcfreeze $vname
-        else
-            echo "Bad exit status from pip_update, not freezing the package list."
-        fi
-    fi
-    
-    return $res
+    return _vcpkgup
 } #vcpkgup
 
 
 function vcfindenv()
 {
-    cur=$PWD
-    vname=$VC_DEFUALT_VENV_NAME
-
-    if [[ -n $1 ]]; then
-        vname="$1"
-    fi
-
-    vdir=$(vcfinddir $vname)
-    res=""
-    if [[ -n $vdir ]]; then
-        res="$vdir/$vname"
-    fi
-    echo $res
-
+    _vcfindenv
 } #vcfindenv
 
 function vcfreeze()
 {
-    vd=''
-    if [[ -n $1 ]]; then
-        vd=$(vcfinddir $1)
-    else
-        vd=$(vcfinddir)
-    fi
-
-    vcactivate
-
-    pip freeze > "$vd/$VC_DEFUALT_VENV_REQFILE"
-    cat  "$vd/$VC_DEFUALT_VENV_REQFILE"
+    _vcfreeze
 } #vcfreeze
 
 function vcactivate()
 {
-    
-    vloc=''
-
-    if [[ -n $1 ]]; then
-        vloc=$(vcfindenv $1)
-    else
-        vloc=$(vcfindenv)
-    fi
-
-    if [[ -n $vloc ]]; then
-        echo "Activating $cur/$vname"
-        . "$vloc/bin/activate"
-    else
-        echo "No virtualenv name $vname found."
-    fi
-
+    _vcactivate
 } #vcactivate
 alias -g vca='vcactivate'
 
@@ -243,47 +120,20 @@ function vctags()
     echo "vctags: $VC_VCTAGS_PID"
 } #vctags
 
+
 function vcbundle()
 {
-    vcactivate
-    vdir=$(vcfinddir)
-    bname="${VC_DEFUALT_VENV_NAME#.}.pybundle"
-    echo "Creating bundle $bname"
-    pip bundle "$bname" -r "$vdir/$VC_DEFUALT_VENV_REQFILE"
+    _vcbundle
 } #vcbundle
 
 function vcmod()
 {
-    if [[ -z $1 ]]
-    then
-        echo "$0: A module name is required."
-        exit 1
-    fi 
-
-    mkdir -p "$1"
-    if [[ ! -f "$1/__init__.py" ]]
-    then
-        touch "$1/__init__.py" 
-    else
-        echo "$0: A module named $1 already exists."
-    fi
+    _vcmod
 } #vcmod
 
 function vc_auto_activate()
 {
-    if [[ -d "$VC_DEFUALT_VENV_NAME" ]]; then
-        if [[ -n $VIRTUAL_ENV ]]; then
-            if [[ "$VIRTUAL_ENV" != "$PWD/$VC_DEFUALT_VENV_NAME" ]]; then
-                from="~${VIRTUAL_ENV#$HOME/}"
-                to="$(vcfindenv)"
-                to="~${to#$HOME/}"
-                echo -e "Switching from $from to $to"
-                deactivate
-            fi
-        fi
-
-        vcactivate
-    fi
+    _vc_auto_activate
 } #vc_auto_activate
 
 # chpwd_functions=(${chpwd_functions[@]} "vc_auto_activate")
