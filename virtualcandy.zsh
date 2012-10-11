@@ -205,24 +205,21 @@ alias -g vca='vcactivate'
 
 function _vctags()
 {
-    vloc=$(vcfindenv)
-    filelist="$vloc"
+    # vloc=$(vcfindenv)
+    vdir=$(vcfinddir)
+    filelist="$vdir/"
 
-    ccmd="ctags --sort=yes --tag-relative=no -R --python-kinds=-i"
-    if [[ -n $vloc ]]; then
-        echo "Making tags with $vloc"
-        filelist="$vloc"
-    fi
+    touch $vdir/tags
+    ccmd="ctags --sort=yes --tag-relative=no -R --python-kinds=-i -o $vdir/tags"
 
-    if [[ "$#" == "0" ]]; then
-        filelist="$filelist *"
-    else
+    if [[ "$#" != "0" ]]; then
         filelist="$filelist $@"
     fi
 
     ccmd="$ccmd $filelist"
-    echo "Using command $ccmd"
-    $ccmd
+    echo "Using command '$ccmd'"
+    eval $ccmd
+    return
 
     res=$(which inotifywait)
     VC_AUTOTAG_RUN=1
@@ -240,6 +237,7 @@ function _vctags()
 
 function vctags()
 {
+    # _vctags
     _vctags 1>/dev/null 2>&1 &
     VC_VCTAGS_PID="$!"
     echo "vctags: $VC_VCTAGS_PID"
