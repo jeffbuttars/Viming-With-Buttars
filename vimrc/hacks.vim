@@ -158,5 +158,7 @@ nnoremap <silent> ,/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
 " If a virtualenv is active, see if we have tags file in
 " the virtualenv root dir. If so, add it to our tags list.
 if $VIRTUAL_ENV != ''
-    set tags+=system('echo "$(dirname $VIRTUAL_ENV)/tags"')
+    let b:vtag_dir = system('echo "$(dirname $VIRTUAL_ENV)/tags"')
+    " echo b:vtag_dir
+    execute 'set' 'tags+=' . b:vtag_dir
 endif
