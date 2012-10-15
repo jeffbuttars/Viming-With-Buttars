@@ -49,15 +49,20 @@ Bundle 'vcscommand.vim'
 Bundle 'vim-scripts/tComment'
 Bundle 'ZenCoding.vim'
 Bundle 'Gundo'
-Bundle 'ack.vim'
 Bundle 'fugitive.vim'
 Bundle 'The-NERD-tree'
-Bundle 'SuperTab-continued.'
 Bundle 'Conque'
 Bundle 'Solarized'
 Bundle 'simple-pairs'
 Bundle 'Syntastic'
 Bundle 'Python-mode-klen'
+
+" Bundle 'argtextobj.vim'
+" Bundle 'textobj-indent'
+" Bundle 'django-template-textobjects'
+
+" Bundle 'SuperTab-continued.'
+Bundle 'neocomplcache'
 
 " https://lampsvn.epfl.ch/trac/scala/browser/scala-tool-support/trunk/src/vim
 " Bundle 'scala'
@@ -88,6 +93,7 @@ Bundle 'twilight'
 Bundle 'Twilight-for-python'
 Bundle 'https://github.com/tpope/vim-vividchalk'
 Bundle 'https://github.com/w0ng/vim-hybrid'
-Bundle 'https://github.com/vim-scripts/summerfruit256'
+" Bundle 'https://github.com/vim-scripts/summerfruit256'
+Bundle 'git://github.com/vim-scripts/summerfruit256.vim.git'
 
 

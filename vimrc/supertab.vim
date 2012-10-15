@@ -1,2 +1,2 @@
-
-let g:SuperTabDefaultCompletionType = "<c-n>"
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextDefaultCompletionType = "<c-p>"
