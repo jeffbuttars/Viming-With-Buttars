@@ -96,7 +96,6 @@ function _vctags()
     ccmd="$ccmd $filelist"
     echo "Using command '$ccmd'"
     eval $ccmd
-    return
 
     res=$(which inotifywait)
     VC_AUTOTAG_RUN=1
