@@ -53,30 +53,30 @@ function vcstart()
 # This function is used by the vcpkgup function
 function pip_update()
 {
- _pip_update
+ _pip_update $@
 } #pip_update
 
 # Upgrade the nearest virtualenv packages
 # and re-freeze them
 function vcpkgup()
 {
-    return _vcpkgup
+    _vcpkgup $@
 } #vcpkgup
 
 
 function vcfindenv()
 {
-    _vcfindenv
+    _vcfindenv $@
 } #vcfindenv
 
 function vcfreeze()
 {
-    _vcfreeze
+    _vcfreeze $@
 } #vcfreeze
 
 function vcactivate()
 {
-    _vcactivate
+    _vcactivate $@
 } #vcactivate
 alias -g vca='vcactivate'
 
@@ -122,17 +122,17 @@ function vctags()
 
 function vcbundle()
 {
-    _vcbundle
+    _vcbundle $@
 } #vcbundle
 
 function vcmod()
 {
-    _vcmod
+    _vcmod $@
 } #vcmod
 
 function vc_auto_activate()
 {
-    _vc_auto_activate
+    _vc_auto_activate $@
 } #vc_auto_activate
 
 # chpwd_functions=(${chpwd_functions[@]} "vc_auto_activate")

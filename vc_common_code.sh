@@ -36,7 +36,6 @@ function _vcfinddir()
     fi
 
     while [[ "$cur" != "/" ]]; do
-        # echo "cur == $cur"
         if [[ -d "$cur/$vname" ]]; then
             found="true"
             echo "$cur"
@@ -112,7 +111,7 @@ function _pip_update()
 # and re-freeze them
 function _vcpkgup()
 {
-    vname=$VC_DEFUALT_VENV_NAME
+    local vname=$VC_DEFUALT_VENV_NAME
 
     if [[ -n $1 ]]; then
         vname="$1"
@@ -140,7 +139,7 @@ function _vcpkgup()
 function _vcfindenv()
 {
     cur=$PWD
-    vname=$VC_DEFUALT_VENV_NAME
+    local vname=$VC_DEFUALT_VENV_NAME
 
     if [[ -n $1 ]]; then
         vname="$1"
@@ -173,16 +172,17 @@ function _vcfreeze()
 function _vcactivate()
 {
     
+    local vname=$VC_DEFUALT_VENV_NAME
     vloc=''
 
     if [[ -n $1 ]]; then
-        vloc=$(vcfindenv $1)
-    else
-        vloc=$(vcfindenv)
+        vname="$1"
     fi
 
+    vloc=$(vcfindenv)
+
     if [[ -n $vloc ]]; then
-        echo "Activating $cur/$vname"
+        echo "Activating $vloc"
         . "$vloc/bin/activate"
     else
         echo "No virtualenv name $vname found."
