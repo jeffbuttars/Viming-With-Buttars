@@ -8,6 +8,8 @@ extends python
 # "g:ultisnips_python_style" which, if set to "doxygen" will use doxygen
 # style comments in docstrings.
 
+
+
 global !p
 
 NORMAL  = 0x1
@@ -288,8 +290,10 @@ snippet pa "Print arg 'arg: %s'" i
 ${1:arg}: %s${0}
 endsnippet
 
+# Find the class name and method name and
+# create a nice super call
 snippet sup "super(Class, self)."
-super(${1:Classname}, self).${2}(${3})${0}
+super(${1:`!v FindDefName("class ")`}, self).${2:`!v FindDefName("def ")`}(${3})${0}
 endsnippet
 
 snippet optpar
