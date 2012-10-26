@@ -39,7 +39,6 @@ Bundle 'https://github.com/kien/ctrlp.vim'
 " Bundle 'https://github.com/nvie/vim-flake8'
 " Bundle 'https://github.com/klen/python-mode'
 Bundle 'https://github.com/Lokaltog/vim-powerline'
-Bundle 'https://github.com/vim-scripts/UltiSnips'
 Bundle 'https://github.com/kien/rainbow_parentheses.vim'
 Bundle 'https://github.com/natw/vim-pythontextobj.git'
 
@@ -51,7 +50,8 @@ Bundle 'ZenCoding.vim'
 Bundle 'Gundo'
 Bundle 'fugitive.vim'
 Bundle 'The-NERD-tree'
-Bundle 'Conque'
+" Bundle 'git://github.com/vim-scripts/Conque-Shell.git'
+Bundle 'git://github.com/lrvick/Conque-Shell.git'
 Bundle 'Solarized'
 Bundle 'simple-pairs'
 Bundle 'Syntastic'
@@ -61,8 +61,12 @@ Bundle 'Python-mode-klen'
 " Bundle 'textobj-indent'
 " Bundle 'django-template-textobjects'
 
-" Bundle 'SuperTab-continued.'
-Bundle 'neocomplcache'
+Bundle 'https://github.com/davidhalter/jedi-vim.git'
+Bundle 'SuperTab-continued.'
+
+" Load Ultisnips last to make sure it has the <tab> map
+" Bundle 'https://github.com/vim-scripts/UltiSnips'
+Bundle 'git://github.com/vim-scripts/UltiSnips.git'
 
 " https://lampsvn.epfl.ch/trac/scala/browser/scala-tool-support/trunk/src/vim
 " Bundle 'scala'

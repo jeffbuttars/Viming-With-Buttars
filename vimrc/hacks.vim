@@ -41,7 +41,6 @@ imap <F2> <ESC>:call TogglePaste()<CR>i
 " nasty hacks for this section.  
 " When c-y is used to select a completion, enter normal mode after it's inserted.
 " imap <c-y> <c-y><esc>
-set completeopt=menuone,preview,longest
 function! CmplChooseNorm()
 	if pumvisible()
         return "\<ESC>"
