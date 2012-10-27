@@ -41,7 +41,6 @@ imap <F2> <ESC>:call TogglePaste()<CR>i
 " nasty hacks for this section.  
 " When c-y is used to select a completion, enter normal mode after it's inserted.
 " imap <c-y> <c-y><esc>
-set completeopt=menuone,preview,longest
 function! CmplChooseNorm()
 	if pumvisible()
         return "\<ESC>"
@@ -162,3 +161,18 @@ if $VIRTUAL_ENV != ''
     " echo b:vtag_dir
     execute 'set' 'tags+=' . b:vtag_dir
 endif
+
+" This is handy for finding defs in snippets
+function! FindDefName(ident)
+    " [bufnum, lnum, col, off]
+    let l:tpos = getpos(".")
+
+    " Find the nearest def
+    let l:defp = searchpos(a:ident, 'b')
+    " Get the name of the method
+    execut "normal W"
+    let l:method  = expand('<cword>')
+    call setpos('.', l:tpos)
+
+    return l:method
+endfunction
