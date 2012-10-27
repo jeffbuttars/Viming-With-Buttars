@@ -39,7 +39,6 @@ Bundle 'https://github.com/kien/ctrlp.vim'
 " Bundle 'https://github.com/nvie/vim-flake8'
 " Bundle 'https://github.com/klen/python-mode'
 Bundle 'https://github.com/Lokaltog/vim-powerline'
-Bundle 'https://github.com/vim-scripts/UltiSnips'
 Bundle 'https://github.com/kien/rainbow_parentheses.vim'
 Bundle 'https://github.com/natw/vim-pythontextobj.git'
 
@@ -63,6 +62,7 @@ Bundle 'Python-mode-klen'
 
 " Bundle 'SuperTab-continued.'
 Bundle 'neocomplcache'
+Bundle 'https://github.com/vim-scripts/UltiSnips'
 
 " https://lampsvn.epfl.ch/trac/scala/browser/scala-tool-support/trunk/src/vim
 " Bundle 'scala'
