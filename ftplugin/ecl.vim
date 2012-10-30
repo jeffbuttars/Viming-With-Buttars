@@ -28,3 +28,18 @@ endif
 " function SyntaxCheckers_ecl_GetLocList()
 " endfunction
 
+" if exists("loaded_ecl_syntax_checker")
+"     finish
+" endif
+" let loaded_ecl_syntax_checker = 1
+" 
+" if !exists('g:syntastic_ecl_checker') || !executable(g:syntastic_ecl_checker)
+"     if executable("eclcc")
+"         let g:syntastic_ecl_checker = 'eclcc'
+"     endif
+"     finish
+" endif
+" 
+" if !exists('g:syntastic_ecl_checker_args')
+"     let g:syntastic_ecl_checker_args = ''
+" endif
