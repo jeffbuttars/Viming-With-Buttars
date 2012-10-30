@@ -182,7 +182,7 @@ function _vcactivate()
     vloc=$(vcfindenv)
 
     if [[ -n $vloc ]]; then
-        echo "Activating $vloc"
+        echo "Activating ~${vloc#$HOME/}"
         . "$vloc/bin/activate"
     else
         echo "No virtualenv name $vname found."
