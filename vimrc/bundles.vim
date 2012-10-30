@@ -33,6 +33,7 @@ call vundle#rc()
 " let Vundle manage Vundle
 " required! 
 Bundle 'gmarik/vundle'
+"Bundle 'https://github.com/gmarik/vundle'
 
 " git-hub specific bundles:
 Bundle 'https://github.com/kien/ctrlp.vim'
