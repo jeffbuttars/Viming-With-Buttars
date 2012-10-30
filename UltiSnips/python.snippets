@@ -16,6 +16,21 @@ NORMAL  = 0x1
 DOXYGEN = 0x2
 RST = 0x3
 
+import vim
+def find_def_name(ident):
+
+    cp = vim.eval('getpos(".")')
+
+    # Find the nearest def
+    vim.eval("searchpos('" + ident + "', 'b')")
+
+    # Get the name of the def/method/etc.  
+    vim.command('execute "normal W"')
+    dname = vim.eval("expand('<cword>')")
+    vim.command("call setpos('.', " + str(cp) + ")")
+
+    return dname
+
 def get_args(arglist):
     args = [arg.split('=')[0].strip() for arg in arglist.split(',') if arg]
     args = [arg for arg in args if arg and arg != "self"]
@@ -293,8 +308,11 @@ endsnippet
 # Find the class name and method name and
 # create a nice super call
 snippet sup "super(Class, self)."
-super(${1:`!v FindDefName("class ")`}, self).${2:`!v FindDefName("def ")`}(${3})${0}
+super(${1:`!p snip.rv += find_def_name("class ")`}, self).${2:`!p snip.rv += find_def_name("def ")`}(${3})${0}
 endsnippet
+#snippet sup "super(Class, self)."
+#super(${1:`!v FindDefName("class ")`}, self).${2:`!v FindDefName("def ")`}(${3})${0}
+#endsnippet
 
 snippet optpar
 from optparse import OptionParser
