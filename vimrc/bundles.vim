@@ -55,7 +55,7 @@ Bundle 'git://github.com/lrvick/Conque-Shell.git'
 Bundle 'Solarized'
 Bundle 'simple-pairs'
 Bundle 'Syntastic'
-Bundle 'Python-mode-klen'
+" Bundle 'Python-mode-klen'
 
 " Bundle 'argtextobj.vim'
 " Bundle 'textobj-indent'

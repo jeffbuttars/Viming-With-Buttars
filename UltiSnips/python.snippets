@@ -31,6 +31,26 @@ def find_def_name(ident):
 
     return dname
 
+def get_nearest_def_args(ident='def', strip_self=False):
+    cp = vim.eval('getpos(".")')
+
+    # Find the nearest def
+    vim.eval("searchpos('" + ident + "', 'b')")
+    spos = int(vim.eval("searchpos('(')")[1])
+    epos = int(vim.eval("searchpos(')')")[1])
+    line = vim.eval("getline('.')")
+    args = line[spos:epos-1]
+    args = args.strip()
+
+    if strip_self:
+        if args.startswith('self'):
+            args = args[args.find(',')+1:]
+            args = args.strip()
+
+    vim.command("call setpos('.', " + str(cp) + ")")
+
+    return args
+
 def get_args(arglist):
     args = [arg.split('=')[0].strip() for arg in arglist.split(',') if arg]
     args = [arg for arg in args if arg and arg != "self"]
@@ -308,11 +328,8 @@ endsnippet
 # Find the class name and method name and
 # create a nice super call
 snippet sup "super(Class, self)."
-super(${1:`!p snip.rv += find_def_name("class ")`}, self).${2:`!p snip.rv += find_def_name("def ")`}(${3})${0}
+super(${1:`!p snip.rv += find_def_name("class ")`}, self).${2:`!p snip.rv += find_def_name("def ")`}(${3:`!p snip.rv += get_nearest_def_args(strip_self=True)`})${0}
 endsnippet
-#snippet sup "super(Class, self)."
-#super(${1:`!v FindDefName("class ")`}, self).${2:`!v FindDefName("def ")`}(${3})${0}
-#endsnippet
 
 snippet optpar
 from optparse import OptionParser
@@ -346,5 +363,9 @@ endsnippet
 snippet .fm "Python str.format()" !i
 .format(${1})${0}
 endsnippet
+
+#snippet test
+#test `!p snip.rv += get_nearest_def_args()`
+#endsnippet
 
 # vim:ft=snippets:
