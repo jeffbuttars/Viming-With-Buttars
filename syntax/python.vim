@@ -114,13 +114,15 @@ endif
 
 " Keywords
 syn keyword pythonStatement	break continue del
-syn keyword pythonStatement	exec return
+syn keyword pythonStatement	exec return as
 syn keyword pythonStatement	pass raise
 syn keyword pythonStatement	global assert
 syn keyword pythonStatement	lambda yield
-syn keyword pythonStatement	with
+syn keyword pythonStatement	with nonlocal
+syn keyword pythonStatement	False None True
 syn keyword pythonStatement	def class nextgroup=pythonFunction skipwhite
-syn match   pythonFunction	"[a-zA-Z_][a-zA-Z0-9_]*" display contained
+syn match   pythonFunction	"\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*" display contained
+" syn match   pythonFunction	"[a-zA-Z_][a-zA-Z0-9_]*" display contained
 syn keyword pythonRepeat	for while
 syn keyword pythonConditional	if elif else
 syn keyword pythonPreCondit	import from as
@@ -142,7 +144,7 @@ syn match   pythonDot        "\." display containedin=pythonDottedName
 " Comments
 syn match   pythonComment	"#.*$" display contains=pythonTodo,@Spell
 syn match   pythonRun		"\%^#!.*$"
-syn match   pythonCoding	"\%^.*\(\n.*\)\?#.*coding[:=]\s*[0-9A-Za-z-_.]\+.*$"
+syn match   pythonCoding	"\%^.*\%(\n.*\)\?#.*coding[:=]\s*[0-9A-Za-z-_.]\+.*$"
 syn keyword pythonTodo		TODO FIXME XXX contained
 
 " Errors
@@ -261,8 +263,8 @@ if exists("python_highlight_builtin_funcs") && python_highlight_builtin_funcs !=
   syn keyword pythonBuiltinFunc	basestring bin bool buffer bytearray bytes callable
   syn keyword pythonBuiltinFunc	chr classmethod cmp coerce compile complex
   syn keyword pythonBuiltinFunc	delattr dict dir divmod enumerate eval
-  syn keyword pythonBuiltinFunc	execfile file filter float format frozenset getattr
-  syn keyword pythonBuiltinFunc	globals hasattr hash help hex id
+  syn keyword pythonBuiltinFunc	execfile file float format frozenset getattr
+  syn keyword pythonBuiltinFunc	globals hasattr hash help hex
   syn keyword pythonBuiltinFunc	input int intern isinstance
   syn keyword pythonBuiltinFunc	issubclass iter len list locals long map max
   syn keyword pythonBuiltinFunc	min next object oct open ord
