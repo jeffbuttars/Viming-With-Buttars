@@ -31,7 +31,7 @@ set runtimepath+=~/.vim/bundle/tomorrow-theme/vim
 " based on the environment.
 colo evening " evening is a nice dark theme, usually available with a default install.
 
-function! Havescheme(name)
+function! <SID>Havescheme(name)
     let l:pat = 'colors/'.a:name.'.vim'
     if 1 == empty(globpath(&rtp, l:pat))
         return 0
@@ -40,15 +40,25 @@ function! Havescheme(name)
     endif
 endfunction
 
+fun <SID>X(group, fg, bg, attr)
+    if a:fg != ""
+        exec "hi " . a:group . " guifg=#" . a:fg . " ctermfg=" . <SID>rgb(a:fg)
+    endif
+    if a:bg != ""
+        exec "hi " . a:group . " guibg=#" . a:bg . " ctermbg=" . <SID>rgb(a:bg)
+    endif
+    if a:attr != ""
+        exec "hi " . a:group . " gui=" . a:attr . " cterm=" . a:attr
+    endif
+endfun
+
 if has( "gui_running" )
-	" I like a white based theme in GVim
-	set cursorline
 	hi clear CursorLine 
+	hi clear CursorColumn
 
-	let g:lucius_style = "light"
-	set background=light
+	" let g:lucius_style = "light"
+	" set background=light
 
-	colo lucius 
 	"set guioptions-=m " Will remove menu bar from gvim
 	set guioptions-=T " Remove toolbar from gvim
 
@@ -62,11 +72,15 @@ if has( "gui_running" )
     " 
     " * [guioptions][]
     "
+    
+    colorscheme summerfruit256
+
+	set cursorline
+	set cursorcolumn
 elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal' || $TERM =~ 'screen'
 	" Use a console friendly theme and force Vim to
 	" use 256 colors if we think the console can handle it.
 	set t_Co=256
-	set cursorline
 	hi clear CursorLine 
 
     set background=dark
@@ -77,11 +91,11 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal' || $TERM =~ 'screen'
         set background=light
         let g:lucius_style = "light"
 
-        if 1 == Havescheme('summerfruit256')
+        if 1 == <SID>Havescheme('summerfruit256')
             colorscheme summerfruit256
-        elseif 1 == Havescheme('Tomorrow')
+        elseif 1 == <SID>Havescheme('Tomorrow')
             colorscheme Tomorrow
-        elseif 1 == Havescheme('lucius')
+        elseif 1 == <SID>Havescheme('lucius')
             colorscheme lucius
         endif
 
@@ -90,7 +104,8 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal' || $TERM =~ 'screen'
         colorscheme Tomorrow-Night-Bright
     endif
 
-    " colorscheme lucius
+	set cursorline
+	set cursorcolumn
 endif
 
 " set linenumbers on by default
@@ -99,3 +114,9 @@ set number
 " A cleaner vertical split
  set fillchars=vert:\:
 
+
+ " Change the cursor shape depending on mode.
+ " Use a block in normal mode
+ " Use a bar in insert mode
+ let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+ let &t_EI = "\<Esc>]50;CursorShape=0\x7"

@@ -4,6 +4,10 @@
 set errorformat=%f(%l\\,%c):\ %trror\ C%n%m,%f(%l\\,%c):\ %tarning\ C%n%m
 set makeprg=eclcc\ -syntax\ '%'
 
+
+" Disable the text width
+setlocal textwidth=0
+
 nmap <F8> <ESC>:!eclcc -syntax '%'<CR>
 imap <F8> <ESC><ESC>:!eclcc -syntax '%'<CR>
 

@@ -309,8 +309,9 @@ endsnippet
 
 snippet djv "Django view" b
 ${1:@render_to}
-def ${2:view_name}(req${3:, kwargs})
+def ${2:view_name}(req${3:, kwargs}):
     $0
+    return {}
 #$2()
 endsnippet
 
