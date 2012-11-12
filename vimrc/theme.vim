@@ -40,18 +40,6 @@ function! <SID>Havescheme(name)
     endif
 endfunction
 
-fun <SID>X(group, fg, bg, attr)
-    if a:fg != ""
-        exec "hi " . a:group . " guifg=#" . a:fg . " ctermfg=" . <SID>rgb(a:fg)
-    endif
-    if a:bg != ""
-        exec "hi " . a:group . " guibg=#" . a:bg . " ctermbg=" . <SID>rgb(a:bg)
-    endif
-    if a:attr != ""
-        exec "hi " . a:group . " gui=" . a:attr . " cterm=" . a:attr
-    endif
-endfun
-
 if has( "gui_running" )
 	hi clear CursorLine 
 	hi clear CursorColumn
@@ -65,7 +53,7 @@ if has( "gui_running" )
 	" Set gvim font. I like the Inconsolata font.
 	" You'll need to install, do it, it's very much worth it.
 	" A great font, and it's 100% free.
-	set guifont=Inconsolata\ Medium\ 10
+	set guifont=Inconsolata\ Medium\ 8
     "
     " For Win32 GUI: you can remove 't' flag from 'guioptions' for no tearoff menu entries  
         " let &[guioptions = substitute(&guioptions, "t", "", "g")
@@ -120,3 +108,10 @@ set number
  " Use a bar in insert mode
  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+ " Only use cursorline/cursorcolun in normal mode
+ autocmd InsertLeave * :set cursorline
+ autocmd InsertLeave * :set cursorcolumn
+
+ autocmd InsertEnter * :set nocursorline
+ autocmd InsertEnter * :set nocursorcolumn
