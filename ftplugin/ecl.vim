@@ -22,7 +22,7 @@ else
 endif
 
 " Config for tComment
-if exists('tcomment#DefineType')
+if exists('loaded_tcomment')
     call tcomment#DefineType('ecl',              '// %s'            )
     call tcomment#DefineType('ecl_inline',       g:tcommentInlineC  )
     call tcomment#DefineType('ecl_block',        g:tcommentBlockC   )

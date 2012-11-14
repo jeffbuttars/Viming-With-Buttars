@@ -42,6 +42,7 @@ Bundle 'https://github.com/kien/ctrlp.vim'
 Bundle 'https://github.com/Lokaltog/vim-powerline'
 Bundle 'https://github.com/kien/rainbow_parentheses.vim'
 Bundle 'https://github.com/natw/vim-pythontextobj.git'
+Bundle 'https://github.com/abudden/TagHighlight.git'
 
 
 " Other bundles
@@ -56,6 +57,7 @@ Bundle 'git://github.com/lrvick/Conque-Shell.git'
 Bundle 'Solarized'
 Bundle 'simple-pairs'
 Bundle 'Syntastic'
+Bundle 'Tabular'
 " Bundle 'Python-mode-klen'
 
 " Bundle 'argtextobj.vim'
