@@ -28,6 +28,20 @@ if exists('loaded_tcomment')
     call tcomment#DefineType('ecl_block',        g:tcommentBlockC   )
 endif
 
+" Config for NERDCommenter 
+if exists("loaded_nerd_comments")
+    let b:ECLCommentDelimiters = {
+        \ 'ecl': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/' },
+        \ }
+
+    if ! exists("g:NERDCustomDelimiters")
+        let g:NERDCustomDelimiters = {}
+    endif
+    if exists("g:NERDCustomDelimiters")
+        call extend(g:NERDCustomDelimiters, b:ECLCommentDelimiters)
+    endif
+endif
+
 " Syntastic syntax checker
 " function SyntaxCheckers_ecl_GetLocList()
 " endfunction

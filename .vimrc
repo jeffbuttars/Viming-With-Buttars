@@ -307,7 +307,12 @@ set selection=inclusive
 set shortmess=atI
 set wildmenu
 set wildmode=list:longest
-set wildignore=*.swp,*.bak,*.pyc,*.pyo,*.class,*.6
+set wildignore=*.swp,*.bak,*.pyc,*.pyo,*.class,*.6,.git,.hg,.svn,*.o,*.a,*.so,*.obj,*.lib
+
+" If a letters are lower case in a pattern, ignore case.
+" Otherwise be case sensitive.
+set ignorecase
+set smartcase
 
 " set key timeout, good for remaps
 set timeoutlen=300
