@@ -38,7 +38,7 @@ function vcfinddir()
 # rebuild on from a requirements.txt file.
 function vcstart()
 {
-    _vcstart
+    _vcstart $@
 } #vcstart
 
 # A simple, and generic, pip update script.

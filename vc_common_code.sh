@@ -56,7 +56,10 @@ function _vcstart()
 {
     vname=$VC_DEFUALT_VENV_NAME
     if [[ -n $1 ]]; then
-        vname="$1"
+        if [[ "$1" != "-" ]]; then
+            vname="$1"
+        fi
+        shift
     fi
 
     virtualenv $vname
@@ -67,6 +70,12 @@ function _vcstart()
     else
         touch $VC_DEFUALT_VENV_REQFILE
     fi
+
+    for pkg in $@ ; do
+        pip install $pkg
+    done
+
+    vcfreeze
 } #_vcstart
 
 # A simple, and generic, pip update script.
