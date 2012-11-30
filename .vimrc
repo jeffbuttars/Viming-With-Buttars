@@ -27,6 +27,7 @@
 " * [Maps](#maps)
 "
 " Load our bundles early
+runtime vimrc/nerdcomment.vim
 runtime vimrc/bundles.vim
 
 "

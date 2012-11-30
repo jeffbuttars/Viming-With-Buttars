@@ -106,8 +106,10 @@ set number
  " Change the cursor shape depending on mode.
  " Use a block in normal mode
  " Use a bar in insert mode
- let &t_SI = "\<Esc>]50;CursorShape=1\x7"
- let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+ if $KONSOLE_PROFILE_NAME
+     let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+ endif
 
  " Only use cursorline/cursorcolun in normal mode
  autocmd InsertLeave * :set cursorline
@@ -117,3 +119,18 @@ set number
  autocmd InsertEnter * :set nocursorcolumn
 
 " autocmd VimLeave * :let &t_EI =  "\<Esc>]50;CursorShape=0\x7"
+
+" Automatically adjust the quickfix size
+au FileType qf call AdjustQFWindowHeight()
+function! AdjustQFWindowHeight()
+    " get the current window number
+    let thiswindow = winnr()
+    " go the last open window and get it's size.
+    exe "wincmd w"
+    let wh = winheight(0)
+    exe "wincmd w"
+
+    " Open the quick to approx 1/3 the size of it's
+    " closest relative.
+    exe max([3, wh/3]) . "wincmd _"
+endfunction
