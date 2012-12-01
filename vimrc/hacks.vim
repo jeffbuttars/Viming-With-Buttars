@@ -127,26 +127,26 @@ function! ToggleHex()
   let &modifiable=l:oldmodifiable
 endfunction
 
-let g:tab_cwd_map = {}
-fun! TabDirSave(save)
-
-	let l:tnum = tabpagenr()
-	if a:save == 1
-		let g:tab_cwd_map[l:tnum] = getcwd()
-		" echo "saving " l:tnum g:tab_cwd_map[l:tnum]
-	else	
-		if has_key(g:tab_cwd_map, l:tnum)
-			" echo "changing to " l:tnum g:tab_cwd_map[l:tnum]
-			exec "cd ".g:tab_cwd_map[l:tnum]
-			" exec "set guitablabel=".getcwd()
-		endif
-	endif
-
-	exec "set tabline=%!MyTabLine()"
-endf
-
-au TabEnter * call TabDirSave(0)
-au TabLeave * call TabDirSave(1)
+" let g:tab_cwd_map = {}
+" fun! TabDirSave(save)
+" 
+" 	let l:tnum = tabpagenr()
+" 	if a:save == 1
+" 		let g:tab_cwd_map[l:tnum] = getcwd()
+" 		" echo "saving " l:tnum g:tab_cwd_map[l:tnum]
+" 	else	
+" 		if has_key(g:tab_cwd_map, l:tnum)
+" 			" echo "changing to " l:tnum g:tab_cwd_map[l:tnum]
+" 			exec "cd ".g:tab_cwd_map[l:tnum]
+" 			" exec "set guitablabel=".getcwd()
+" 		endif
+" 	endif
+" 
+" 	exec "set tabline=%!MyTabLine()"
+" endf
+" 
+" au TabEnter * call TabDirSave(0)
+" au TabLeave * call TabDirSave(1)
 
 " Open a shell command in a new window, the command supports shell completion
 command! -complete=shellcmd -nargs=* R rightbelow vnew | r ! <args>
