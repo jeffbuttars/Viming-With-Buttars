@@ -107,4 +107,4 @@ HtmlHiLink mkdDelimiter     Delimiter
 let b:current_syntax = "markdown"
 
 delcommand HtmlHiLink
-" vim: tabstop=2
+" vim: tabstop=4
