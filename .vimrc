@@ -344,6 +344,10 @@ command! -bar Hexmode call ToggleHex()
 set viewoptions=cursor
 set sessionoptions=winpos,localoptions
 
+" Make sure I get the expected behavior from ctrl-]
+" if cscopetag is set, ctrl-] will try to be too smart
+set nocscopetag
+
 runtime! vimrc/*.vim
 
 " [evim]: http://vimdoc.sourceforge.net/htmldoc/starting.html#evim
