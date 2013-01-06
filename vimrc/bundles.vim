@@ -46,6 +46,7 @@ Bundle 'https://github.com/abudden/TagHighlight.git'
 Bundle 'https://github.com/scrooloose/nerdcommenter.git'
 Bundle 'git://github.com/lrvick/Conque-Shell.git'
 Bundle 'https://github.com/tpope/vim-eunuch.git'
+Bundle 'https://github.com/plasticboy/vim-markdown.git'
 
 
 " Other bundles
