@@ -369,4 +369,13 @@ endsnippet
 #test `!p snip.rv += get_nearest_def_args()`
 #endsnippet
 
+snippet ifmain "My ifmain" !b
+def main():
+    $0
+# main()
+
+if __name__ == '__main__':
+	${1:main()}${2}
+endsnippet
+
 # vim:ft=snippets:

@@ -1,7 +1,15 @@
 snippet vft "Creat a filetype mode line" b
-vim:set ft=`!v &filetype`:
+ vim:set ft=`!v &filetype`:
 endsnippet
 
 snippet uc "Uceem Copyright" b
 © Copyright `!v strftime("%Y")` Uceem Networks
+endsnippet
+
+snippet date "Current Date"
+`!v strftime("%m/%d/%Y")`
+endsnippet
+
+snippet datetime "Current Date and time"
+`!v strftime("%c")`
 endsnippet
