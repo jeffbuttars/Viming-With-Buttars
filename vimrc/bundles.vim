@@ -47,6 +47,7 @@ Bundle 'https://github.com/scrooloose/nerdcommenter.git'
 Bundle 'git://github.com/lrvick/Conque-Shell.git'
 Bundle 'https://github.com/tpope/vim-eunuch.git'
 Bundle 'https://github.com/plasticboy/vim-markdown.git'
+Bundle 'https://github.com/airblade/vim-gitgutter.git'
 
 
 " Other bundles
@@ -71,6 +72,9 @@ Bundle 'vim-indent-object'
 
 Bundle 'https://github.com/davidhalter/jedi-vim.git'
 Bundle 'SuperTab-continued.'
+
+" This one is neat, but does not play well with UltiSnips
+" Bundle 'https://github.com/Valloric/YouCompleteMe.git'
 
 " Load Ultisnips last to make sure it has the <tab> map
 " Bundle 'https://github.com/vim-scripts/UltiSnips'

@@ -5,7 +5,7 @@ DEBUG_PRINT("%s() ${1}\n", __FUNCTION__${2});${0}
 endsnippet
 
 snippet func "function" b
-${1} ${2:void} ${3:func_name}(${4})
+${1}${2:void} ${3:func_name}(${4})
 {
     ${0}
 }//$3()
@@ -29,3 +29,13 @@ snippet "u(\(?)i(\d*)" "uint\d*_t" r
 uint`!p snip.rv = (match.group(1) or '') + match.group(2)`_t
 endsnippet
 
+snippet uint "unsigned int" !
+unsigned int ${1};${0}
+endsnippet
+
+snippet for "My for int loop (fori)" !
+for (${4}${2:i} = 0; $2 < ${1:count}; ${3:++$2})
+{
+	${0:/* code */}
+}
+endsnippet

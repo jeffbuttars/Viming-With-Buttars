@@ -161,3 +161,8 @@ if $VIRTUAL_ENV != ''
     " echo b:vtag_dir
     execute 'set' 'tags+=' . b:vtag_dir
 endif
+
+" Open the quickfix after running grep
+autocmd QuickFixCmdPost *grep* cwindow
+autocmd QuickFixCmdPost *grep* exe "normal \<cr>\<c-w>p"
+
