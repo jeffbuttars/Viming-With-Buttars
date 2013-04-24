@@ -71,3 +71,5 @@ if found_ap != ""
     nmap <F5> <ESC>:%!autopep8 -i %<CR>
 endif
 
+" Our own foo
+call SetColorColumn(80)

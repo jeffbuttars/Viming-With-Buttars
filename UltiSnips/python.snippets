@@ -44,6 +44,7 @@ def get_nearest_def_args(ident='def', strip_self=False):
 
     if strip_self:
         if args.startswith('self'):
+            args = args[4:]
             args = args[args.find(',')+1:]
             args = args.strip()
 
@@ -98,11 +99,13 @@ def write_docstring_args(args, snip):
         snip += format_arg(arg, style, snip)
 
 
-def write_init_body(cname, args, parents, snip):
-    parents = [p.strip() for p in parents.split(",")]
-    parents = [p for p in parents if p != 'object']
+def write_init_body(args, snip):
+    #parents = [p.strip() for p in parents.split(",")]
+    #parents = [p for p in parents if p != 'object']
 
-    if parents:
+    cname = find_def_name('class')
+    parents = get_nearest_def_args(ident='class')
+    if parents and parents != 'object':
         arglist = ', '.join(args)
         snip += "super(" + cname + ", self).__init__(" + arglist + ")"
         snip += ""
@@ -151,7 +154,7 @@ def ${1:function}(`!p
 if snip.indent:
    snip.rv = 'self' + (", " if len(t[2]) else "")`${2:arg1}):
 	"""${4:todo: Docstring for $1}`!p
-snip.rv = ""
+snip.rv <= ""
 snip >> 1
 
 args = get_args(t[2])
@@ -224,26 +227,28 @@ else ${3}:
     ${0}
 endsnippet
 
-snippet cl "class with docstrings" !b
-class ${1:MyClass}(${2:object}):
-	"""${3:Docstring for $1 }"""
 
-	def __init__(self$4):
-		"""${5:todo: to be defined}`!p
-snip.rv = ""
-snip >> 2
+snippet init "Class __init__" !b
+def __init__(self$4):
+    """${5:todo: to be defined}`!p
+snip.rv <= ""
+snip >> 1
 
 args = get_args(t[4])
 
 write_docstring_args(args, snip)
 if args: snip += '"""'
 
-
 snip += ""
-write_init_body(t[1], args, t[2], snip)
+write_init_body(args, snip)
 `
-    #__init__()
-		$0
+#__init__()
+endsnippet
+
+snippet cl "class with docstrings" !b
+class ${1:MyClass}(${2:object}):
+	"""${3:Docstring for $1 }"""
+    $0
 #$1
 endsnippet
 

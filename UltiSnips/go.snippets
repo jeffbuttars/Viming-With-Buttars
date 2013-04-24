@@ -1,0 +1,29 @@
+snippet pkg "package <>" !b
+package ${1}
+endsnippet
+
+snippet imp "import" !b
+import "${1}" ${0}
+endsnippet
+
+snippet imps "import" !b
+import (
+    "${1}"${0}
+)
+endsnippet
+
+snippet type "type kind what" !b
+type ${1:kind} ${2:struct} {
+    ${3}
+}${0}
+endsnippet
+
+snippet func "func" !b
+func${1: (${2:recvr})} ${3:name}(${4})${5: result} {
+    ${0}
+} //$3()
+endsnippet
+
+snippet Fp "Fprint" !b
+Fprintf
+endsnippet
