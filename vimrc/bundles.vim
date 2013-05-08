@@ -47,6 +47,11 @@ Bundle 'https://github.com/scrooloose/nerdcommenter.git'
 Bundle 'git://github.com/lrvick/Conque-Shell.git'
 Bundle 'https://github.com/tpope/vim-eunuch.git'
 Bundle 'https://github.com/plasticboy/vim-markdown.git'
+Bundle 'https://github.com/airblade/vim-gitgutter.git'
+Bundle 'git://github.com/tpope/vim-obsession.git'
+Bundle 'git://github.com/junegunn/vim-easy-align.git'
+Bundle 'git://github.com/uggedal/go-vim.git'
+Bundle 'git://github.com/scrooloose/syntastic.git'
 
 
 " Other bundles
@@ -59,8 +64,6 @@ Bundle 'The-NERD-tree'
 " Bundle 'git://github.com/vim-scripts/Conque-Shell.git'
 Bundle 'Solarized'
 Bundle 'simple-pairs'
-Bundle 'Syntastic'
-Bundle 'Tabular'
 Bundle 'DirDiff.vim'
 Bundle 'vim-indent-object'
 " Bundle 'Python-mode-klen'
@@ -71,6 +74,9 @@ Bundle 'vim-indent-object'
 
 Bundle 'https://github.com/davidhalter/jedi-vim.git'
 Bundle 'SuperTab-continued.'
+
+" This one is neat, but does not play well with UltiSnips
+" Bundle 'https://github.com/Valloric/YouCompleteMe.git'
 
 " Load Ultisnips last to make sure it has the <tab> map
 " Bundle 'https://github.com/vim-scripts/UltiSnips'

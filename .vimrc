@@ -244,14 +244,14 @@ set mat=5
 
 " Keep our swap and backup files out of the way 
 " and in a central palce.
-if ! isdirectory($HOME."/.vim/swapback")
-    execute "silent! !mkdir -p ".$HOME."/.vim/swapback"
-endif
-set directory=$HOME/.vim/swapback,/tmp,.
-set backupdir=$HOME/.vim/swapback,/tmp,.
+" if ! isdirectory($HOME."/.vim/swapback")
+"     execute "silent! !mkdir -p ".$HOME."/.vim/swapback"
+" endif
+" set directory=$HOME/.vim/swapback,/tmp,.
+" set backupdir=$HOME/.vim/swapback,/tmp,.
 " OR, screw the swap file
-" set noswapfile
-" set nobackup " do not keep a backup file, use persistent versions instead
+set noswapfile
+set nobackup " do not keep a backup file, use persistent versions instead
 
 
 " C opts

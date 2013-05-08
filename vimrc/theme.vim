@@ -79,12 +79,12 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal' || $TERM =~ 'screen'
         set background=light
         let g:lucius_style = "light"
 
-        if 1 == <SID>Havescheme('summerfruit256')
-            colorscheme summerfruit256
+        if 1 == <SID>Havescheme('lucius')
+            colorscheme lucius
         elseif 1 == <SID>Havescheme('Tomorrow')
             colorscheme Tomorrow
-        elseif 1 == <SID>Havescheme('lucius')
-            colorscheme lucius
+        elseif 1 == <SID>Havescheme('summerfruit256')
+            colorscheme summerfruit256
         endif
 
         set nocursorline
@@ -121,16 +121,35 @@ set number
 " autocmd VimLeave * :let &t_EI =  "\<Esc>]50;CursorShape=0\x7"
 
 " Automatically adjust the quickfix size
+" Set to a ratio/percentag of the window
+" the cursor is in when this is called.
+" Also honor a minimum height so the QFW
+" won't get to small. And if the calculated
+" size is larger then there are lines to put 
+" in it, only size QF to the number of items 
+" available.
 au FileType qf call AdjustQFWindowHeight()
 function! AdjustQFWindowHeight()
-    " get the current window number
+    " get the current window, qf, number and height
     let thiswindow = winnr()
-    " go the last open window and get it's size.
+    let thiswindow_h = winheight(0)
+
+    " go the last open window and get it's size
+    " and add it to the qf window size and account for the
+    " extra line seperating the two
     exe "wincmd w"
-    let wh = winheight(0)
+    let wh = winheight(0) + thiswindow_h + 1
     exe "wincmd w"
 
     " Open the quick to approx 1/3 the size of it's
     " closest relative.
-    exe max([3, wh/3]) . "wincmd _"
+    let qf_height = max([3, wh/3])
+
+    " If the QF list isn't big enough to fill the 
+    " new window size, shrink the window to the list.
+    let qf_height = min([qf_height, len(getqflist())])
+    
+
+    " echo "window H: " . wh . ", qf_height " . qf_height
+    exe qf_height . "wincmd _"
 endfunction
