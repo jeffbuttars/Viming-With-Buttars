@@ -79,7 +79,6 @@ function! SetColorColumn(ccol)
 		let &colorcolumn = (a:ccol)
 		let &textwidth = (a:ccol-1)
 		let b:longLineMatchID=matchadd( "ErrorMsg", '\%>'.a:ccol.'v.\+', -1 )
-        LuciusLight
 	endif
 
 endfunction
