@@ -1,0 +1,2 @@
+set runtimepath=~/pkgs/vim,$VIMRUNTIME
+source ~/pkgs/vim/.vimrc

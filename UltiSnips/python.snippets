@@ -276,7 +276,7 @@ class Test${1:TestClass}(unittest.TestCase):
 endsnippet
 
 snippet ldbg "logger.debug()"
-logger.debug(${1})${0}
+logger.debug("${1}"${2:, ${3}})${0}
 endsnippet
 
 snippet dbg "logger.debug()"
@@ -284,15 +284,15 @@ logger.debug("${1}"${2:, ${3}})${0}
 endsnippet
 
 snippet lerr "logger.error()"
-logger.error(${1})${0}
+logger.error("${1}"${2:, ${3}})${0}
 endsnippet
 
-snippet lwrn "logger.warning()"
-logger.warning(${1})${0}
+snippet wrn "logger.warning()"
+logger.warning("${1}"${2:, ${3}})${0}
 endsnippet
 
 snippet linf "logger.info()"
-logger.info(${1})${0}
+logger.info("${1}"${2:, ${3}})${0}
 endsnippet
 
 snippet prv "<self.>_varname = <value"
@@ -378,6 +378,10 @@ endsnippet
 #snippet test
 #test `!p snip.rv += get_nearest_def_args()`
 #endsnippet
+
+snippet { "Dict" !
+{${1}: ${2}, ${4}}${0}
+endsnippet
 
 snippet ifmain "My ifmain" !b
 def main():
