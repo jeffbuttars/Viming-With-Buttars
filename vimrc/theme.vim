@@ -79,10 +79,10 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal' || $TERM =~ 'screen'
         set background=light
         let g:lucius_style = "light"
 
-        if 1 == <SID>Havescheme('lucius')
-            colorscheme lucius
         elseif 1 == <SID>Havescheme('Tomorrow')
             colorscheme Tomorrow
+        if 1 == <SID>Havescheme('lucius')
+            colorscheme lucius
         elseif 1 == <SID>Havescheme('summerfruit256')
             colorscheme summerfruit256
         endif
