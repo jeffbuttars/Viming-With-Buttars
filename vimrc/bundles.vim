@@ -12,8 +12,8 @@
 "
 " Call infect to get the bundle handling started.
 call pathogen#infect()
-   " infect our locally tracked pkgs
-call pathogen#infect('~/.vim/pkgs')
+" infect our locally tracked pkgs
+" "call pathogen#infect('~/pkgs/vim')
 "
 " Brief help on Bundle commands  
 " :BundleList          - list configured bundles
@@ -26,7 +26,7 @@ call pathogen#infect('~/.vim/pkgs')
 "
 " [Vundle](https://github.com/gmarik/vundle) Configuration
 " Add vundle to our runtime path (rtp) and start vundle
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/pkgs/vim/bundle/vundle/
 call vundle#rc()
 
 " Bundles
@@ -39,7 +39,7 @@ Bundle 'gmarik/vundle'
 Bundle 'https://github.com/kien/ctrlp.vim'
 " Bundle 'https://github.com/nvie/vim-flake8'
 " Bundle 'https://github.com/klen/python-mode'
-Bundle 'https://github.com/Lokaltog/vim-powerline'
+Bundle 'git://github.com/Lokaltog/powerline.git'
 Bundle 'https://github.com/kien/rainbow_parentheses.vim'
 Bundle 'https://github.com/natw/vim-pythontextobj.git'
 Bundle 'https://github.com/abudden/TagHighlight.git'
@@ -48,7 +48,7 @@ Bundle 'git://github.com/lrvick/Conque-Shell.git'
 Bundle 'https://github.com/tpope/vim-eunuch.git'
 Bundle 'https://github.com/plasticboy/vim-markdown.git'
 Bundle 'https://github.com/airblade/vim-gitgutter.git'
-Bundle 'git://github.com/tpope/vim-obsession.git'
+" Bundle 'git://github.com/tpope/vim-obsession.git'
 Bundle 'git://github.com/junegunn/vim-easy-align.git'
 Bundle 'git://github.com/uggedal/go-vim.git'
 Bundle 'git://github.com/scrooloose/syntastic.git'
@@ -59,7 +59,6 @@ Bundle 'vcscommand.vim'
 " Bundle 'vim-scripts/tComment'
 Bundle 'ZenCoding.vim'
 Bundle 'Gundo'
-Bundle 'fugitive.vim'
 Bundle 'The-NERD-tree'
 " Bundle 'git://github.com/vim-scripts/Conque-Shell.git'
 Bundle 'Solarized'
