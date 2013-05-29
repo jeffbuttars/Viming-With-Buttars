@@ -55,14 +55,14 @@ function! <SID>UseSolarized()
 
         function! <SID>SolarizedToggle()
             if (w:solarized_style == "dark")
-                let w:solarized_style = "light"
+                let g:solarized_style = "light"
                 colorscheme solarized
             else
-                let w:solarized_style = "dark"
+                let g:solarized_style = "dark"
                 colorscheme solarized
             endif
         endfunction
-        command! Togbg call <SID>SolarizedToggle()
+        command! SolarizedToggle call <SID>SolarizedToggle()
         " nnoremap <F5> :call SolarizedToggle()<CR>
         " inoremap <F5> <ESC>:call SolarizedToggle()<CR>a
         " vnoremap <F5> <ESC>:call SolarizedToggle()<CR>
