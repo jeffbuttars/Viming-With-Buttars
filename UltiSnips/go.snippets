@@ -28,6 +28,12 @@ func${1: (${2:recvr})} ${3:name}(${4})${5: error} {
 } //$3()
 endsnippet
 
+snippet funct "func for Test" !b
+func ${1:Test${2:FuncName}} (${4:t *testing.T}) {
+    ${0}
+} //$1()
+endsnippet
+
 snippet pr "Print" !b
 fmt.Print(${1})${0}
 endsnippet
