@@ -65,7 +65,7 @@ if has( "gui_running" )
 
 	set cursorline
 	set cursorcolumn
-elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal' || $TERM =~ 'screen'
+elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal' || $TERM =~ 'screen'  || $TERM =~ 'xterm'
 	" Use a console friendly theme and force Vim to
 	" use 256 colors if we think the console can handle it.
 	set t_Co=256
