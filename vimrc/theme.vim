@@ -63,7 +63,10 @@ if has( "gui_running" )
     
     " colorscheme summerfruit256
 	set background=light
-    colorscheme solarized
+
+    if 1 == <SID>Havescheme('solarized')
+        colorscheme solarized
+    endif
 
 	set cursorline
 	set cursorcolumn
@@ -94,15 +97,17 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal' || $TERM =~ 'screen'  ||
 
         set nocursorline
     else
-        set t_Co=16
-        set background=dark
-        " colorscheme Tomorrow-Night-Bright
-        " let g:solarized_termcolors = 16
-        " let g:solarized_visibility = "normal"
-        " let g:solarized_contrast = "normal"
-        " let g:solarized_degrade=1
-        " let g:solarized_termtrans=1
-        colorscheme solarized
+        if 1 == <SID>Havescheme('solarized')
+            set t_Co=16
+            set background=dark
+            " colorscheme Tomorrow-Night-Bright
+            " let g:solarized_termcolors = 16
+            " let g:solarized_visibility = "normal"
+            " let g:solarized_contrast = "normal"
+            " let g:solarized_degrade=1
+            " let g:solarized_termtrans=1
+            colorscheme solarized
+        endif
     endif
 
 	set cursorline
