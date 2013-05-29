@@ -26,7 +26,10 @@ call pathogen#infect()
 "
 " [Vundle](https://github.com/gmarik/vundle) Configuration
 " Add vundle to our runtime path (rtp) and start vundle
-set rtp+=~/pkgs/vim/bundle/vundle/
+"
+let this_dir = expand('%:p:h')
+set rtp+=''.this_dir.'/../bundle/vundle/'
+" set rtp+=~/pkgs/vim/bundle/vundle/
 call vundle#rc()
 
 " Bundles
