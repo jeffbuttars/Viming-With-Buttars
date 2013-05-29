@@ -61,25 +61,30 @@ if has( "gui_running" )
     " * [guioptions][]
     "
     
-    colorscheme summerfruit256
+    " colorscheme summerfruit256
+	set background=light
+    colorscheme solarized
 
 	set cursorline
 	set cursorcolumn
 elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal' || $TERM =~ 'screen'  || $TERM =~ 'xterm'
 	" Use a console friendly theme and force Vim to
 	" use 256 colors if we think the console can handle it.
-	set t_Co=256
+	" set t_Co=256
 	hi clear CursorLine 
 
     set background=dark
     let g:lucius_style = "dark"
-    let w:solarized_style = g:lucius_style
 
     if $TERM_META =~ 'white'
         set background=light
-        let g:lucius_style = "light"
 
-        if 1 == <SID>Havescheme('lucius')
+        if 1 == <SID>Havescheme('solarized')
+            let g:solarized_termcolors=16
+            " let g:solarized_termcolors=256
+            colorscheme solarized
+        elseif 1 == <SID>Havescheme('lucius')
+            let g:lucius_style = "light"
             colorscheme lucius
         elseif 1 == <SID>Havescheme('Tomorrow')
             colorscheme Tomorrow
@@ -89,7 +94,15 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal' || $TERM =~ 'screen'  ||
 
         set nocursorline
     else
-        colorscheme Tomorrow-Night-Bright
+        set t_Co=16
+        set background=dark
+        " colorscheme Tomorrow-Night-Bright
+        " let g:solarized_termcolors = 16
+        " let g:solarized_visibility = "normal"
+        " let g:solarized_contrast = "normal"
+        " let g:solarized_degrade=1
+        " let g:solarized_termtrans=1
+        colorscheme solarized
     endif
 
 	set cursorline

@@ -1,4 +1,5 @@
 " UltiSnips
+let g:UltiSnipsSnippetsDir = '~/pkgs/vim/UltiSnips'
 let g:UltiSnipsListSnippets = '<c-q>'
 " let g:UltiSnipsListSnippets = "<c-tab>"
 
