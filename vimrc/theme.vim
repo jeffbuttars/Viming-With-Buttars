@@ -40,6 +40,34 @@ function! <SID>Havescheme(name)
     endif
 endfunction
 
+function! <SID>UseSolarized()
+        " let g:solarized_style = 'dark'
+        let g:solarized_termcolors = 16
+        " let g:solarized_visibility = "low"
+        " let g:solarized_contrast = "low"
+        " let g:solarized_degrade=1
+        " let g:solarized_termtrans=1
+        " Disabling italics is necessary for konsole
+        let g:solarized_italic = 0
+        " let g:solarized_bold = 0
+        " let g:solarized_underline = 0
+        colorscheme solarized
+
+        function! <SID>SolarizedToggle()
+            if (w:solarized_style == "dark")
+                let w:solarized_style = "light"
+                colorscheme solarized
+            else
+                let w:solarized_style = "dark"
+                colorscheme solarized
+            endif
+        endfunction
+        command! Togbg call <SID>SolarizedToggle()
+        " nnoremap <F5> :call SolarizedToggle()<CR>
+        " inoremap <F5> <ESC>:call SolarizedToggle()<CR>a
+        " vnoremap <F5> <ESC>:call SolarizedToggle()<CR>
+endfunction
+
 if has( "gui_running" )
 	hi clear CursorLine 
 	hi clear CursorColumn
@@ -62,7 +90,7 @@ if has( "gui_running" )
     "
     
     " colorscheme summerfruit256
-	set background=light
+	set background=dark
 
     if 1 == <SID>Havescheme('solarized')
         colorscheme solarized
@@ -83,9 +111,8 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal' || $TERM =~ 'screen'  ||
         set background=light
 
         if 1 == <SID>Havescheme('solarized')
-            let g:solarized_termcolors=16
-            " let g:solarized_termcolors=256
-            colorscheme solarized
+            let g:solarized_style = 'light'
+            call <SID>UseSolarized()
         elseif 1 == <SID>Havescheme('lucius')
             let g:lucius_style = "light"
             colorscheme lucius
@@ -98,15 +125,8 @@ elseif $TERM =~ '256' || $COLORTERM =~ 'gnome-terminal' || $TERM =~ 'screen'  ||
         set nocursorline
     else
         if 1 == <SID>Havescheme('solarized')
-            set t_Co=16
-            set background=dark
-            " colorscheme Tomorrow-Night-Bright
-            " let g:solarized_termcolors = 16
-            " let g:solarized_visibility = "normal"
-            " let g:solarized_contrast = "normal"
-            " let g:solarized_degrade=1
-            " let g:solarized_termtrans=1
-            colorscheme solarized
+            let g:solarized_style = 'dark'
+            call <SID>UseSolarized()
         endif
     endif
 
