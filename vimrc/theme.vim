@@ -52,21 +52,21 @@ function! <SID>UseSolarized()
         " let g:solarized_bold = 0
         " let g:solarized_underline = 0
         colorscheme solarized
-
-        function! <SID>SolarizedToggle()
-            if (w:solarized_style == "dark")
-                let g:solarized_style = "light"
-                colorscheme solarized
-            else
-                let g:solarized_style = "dark"
-                colorscheme solarized
-            endif
-        endfunction
-        command! SolarizedToggle call <SID>SolarizedToggle()
-        " nnoremap <F5> :call SolarizedToggle()<CR>
-        " inoremap <F5> <ESC>:call SolarizedToggle()<CR>a
-        " vnoremap <F5> <ESC>:call SolarizedToggle()<CR>
 endfunction
+
+function! <SID>SolarizedToggle()
+    if (w:solarized_style == "dark")
+        let g:solarized_style = "light"
+        colorscheme solarized
+    else
+        let g:solarized_style = "dark"
+        colorscheme solarized
+    endif
+endfunction
+command! SolarizedToggle call <SID>SolarizedToggle()
+" nnoremap <F5> :call SolarizedToggle()<CR>
+" inoremap <F5> <ESC>:call SolarizedToggle()<CR>a
+" vnoremap <F5> <ESC>:call SolarizedToggle()<CR>
 
 if has( "gui_running" )
 	hi clear CursorLine 
@@ -81,7 +81,7 @@ if has( "gui_running" )
 	" Set gvim font. I like the Inconsolata font.
 	" You'll need to install, do it, it's very much worth it.
 	" A great font, and it's 100% free.
-	set guifont=Inconsolata\ Medium\ 8
+	set guifont=Inconsolata\ Medium\ 12
     "
     " For Win32 GUI: you can remove 't' flag from 'guioptions' for no tearoff menu entries  
         " let &[guioptions = substitute(&guioptions, "t", "", "g")

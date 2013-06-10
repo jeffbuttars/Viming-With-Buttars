@@ -40,7 +40,6 @@ Bundle 'gmarik/vundle'
 
 " git-hub specific bundles:
 Bundle 'https://github.com/kien/ctrlp.vim'
-Bundle 'git://github.com/maxbrunsfeld/vim-yankstack.git'
 " Bundle 'https://github.com/nvie/vim-flake8'
 " Bundle 'https://github.com/klen/python-mode'
 Bundle 'git://github.com/Lokaltog/powerline.git'
@@ -56,6 +55,7 @@ Bundle 'https://github.com/airblade/vim-gitgutter.git'
 Bundle 'git://github.com/junegunn/vim-easy-align.git'
 Bundle 'git://github.com/uggedal/go-vim.git'
 Bundle 'git://github.com/scrooloose/syntastic.git'
+Bundle 'https://bitbucket.org/agr/ropevim'
 
 
 " Other bundles
@@ -66,7 +66,7 @@ Bundle 'Gundo'
 Bundle 'The-NERD-tree'
 " Bundle 'git://github.com/vim-scripts/Conque-Shell.git'
 Bundle 'Solarized'
-Bundle 'simple-pairs'
+" Bundle 'simple-pairs'  " Not a fan of this one.
 Bundle 'DirDiff.vim'
 Bundle 'vim-indent-object'
 " Bundle 'Python-mode-klen'
@@ -111,7 +111,7 @@ Bundle 'Wombat'
 Bundle 'jellybeans.vim'
 Bundle 'twilight256.vim'
 Bundle 'twilight'
-Bundle 'Twilight-for-python'
+" Bundle 'Twilight-for-python'
 Bundle 'https://github.com/tpope/vim-vividchalk'
 Bundle 'https://github.com/w0ng/vim-hybrid'
 " Bundle 'https://github.com/vim-scripts/summerfruit256'
