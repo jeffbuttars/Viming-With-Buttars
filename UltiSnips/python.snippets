@@ -367,6 +367,36 @@ opt_parser.add_option("-d", "--daemonize", dest="daemonize",
 (options, args) = opt_parser.parse_args()
 endsnippet
 
+
+snippet argparse "argument parsing basic code" !b
+import argparse
+
+parser = argparse.ArgumentParser(
+    "program_name",
+    description=("Description of program")
+)
+
+parser.add_argument('-t', '--test',
+                    default='default_value',
+                    help=("Some nice help for this option")
+                   )
+
+parser.add_argument('-b',
+                    '--boolean-option',
+                    default=False, action='store_true',
+                    help=("Some nice help for this option")
+                   )
+
+# positional argument 
+parser.add_argument('pos',
+                    default=None,
+                    nargs="?",
+                    help=("Some nice help for this option")
+                   )
+
+args = parser.parse_args()
+endsnippet
+
 snippet .fm "Python str.format()" !i
 .format(${1})${0}
 endsnippet

@@ -1,7 +1,14 @@
 clearsnippets if
 
+snippet mdp "MACRO DEBUG PRING"
+#ifdef DEBUG
+#define DEBUG_PRINT(fmt, _args ...) \
+    fprintf(stderr, "%s:%d " fmt "\n", __FUNCTION__, __LINE__, ##_args)
+#endif
+endsnippet
+
 snippet dp "DEBUG_PRINT"
-DEBUG_PRINT("%s() ${1}\n", __FUNCTION__${2});${0}
+DEBUG_PRINT("${1}"${2:, ${3}});${0}
 endsnippet
 
 snippet func "function" b

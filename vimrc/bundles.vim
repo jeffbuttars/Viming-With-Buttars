@@ -40,7 +40,7 @@ Bundle 'gmarik/vundle'
 
 " git-hub specific bundles:
 Bundle 'https://github.com/kien/ctrlp.vim'
-" Bundle 'https://github.com/nvie/vim-flake8'
+Bundle 'https://github.com/nvie/vim-flake8'
 " Bundle 'https://github.com/klen/python-mode'
 Bundle 'git://github.com/Lokaltog/powerline.git'
 Bundle 'https://github.com/kien/rainbow_parentheses.vim'
