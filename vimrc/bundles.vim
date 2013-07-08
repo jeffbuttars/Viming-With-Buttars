@@ -37,6 +37,7 @@ call vundle#rc()
 " required! 
 Bundle 'gmarik/vundle'
 "Bundle 'https://github.com/gmarik/vundle'
+Bundle 'https://github.com/tpope/vim-fugitive.git'
 
 " git-hub specific bundles:
 Bundle 'https://github.com/kien/ctrlp.vim'
