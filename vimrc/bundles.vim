@@ -79,10 +79,10 @@ Bundle 'vim-indent-object'
 " Bundle 'django-template-textobjects'
 
 Bundle 'https://github.com/davidhalter/jedi-vim.git'
-Bundle 'SuperTab-continued.'
+" Bundle 'SuperTab-continued.'
 
 " This one is neat, but does not play well with UltiSnips
-" Bundle 'https://github.com/Valloric/YouCompleteMe.git'
+Bundle 'https://github.com/Valloric/YouCompleteMe.git'
 
 " Load Ultisnips last to make sure it has the <tab> map
 " Bundle 'https://github.com/vim-scripts/UltiSnips'
