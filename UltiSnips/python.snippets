@@ -149,7 +149,7 @@ snippet pra "print() with args"
 print("${1}%s" % (${2},${3}))$0
 endsnippet
 
-snippet def "my function with docstrings" !b
+snippet def "my function with docstrings" b!
 def ${1:function}(`!p
 if snip.indent:
    snip.rv = 'self' + (", " if len(t[2]) else "")`${2:arg1}):
