@@ -639,10 +639,13 @@ for item in g:DoubleTapInsert_Map
 	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'lChar' ], item[ 'rChar' ], item[ 'spacey' ] )
 endfor
 
-for item in g:DoubleTapJumpOut_Map
-	execute printf( "au FileType %s imap %s <C-R>=DoubleTapJumpOut('%s', '%s')<CR>",
-	\	item[ 'ftype' ], item[ 'trigger' ], item[ 'leftChar' ], item[ 'rightChar' ] )
-endfor
+
+if exists("g:doubleTap_jumpouts") && g:doubleTap_jumpouts == 1
+    for item in g:DoubleTapJumpOut_Map
+        execute printf( "au FileType %s imap %s <C-R>=DoubleTapJumpOut('%s', '%s')<CR>",
+        \	item[ 'ftype' ], item[ 'trigger' ], item[ 'leftChar' ], item[ 'rightChar' ] )
+    endfor
+endif
 
 for item in g:DoubleTapInsertJumpString_Map
 	execute printf( "au FileType %s imap %s <C-R>=DoubleTapInsertJumpString(%s)<CR>",
