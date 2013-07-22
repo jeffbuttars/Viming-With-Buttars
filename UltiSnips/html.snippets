@@ -44,3 +44,15 @@ endsnippet
 snippet h1 "<h1>" !
 <h1>${1}</h1>${0}
 endsnippet
+
+snippet div "XHTML <div>" !
+<div${1: id="${2:name}"}${3: class="${4:cl}"}>
+	$0
+</div>
+endsnippet
+
+snippet < "XHTML <tag>"
+<${1:tag}${2: id="${3:name}"}${4: class="${5:cl}"}>
+	$0
+</$1>
+endsnippet
