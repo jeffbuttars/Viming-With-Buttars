@@ -48,9 +48,19 @@ def get_nearest_def_args(ident='def', strip_self=False):
             args = args[args.find(',')+1:]
             args = args.strip()
 
+    # Break up the args and remove any default arguments.
+    args = args.split(',')
+
+    nargs = []
+    for arg in args:
+        arg = arg.strip()
+        parts = arg.split('=', 1)
+        nargs.append(parts[0])
+    # end for arg in args
+
     vim.command("call setpos('.', " + str(cp) + ")")
 
-    return args
+    return ', '.join(nargs)
 
 def get_args(arglist):
     args = [arg.split('=')[0].strip() for arg in arglist.split(',') if arg]
