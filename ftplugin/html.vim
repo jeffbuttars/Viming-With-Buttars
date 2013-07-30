@@ -80,3 +80,8 @@ fu! s:HighlightTagAtPosition(position)
                 \ .'\(\%' . line('.') . 'l<\zs[^<>]\{-}\ze\s[^<>]*\%' . col('.') . 'c.\{-}>\)/'
     let w:tag_hl_on = 1
 endfu
+
+
+" I don't want the column for html
+call SetColorColumn(0)
+
