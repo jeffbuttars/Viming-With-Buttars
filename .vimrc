@@ -346,6 +346,7 @@ set sessionoptions=winpos,localoptions
 " Make sure I get the expected behavior from ctrl-]
 " if cscopetag is set, ctrl-] will try to be too smart
 set nocscopetag
+set tags=tags,./tags;/
 
 runtime! vimrc/*.vim
 

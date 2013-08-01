@@ -16,10 +16,20 @@ set nocursorcolumn
 "Markdown format options
 setlocal ai formatoptions=tcroqn2 comments=n:>
 
+let s:mkd_exe = "markdown2"
 
+if system("which markdown_py2") != ""
+    let s:mkd_exe = "markdown_py2"
+elseif system("which markdown_py") != ""
+    let s:mkd_exe = "markdown_py"
+endif
 
-let found_mkd = system("which markdown_py2")
-if found_mkd != ""
-    imap <F5> <ESC>:!markdown_py2 % > %.html<CR>
-    nmap <F5> <ESC>:!markdown_py2 % > %.html<CR>
+if s:mkd_exe != ""
+    " imap <F5> <ESC>:!markdown_py2 -x toc -x fenced_code -x tables -x def_list -x attr_list -x codehilite -x headerid % > %.html<CR>
+    " nmap <F5> <ESC>:!markdown_py2 -x toc -x fenced_code -x tables -x def_list -x attr_list -x codehilite -x headerid % > %.html<CR>
+
+	execute printf("nmap <F5> <ESC>:!%s -x toc -x fenced_code -x tables -x def_list -x attr_list -x codehilite -x headerid % > %.html<CR>",
+	\	s:mkd_exe)
+	execute printf("imap <F5> <ESC>:!%s -x toc -x fenced_code -x tables -x def_list -x attr_list -x codehilite -x headerid % > %.html<CR>",
+	\	s:mkd_exe)
 endif

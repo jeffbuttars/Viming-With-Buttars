@@ -46,3 +46,13 @@ for (${4}${2:i} = 0; $2 < ${1:count}; ${3:++$2})
 	${0:/* code */}
 }
 endsnippet
+
+snippet wh "while(){} loop" !b
+while( ${1} ) {
+    ${0}
+} // end while( $1 )
+endsnippet
+
+snippet lerr "LOG_ERR()" !b
+LOG_ERR("${1}"${2:, ${3}});${0}
+endsnippet
