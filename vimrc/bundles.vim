@@ -68,11 +68,9 @@ Bundle 'ZenCoding.vim'
 Bundle 'Gundo'
 Bundle 'The-NERD-tree'
 " Bundle 'git://github.com/vim-scripts/Conque-Shell.git'
-" Bundle 'simple-pairs'  " Not a fan of this one.
 Bundle 'DirDiff.vim'
 Bundle 'vim-indent-object'
-" Bundle 'Python-mode-klen'
-
+Bundle 'nginx.vim'
 " Bundle 'argtextobj.vim'
 " Bundle 'textobj-indent'
 " Bundle 'django-template-textobjects'
