@@ -35,7 +35,8 @@ NeoBundle 'Shougo/vimproc'
 
 NeoBundle 'https://github.com/kien/ctrlp.vim'
 NeoBundle 'https://github.com/nvie/vim-flake8'
-NeoBundle 'https://github.com/bling/vim-airline.git'
+" NeoBundle 'https://github.com/bling/vim-airline.git'
+NeoBundle 'https://github.com/itchyny/lightline.vim'
 NeoBundle 'https://github.com/bling/vim-bufferline.git'
 NeoBundle 'https://github.com/kien/rainbow_parentheses.vim'
 NeoBundle 'https://github.com/abudden/TagHighlight.git'
@@ -108,10 +109,9 @@ NeoBundleCheck
 " " required! 
 " Bundle 'gmarik/vundle'
 " "Bundle 'https://github.com/gmarik/vundle'
-" Bundle 'https://github.com/tpope/vim-fugitive.git'
+NeoBundle 'https://github.com/tpope/vim-fugitive.git'
 " 
 " " git-hub specific bundles:
-" Bundle 'https://github.com/kien/ctrlp.vim'
 " Bundle 'https://github.com/nvie/vim-flake8'
 " " Bundle 'https://github.com/klen/python-mode'
 " " Bundle 'git://github.com/Lokaltog/powerline.git'

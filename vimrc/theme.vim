@@ -52,6 +52,9 @@ function! <SID>UseSolarized()
         " let g:solarized_bold = 0
         " let g:solarized_underline = 0
         colorscheme solarized
+
+        " Set the lightline theme too
+		let g:lightline.colorscheme = 'solarized'
 endfunction
 
 function! <SID>SolarizedToggle()
