@@ -63,6 +63,7 @@ NeoBundle 'https://github.com/davidhalter/jedi-vim.git'
 NeoBundle 'https://github.com/Valloric/YouCompleteMe.git'
 " Load Ultisnips last to make sure it has the <tab> map
 NeoBundle 'git://github.com/vim-scripts/UltiSnips.git'
+NeoBundle 'https://github.com/vim-scripts/stata.vim'
 
 " Colorschemes
 "
