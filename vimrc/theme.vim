@@ -67,9 +67,6 @@ function! <SID>SolarizedToggle()
     endif
 endfunction
 command! SolarizedToggle call <SID>SolarizedToggle()
-" nnoremap <F5> :call SolarizedToggle()<CR>
-" inoremap <F5> <ESC>:call SolarizedToggle()<CR>a
-" vnoremap <F5> <ESC>:call SolarizedToggle()<CR>
 
 if has( "gui_running" )
 	hi clear CursorLine 
@@ -174,6 +171,7 @@ function! AdjustQFWindowHeight()
     " get the current window, qf, number and height
     let thiswindow = winnr()
     let thiswindow_h = winheight(0)
+    let qnr = winnr('$')
 
     " go the last open window and get it's size
     " and add it to the qf window size and account for the
@@ -192,5 +190,11 @@ function! AdjustQFWindowHeight()
     
 
     " echo "window H: " . wh . ", qf_height " . qf_height
+    exe "normal ". qnr . "\<C-W>w" 
     exe qf_height . "wincmd _"
+
+
+    " Move the quickfix window to the bottom right
+    " so it's always full length.
+    exe "normal \<C-W>\<S-J>" 
 endfunction

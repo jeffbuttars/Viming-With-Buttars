@@ -165,3 +165,4 @@ endif
 autocmd QuickFixCmdPost *grep* cwindow
 autocmd QuickFixCmdPost *grep* exe "normal \<cr>\<c-w>p"
 
+
