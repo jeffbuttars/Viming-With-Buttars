@@ -69,6 +69,8 @@ let pyindent_open_paren="&sw*2"
 if executable("autopep8")
     imap <F5> <ESC>:%!autopep8 --max-line-length=99 --in-place %<CR>
     nmap <F5> <ESC>:%!autopep8 --max-line-length=99 --in-place %<CR>
+    " set formatprg=autopep8\ --max-line-length=99
+    set equalprg=autopep8\ --max-line-length=99\ -
 endif
 
 " Our own foo
