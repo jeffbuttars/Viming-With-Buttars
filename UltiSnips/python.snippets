@@ -313,14 +313,14 @@ class ${1:MyModel}(models.Model):
 	"""${2:Docstring for $1 }"""
 
     ${0}
-
-    def __unicode__(self):
-        pass
 #$1
 endsnippet
 
 snippet djf "Django model field member" b
-${1:field_name} = models.${2:fieldType}(${3})${0}
+${1:field_name} = models.${2:fieldType}(
+    ${3:,}
+    help_text=("${4}"),${5}
+)${0}
 endsnippet
 
 snippet djv "Django view" b

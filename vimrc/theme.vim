@@ -136,6 +136,7 @@ endif
 
 " set linenumbers on by default
 set number 
+set relativenumber 
 
 " A cleaner vertical split
  set fillchars=vert:\:
