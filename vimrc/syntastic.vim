@@ -1,5 +1,4 @@
 
-let g:syntastic_check_on_wq=1
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_loc_list_height=10
 let g:syntastic_quiet_warnings=0
