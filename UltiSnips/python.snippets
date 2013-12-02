@@ -179,6 +179,27 @@ snip += '"""' `
 #$1()
 endsnippet
 
+
+snippet def_ "my __function__ with docstrings" b!
+def __${1:function}__(`!p
+if snip.indent:
+   snip.rv = 'self' + (", " if len(t[2]) else "")`${2:arg1}):
+	"""${4:todo: Docstring for __$1__}`!p
+snip.rv <= ""
+snip >> 1
+
+args = get_args(t[2])
+if args:
+   write_docstring_args(args, snip)
+
+style = get_style(snip)
+snip += format_return(style, snip.indent)
+snip += '"""' `
+
+	${5:pass}
+#__$1__()
+endsnippet
+
 snippet deft "my test function with docstrings" b
 def test_${1:function}(self):
 	"""${2:todo: Docstring for $1}"""
@@ -199,6 +220,12 @@ log_formatter = logging.Formatter(('%(asctime)s %(levelname)s:%(process)s'
                                    ' %(message)s'))
 logger_ch.setFormatter(log_formatter)
 logger.addHandler(logger_ch)${0}
+endsnippet
+
+
+snippet glogger "Get a logger" !b
+import logging
+logger = logging.getLogger('${1:__name__}')${0}
 endsnippet
 
 snippet im "Import shortcut" b
@@ -329,6 +356,19 @@ def ${2:view_name}(req${3:, kwargs}):
     $0
     return {}
 #$2()
+endsnippet
+
+snippet djcv "Class Based View" b
+class ${1:ViewName}(${2:View}):
+
+    ${3:@method_decorator(render_to)}
+    ${4:@method_decorator(login_required)}
+    def get(self, req${5}):
+        ${0}
+        return {}
+    #get()
+
+#$1
 endsnippet
 
 

@@ -26,13 +26,13 @@ snippet html "XHTML <html>"
 endsnippet
 
 snippet ul "ul" !
-<ul ${1:id="${2}"} ${3:class="${4}"}>
+<ul${1: id="${2}"}${3: class="${4}"}>
     $0
 </ul>
 endsnippet
 
 snippet li "li" !
-<li ${1:id="${2}"} ${3:class="${4}"}>
+<li${1: id="${2}"}${3: class="${4}"}>
     $0
 </li>
 endsnippet
@@ -59,4 +59,8 @@ endsnippet
 
 snippet "H(\d?)" "<hN>\d+" r!
 <h${1:`!p snip.rv = match.group(1) or '1'`}${2: class="${3}"}>${0}</h$1>
+endsnippet
+
+snippet gi "glyphicon"
+    <span class="glyphicon glyphicon-${1}">${2}</span>${0}
 endsnippet
