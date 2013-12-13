@@ -6,11 +6,13 @@ ${1}()
 endsnippet
 
 snippet go "getopts "
-while getopts '${1:o}' ${2:opts} 
+while getopts ":${1:h${2}}" ${3:opts} 
 do 
-    case $$2 in
-    $1)
-        ${4:#staments};;
+    case $$3 in
+    h)
+        echo "A help message for this script.";;
+    \?)
+        echo "Invalid Option: -$OPTARG" >&2;;
     esac
 done
 endsnippet

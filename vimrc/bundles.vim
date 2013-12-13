@@ -66,6 +66,9 @@ NeoBundle 'https://github.com/Valloric/YouCompleteMe.git'
 NeoBundle 'https://github.com/SirVer/ultisnips.git'
 NeoBundle 'https://github.com/vim-scripts/stata.vim'
 
+" Tornado template syntax
+NeoBundle 'https://github.com/vim-scripts/tornadotmpl.vim.git'
+
 " Colorschemes
 "
 " Solarized has been good to me. I plan to keep it a while
