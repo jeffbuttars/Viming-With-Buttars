@@ -1,0 +1,13 @@
+#!/bin/bash
+
+source pkgs.sh
+
+pr_info "Building YouCompleteMe"
+# Build YouCompleteMe
+if [[ -d "~/.vim/bundle/YouCompleteMe" ]]; then
+    cd "~/.vim/bundle/YouCompleteMe"
+    ./install.sh --clang-completer
+fi
+
+pr_info "Updating bundles..."
+vim +NeoBundleCheck +q

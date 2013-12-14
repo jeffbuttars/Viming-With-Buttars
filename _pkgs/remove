@@ -1,0 +1,3 @@
+#!/bin/bash
+
+pr_info "Doing nothing for remove."
