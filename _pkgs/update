@@ -7,7 +7,9 @@ pr_info "Building YouCompleteMe"
 if [[ -d "~/.vim/bundle/YouCompleteMe" ]]; then
     cd "~/.vim/bundle/YouCompleteMe"
     ./install.sh --clang-completer
+    wait
 fi
 
 pr_info "Updating bundles..."
 echo "y\ny\ny\n" | vim +'NeoBundleCheck<\CR>' +'q'
+wait
