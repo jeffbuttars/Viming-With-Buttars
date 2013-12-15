@@ -22,7 +22,7 @@ echo "set runtimepath=$PKGS_VIM_DIR,\$VIMRUNTIME" > ~/.vimrc
 echo "source $PKGS_VIM_DIR/.vimrc" >> ~/.vimrc
 
 pr_info "Updating bundles..."
-vim +'NeoBundleInstall!<\CR>' +'q'
+echo "y\ny\ny\n" | vim +'NeoBundleInstall!<\CR>' +'q'
 
 # Build YouCompleteMe
 if [[ -d ~/.vim/bundle/YouCompleteMe ]]; then
