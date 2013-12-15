@@ -10,4 +10,4 @@ if [[ -d "~/.vim/bundle/YouCompleteMe" ]]; then
 fi
 
 pr_info "Updating bundles..."
-vim +NeoBundleCheck +q
+echo "y\ny\ny\n" | vim +'NeoBundleCheck<\CR>' +'q'
