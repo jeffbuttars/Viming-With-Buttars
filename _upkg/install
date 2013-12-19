@@ -29,7 +29,7 @@ wait
 if [[ -d ~/.vim/bundle/YouCompleteMe ]]; then
     pr_info "Building YouCompleteMe"
     cd ~/.vim/bundle/YouCompleteMe
-    ./install.sh --clang-completer
+    ./install.sh --clang-completer --system-libclang
     cd -
 fi
 
