@@ -2,14 +2,8 @@
 
 source pkgs.sh
 
-# Build YouCompleteMe
-if [[ -d ~/.vim/bundle/YouCompleteMe ]]; then
-    pr_info "Building YouCompleteMe"
-    cd ~/.vim/bundle/YouCompleteMe
-    ./install.sh --clang-completer --system-libclang
-    wait
-fi
-
 pr_info "Updating bundles..."
 echo "y\ny\ny\n" | vim +'NeoBundleCheck<\CR>' +'q'
 wait
+
+source buildycm

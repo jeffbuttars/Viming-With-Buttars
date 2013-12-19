@@ -8,7 +8,7 @@ if [[ ! -d  ~/.vim/bundle/neobundle.vim ]]; then
     git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
 fi
 
-THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [[ -f ~/.vimrc ]]; then
     pr_info "Backuping up the existing ~/.vimrc"
@@ -17,7 +17,7 @@ if [[ -f ~/.vimrc ]]; then
 fi
 
 pr_info "Creating the new ~/.vimrc"
-PKGS_VIM_DIR="$(dirname $THIS_DIR/)/vim"
+export PKGS_VIM_DIR="$(dirname $THIS_DIR/)/vim"
 echo "set runtimepath=$PKGS_VIM_DIR,\$VIMRUNTIME" > ~/.vimrc
 echo "source $PKGS_VIM_DIR/.vimrc" >> ~/.vimrc
 
@@ -25,12 +25,6 @@ pr_info "Updating bundles..."
 echo "y\ny\ny\n" | vim +'NeoBundleInstall!<\CR>' +'q'
 wait
 
-# Build YouCompleteMe
-if [[ -d ~/.vim/bundle/YouCompleteMe ]]; then
-    pr_info "Building YouCompleteMe"
-    cd ~/.vim/bundle/YouCompleteMe
-    ./install.sh --clang-completer --system-libclang
-    cd -
-fi
+source buildycm
 
 pr_pass "Install complete"
