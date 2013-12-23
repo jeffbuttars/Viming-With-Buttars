@@ -468,4 +468,12 @@ if __name__ == '__main__':
     ${1:main()}${2}
 endsnippet
 
+snippet #! "#!/usr/bin/env python" !b
+#!/usr/bin/env python
+# encoding: utf-8
+`!p import uuid
+if not snip.c:
+	snip.rv = "# " + uuid.uuid4().hex`
+endsnippet
+
 # vim:ft=snippets:

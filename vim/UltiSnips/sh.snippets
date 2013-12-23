@@ -29,4 +29,7 @@ endsnippet
 
 snippet #! "#!/bin/bash" !b
 #!/bin/bash
+`!p import uuid
+if not snip.c:
+	snip.rv = "# " + uuid.uuid4().hex`
 endsnippet
