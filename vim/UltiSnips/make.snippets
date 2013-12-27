@@ -24,3 +24,11 @@ endsnippet
 snippet mk "$(MAKE)" !b
 $(MAKE) ${0}
 endsnippet
+
+snippet : "vname := value" !b
+${1} := ${2}${0}
+endsnippet
+
+snippet = "vname = value" !b
+${1} = ${2}${0}
+endsnippet
