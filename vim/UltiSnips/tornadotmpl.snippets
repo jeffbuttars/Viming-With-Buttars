@@ -17,5 +17,12 @@ endsnippet
 snippet block "block"
 {% block ${1} %}
 	${0}
-{% end %}%{ comment end block ${1} %}
+{% end %}{% comment end block ${1} %}
+endsnippet
+
+snippet c "Comment " !b
+{%
+${1}
+%}
+${0}
 endsnippet
