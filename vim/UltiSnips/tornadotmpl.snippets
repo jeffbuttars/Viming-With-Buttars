@@ -5,19 +5,19 @@ endsnippet
 snippet % "{% expression %} Template expression"
 {% ${1} %}
 ${0}
-{% end %}%{ comment end ${1} %}
+{% end %}%{ comment end $1 %}
 endsnippet
 
 snippet for "{% expression %} Template expression"
 {% for ${1:item} in ${2:items} %}
 	${1}
-{% end %}%{ comment end for ${1} in ${2} %}
+{% end %}%{ comment end for $1 in $2 %}
 endsnippet
 
 snippet block "block"
 {% block ${1} %}
 	${0}
-{% end %}{% comment end block ${1} %}
+{% end %}{% comment end block $1 %}
 endsnippet
 
 snippet c "Comment " !b
