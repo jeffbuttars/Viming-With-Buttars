@@ -240,7 +240,7 @@ snippet fim "From pkg Import sub" b
 from ${1} import ${0}
 endsnippet
 
-snippet for "For" b
+snippet for "For" !b
 for ${1} in ${2}:
     ${3}
 # end for $1 in $2
@@ -252,12 +252,12 @@ endsnippet
 #    ${0}
 #endsnippet
 
-snippet el "else" b
+snippet el "else" !b
 else ${1}:
     ${0}
 endsnippet
 
-snippet ifel "if else" b
+snippet ifel "if else" !b
 if ${1}:
     ${2}
 else ${3}:
