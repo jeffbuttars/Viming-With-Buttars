@@ -52,3 +52,7 @@ snippet uuid "UUID" !
 if not snip.c:
 	snip.rv = uuid.uuid4().hex`
 endsnippet
+
+snippet vft "Vim Modeline, set file type" !b
+vim: set ft=`!v &ft`:
+endsnippet
