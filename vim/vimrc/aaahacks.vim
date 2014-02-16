@@ -37,6 +37,11 @@ function! TogglePaste()
 	endif
 endfunction
 
+" Map the <End> key to <Esc>
+" This is do to my X1 kbd layout
+nmap <End> <ESC>
+imap <End> <ESC>
+
 " Allow toggling of paste/nopaste via F2
 "set pastetoggle=<F2>
 nmap <F2> <ESC>:call TogglePaste()<CR>
