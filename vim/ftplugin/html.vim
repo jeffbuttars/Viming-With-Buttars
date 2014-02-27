@@ -84,4 +84,3 @@ endfu
 
 " I don't want the column for html
 call SetColorColumn(0)
-
