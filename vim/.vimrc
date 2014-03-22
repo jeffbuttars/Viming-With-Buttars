@@ -343,6 +343,11 @@ command! -bar Hexmode call ToggleHex()
 set viewoptions=cursor
 set sessionoptions=winpos,localoptions
 
+" See if we can speed things up with 
+" lazyredraw and ttyfast
+set lazyredraw
+set ttyfast
+
 " Make sure I get the expected behavior from ctrl-]
 " if cscopetag is set, ctrl-] will try to be too smart
 set nocscopetag
