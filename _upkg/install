@@ -2,6 +2,9 @@
 
 source pkgs.sh
 
+# Make sure we have an undos directory
+mkdir -p ~/.vim/undos
+
 mkdir -p ~/.vim/bundle
 if [[ ! -d  ~/.vim/bundle/neobundle.vim ]]; then
     pr_info "Installing neobundle."

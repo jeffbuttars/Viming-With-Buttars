@@ -93,6 +93,8 @@ set lazyredraw      " Don't redraw screen when executing macros
 if version >= 703
 	set undofile
 	set undodir=~/.vim/undos
+    set undolevels=1000
+    set undoreload=10000
 endif
 "
 " * [undofile][]
