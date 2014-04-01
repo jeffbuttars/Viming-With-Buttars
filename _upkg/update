@@ -2,6 +2,9 @@
 
 source pkgs.sh
 
+# Make sure we have an undos directory
+mkdir -p ~/.vim/undos
+
 pr_info "Updating bundles..."
 echo "y\ny\ny\n" | vim +'NeoBundleCheck<\CR>' +'q'
 wait
