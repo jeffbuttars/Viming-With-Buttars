@@ -178,7 +178,7 @@ snip += format_return(style, snip.indent)
 snip += '"""' `
 
 	${5:pass}
-#$1()
+# $1()
 endsnippet
 
 
@@ -199,14 +199,14 @@ snip += format_return(style, snip.indent)
 snip += '"""' `
 
 	${5:pass}
-#__$1__()
+# __$1__()
 endsnippet
 
 snippet deft "my test function with docstrings" b
 def test_${1:function}(self):
 	"""${2:todo: Docstring for $1}"""
 	${3:pass}
-#test_$1()${0}
+# test_$1()${0}
 endsnippet
 
 snippet logger "Add a named logging logger" b
@@ -282,20 +282,20 @@ if args: snip += '"""'
 write_init_body(args, snip)
 `
 ${3}
-#__init__()${0}
+# __init__()${0}
 endsnippet
 
 snippet cl "class with docstrings" !b
 class ${1:MyClass}(${2:object}):
 	"""${3:Docstring for $1 }"""
     $0
-#$1
+# $1
 endsnippet
 
 snippet cln "class with nothing, it's naked" b
 class ${1:MyClass}(${2:object}):
     ${3:pass}$0
-#$1
+# $1
 endsnippet
 
 snippet clt "unittest test case class with docstrings" b
@@ -305,13 +305,13 @@ class Test${1:TestClass}(unittest.TestCase):
 	def setUp(self):
 		"""${4:todo: to be defined}"""
         ${5:pass}${0}
-    #setUp()
+    # setUp()
 
 	def tearDown(self):
 		"""todo: to be defined"""
         pass
-	#tearDown()
-#Test$1
+	# tearDown()
+# Test$1
 endsnippet
 
 snippet dbg "logger.debug()"
@@ -342,7 +342,7 @@ class ${1:MyModel}(models.Model):
 	"""${2:Docstring for $1 }"""
 
     ${0}
-#$1
+# $1
 endsnippet
 
 snippet djf "Django model field member" b
@@ -357,7 +357,7 @@ ${1:@render_to}
 def ${2:view_name}(req${3:, kwargs}):
     $0
     return {}
-#$2()
+# $2()
 endsnippet
 
 snippet djcv "Class Based View" b
@@ -368,9 +368,9 @@ class ${1:ViewName}(${2:View}):
     def get(self, req${5}):
         ${0}
         return {}
-    #get()
+    # get()
 
-#$1
+# $1
 endsnippet
 
 
@@ -477,9 +477,9 @@ endsnippet
 snippet #! "#!/usr/bin/env python" !b
 #!/usr/bin/env python
 # encoding: utf-8
-`!p import uuid
+`!p import datetime
 if not snip.c:
-	snip.rv = "# " + uuid.uuid4().hex`
+	snip.rv = "# " + datetime.datetime.now()`
 endsnippet
 
 snippet tdir "this_dir" !b
