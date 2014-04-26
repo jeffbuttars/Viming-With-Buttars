@@ -52,6 +52,10 @@ snippet extends "My djml extens" !
 {% extends "${1:${2:core_base}.djml}" %}
 endsnippet
 
-snippet % "{% var %} Template Var" !
+snippet % "{% var %} Template Var" !i
 {% ${1} %}${0}
+endsnippet
+
+snippet { "{{ var }} Template Var" !i
+{{ ${1} }}${0}
 endsnippet
