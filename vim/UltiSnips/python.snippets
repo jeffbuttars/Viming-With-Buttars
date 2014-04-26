@@ -353,21 +353,19 @@ ${1:field_name} = models.${2:fieldType}(
 endsnippet
 
 snippet djv "Django view" b
-${1:@render_to}
-def ${2:view_name}(req${3:, kwargs}):
+def ${1:view_name}(req${2:, kwargs}):
     $0
-    return {}
-# $2()
+	return render(req, "template_name.html", {})
+# $1()
 endsnippet
 
 snippet djcv "Class Based View" b
 class ${1:ViewName}(${2:View}):
 
-    ${3:@method_decorator(render_to)}
-    ${4:@method_decorator(login_required)}
-    def get(self, req${5}):
+    ${3:@method_decorator(login_required)}
+    def get(self, req${4}):
         ${0}
-        return {}
+        return render(req, "template_name.html", {})
     # get()
 
 # $1
