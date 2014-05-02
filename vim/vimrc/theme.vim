@@ -57,6 +57,11 @@ function! <SID>UseSolarized()
 		let g:lightline.colorscheme = 'solarized'
 endfunction
 
+" We like italics in the terminal, so add some sauce to make sure we get it.
+set t_ZH=[3m
+set t_ZR=[23m
+highlight Comment cterm=italic
+
 function! <SID>SolarizedToggle()
     if (w:solarized_style == "dark")
         let g:solarized_style = "light"
