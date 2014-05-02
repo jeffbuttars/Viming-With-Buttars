@@ -26,6 +26,8 @@ function! Autosave()
 	endif
 endfunction
 
+autocmd CursorHold,BufLeave * :call Autosave()
+
 " A more verbose pastetoggle
 function! TogglePaste()
 	if	&paste == 0
