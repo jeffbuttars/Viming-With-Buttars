@@ -182,7 +182,7 @@ snip += '"""' `
 endsnippet
 
 
-snippet def "my __function__ with docstrings" bs!
+snippet _def "my __function__ with docstrings" bs!
 def __${1:function}__(`!p
 if snip.indent:
    snip.rv = 'self' + (", " if len(t[2]) else "")`${2:arg1}):
