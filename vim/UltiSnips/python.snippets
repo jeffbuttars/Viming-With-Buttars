@@ -388,7 +388,7 @@ snippet sup "super(Class, self)." b!
 super(${1:`!p snip.rv += find_def_name("class ")`}, self).${2:`!p snip.rv += find_def_name("def ")`}(${3:`!p snip.rv += get_nearest_def_args(strip_self=True)`})${0}
 endsnippet
 
-snippet optpar b!
+snippet optpar "option parser" b!
 from optparse import OptionParser
 
 opt_parser = OptionParser(                                                                          
