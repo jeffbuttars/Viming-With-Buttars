@@ -182,7 +182,7 @@ snip += '"""' `
 endsnippet
 
 
-snippet def_ "my __function__ with docstrings" b!
+snippet def "my __function__ with docstrings" bts!
 def __${1:function}__(`!p
 if snip.indent:
    snip.rv = 'self' + (", " if len(t[2]) else "")`${2:arg1}):
@@ -202,14 +202,14 @@ snip += '"""' `
 # __$1__()
 endsnippet
 
-snippet deft "my test function with docstrings" b
+snippet deft "my test function with docstrings" bts
 def test_${1:function}(self):
 	"""${2:todo: Docstring for $1}"""
 	${3:pass}
 # test_$1()${0}
 endsnippet
 
-snippet logger "Add a named logging logger" b
+snippet logger "Add a named logging logger" bts
 import logging
 
 # Set up the logger
@@ -225,7 +225,7 @@ logger.addHandler(logger_ch)${0}
 endsnippet
 
 
-snippet glogger "Get a logger" !b
+snippet glogger "Get a logger" !bts
 import logging
 logger = logging.getLogger('${1:__name__}')${0}
 endsnippet
@@ -242,7 +242,7 @@ snippet fim "From pkg Import sub" b
 from ${1} import ${0}
 endsnippet
 
-snippet for "For" !b
+snippet for "For" !bts
 for ${1} in ${2}:
     ${3}
 # end for $1 in $2
@@ -254,12 +254,12 @@ endsnippet
 #    ${0}
 #endsnippet
 
-snippet el "else" !b
+snippet el "else" !bts
 else ${1}:
     ${0}
 endsnippet
 
-snippet ifel "if else" !b
+snippet ifel "if else" !bts
 if ${1}:
     ${2}
 else ${3}:
@@ -267,7 +267,7 @@ else ${3}:
 endsnippet
 
 
-snippet init "Class __init__" !b
+snippet init "Class __init__" !bts
 def __init__(self${1}):
     """${2:todo: to be defined}`!p
 snip.rv <= ""
@@ -285,20 +285,20 @@ ${3}
 # __init__()${0}
 endsnippet
 
-snippet cl "class with docstrings" !b
+snippet cl "class with docstrings" !bts
 class ${1:MyClass}(${2:object}):
 	"""${3:Docstring for $1 }"""
     $0
 # $1
 endsnippet
 
-snippet cln "class with nothing, it's naked" b
+snippet cln "class with nothing, it's naked" bts
 class ${1:MyClass}(${2:object}):
     ${3:pass}$0
 # $1
 endsnippet
 
-snippet clt "unittest test case class with docstrings" b
+snippet clt "unittest test case class with docstrings" bts
 class Test${1:TestClass}(unittest.TestCase):
 	"""${3:Docstring for $1 }"""
 
@@ -314,30 +314,30 @@ class Test${1:TestClass}(unittest.TestCase):
 # Test$1
 endsnippet
 
-snippet dbg "logger.debug()"
+snippet dbg "logger.debug()" b
 logger.debug("${1}"${2:, ${3}})${0}
 endsnippet
 
-snippet err "logger.error()"
+snippet err "logger.error()" b
 logger.error("${1}"${2:, ${3}})${0}
 endsnippet
 
-snippet wrn "logger.warning()"
+snippet wrn "logger.warning()" b
 logger.warning("${1}"${2:, ${3}})${0}
 endsnippet
 
-snippet inf "logger.info()"
+snippet inf "logger.info()" b
 logger.info("${1}"${2:, ${3}})${0}
 endsnippet
 
-snippet prv "<self.>_varname = <value"
+snippet prv "<self.>_varname = <value>" b
 `!p
 if snip.indent:
     snip.rv = 'self.'`_${1:varname} = ${2:value}${0}
 endsnippet
 
 # Django specific
-snippet djm "Django model class with docstrings" b
+snippet djm "Django model class with docstrings" bts
 class ${1:MyModel}(models.Model):
 	"""${2:Docstring for $1 }"""
 
@@ -345,21 +345,21 @@ class ${1:MyModel}(models.Model):
 # $1
 endsnippet
 
-snippet djf "Django model field member" b
+snippet djf "Django model field member" bts
 ${1:field_name} = models.${2:fieldType}(
     ${3:,}
     help_text=("${4}"),${5}
 )${0}
 endsnippet
 
-snippet djv "Django view" b
+snippet djv "Django view" bts
 def ${1:view_name}(req${2:, kwargs}):
     $0
 	return render(req, "template_name.html", {})
 # $1()
 endsnippet
 
-snippet djcv "Class Based View" b
+snippet djcv "Class Based View" bts
 class ${1:ViewName}(${2:View}):
 
     ${3:@method_decorator(login_required)}
@@ -384,11 +384,11 @@ endsnippet
 
 # Find the class name and method name and
 # create a nice super call
-snippet sup "super(Class, self)."
+snippet sup "super(Class, self)." b!
 super(${1:`!p snip.rv += find_def_name("class ")`}, self).${2:`!p snip.rv += find_def_name("def ")`}(${3:`!p snip.rv += get_nearest_def_args(strip_self=True)`})${0}
 endsnippet
 
-snippet optpar
+snippet optpar b!
 from optparse import OptionParser
 
 opt_parser = OptionParser(                                                                          
@@ -455,7 +455,7 @@ endsnippet
 #test `!p snip.rv += get_nearest_def_args()`
 #endsnippet
 
-snippet { "Dict" !i
+snippet { "Dict" !its
 {${1}: ${2}, ${4}}${0}
 endsnippet
 
@@ -463,7 +463,7 @@ snippet di "Dict Item 'name': val," !i
 '${1:name}': ${2:val}${3:,}${0}
 endsnippet
 
-snippet ifmain "My ifmain" !b
+snippet ifmain "My ifmain" !bts
 def main():
     $0
 # main()
@@ -472,7 +472,7 @@ if __name__ == '__main__':
     ${1:main()}${2}
 endsnippet
 
-snippet #! "#!/usr/bin/env python" !b
+snippet #! "#!/usr/bin/env python" !bts
 #!/usr/bin/env python
 # encoding: utf-8
 `!p import datetime
