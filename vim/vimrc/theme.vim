@@ -48,7 +48,7 @@ function! <SID>UseSolarized()
         " let g:solarized_degrade=1
         " let g:solarized_termtrans=1
         " Disabling italics is necessary for konsole
-        let g:solarized_italic = 0
+        " let g:solarized_italic = 0
         " let g:solarized_bold = 0
         " let g:solarized_underline = 0
         colorscheme solarized
@@ -56,6 +56,11 @@ function! <SID>UseSolarized()
         " Set the lightline theme too
 		let g:lightline.colorscheme = 'solarized'
 endfunction
+
+" We like italics in the terminal, so add some sauce to make sure we get it.
+set t_ZH=[3m
+set t_ZR=[23m
+highlight Comment cterm=italic
 
 function! <SID>SolarizedToggle()
     if (w:solarized_style == "dark")
