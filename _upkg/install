@@ -30,4 +30,9 @@ wait
 
 source buildycm.sh
 
+pr_info "Building vimproc .so..."
+cd ~/.vim/bundle/vimproc
+make
+cd -
+
 pr_pass "Install complete"
