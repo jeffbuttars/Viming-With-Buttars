@@ -10,3 +10,8 @@ echo "y\ny\ny\n" | vim +'NeoBundleCheck<\CR>' +'q'
 wait
 
 source buildycm.sh
+
+pr_info "Building vimproc .so..."
+cd ~/.vim/bundle/vimproc
+make
+cd -
