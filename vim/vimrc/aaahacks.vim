@@ -63,7 +63,7 @@ endfunction
 imap <c-y> <c-r>=CmplChooseNorm()<cr>
 
 "highlight OverColLimit term=inverse,bold cterm=bold ctermbg=red ctermfg=black gui=bold guibg=red guifg=black 
-function! SetColorColumn(ccol)
+function! <SID>SetColorColumn(ccol)
 
 	if ! exists("b:longLineMatchID")
 		let b:longLineMatchID = 0
@@ -98,7 +98,8 @@ if ! exists("g:maxLineLength")
 	let g:maxLineLength=80
 endif
 
-au FileType python.sh :call SetColorColumn(g:maxLineLength)
+au FileType python.sh :call <SID>SetColorColumn(g:maxLineLength)
+command! SetColorColumn call <SID>SetColorColumn()
 
 " helper function to toggle hex mode
 function! ToggleHex()
