@@ -477,7 +477,7 @@ snippet #! "#!/usr/bin/env python" !bts
 # encoding: utf-8
 `!p import datetime
 if not snip.c:
-	snip.rv = "# " + datetime.datetime.now()`
+	snip.rv = "# " + str(datetime.datetime.now())`
 endsnippet
 
 snippet tdir "this_dir" !b
