@@ -83,4 +83,4 @@ endfu
 
 
 " I don't want the column for html
-call <SID>SetColorColumn(0)
+call SetColorColumn(0)

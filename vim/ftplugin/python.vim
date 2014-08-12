@@ -74,4 +74,4 @@ if executable("autopep8")
 endif
 
 " Our own foo
-call <SID>SetColorColumn(99)
+call SetColorColumn(99)
