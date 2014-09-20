@@ -362,7 +362,6 @@ endsnippet
 snippet djcv "Class Based View" bs
 class ${1:ViewName}(${2:View}):
 
-    ${3:@method_decorator(login_required)}
     def get(self, req${4}):
         ${0}
         return render(req, "template_name.html", {})
