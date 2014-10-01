@@ -65,3 +65,39 @@ endsnippet
 snippet gi "glyphicon"
     <span class="glyphicon glyphicon-${1}">${2}</span>${0}
 endsnippet
+
+snippet ng "Angular ng-"
+ng-${1}="${2}"${0}
+endsnippet
+
+snippet ngr "Angular ng-repeat"
+ng-repeat="${1} in ${2}"${0}
+endsnippet
+
+snippet ngm "Angular ng-model"
+ng-model="${1}"${0}
+endsnippet
+
+snippet ngc "Angular ng-controller"
+ng-controller="${1}${2: as ${3}}"${0}
+endsnippet
+
+snippet amod "Angular module"
+angular.module('${1}', [${2}])${0}
+endsnippet
+
+snippet amodc "Angular module controller"
+angular.module('${1}', [${2}]).controller("${3:$1}${4:Controller}", function $3$4() {
+	${0}
+})
+endsnippet
+
+snippet amodf "Angular module factory"
+angular.module('${1}', [${2}]).factory("${3:Factory}", function ${4:$1$3}() {
+	${0}
+})
+endsnippet
+
+# snippet amod "Angular controller"
+# angular.module('${1}', [${2}])${0}
+# endsnippet
