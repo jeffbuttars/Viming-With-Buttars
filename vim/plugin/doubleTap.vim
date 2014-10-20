@@ -340,9 +340,6 @@ function! s:checkDoubleInsert(thechar)
 	if l:cline[l:cpos - 2] == a:thechar 
 		let s:lcharTime = l:ntime
 		let s:lcharChar = '' 
-		if exists('NiceMenuCancel')
-			call NiceMenuCancel()
-		endif
 
 		return 1
 	endif
