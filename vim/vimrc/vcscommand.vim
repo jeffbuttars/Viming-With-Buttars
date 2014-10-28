@@ -1,2 +1,2 @@
 " VCS Command Plugin
-let VCSCommandVCSTypePreference='hg git svn'
+let VCSCommandVCSTypePreference='git svn hg'
