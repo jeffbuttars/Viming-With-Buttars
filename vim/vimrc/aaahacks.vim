@@ -272,14 +272,19 @@ vmap  <expr>  <UP>     DVB_Drag('up')
 vmap  <expr>  D        DVB_Duplicate()
 
 " Add the virtualenv's site-packages to vim path
-py << EOF
+python << EOF
 import os.path
 import sys
 import vim
 if 'VIRTUAL_ENV' in os.environ:
     project_base_dir = os.environ['VIRTUAL_ENV']
+    py_vers = ['2.7', '3.0', '3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.7', '3.8']
+    for pv in py_vers:
+        ipath = os.path.join(project_base_dir, 'lib', 'python' + pv, 'site-packages')
+        if os.path.exists(ipath):
+            vim.command('set path+=%s' % ipath )
+
     sys.path.insert(0, project_base_dir)
-    vim.command('set path+=' + os.path.join(project_base_dir, 'lib', 'python2.7', 'site-packages'))
     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
     execfile(activate_this, dict(__file__=activate_this))
 EOF
