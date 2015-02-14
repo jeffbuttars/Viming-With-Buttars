@@ -153,6 +153,7 @@ let g:DoubleTap_SpaceyInline = '\<LEFT>\<SPACE>\<SPACE>\<LEFT>'
 let g:DoubleTapFinishLine_Map = [ 
 	\	{ 'ftype':'*', 'trigger':";", 'finishChar':";", 'spacey':'' },
 	\	{ 'ftype':'javascript,python,lua', 'trigger':",", 'finishChar':",", 'spacey':'' },
+	\	{ 'ftype':'javascript,html', 'trigger':">", 'finishChar':">", 'spacey':'' },
 	\	{ 'ftype':'python', 'trigger':":", 'finishChar':":", 'spacey':'' } ]
 
 let g:DoubleTapFinishLineNormal_Map = [ 

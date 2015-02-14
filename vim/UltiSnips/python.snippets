@@ -224,7 +224,7 @@ endsnippet
 
 snippet glogger "Get a logger" !bs
 import logging
-logger = logging.getLogger('${1:__name__}')${0}
+logger = logging.getLogger(${1:__name__})${0}
 endsnippet
 
 snippet im "Import shortcut" b
@@ -465,6 +465,10 @@ endsnippet
 
 snippet tdir "this_dir" !b
 this_dir = os.path.realpath(os.path.dirname(__file__))
+endsnippet
+
+snippet get "dict.get()" i
+${1:dict}.get(${2}${3:, ${4:default}})${0}
 endsnippet
 
 # vim:ft=snippets:
