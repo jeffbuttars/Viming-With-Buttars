@@ -1,4 +1,12 @@
 
-snippet var "var name: type <value>" b!
-var ${1:name}: ${2:type} = ${0}
+snippet var "var name = <value>. Type infered" b!
+var ${1:name} = ${0}
+endsnippet
+
+snippet var "var name: type = <value>. type declared" b!
+vat ${1:name}: ${2:type} = ${0}
+endsnippet
+
+snippet vas "var name: string = <value>" b!
+vas ${1:name}: string = ${0}
 endsnippet
