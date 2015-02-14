@@ -14,3 +14,18 @@ endsnippet
 snippet let "let name = <value>" b!
 let ${1:name} = ${0}
 endsnippet
+
+snippet if "if <condition>" b!
+if ${1}:
+    ${0}
+endsnippet
+
+snippet elif "elif <condition>" b!
+elif ${1}:
+    ${0}
+endsnippet
+
+snippet else "else" b!
+else:
+    ${0}
+endsnippet
