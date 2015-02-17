@@ -60,7 +60,11 @@ for ${1} in ${2}:
 endsnippet
 
 snippet cu "countup(1, ..)" b!
-countup(${1:1}, ${2})
+countup(${1:0}, ${2})
+endsnippet
+
+snippet cd "countdown(.., 0)" b!
+countup(${1}, ${2:0})
 endsnippet
 
 snippet inc "inc(<i>)" b!
