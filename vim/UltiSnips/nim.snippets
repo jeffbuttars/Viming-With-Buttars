@@ -48,3 +48,18 @@ endsnippet
 snippet ec "echo()" b!
 echo(${1})${0}
 endsnippet
+
+snippet while "while <condition>:" b!
+while ${1} :
+    ${0}
+endsnippet
+
+snippet for "for <item> in <collection>:" b!
+for ${1} in ${2}:
+    ${0}
+endsnippet
+
+snippet cu "countup(1, ..)" b!
+countup(${1:1}, ${2})
+endsnippet
+
