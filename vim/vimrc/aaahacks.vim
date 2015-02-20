@@ -275,7 +275,7 @@ if 'VIRTUAL_ENV' in os.environ:
         ipath = os.path.join(project_base_dir, 'lib', 'python' + pv, 'site-packages')
         if os.path.exists(ipath):
             vim.command('set path+=%s' % ipath )
-            vim.command('echo "Set venv path ' + ipath + '"')
+            vim.command('silent! echo "Set venv path ' + ipath + '"')
 
     sys.path.insert(0, project_base_dir)
     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
@@ -285,7 +285,7 @@ if 'VIRTUAL_ENV' in os.environ:
     tpath = os.path.abspath(os.path.join(project_base_dir, '..', 'tags'))
     if os.path.exists(tpath):
         vim.command('set tags+=' + tpath)
-        vim.command('echo "Set tag path ' + tpath + '"')
+        vim.command('silent! echo "Set tag path ' + tpath + '"')
 EOF
 
 " If a virtualenv is active, see if we have tags file in
