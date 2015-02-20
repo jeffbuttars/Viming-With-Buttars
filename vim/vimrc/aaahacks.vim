@@ -165,14 +165,6 @@ command! -complete=shellcmd -nargs=* R rightbelow vnew | r ! <args>
 " Open a Quickfix window for the last search.
 nnoremap <silent> ,/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
 
-" If a virtualenv is active, see if we have tags file in
-" the virtualenv root dir. If so, add it to our tags list.
-if $VIRTUAL_ENV != ''
-    let b:vtag_dir = system('echo "$(dirname $VIRTUAL_ENV)/tags"')
-    " echo b:vtag_dir
-    execute 'set' 'tags+=' . b:vtag_dir
-endif
-
 " Open the quickfix after running grep
 autocmd QuickFixCmdPost *grep* cwindow
 autocmd QuickFixCmdPost *grep* exe "normal \<cr>\<c-w>p"
@@ -287,4 +279,18 @@ if 'VIRTUAL_ENV' in os.environ:
     sys.path.insert(0, project_base_dir)
     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
     execfile(activate_this, dict(__file__=activate_this))
+
+    # Add tags if they are at the virtualenv dir
+    tpath = os.path.abspath(os.path.join(project_base_dir, '..', 'tags'))
+    if os.path.exists(tpath):
+        vim.command('set tags+=' + tpath)
 EOF
+
+" If a virtualenv is active, see if we have tags file in
+" the virtualenv root dir. If so, add it to our tags list.
+" if $VIRTUAL_ENV != ''
+"     let b:vtag_dir = system('echo "$(dirname $VIRTUAL_ENV)/tags"')
+"     " echo b:vtag_dir
+"     execute 'set' 'tags+=' . b:vtag_dir
+" endif
+
