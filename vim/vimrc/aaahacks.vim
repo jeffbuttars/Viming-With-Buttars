@@ -285,7 +285,7 @@ if 'VIRTUAL_ENV' in os.environ:
     tpath = os.path.abspath(os.path.join(project_base_dir, '..', 'tags'))
     if os.path.exists(tpath):
         vim.command('set tags+=' + tpath)
-        vim.command('silent! echo "Set tag path ' + tpath + '"')
+        vim.command('echo "Set tag path ' + tpath + '"')
 EOF
 
 " If a virtualenv is active, see if we have tags file in
