@@ -81,7 +81,6 @@ filetype on
 set switchbuf=useopen
 set laststatus=2          " last window will always have a status line
 set showcmd		         " display incomplete commands
-set lazyredraw      " Don't redraw screen when executing macros
 "
 " * [switchbuf][]
 " * [laststatus][]
@@ -348,7 +347,6 @@ set sessionoptions=winpos,localoptions
 " See if we can speed things up with 
 " lazyredraw and ttyfast
 set lazyredraw
-set ttyfast
 
 " Make sure I get the expected behavior from ctrl-]
 " if cscopetag is set, ctrl-] will try to be too smart

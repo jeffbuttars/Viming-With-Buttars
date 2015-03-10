@@ -70,6 +70,7 @@ NeoBundle 'https://github.com/honza/vim-snippets'
 NeoBundle 'https://github.com/vim-scripts/stata.vim'
 NeoBundle 'https://github.com/jacquesbh/vim-showmarks.git'
 NeoBundle 'https://github.com/zah/nimrod.vim'
+NeoBundle 'chrisbra/vim-diff-enhanced'
 
 " Tornado template syntax
 NeoBundle 'https://github.com/vim-scripts/tornadotmpl.vim.git'
