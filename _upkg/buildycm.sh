@@ -9,7 +9,8 @@ build_ycm()
         cd ~/.vim/bundle/YouCompleteMe
         git submodule update --init --recursive
         echo $(git rev-parse HEAD) > $THIS_DIR/last_ycm
-        ./install.sh --clang-completer --system-libclang
+        # ./install.sh --clang-completer --system-libclang --system-boost
+        ./install.sh --clang-completer
         cd -
     fi
 } #build_ycm
