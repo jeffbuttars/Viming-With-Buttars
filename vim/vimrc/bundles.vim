@@ -75,7 +75,7 @@ NeoBundle 'patchreview.vim'
 " NeoBundle 'https://github.com/davidhalter/jedi-vim.git'
 NeoBundle 'https://github.com/Valloric/YouCompleteMe.git'
 " Load Ultisnips last to make sure it has the <tab> map
-NeoBundle 'https://github.com/SirVer/ultisnips.git'
+NeoBundle 'https://github.com/sirver/ultisnips'
 NeoBundle 'https://github.com/honza/vim-snippets'
 NeoBundle 'https://github.com/vim-scripts/stata.vim'
 NeoBundle 'https://github.com/jacquesbh/vim-showmarks.git'
