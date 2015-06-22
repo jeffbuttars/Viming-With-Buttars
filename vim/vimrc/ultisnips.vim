@@ -2,7 +2,8 @@
 
 " Make sure it picks up our snippet file first, so our overwrites take effect.
 let g:UltiSnipsDontReverseSearchPath="1"
-let g:UltiSnipsSnippetsDir = '~/pkgs/vim/UltiSnips'
+let g:UltiSnipsSnippetsDir = '~/.upkg/Viming-With-Buttars.git/vim/UltiSnips'
+
 let g:UltiSnipsListSnippets = '<c-q>'
 " let g:UltiSnipsListSnippets = "<c-tab>"
 
