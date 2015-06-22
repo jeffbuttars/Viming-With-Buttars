@@ -92,7 +92,6 @@ NeoBundle 'https://github.com/vim-scripts/tornadotmpl.vim.git'
 " Solarized has been good to me. I plan to keep it a while
 NeoBundle 'Solarized'
 
- filetype plugin indent on     " Required!
  "
  " Brief help
  " :NeoBundleList          - list configured bundles
@@ -103,3 +102,5 @@ call neobundle#end()
 
  " Installation check.
 NeoBundleCheck
+
+ " filetype plugin indent on     " Required!
