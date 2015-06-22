@@ -6,6 +6,9 @@ source pkgs.sh
 mkdir -p ~/.vim/undos
 mkdir -p ~/.vim/bundle
 
+# Link our UltiSnips up
+ln -nsf ${THIS_DIR}/../vim/UltiSnips ~/.vim/
+
 if [[ ! -d  ~/.vim/bundle/vimproc ]]; then
     pr_info "Installing vimproc"
     git clone https://github.com/Shougo/vimproc.vim ~/.vim/bundle/vimproc
