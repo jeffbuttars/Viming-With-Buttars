@@ -11,8 +11,8 @@ wait
 
 source buildycm.sh
 
-pr_info "Building vimproc .so..."
+# pr_info "Building vimproc .so..."
 
-cd ~/.vim/bundle/vimproc
-make
-cd - 
+# cd ~/.vim/bundle/vimproc.vim
+# make
+# cd - 

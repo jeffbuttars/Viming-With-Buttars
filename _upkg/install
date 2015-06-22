@@ -4,11 +4,24 @@ source pkgs.sh
 
 # Make sure we have an undos directory
 mkdir -p ~/.vim/undos
-
 mkdir -p ~/.vim/bundle
+
+if [[ ! -d  ~/.vim/bundle/vimproc ]]; then
+    pr_info "Installing vimproc"
+    git clone https://github.com/Shougo/vimproc.vim ~/.vim/bundle/vimproc
+    cd ~/.vim/bundle/vimproc
+    make
+    cd -
+fi
+
 if [[ ! -d  ~/.vim/bundle/neobundle.vim ]]; then
     pr_info "Installing neobundle."
     git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
+fi
+
+if [[ ! -d  ~/.vim/bundle/YouCompleteMe ]]; then
+    git clone https://github.com/Valloric/YouCompleteMe ~/.vim/bundle/YouCompleteMe
+    source buildycm.sh
 fi
 
 export THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -25,14 +38,14 @@ echo "set runtimepath=$PKGS_VIM_DIR,\$VIMRUNTIME" > ~/.vimrc
 echo "source $PKGS_VIM_DIR/.vimrc" >> ~/.vimrc
 
 pr_info "Updating bundles..."
-echo "y\ny\ny\n" | vim +'NeoBundleInstall!<\CR>' +'q'
+echo "y\ny\ny\n" | vim +'NeoBundleInstall!<\CR>' +'qall'
 wait
 
 source buildycm.sh
 
-pr_info "Building vimproc .so..."
-cd ~/.vim/bundle/vimproc
-make
-cd -
+# pr_info "Building vimproc .so..."
+# cd ~/.vim/bundle/vimproc.vim
+# make
+# cd -
 
 pr_pass "Install complete"
