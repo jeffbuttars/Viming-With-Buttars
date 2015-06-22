@@ -5,10 +5,11 @@ build_ycm()
     # Build YouCompleteMe
     if [[ -d ~/.vim/bundle/YouCompleteMe ]]; then
         pr_info "Building YouCompleteMe"
+
         cd ~/.vim/bundle/YouCompleteMe
+        git submodule update --init --recursive
         echo $(git rev-parse HEAD) > $THIS_DIR/last_ycm
         ./install.sh --clang-completer --system-libclang
-
         cd -
     fi
 } #build_ycm
