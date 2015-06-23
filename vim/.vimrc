@@ -26,6 +26,10 @@
 " * [Bundles](#bundles)
 " * [Maps](#maps)
 "
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible " Don't be compatible with basic Vi
+"
 " Load our bundles early
 runtime vimrc/nerdcomment.vim
 runtime vimrc/bundles.vim
@@ -40,10 +44,6 @@ if v:progname =~? "evim"
 endif
 " * [evim][]
 " * [finish][]
-"
-" Use Vim settings, rather then Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
-set nocompatible " Don't be compatible with basic Vi
 
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 

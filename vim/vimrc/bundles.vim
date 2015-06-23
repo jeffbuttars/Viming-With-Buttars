@@ -16,8 +16,6 @@
 
 " More or less 'borrowed' straight from the repo readme.
 
-set nocompatible " Utilize the good Vim parts
-
 if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
@@ -100,7 +98,8 @@ NeoBundle 'Solarized'
 
 call neobundle#end()
 
+filetype plugin indent on     " Required!
+
  " Installation check.
 NeoBundleCheck
 
- " filetype plugin indent on     " Required!
