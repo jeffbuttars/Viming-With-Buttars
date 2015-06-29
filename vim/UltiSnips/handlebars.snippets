@@ -1,0 +1,40 @@
+
+snippet {{ "Element" i
+{{${1}}}${0}
+endsnippet
+
+snippet {{{ "Triple Element" i
+{{{${1}}}}${0}
+endsnippet
+
+snippet {{! "Bang Element" i
+{{!${1}}}${0}
+endsnippet
+
+snippet {{> "Righthous Element" i
+{{>${1}}}${0}
+endsnippet
+
+snippet {{< "Liberal Element" i
+{{<${1}}}${0}
+endsnippet
+
+snippet {{# "Pound Block" i
+{{#${1} ${2}}}
+${0}
+{{/$1}}
+endsnippet
+
+snippet {{if "If Block" i
+{{#if ${1}}}
+${0}
+{{/if}}
+endsnippet
+
+snippet {{ife "If Else Block" i
+{{#if ${1}}}
+${2}
+{{else}}
+${0}
+{{/if}}
+endsnippet
