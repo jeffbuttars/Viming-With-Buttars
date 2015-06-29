@@ -1,1 +1,1 @@
-g:mustache_abbreviations = 1
+let g:mustache_abbreviations = 1
