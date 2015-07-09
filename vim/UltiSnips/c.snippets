@@ -28,17 +28,11 @@ snippet "(\(?)v\*" "void *" r
 `!p snip.rv = match.group(1) or '' `void *${1:vname}
 endsnippet
 
-snippet if "if () {.." !
-if (${1}) {
-    ${0}
-}
-endsnippet
-
 snippet "u(\(?)i(\d*)" "uint\d*_t" r
 uint`!p snip.rv = (match.group(1) or '') + match.group(2)`_t
 endsnippet
 
-snippet uint "unsigned int" !
+snippet uint "unsigned int" !b
 unsigned int ${1};${0}
 endsnippet
 
@@ -60,5 +54,39 @@ LOG_ERR("${1}"${2:, ${3}});${0}
 endsnippet
 
 snippet Inc "<include.h>" !b
-#include <${2}${1:.h}>${0}
+#include <${1:${2}.h}>${0}
+endsnippet
+
+snippet inc "include.h" !b
+#include "${1:${2}.h}"${0}
+endsnippet
+
+snippet mif "if () {.." !b
+if (${1}) {
+	${0}
+}
+endsnippet
+
+snippet dinf "dzlog_info" b
+dzlog_info("${1}"${2:, ${3}});${0}
+endsnippet
+
+snippet dwrn "dzlog_warn" b
+dzlog_warn("${1}"${2:, ${3}});${0}
+endsnippet
+
+snippet derr "dzlog_err" b
+dzlog_error("${1}"${2:, ${3}});${0}
+endsnippet
+
+snippet ddbg "dzlog_debug" b
+dzlog_debug("${1}"${2:, ${3}});${0}
+endsnippet
+
+snippet dfat "dzlog_fatal" b
+dzlog_fatal("${1}"${2:, ${3}});${0}
+endsnippet
+
+snippet dnot "dzlog_notice" b
+dzlog_notice("${1}"${2:, ${3}});${0}
 endsnippet
