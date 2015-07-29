@@ -42,12 +42,14 @@ NeoBundle 'Shougo/vimproc.vim', {
 " Place your bundles here!
 
 NeoBundle 'https://github.com/tpope/vim-fugitive.git'
-NeoBundle 'https://github.com/kien/ctrlp.vim'
+" NeoBundle 'https://github.com/kien/ctrlp.vim'
+NeoBundle 'https://github.com/ctrlpvim/ctrlp.vim'
 NeoBundle 'https://github.com/nvie/vim-flake8'
 NeoBundle 'https://github.com/bling/vim-airline.git'
 " NeoBundle 'https://github.com/itchyny/lightline.vim'
 NeoBundle 'https://github.com/bling/vim-bufferline.git'
-NeoBundle 'https://github.com/kien/rainbow_parentheses.vim'
+" NeoBundle 'https://github.com/kien/rainbow_parentheses.vim'
+NeoBundle 'https://github.com/junegunn/rainbow_parentheses.vim'
 NeoBundle 'https://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/lrvick/Conque-Shell.git'
 NeoBundle 'https://github.com/tpope/vim-eunuch.git'
