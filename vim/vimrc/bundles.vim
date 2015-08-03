@@ -41,6 +41,8 @@ NeoBundle 'Shougo/vimproc.vim', {
 
 " Place your bundles here!
 
+NeoBundle 'https://github.com/Shougo/unite.vim'
+
 NeoBundle 'https://github.com/tpope/vim-fugitive.git'
 " NeoBundle 'https://github.com/kien/ctrlp.vim'
 NeoBundle 'https://github.com/ctrlpvim/ctrlp.vim'
