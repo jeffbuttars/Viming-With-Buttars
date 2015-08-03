@@ -8,6 +8,9 @@ mkdir -p ~/.vim/undos
 # Link our UltiSnips up
 ln -nsf ${THIS_DIR}/../vim/UltiSnips ~/.vim/
 
+pr_info "Updating/installing fonts..."
+${THIS_DIR}/install_fonts.sh
+
 pr_info "Updating bundles..."
 echo "y\ny\ny\n" | vim +'NeoBundleCheck<\CR>' +'q'
 wait

@@ -6,6 +6,9 @@ source pkgs.sh
 mkdir -p ~/.vim/undos
 mkdir -p ~/.vim/bundle
 
+pr_info "Updating/installing fonts..."
+${THIS_DIR}/install_fonts.sh
+
 # Link our UltiSnips up
 ln -nsf ${THIS_DIR}/../vim/UltiSnips ~/.vim/
 
