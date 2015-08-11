@@ -88,6 +88,7 @@ NeoBundle 'https://github.com/mhinz/vim-rfc'
 NeoBundle 'https://github.com/vim-scripts/rfc-syntax'
 NeoBundle 'https://github.com/mustache/vim-mustache-handlebars'
 NeoBundle 'ryanoasis/vim-webdevicons'
+NeoBundle 'hsanson/vim-android'
 
 " Tornado template syntax
 NeoBundle 'https://github.com/vim-scripts/tornadotmpl.vim.git'

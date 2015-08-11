@@ -17,8 +17,6 @@ syntax enable
 " * colo vylight  " A light theme
 " * colo jellybeans " A dark color full theme
 "
-" Add the tomorrow themes to the runtime path
-set runtimepath+=~/.vim/bundle/tomorrow-theme/vim
 
 " Explicitly say we want 256 colors when we find 256
 " in the TERM environmental variable.
@@ -154,6 +152,8 @@ set relativenumber
      let &t_SI = "\<Esc>]50;CursorShape=1\x7"
      let &t_EI = "\<Esc>]50;CursorShape=0\x7"
  endif
+
+
 
  " Only use cursorline/cursorcolun in normal mode
  autocmd InsertLeave * :set cursorline
