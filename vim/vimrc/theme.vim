@@ -97,6 +97,8 @@ if has( "gui_running" )
 
     if 1 == <SID>Havescheme('solarized')
         colorscheme solarized
+        let g:solarized_style = "light"
+        colorscheme solarized
     endif
 
 	set cursorline
